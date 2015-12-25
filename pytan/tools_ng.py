@@ -4,11 +4,6 @@ import logging
 import datetime
 from . import utils, tanium_ng
 
-try:
-    import xml.etree.cElementTree as ET
-except:
-    import xml.etree.ElementTree as ET
-
 mylog = logging.getLogger(__name__)
 
 
@@ -80,28 +75,6 @@ def create_cf_obj(field, value, operator=None, field_type=None, not_flag=None, *
     if not_flag is not None:
         result.not_flag = not_flag
     return result
-
-
-def xml_to_result_set_obj(x):
-    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a
-    ResultSet object
-
-    Parameters
-    ----------
-    x : str
-        * str of XML to convert to a ResultSet object
-
-    Returns
-    -------
-    rs : :class:`utils.tanium_ng.result_set.ResultSet`
-        * x converted into a ResultSet object
-    """
-    rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
-    rs_xml = rs_xml(x)
-    rs_tree = ET.fromstring(rs_xml)
-    rs = tanium_ng.ResultSet.fromSOAPElement(rs_tree)
-    rs._RAW_XML = rs_xml
-    return rs
 
 
 def create_selectlist_obj(specs):
@@ -342,4 +315,15 @@ def question_start_time(q):
     start_time_dt = expire_dt - expire_seconds_delta
     start_time = utils.tools.datetime_to_timestr(start_time_dt)
     result = (start_time, start_time_dt)
+    return result
+
+
+def create_options_obj(**kwargs):
+    result = tanium_ng.Options()
+
+    for k, v in kwargs.items():
+        if hasattr(result, k):
+            m = "Setting Options attribute {!r} to value '{}'".format
+            mylog.debug(m(k, v))
+            setattr(result, k, v)
     return result

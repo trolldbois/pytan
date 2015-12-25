@@ -93,7 +93,7 @@ class SSEPoller(question.QuestionPoller):
         result = self.handler.session.http_request_auth(**kwargs).strip()
 
         # print a progress debug string
-        full_url = self.handler.session._full_url(url=kwargs['url'])
+        full_url = self.handler.session._get_full_url(url=kwargs['url'])
         m = "{}Server Side Export Progress: '{}' from URL: {}"
         m = m.format(self.id_str, result, full_url)
         self.progresslog.debug(m)
@@ -112,7 +112,7 @@ class SSEPoller(question.QuestionPoller):
         result = self.handler.session.http_request_auth(**kwargs).strip()
 
         # print a progress debug string
-        full_url = self.handler.session._full_url(url=kwargs['url'])
+        full_url = self.handler.session._get_full_url(url=kwargs['url'])
         m = "{}Server Side Export Data Length: {} from URL: {}"
         m = m.format(self.id_str, len(result), full_url)
         self.progresslog.debug(m)

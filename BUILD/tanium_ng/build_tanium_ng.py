@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds ../../pytan/tanium_ng.py from the ../../doc/console.wsdl file"""
+"""Builds the file ``../../pytan/tanium_ng.py`` from the file ``../../doc/console.wsdl``"""
 
 # BEGIN BOOTSTRAP CODE
 # statically defined path
@@ -60,7 +60,10 @@ utils.log.install_console(logger_name=logname)
 class WsdlParser(object):
 
     EXCLUDE_TYPES = ['auth', 'TaniumSOAPRequest', 'TaniumSOAPResult']
-    NAMESPACES = {'xsd': 'http://www.w3.org/2001/XMLSchema'}
+    NAMESPACES = {
+        'xsd': 'http://www.w3.org/2001/XMLSchema',
+        't': 'urn:TaniumSOAP'
+    }
     XSD_MAP = {
         'xsd:int': 'int',
         'xsd:string': 'text_type',
@@ -78,16 +81,27 @@ class WsdlParser(object):
 * Version of PyTan: ${pytan_version}
 
 """
+# BEGIN STATIC CODE
+${STATIC_CODE}
 
+# END STATIC CODE
+# BEGIN DYNAMIC CODE
 ''')
 
     CODE_STRING = (
         '''
 
 class ${py_type}(BaseType):
-    """${desc}."""
+    """${desc}.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = '${soap_tag}'
+
+    CONSTANTS = [
+        ${CONSTANTS}
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -101,6 +115,7 @@ class ${py_type}(BaseType):
             list_properties={
                 ${LIST_ARGS}
             },
+            **kwargs
         )
         ${SIMPLE_PROPS}
         ${COMPLEX_PROPS}
@@ -110,8 +125,18 @@ class ${py_type}(BaseType):
 
     FOOTER_STRING = (
         '''
+
 BASE_TYPES = {}
 """Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
+BASE_TYPES['result_infos'] = ResultInfoList  # static
+BASE_TYPES['result_info'] = ResultInfo  # static
+BASE_TYPES['result_sets'] = ResultSetList  # static
+BASE_TYPES['result_set'] = ResultSet  # static
+BASE_TYPES['cs'] = ColumnList  # static
+BASE_TYPES['c'] = Column  # static
+BASE_TYPES['rs'] = RowList  # static
+BASE_TYPES['r'] = Row  # static
+
 ${BASE_TYPES}
 
 # END DYNAMIC CODE
@@ -146,24 +171,17 @@ ${BASE_TYPES}
     def write_tanium_ng(self):
         filename = '__init__.py'
         subs = {}
+        subs.update(self.general_subs())
+        subs['STATIC_CODE'] = self.ng_statics
 
         typet = "BASE_TYPES['{soap_tag}'] = {py_type}".format
-        t = "BASE_TYPES"
         a = [typet(**x) for x in self.object_maps if 'soap_tag' in x]
-        subs[t] = '\n'.join(a)
-
-        subs['desc'] = (
-            ''
-        )
-        subs.update(self.general_subs())
+        subs['BASE_TYPES'] = '\n'.join(a)
 
         header = self.HEADER_TEMPLATE.substitute(subs)
         footer = self.FOOTER_TEMPLATE.substitute(subs)
 
-        filecode = [header, self.ng_statics]
-        filecode += [x['code'] for x in self.object_maps]
-        filecode.append(footer)
-
+        filecode = [header] + [x['code'] for x in self.object_maps] + [footer]
         filecode = ''.join(filecode)
         filename = self.ng_file
 
@@ -199,6 +217,7 @@ ${BASE_TYPES}
         result['soap_tag'] = self.get_soap_tag(type_name)
         result['py_type'] = self.capcase(result['type_name'])
         result['type_els'] = self.find_type_els(result['type_name'])
+        result['constants'] = self.find_constants(result['type_name'])
         result['simples'] = self.get_simples(result['type_els'])
         result['complexes'] = self.get_complexes(result['type_els'])
         result['lists'] = self.get_lists(result['type_els'])
@@ -206,7 +225,7 @@ ${BASE_TYPES}
 
         t = "pyobject: {py_type!r}, xml tag: {soap_tag!r}".format(**result)
         mi = []
-        for k in ['simples', 'complexes', 'lists']:
+        for k in ['simples', 'complexes', 'lists', 'constants']:
             mi.append("{}: {}".format(k, len(result[k])))
             md = "    {}: {}".format(k, result[k])
             mylog.debug(md)
@@ -248,6 +267,17 @@ ${BASE_TYPES}
         m = "Found {} object types in WSDL File"
         m = m.format(len(result))
         mylog.info(m)
+        return result
+
+    def find_constants(self, type_name, **kwargs):
+        find_tpl = ".//xsd:complexType[@name='{}']/xsd:annotation//t:constant".format(type_name)
+        els = self.search_wsdl(find_tpl, **kwargs)
+        if els:
+            # keys = ['name', 'value', 'type']
+            result = [(i[0].text, i[1].text, self.XSD_MAP[i[1].attrib['type']]) for i in els]
+            # result = [dict(zip(keys, i)) for i in vals]
+        else:
+            result = []
         return result
 
     def find_type_els(self, type_name, **kwargs):
@@ -349,6 +379,12 @@ ${BASE_TYPES}
         argt = "'{}': {},".format
         argj = '\n                '.join
         propj = '\n        '.join
+        conj = "\n        ".join
+
+        nullt = ['# no constants defined in console.wsdl']
+        con_def = "{{'name': '{}', 'value': '{}', 'type': {}}},".format
+        p = type_dict['constants']
+        type_dict['CONSTANTS'] = conj([con_def(*k) for k in p] or nullt)
 
         nullt = ['# no simple properties defined in console.wsdl']
         attr_def = "self.{} = None".format
@@ -405,3 +441,7 @@ if __name__ == '__main__':
         mylog.setLevel(logging.DEBUG)
 
     wsdl_parser = WsdlParser(args=args)
+
+type_name = 'sensor'
+find_tpl = ".//xsd:complexType[@name='{}']/xsd:annotation/xsd:appinfo/".format(type_name)
+x = wsdl_parser.search_wsdl(find_tpl)

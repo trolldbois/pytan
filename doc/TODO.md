@@ -1,14 +1,16 @@
 <!-- MarkdownTOC -->
 
 - [DOC](#doc)
-- [TANIUMNG](#taniumng)
-- [SESSION](#session)
-- [HUMAN PARSING](#human-parsing)
-- [HANDLER](#handler)
-- [UTILS](#utils)
-- [TEST](#test)
-- [PLATFORM](#platform)
-- [LOW](#low)
+  - [TANIUMNG](#taniumng)
+- [dont want to raise exception in tanium_ng for import of tickle, but do want to log! (maybe Warning class like req?)](#dont-want-to-raise-exception-in-tanium_ng-for-import-of-tickle-but-do-want-to-log-maybe-warning-class-like-req)
+  - [SESSION](#session)
+  - [HUMAN PARSING](#human-parsing)
+  - [HANDLER/MAIN](#handlermain)
+  - [UTILS](#utils)
+  - [TEST](#test)
+  - [PLATFORM](#platform)
+  - [LOW](#low)
+  - [LIBXML](#libxml)
 
 <!-- /MarkdownTOC -->
 
@@ -23,14 +25,21 @@
 * add documentation note about PyTan only being fully tested with Administrator role 
 * add windows install doc tip re: 2.7 only
 * write history
+* ensure all exceptions are re-raised if not a specific Tanium/PyTan type
+* turn on pep257 in flake8 project settings
+* document static props for things like what_hash and so on??
+* clean up prints!!!:
+grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## TANIUMNG
 * move serializers out => tickle NOW
-  * MAKE RESULTINFO A BASETYPE! ==> NOW
-  * MAKE RESULTSET A BASETYPE! ==> NOW
-* timing for xml?
-* rebuild taniumpy with latest wsdl
-* get annotations from wsdl
+  * csv => NOW
+* make tickle use its own exceptions => NEXT
+* rebuild taniumpy with latest wsdl (LAST)
+# dont want to raise exception in tanium_ng for import of tickle, but do want to log! (maybe Warning class like req?)
+* move tickle bools to constants
+* add result info to tickle.from_sse_xml (passthrough from handler)
+* add utility method to deserialize json in parameter_definition (will need to come up with manual override in dynamic generator, maybe __getattr__ with lookup reference to _JSONS=['parameter_definition'])
 
 ## SESSION
 * http/s proxy
@@ -42,8 +51,10 @@
 ## HUMAN PARSING
 * argparse for specs/left/right/etc
 
-## HANDLER
+## HANDLER/MAIN
+* play with absolute imports again? (from pytan import blah instead of from . import blah)
 * create_parent_group_obj broken, fix it and add debug logging!
+* add logger to tanium_ng and tickle_ng
 * increase loglevel range to 50
 * keep loglevels 1-10 reserved for shell scripts
 * keep loglevels 10-30 reserved for info logs
@@ -65,6 +76,9 @@
 * email out (MEDIUM)
 * add caching (HUGE)
 * figure out how to get last N of an obj
+* test against 6.6 (auth changes??)
+* add reverse log checking for all pytan logs
+* change Exceptions to end with Error
 
 ## UTILS
 * remove external deps from utils, move version into utils
@@ -85,3 +99,26 @@
 ## LOW
 * figure out cert based auth/plugin based auth? (HUGE)
 * add RST output support to mdtester?
+
+## LIBXML
+* libxml
+  - py3: sudo CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/include/libxml2 CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip3 install lxml
+  - py2: sudo CPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/include/libxml2 CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip2 install lxml
+
+* timing for xml -- looks like celementtree is fastest for getting all questions, but for large result sets lxml may win over, need to test later
+* should add xmltodict into mix
+* need to create faux large result data sets (>50MB) (>100MB) (>500MB) and a faux large question list (>100,000)
+* may need to change RowList/Row for speed!
+
+  * lxml:
+    >>> eval_timing("handler.get_questions()")
+    Timing info for handler.get_questions() -- START: 2015-12-24 21:00:42.098527, END: 2015-12-24 21:00:51.189905, ELAPSED: 0:00:09.091378, RESPONSE LEN: 9915
+
+  * celementtree:
+    >>> eval_timing("handler.get_questions()")
+    Timing info for handler.get_questions() -- START: 2015-12-24 21:02:00.768571, END: 2015-12-24 21:02:08.545939, ELAPSED: 0:00:07.777368, RESPONSE LEN: 9915
+
+  * elementtree:
+    >>> eval_timing("handler.get_questions()")
+    Timing info for handler.get_questions() -- START: 2015-12-24 21:03:01.757966, END: 2015-12-24 21:03:09.961130, ELAPSED: 0:00:08.203164, RESPONSE LEN: 9915
+

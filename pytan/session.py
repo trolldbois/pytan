@@ -9,13 +9,8 @@ import time
 from datetime import datetime
 from base64 import b64encode
 
-try:
-    import xml.etree.cElementTree as ET
-except:
-    import xml.etree.ElementTree as ET
-
 from . import b
-from . import utils, requests, tanium_ng
+from . import utils, requests, tanium_ng, tickle, tools_ng
 
 requests.packages.urllib3.disable_warnings()
 
@@ -25,9 +20,6 @@ httplog = logging.getLogger(__name__ + ".http")
 bodylog = logging.getLogger(__name__ + ".body")
 statslog = logging.getLogger(__name__ + ".stats")
 helplog = logging.getLogger(__name__ + ".help")
-
-from_soap_body = tanium_ng.from_xml
-to_soap_body = tanium_ng.to_xml
 
 
 class Session(object):
@@ -59,15 +51,17 @@ class Session(object):
     }
     """The namespace mappings for use in XML Request bodies"""
 
-    _REQUEST_BODY_BASE = ("""<SOAP-ENV:Envelope {SOAP-ENV} {xsd} {xsi}>
-<SOAP-ENV:Body>
-  <typens:tanium_soap_request {typens}>
-    <command>$command</command>
-    <object_list>$object_list</object_list>
-    $options
-  </typens:tanium_soap_request>
-</SOAP-ENV:Body>
-</SOAP-ENV:Envelope>""").format(**_XMLNS)
+    _REQUEST_BODY_BASE = (
+        '<SOAP-ENV:Envelope {SOAP-ENV} {xsd} {xsi}>\n'
+        '<SOAP-ENV:Body>\n'
+        '  <typens:tanium_soap_request {typens}>\n'
+        '    <command>$command</command>\n'
+        '    <object_list>$object_list</object_list>\n'
+        '    $options\n'
+        '  </typens:tanium_soap_request>\n'
+        '</SOAP-ENV:Body>\n'
+        '</SOAP-ENV:Envelope>\n'
+    )
     """The XML template used for all SOAP Requests in string form"""
 
     _REQUESTS_SESSION = None
@@ -510,7 +504,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = from_soap_body(response_body)
+        result = tickle.from_xml(response_body)
         return result
 
     def save(self, obj, **kwargs):
@@ -530,7 +524,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_update_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = from_soap_body(response_body)
+        result = tickle.from_xml(response_body)
         return result
 
     def add(self, obj, **kwargs):
@@ -550,7 +544,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_add_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = from_soap_body(response_body)
+        result = tickle.from_xml(response_body)
         return result
 
     def delete(self, obj, **kwargs):
@@ -570,7 +564,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_delete_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = from_soap_body(response_body)
+        result = tickle.from_xml(response_body)
         return result
 
     def run_plugin(self, obj, **kwargs):
@@ -590,7 +584,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_run_plugin_object_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = from_soap_body(response_body)
+        result = tickle.from_xml(response_body)
         return result
 
     def get_result_info(self, obj, **kwargs):
@@ -610,7 +604,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_result_info_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-        result = from_soap_body(response_body)
+        result = tickle.from_xml(response_body)
         return result
 
     def get_result_data(self, obj, **kwargs):
@@ -630,13 +624,7 @@ class Session(object):
         kwargs['obj'] = obj
         kwargs['request_body'] = self._create_get_result_data_body(**kwargs)
         response_body = self.soap_request(**kwargs)
-
-        # parse the ResultXML node into it's own element
-        resultxml_text = self._extract_resultxml(response_body=response_body)
-
-        cdata_el = ET.fromstring(resultxml_text)
-        result = tanium_ng.ResultSet.from_soap_element(cdata_el)
-        result._RAW_XML = resultxml_text
+        result = tickle.from_xml(response_body)
         return result
 
     def get_result_data_sse(self, obj, **kwargs):
@@ -1355,29 +1343,16 @@ class Session(object):
         kwargs : dict, optional
             * any number of attributes that can be set via
             :class:`tanium_ng.Options` that control the servers response.
-        log_options : bool, optional
-            * default: False
-            * False: Do not print messages setting attributes in Options from keys in kwargs
-            * True: Print messages setting attributes in Options from keys in kwargs
 
         Returns
         -------
         body : str
             * The XML request body created from the string.template self.REQUEST_BODY_TEMPLATE
         """
-        log_options = kwargs.get('log_options', True)
+        options_obj = tools_ng.create_options_obj(**kwargs)
+        options = tickle.to_xml(options_obj)
 
-        options_obj = tanium_ng.Options()
-
-        for k, v in kwargs.items():
-            if hasattr(options_obj, k):
-                if log_options:
-                    m = "Setting Options attribute {!r} to value '{}'".format
-                    mylog.debug(m(k, v))
-                setattr(options_obj, k, v)
-
-        options = to_soap_body(options_obj)
-        body_template = string.Template(self._REQUEST_BODY_BASE)
+        body_template = string.Template(self._REQUEST_BODY_BASE.format(**self._XMLNS))
         subs = {'command': command, 'object_list': object_list, 'options': options}
         result = body_template.substitute(**subs)
         return result
@@ -1398,7 +1373,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = to_soap_body(obj)
+        kwargs['object_list'] = tickle.to_xml(obj)
         kwargs['command'] = 'RunPlugin'
         result = self._build_body(**kwargs)
         return result
@@ -1419,7 +1394,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = to_soap_body(obj)
+        kwargs['object_list'] = tickle.to_xml(obj)
         kwargs['command'] = 'AddObject'
         result = self._build_body(**kwargs)
         return result
@@ -1440,7 +1415,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = to_soap_body(obj)
+        kwargs['object_list'] = tickle.to_xml(obj)
         kwargs['command'] = 'DeleteObject'
         result = self._build_body(**kwargs)
         return result
@@ -1461,7 +1436,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = to_soap_body(obj)
+        kwargs['object_list'] = tickle.to_xml(obj)
         kwargs['command'] = 'GetResultInfo'
         result = self._build_body(**kwargs)
         return result
@@ -1482,7 +1457,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = to_soap_body(obj)
+        kwargs['object_list'] = tickle.to_xml(obj)
         kwargs['command'] = 'GetResultData'
         result = self._build_body(**kwargs)
         return result
@@ -1504,7 +1479,7 @@ class Session(object):
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
         if isinstance(obj, tanium_ng.BaseType):
-            object_list = to_soap_body(obj)
+            object_list = tickle.to_xml(obj)
         else:
             object_list = '<{}/>'.format(obj._soap_tag)
 
@@ -1529,7 +1504,7 @@ class Session(object):
         obj_body : str
             * The XML request body created from :func:`pytan.sessions.Session._build_body`
         """
-        kwargs['object_list'] = to_soap_body(obj)
+        kwargs['object_list'] = tickle.to_xml(obj)
         kwargs['command'] = 'UpdateObject'
         result = self._build_body(**kwargs)
         return result
@@ -1569,39 +1544,6 @@ class Session(object):
         m = m.format(element, ret, regex.pattern)
         mylog.debug(m)
         return ret
-
-    def _extract_resultxml(self, response_body):
-        """Utility method to get the 'ResultXML' element from an XML body
-
-        Parameters
-        ----------
-        response_body : str
-            * XML body to search for the 'ResultXML' element in
-
-        Returns
-        -------
-        ret : str of ResultXML element
-            * str if 'export_id' element found in XML
-        """
-        # TODO: MOVE INTO TICKLE
-        el = ET.fromstring(response_body)
-
-        # find the ResultXML node
-        resultxml_el = el.find('.//ResultXML')
-
-        if resultxml_el is None:
-            err = "Unable to find ResultXML element in XML response: {}"
-            err = err.format(response_body)
-            raise utils.exceptions.AuthorizationError(err)
-
-        result = resultxml_el.text
-
-        if not result:
-            err = "Empty ResultXML element in XML response: {}"
-            err = err.format(response_body)
-            raise utils.exceptions.AuthorizationError(err)
-
-        return result
 
     def _invalid_server_version(self):
         """Utility method to find out if self.SERVER_VERSION is valid or not"""

@@ -73,8 +73,6 @@ class Spec(object):
         if not isinstance(spec['value'], text_type):
             try:
                 spec['value'] = text_type(spec['value'])
-                print(spec['value'])
-                print(type(spec['value']))
             except:
                 obj_txt = text_type.__name__
                 val_type = type(spec['value']).__name__

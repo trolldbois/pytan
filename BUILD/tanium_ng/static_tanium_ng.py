@@ -1,11 +1,11 @@
-# BEGIN STATIC CODE
-try:
-    import xml.etree.cElementTree as ET
-except:
-    import xml.etree.ElementTree as ET
+import sys
 
-from . import text_type, encoding  # noqa
-from . import utils
+# Useful for very coarse version differentiation.
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
 
 
 class TaniumNextGenException(Exception):
@@ -14,12 +14,12 @@ class TaniumNextGenException(Exception):
 
 class IncorrectTypeException(TaniumNextGenException):
     """Raised when a property is not of the expected type"""
-    def __init__(self, name, value, expected):
+    def __init__(self, obj, name, value, expected):
         self.name = name
         self.expected = expected
         self.value = value
-        err = "Attribute '{}' expected type '{}', got '{}' (value: '{}')"
-        err = err.format(name, expected.__name__, type(value).__name__, value)
+        err = "Object {!r} attribute '{}' expected type '{}', got '{}' (value: '{}')"
+        err = err.format(obj, name, expected.__name__, type(value).__name__, value)
         TaniumNextGenException.__init__(self, err)
 
 
@@ -34,7 +34,7 @@ def get_obj_type(tag):
 
 
 class BaseType(object):
-    """Base Python Type used for all Tanium XML SOAP Objects generated from console.wsdl"""
+    """Base Python Type used for all Tanium XML SOAP Objects"""
 
     _SOAP_TAG = None
     """str of XML tag that Tanium SOAP API Uses to define this object"""
@@ -52,7 +52,7 @@ class BaseType(object):
     """dict that stores the complex properties for this object (other BaseTypes)"""
 
     _LIST_PROPS = {}
-    """dict that stores the complex properties for this object (other BaseTypes)"""
+    """dict that stores the complex properties for this object (other BaseTypes, str, int)"""
 
     _IS_LIST = False
     """bool indicating if this is a single list object or not"""
@@ -68,6 +68,14 @@ class BaseType(object):
 
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         self._INITIALIZED = False
+
+        # TODO: dont want to raise exception, but do want to log! (maybe Warning class like req?)
+        try:
+            from . import tickle_ng
+            self._TICKLE_NG = tickle_ng
+        except:
+            print("WARNING: UNABLE TO LOAD TICKLE_NG!!!")
+            self._TICKLE_NG = None
 
         self._INIT_VALUES = kwargs.get('values', {}) or {}
 
@@ -109,7 +117,7 @@ class BaseType(object):
         """Support .append() for single list types."""
         self._list_only_method()
         if not isinstance(value, self._LIST_TYPE):
-            raise IncorrectTypeException(self._LIST_ATTR, value, self._LIST_TYPE)
+            raise IncorrectTypeException(self, self._LIST_ATTR, value, self._LIST_TYPE)
         getattr(self, self._LIST_ATTR).append(value)
 
     def __add__(self, value):
@@ -173,7 +181,7 @@ class BaseType(object):
                 val = "{!r}".format(val)
             vals.append([name, val])
 
-        vals = ', '.join(["{}={}".format(*p) for p in vals])
+        vals = ', '.join(["{}.{}={}".format(class_name, *p) for p in vals])
         result = '{}: {}'.format(class_name, vals)
         return result
 
@@ -200,7 +208,7 @@ class BaseType(object):
             vals.append([name, val])
 
         if vals:
-            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals])
+            vals = ', '.join(["{}.{}={}".format(class_name, *p) for p in vals])
         else:
             vals = "No attributes assigned yet!"
 
@@ -226,7 +234,7 @@ class BaseType(object):
 
     def _check_complex(self, name, value):
         if not isinstance(value, self._COMPLEX_PROPS[name]):
-            raise IncorrectTypeException(name, value, self._COMPLEX_PROPS[name])
+            raise IncorrectTypeException(self, name, value, self._COMPLEX_PROPS[name])
         return value
 
     def _check_simple(self, name, value):
@@ -235,243 +243,201 @@ class BaseType(object):
                 try:
                     value = self._SIMPLE_PROPS[name](value)
                 except:
-                    raise IncorrectTypeException(name, value, self._SIMPLE_PROPS[name])
+                    raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name])
             else:
-                raise IncorrectTypeException(name, value, self._SIMPLE_PROPS[name])
+                raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name])
         return value
 
     def _check_list(self, name, value):
         if not isinstance(value, list):
-            raise IncorrectTypeException(name, value, self._LIST_PROPS[name])
+            raise IncorrectTypeException(self, name, value, self._LIST_PROPS[name])
         for i in value:
             if not isinstance(i, self._LIST_PROPS[name]):
-                raise IncorrectTypeException(name, i, self._LIST_PROPS[name])
+                raise IncorrectTypeException(self, name, i, self._LIST_PROPS[name])
         return value
 
-    def to_soap_element(self, minimal=False):  # noqa
-        # print(minimal)
-        root = ET.Element(self._SOAP_TAG)
-        for p in self._SIMPLE_PROPS:
-            el = ET.Element(p)
-            val = getattr(self, p)
-            # print(p, val)
-            if val is not None:
-                el.text = str(val)
-            if val is not None or not minimal:
-                root.append(el)
-        for p, t in self._COMPLEX_PROPS.items():
-            val = getattr(self, p)
-            # print(p, t, val)
-            if val is not None or not minimal:
-                if val is not None and not isinstance(val, t):
-                    raise IncorrectTypeException(p, t, type(val))
-                if isinstance(val, BaseType):
-                    child = val.to_soap_element(minimal=minimal)
-                    # the tag name is the property name,
-                    # not the property type's soap tag
-                    el = ET.Element(p)
-                    if child.getchildren() is not None:
-                        for child_prop in child.getchildren():
-                            el.append(child_prop)
-                    root.append(el)
-                else:
-                    el = ET.Element(p)
-                    root.append(el)
-                    if val is not None:
-                        el.append(str(val))
-        for p, t in self._LIST_PROPS.items():
-            vals = getattr(self, p)
-            # print(p, t, vals)
-            if not vals:
-                continue
-            # fix for str types in list props
-            if issubclass(t, BaseType):
-                for val in vals:
-                    # print(val, type(val))
-                    root.append(val.to_soap_element(minimal=minimal))
-            else:
-                for val in vals:
-                    el = ET.Element(p)
-                    root.append(el)
-                    if val is not None:
-                        el.text = str(val)
-                    if vals is not None or not minimal:
-                        root.append(el)
-        return root
-
-    def to_soap_body(self, minimal=False):
-        """Deserialize self into an XML body"""
-        el = self.to_soap_element(minimal=minimal)
-        result = ET.tostring(el, encoding=encoding)
-        return result
-
-    @classmethod
-    def from_soap_element(cls, el):
-        result = cls()
-        for p, t in result._SIMPLE_PROPS.items():
-            pel = el.find("./{}".format(p))
-            if pel is not None and pel.text:
-                setattr(result, p, t(pel.text))
-            else:
-                setattr(result, p, None)
-        for p, t in result._COMPLEX_PROPS.items():
-            elems = el.findall('./{}'.format(p))
-            if len(elems) > 1:
-                raise TaniumNextGenException(
-                    'Unexpected: {} elements for property'.format(p)
-                )
-            elif len(elems) == 1:
-                setattr(
-                    result,
-                    p,
-                    result._COMPLEX_PROPS[p].from_soap_element(elems[0]),
-                )
-            else:
-                setattr(result, p, None)
-        for p, t in result._LIST_PROPS.items():
-            setattr(result, p, [])
-            elems = el.findall('./{}'.format(p))
-            for elem in elems:
-                if issubclass(t, BaseType):
-                    getattr(result, p).append(t.from_soap_element(elem))
-                else:
-                    getattr(result, p).append(elem.text)
-        return result
-
-    @classmethod
-    def from_soap_body(cls, body):
-        """Parse text ``body`` as XML and produce Python tanium objects.
-
-        This method assumes a single <result_object>, which may be a list or a single object.
-        """
-        tree = ET.fromstring(body)
-        el = tree.find(".//result_object/*")
-        if el is None:
-            result = el
-        if el is not None:
-            obj = get_obj_type(el.tag)
-            result = obj.from_soap_element(el)
-            result._ORIGINAL_OBJECT = el
+    def to_xml(self, **kwargs):
+        """Deserialize self ``obj`` into an XML body, relies on tickle_ng"""
+        tickle_val = self._TICKLE_NG.ObjectToXML(self, **kwargs)
+        result = tickle_val.XML
         return result
 
 
-class Row(object):
-    """A row in a result set.
+class ColumnList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``cs``.
 
-    Values are stored in column order, also accessible
-    by key using []
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
     """
 
-    def __init__(self, columns):
-        self.id = None
-        self.cid = None
-        self.vals = []
-        self.columns = columns
+    _SOAP_TAG = 'cs'
+    _OVERRIDE_XPATH = {
+        'columns': './c',
+    }
 
-    def __str__(self):
-        class_name = self.__class__.__name__
-        val = ', '.join([
-            "{}:{}".format(
-                self.columns[i].display_name,
-                len(self.vals[i]),
-            )
-            for i, _ in enumerate(self.columns)
-        ])
-        ret = '{}: {}'.format(class_name, val)
-        return ret
-
-    @classmethod
-    def from_soap_element(cls, el, columns):
-        row = Row(columns)
-        val = el.find("id")
-        if val is not None:
-            row.id = val.text
-        val = el.find("cid")
-        if val is not None:
-            row.cid = val.text
-        row_cols = el.findall("c")
-        for rc in row_cols:
-            row_vals = rc.findall("v")
-            vals_text = [v.text for v in row_vals]
-            row.vals.append(vals_text)
-        return row
-
-    def __len__(self):
-        return len(self.vals)
-
-    def __getitem__(self, column_name):
-        for i in range(len(self.columns)):
-            if self.columns[i].display_name == column_name:
-                return self.vals[i]
-        raise Exception('Column {} not found'.format(column_name))
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={},
+            complex_properties={},
+            list_properties={'columns': Column},
+            **kwargs
+        )
+        self.columns = []
+        self._set_init_values()
 
 
-class Column(object):
+class Column(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``c``.
 
-    def __init__(self):
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'c'
+    _OVERRIDE_XPATH = {
+        'what_hash': './wh',
+        'display_name': './dn',
+        'result_type': './rt',
+        'values': './v',
+    }
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={
+                'what_hash': int,
+                'display_name': text_type,
+                'result_type': int},
+            complex_properties={},
+            list_properties={'values': text_type},
+            **kwargs
+        )
         self.what_hash = None
         self.display_name = None
         self.result_type = None
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        val = self.display_name
-        ret = '{}: {}'.format(class_name, val)
-        return ret
-
-    @classmethod
-    def from_soap_element(cls, el):
-        result = Column()
-        val = el.find('wh')
-        if val is not None:
-            result.what_hash = int(val.text)
-        val = el.find('dn')
-        if val is not None:
-            result.display_name = val.text
-        val = el.find('rt')
-        if val is not None:
-            val = int(val.text)
-            if val in utils.constants.SENSOR_TYPE_MAP:
-                result.result_type = utils.constants.SENSOR_TYPE_MAP[val]
-            else:
-                result.result_type = int(val)
-
-        return result
+        self.values = []
+        self._set_init_values()
 
 
-class ColumnSet(object):
+class RowList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``rs``.
 
-    def __init__(self):
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'rs'
+    _OVERRIDE_XPATH = {
+        'rows': './r',
+    }
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={},
+            complex_properties={},
+            list_properties={'rows': Row},
+            **kwargs
+        )
+        self.rows = []
+        self._set_init_values()
+
+
+class Row(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``r``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'r'
+    _OVERRIDE_XPATH = {
+        'columns': './c',
+    }
+    """Override the xpath used to find these elements"""
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={'id': int, 'cid': int},
+            complex_properties={},
+            list_properties={'columns': Column},
+            **kwargs
+        )
+        self.id = None
+        self.cid = None
         self.columns = []
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        val = ', '.join([str(x.display_name) for x in self.columns])
-        ret = '{}: {}'.format(class_name, val)
-        return ret
-
-    @classmethod
-    def from_soap_elment(cls, el):
-        result = ColumnSet()
-        columns = el.findall('./c')
-        for column in columns:
-            result.columns.append(Column.from_soap_element(column))
-        return result
-
-    def __len__(self):
-        return len(self.columns)
-
-    def __getitem__(self, ndx):
-        return self.columns[ndx]
+        self._set_init_values()
 
 
-class ResultInfo(object):
-    """Wrap the result of GetResultInfo"""
+class ResultInfoList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_infos``.
 
-    def __init__(self):
-        self.age = None
+    This is the return from GetResultInfo, and it is not defined in console.wsdl,
+    so it is statically defined.
+
+    result_info could technically be a list, but the Tanium SOAP API only ever returns one, so
+    we have it defined as a complex property instead of a list property.
+    """
+
+    _SOAP_TAG = 'result_infos'
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={'now': text_type},
+            complex_properties={'result_info': ResultInfo},
+            list_properties={},
+            **kwargs
+        )
+        self.now = None
+        self.result_info = None
+        self._set_init_values()
+
+
+class ResultInfo(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_info``.
+
+    This is the return from GetResultInfo, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'result_info'
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={
+                'id': int,
+                'age': int,
+                'report_count': int,
+                'saved_question_id': int,
+                'question_id': int,
+                'archived_question_id': int,
+                'seconds_since_issued': int,
+                'issue_seconds': int,
+                'expire_seconds': int,
+                'tested': int,
+                'passed': int,
+                'mr_tested': int,
+                'mr_passed': int,
+                'estimated_total': int,
+                'select_count': int,
+                'row_count': int,
+                'error_count': int,
+                'no_results_count': int,
+                'row_count_machines': int,
+                'row_count_flag': int,
+            },
+            complex_properties={},
+            list_properties={},
+            **kwargs
+        )
         self.id = None
+        self.age = None
         self.report_count = None
+        self.saved_question_id = None
         self.question_id = None
         self.archived_question_id = None
         self.seconds_since_issued = None
@@ -485,50 +451,84 @@ class ResultInfo(object):
         self.select_count = None
         self.row_count = None
         self.error_count = None
-        self.no_result_count = None
+        self.no_results_count = None
         self.row_count_machines = None
         self.row_count_flag = None
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        q_id = getattr(self, 'question_id', -1)
-        total_rows = getattr(self, 'row_count', -1)
-        est_total = getattr(self, 'estimated_total', -1)
-        passed = getattr(self, 'passed', -1)
-        mr_passed = getattr(self, 'mr_passed', -1)
-        tested = getattr(self, 'tested', -1)
-        mr_tested = getattr(self, 'mr_tested', -1)
-        ret_str = (
-            '{} for ID {!r}, Total Rows: {}, EstTotal: {}, '
-            'Passed: {}, MrPassed: {}, Tested: {}, MrTested: {}'
-        ).format
-
-        ret = ret_str(class_name, q_id, total_rows, est_total, passed,
-                      mr_passed, tested, mr_tested)
-        return ret
-
-    @classmethod
-    def from_soap_element(cls, el):
-        """Deserialize a ResultInfo from a result_info SOAPElement
-
-        Assumes all properties are integer values (true today)
-
-        """
-        result = ResultInfo()
-        for property in vars(result):
-            val = el.find('.//{}'.format(property))
-            if val is not None and val.text:
-                setattr(result, property, int(val.text))
-        return result
+        self._set_init_values()
 
 
-class ResultSet(object):
-    """Wrap the result of GetResultData"""
+class ResultSetList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_sets``.
 
-    def __init__(self):
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+
+    result_set could technically be a list, but the Tanium SOAP API only ever returns one, so
+    we have it defined as a complex property instead of a list property.
+    """
+
+    _SOAP_TAG = 'result_sets'
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={'now': text_type},
+            complex_properties={'result_set': ResultSet},
+            list_properties={},
+            **kwargs
+        )
+        self.now = None
+        self.result_set = None
+        self._set_init_values()
+
+
+class ResultSet(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_set``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'result_set'
+    _OVERRIDE_XPATH = {
+        'rows': './rs',
+        'columns': './cs',
+    }
+    """Override the xpath used to find these elements"""
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={
+                'age': int,
+                'report_count': int,
+                'saved_question_id': int,
+                'question_id': int,
+                'archived_question_id': int,
+                'seconds_since_issued': int,
+                'issue_seconds': int,
+                'expire_seconds': int,
+                'tested': int,
+                'passed': int,
+                'mr_tested': int,
+                'mr_passed': int,
+                'estimated_total': int,
+                'select_count': int,
+                'row_count': int,
+                'row_count_machines': int,
+                'filtered_row_count': int,
+                'filtered_row_count_machines': int,
+                'item_count': int,
+            },
+            complex_properties={'rows': RowList, 'columns': ColumnList},
+            list_properties={},
+            **kwargs
+        )
+
+        self.now = None
         self.age = None
-        self.id = None
         self.report_count = None
+        self.saved_question_id = None
         self.question_id = None
         self.archived_question_id = None
         self.seconds_since_issued = None
@@ -541,64 +541,10 @@ class ResultSet(object):
         self.estimated_total = None
         self.select_count = None
         self.row_count = None
-        self.error_count = None
-        self.no_result_count = None
         self.row_count_machines = None
-        self.row_count_flag = None
-        self.columns = None
-        self.rows = None
-        self.cache_id = None
-        self.expiration = None
         self.filtered_row_count = None
         self.filtered_row_count_machines = None
         self.item_count = None
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        q_id = getattr(self, 'question_id', -1)
-        r_cols = len(getattr(self, 'columns', []) or [])
-        total_rows = getattr(self, 'row_count', -1)
-        current_rows = len(getattr(self, 'rows', []))
-        est_total = getattr(self, 'estimated_total', -1)
-        passed = getattr(self, 'passed', -1)
-        mr_passed = getattr(self, 'mr_passed', -1)
-        tested = getattr(self, 'tested', -1)
-        mr_tested = getattr(self, 'mr_tested', -1)
-        ret_str = (
-            '{} for ID {!r}, Columns: {}, Total Rows: {}, Current Rows: {}, EstTotal: {}, '
-            'Passed: {}, MrPassed: {}, Tested: {}, MrTested: {}'
-        ).format
-
-        ret = ret_str(class_name, q_id, r_cols, total_rows, current_rows, est_total, passed,
-                      mr_passed, tested, mr_tested)
-        return ret
-
-    def __len__(self):
-        """Allow len() for rows"""
-        rows = getattr(self, 'rows', []) or []
-        return len(rows)
-
-    @classmethod
-    def from_soap_element(cls, el):  # noqa
-        """Deserialize a ResultSet from a result_set SOAPElement"""
-        result = ResultSet()
-        for property in vars(result):
-            if property in ['column_set', 'row_set']:
-                continue
-            val = el.find('.//{}'.format(property))
-            if val is not None and val.text:
-                setattr(result, property, int(val.text))
-        val = el.find('.//cs')
-        if val is not None:
-            result.columns = ColumnSet.from_soap_element(val)
-        result.rows = []
-        # TODO: Make sure that each "r" is a row, with one value
-        # per column in "c/v". This was tested with just one client.
-        rows = el.findall('.//rs/r')
-        for row in rows:
-            result.rows.append(Row.from_soap_element(row, result.columns))
-        return result
-
-
-# END STATIC CODE
-# BEGIN DYNAMIC CODE
+        self.rows = None
+        self.columns = None
+        self._set_init_values()

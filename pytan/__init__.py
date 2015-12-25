@@ -51,7 +51,7 @@ from . import utils
 from . import parsers
 from . import tanium_ng
 from . import tools_ng
-from . import tickle_ng
+from . import tickle
 from .utils import exceptions
 from .handler import Handler
 from .session import Session
@@ -81,5 +81,5 @@ __all__ = [
     'SSEPoller',
     'tanium_ng',
     'tools_ng',
-    'tickle_ng',
+    'tickle',
 ]

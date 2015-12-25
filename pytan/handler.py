@@ -7,7 +7,7 @@ import datetime
 import json
 
 from . import string_types
-from . import utils, session, tanium_ng, tools_ng, pollers, parsers
+from . import utils, session, tanium_ng, tools_ng, pollers, parsers, tickle
 
 mylog = logging.getLogger(__name__)
 
@@ -323,7 +323,7 @@ class Handler(object):
         """
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
-            m = m.format(self.session.server_version)
+            m = m.format(self.get_server_version(**kwargs))
             raise utils.exceptions.UnsupportedVersionError(m)
 
         obj = tanium_ng.ParseJob()
@@ -795,16 +795,20 @@ class Handler(object):
 
             poller = pollers.SSEPoller(**poll_args)
             poller_success = poller.run(**kwargs)
+            sse_status = getattr(poller, 'sse_status', 'Unknown')
 
             if not poller_success:
                 m = "SSE Poller failed while waiting for completion, last status: {}"
-                m = m.format(getattr(poller, 'sse_status', 'Unknown'))
+                m = m.format()
                 raise utils.exceptions.ServerSideExportError(m)
 
             result = poller.get_sse_data(**kwargs)
 
             if sse_format.lower() == 'xml_obj':
-                result = tools_ng.xml_to_result_set_obj(result)
+                if not result:
+                    result = sse_status
+                else:
+                    result = tickle.from_sse_xml(result)
         else:
             # do a normal getresultdata
             kwargs['pytan_help'] = utils.helpstr.GRD.format(obj.__class__.__name__)
@@ -2696,14 +2700,14 @@ class Handler(object):
         result = True
         if self.session._invalid_server_version():
             # server version is not valid, force a refresh right now
-            self.session.get_server_version(**kwargs)
+            self.get_server_version(**kwargs)
 
         if self.session._invalid_server_version():
             # server version is STILL invalid, return False
             result = False
         else:
             for v_map in v_maps:
-                if not self.session.server_version >= v_map:
+                if not self.get_server_version(**kwargs) >= v_map:
                     result = False
         return result
 

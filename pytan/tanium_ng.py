@@ -2,19 +2,36 @@
 
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
-* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-23T16-04-31Z-0400
+* Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-24T23-33-06Z-0400
 * Version of ``console.wsdl``: 0.0.1
 * Tanium Server version of ``console.wsdl``: 6.5.314.3400
 * Version of PyTan: 4.0.0
 
 """
-
 # BEGIN STATIC CODE
-from . import text_type  # noqa
-from . import utils
+import sys
 
-TaniumNextGenException = utils.exceptions.TaniumNextGenException
-IncorrectTypeException = utils.exceptions.IncorrectTypeException
+# Useful for very coarse version differentiation.
+PY3 = sys.version_info[0] == 3
+if PY3:
+    text_type = str  # noqa
+else:
+    text_type = unicode  # noqa
+
+
+class TaniumNextGenException(Exception):
+    pass
+
+
+class IncorrectTypeException(TaniumNextGenException):
+    """Raised when a property is not of the expected type"""
+    def __init__(self, obj, name, value, expected):
+        self.name = name
+        self.expected = expected
+        self.value = value
+        err = "Object {!r} attribute '{}' expected type '{}', got '{}' (value: '{}')"
+        err = err.format(obj, name, expected.__name__, type(value).__name__, value)
+        TaniumNextGenException.__init__(self, err)
 
 
 def get_obj_type(tag):
@@ -27,260 +44,8 @@ def get_obj_type(tag):
     return result
 
 
-# XML CODE FOR BASE TYPE ONLY FOR NOW
-# TODO TRY LXML
-try:
-    import xml.etree.cElementTree as ET
-except:
-    import xml.etree.ElementTree as ET
-
-from . import encoding
-from . import utils
-xml_pretty = utils.tools.xml_pretty
-
-
-class ObjectToXML(object):
-    """Convert a tanium_ng BaseType object into an ElementTree object and then an XML string.
-
-    x = ObjectToXML(obj)
-
-    Get OBJTREE:
-    x.OBJTREE
-
-    Get XML:
-    x.XML
-    """
-
-    EMPTY_ATTRS = True
-    """bool that controls if empty attributes will be included in the Element Tree Object"""
-
-    OBJ = None
-    """tanium_ng object to convert to ElementTree object ROOT"""
-
-    OBJTREE = None
-    """ElementTree object created from OBJ"""
-
-    XML = ''
-    """XML string created from ROOT"""
-
-    def __init__(self, obj, **kwargs):
-        # print("New ObjectToXML for obj: {}".format(obj))
-        self.EMPTY_ATTRS = kwargs.get('empty_attrs', self.EMPTY_ATTRS)
-        self.PARENT = kwargs.get('parent', True)
-        self.OBJ = obj
-
-        # basetype methods
-        self.OBJTREE = ET.Element(obj._SOAP_TAG)
-        self.base_simple()
-        self.base_complex()
-        self.base_list()
-
-        if self.PARENT:
-            self.XML = ET.tostring(self.OBJTREE, encoding=encoding)
-
-    def base_simple(self):
-        """Process the simple properties from the tanium_ng object"""
-        for p in self.OBJ._SIMPLE_PROPS:
-            val = getattr(self.OBJ, p)
-            if val is None and not self.EMPTY_ATTRS:
-                continue
-            self.add_simple_el(p, val)
-
-    def add_simple_el(self, p, val):
-        val = text_type(val) if val is not None else None
-        el = ET.Element(p)
-        el.text = val
-        self.OBJTREE.append(el)
-
-    def base_complex(self):
-        """Process the complex properties from the tanium_ng object"""
-        for p in self.OBJ._COMPLEX_PROPS:
-            val = getattr(self.OBJ, p)
-            if val is None and not self.EMPTY_ATTRS:
-                continue
-
-            if isinstance(val, BaseType):
-                val_btr = ObjectToXML(val, empty_attrs=self.EMPTY_ATTRS, parent=False)
-                children = val_btr.ROOT.getchildren() or []
-
-                el = ET.Element(p)
-                for c in children:
-                    el.append(c)
-                self.OBJTREE.append(el)
-            else:
-                # TODO TEST MORE
-                self.add_simple_el(p, val)
-                # el = ET.Element(p)
-                # val = text_type(val) if val is not None else None
-                # el.append(val)
-                # self.OBJTREE.append(el)
-
-    def base_list(self):
-        """Process the list properties from the tanium_ng object"""
-        for p, t in self.OBJ._LIST_PROPS.items():
-            vals = getattr(self.OBJ, p)
-            if not vals:
-                continue
-
-            if issubclass(t, BaseType):
-                for val in vals:
-                    val_btr = ObjectToXML(val, empty_attrs=self.EMPTY_ATTRS, parent=False)
-                    self.OBJTREE.append(val_btr.ROOT)
-            else:
-                '''
-                fix for non tanium_ng types in list props, only happens in:
-                PermissionList
-                PluginCommandList
-                PluginSqlColumn
-                PluginSqlResult
-                StringHintList
-                SavedActionRowIdList
-                '''
-                for val in vals:
-                    if val is None and not self.EMPTY_ATTRS:
-                        continue
-                    self.add_simple_el(p, val)
-
-
-class XMLToObject(object):
-    """Convert an XML String or an ElementTree object into a tanium_ng BaseType object.
-
-    x = XMLToObject(xml=xml_text)
-        ..or..
-    x = XMLToObject(objclass=tanium_ng.Sensor, objtree=ElementTreeObject)
-
-    Get OBJ:
-    x.OBJ
-    """
-
-    OBJ = None
-    """tanium_ng object that gets created from OBJTREE"""
-
-    OBJTREE = None
-    """ElementTree object to convert into a tanium_ng object"""
-
-    XML = ''
-    """XML string to convert into a tanium_ng object"""
-
-    XMLTREE = None
-    """If XML string supplied, full elementtree used to search for OBJTREE"""
-
-    def __init__(self, **kwargs):
-        self.XML = kwargs.get('xml', '')
-        self.OBJTREE = kwargs.get('root', '')
-        self.OBJCLASS = kwargs.get('objclass')
-        # print("New XMLToObject for root: {}".format(self.OBJTREE))
-
-        if self.OBJCLASS and self.OBJTREE:
-            self.OBJ = self.OBJCLASS()
-        elif self.XML:
-            # basetype search
-            self.XMLTREE = ET.fromstring(self.XML)
-            xpath = ".//result_object/*"
-            self.OBJTREE = self.XMLTREE.find(xpath)
-
-            # m = "xpath: {} root: {}"
-            # m = m.format(xpath, self.OBJTREE)
-            # print(m)
-
-            if not self.OBJTREE:
-                xpath = ".//ResultXML"
-                self.RESULTXML = self.XMLTREE.find(xpath)
-                self.OBJTREE = ET.fromstring(self.RESULTXML.text)
-
-                # m = "xpath: {} root: {}"
-                # m = m.format(xpath, self.OBJTREE)
-                # print(m)
-
-            # add if not ROOT, check for ResultXML xpath
-            # throw error if neither ResultXML nor result_object found? may need to change xpath
-            # for result_object
-
-            if self.OBJTREE:
-                # print(self.OBJTREE.tag)
-                self.OBJCLASS = get_obj_type(self.OBJTREE.tag)
-                self.OBJ = self.OBJCLASS()
-            # m = "xpath: {} root: {}"
-            # m = m.format(xpath, self.OBJTREE)
-            # print(m)
-        else:
-            err = "Must supply either xml or both objclass and objtree!"
-            raise TaniumNextGenException(err)
-
-        if self.OBJTREE:
-            # basetype methods
-            self.base_simple()
-            self.base_complex()
-            self.base_list()
-            self.OBJ._XMLTREE = self.XMLTREE
-            self.OBJ._XML = self.XML
-            self.OBJ._OBJTREE = self.OBJTREE
-
-    def get_xpath(self, prop):
-        """pass."""
-        xpath = "./{}".format(prop)
-        overrides = getattr(self.OBJ, '_OVERRIDE_XPATH', {})
-        if prop in overrides:
-            xpath = overrides[prop]
-        return xpath
-
-    def base_simple(self):
-        """Process the simple properties for the tanium_ng object"""
-        for prop, prop_type in self.OBJ._SIMPLE_PROPS.items():
-            xpath = self.get_xpath(prop)
-            prop_el = self.OBJTREE.find(xpath)
-            if prop_el is not None and prop_el.text:
-                setattr(self.OBJ, prop, prop_type(prop_el.text))
-            else:
-                setattr(self.OBJ, prop, None)
-
-    def base_complex(self):
-        """Process the complex properties for the tanium_ng object"""
-        for prop, prop_type in self.OBJ._COMPLEX_PROPS.items():
-            xpath = self.get_xpath(prop)
-            prop_elems = self.OBJTREE.findall(xpath)
-            if len(prop_elems) > 1:
-                err = 'Found {} elements for property {}, should only be 1 (xpath: {})'
-                err = err.format(len(prop_elems), prop, xpath)
-                raise TaniumNextGenException(err)
-            elif len(prop_elems) == 1:
-                val_btr = XMLToObject(objclass=prop_type, root=prop_elems[0])
-                setattr(self.OBJ, prop, val_btr.OBJ)
-            else:
-                setattr(self.OBJ, prop, None)
-
-    def base_list(self):
-        """Process the list properties for the tanium_ng object"""
-        for prop, prop_type in self.OBJ._LIST_PROPS.items():
-            xpath = self.get_xpath(prop)
-            prop_list = getattr(self.OBJ, prop)
-            xpath = './{}'.format(prop)
-            prop_elems = self.OBJTREE.findall(xpath)
-            for prop_elem in prop_elems:
-                if issubclass(prop_type, BaseType):
-                    val_btr = XMLToObject(objclass=prop_type, root=prop_elem)
-                    prop_list.append(val_btr.OBJ)
-                else:
-                    prop_list.append(prop_elem.text)
-
-
-def to_xml(obj, **kwargs):
-    """Deserialize tanium_ng object ``obj`` into an XML body"""
-    tickle_val = ObjectToXML(obj, **kwargs)
-    result = tickle_val.XML
-    # print(xml_pretty(result))
-    return result
-
-
-def from_xml(xml, **kwargs):
-    """Serialize ``xml`` from XML into a tanium_ng object."""
-    tickle_val = XMLToObject(xml=xml, **kwargs)
-    result = tickle_val.OBJ
-    return result
-
-
 class BaseType(object):
-    """Base Python Type used for all Tanium XML SOAP Objects generated from console.wsdl"""
+    """Base Python Type used for all Tanium XML SOAP Objects"""
 
     _SOAP_TAG = None
     """str of XML tag that Tanium SOAP API Uses to define this object"""
@@ -298,7 +63,7 @@ class BaseType(object):
     """dict that stores the complex properties for this object (other BaseTypes)"""
 
     _LIST_PROPS = {}
-    """dict that stores the complex properties for this object (other BaseTypes)"""
+    """dict that stores the complex properties for this object (other BaseTypes, str, int)"""
 
     _IS_LIST = False
     """bool indicating if this is a single list object or not"""
@@ -314,6 +79,13 @@ class BaseType(object):
 
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         self._INITIALIZED = False
+
+        try:
+            from . import tickle
+            self._TICKLE = tickle
+        except:
+            print("WARNING: UNABLE TO LOAD TICKLE!!!")
+            self._TICKLE = None
 
         self._INIT_VALUES = kwargs.get('values', {}) or {}
 
@@ -355,7 +127,7 @@ class BaseType(object):
         """Support .append() for single list types."""
         self._list_only_method()
         if not isinstance(value, self._LIST_TYPE):
-            raise IncorrectTypeException(self._LIST_ATTR, value, self._LIST_TYPE)
+            raise IncorrectTypeException(self, self._LIST_ATTR, value, self._LIST_TYPE)
         getattr(self, self._LIST_ATTR).append(value)
 
     def __add__(self, value):
@@ -419,7 +191,7 @@ class BaseType(object):
                 val = "{!r}".format(val)
             vals.append([name, val])
 
-        vals = ', '.join(["{}={}".format(*p) for p in vals])
+        vals = ', '.join(["{}.{}={}".format(class_name, *p) for p in vals])
         result = '{}: {}'.format(class_name, vals)
         return result
 
@@ -446,7 +218,7 @@ class BaseType(object):
             vals.append([name, val])
 
         if vals:
-            vals = ', '.join(["'{}'='{}'".format(*p) for p in vals])
+            vals = ', '.join(["{}.{}={}".format(class_name, *p) for p in vals])
         else:
             vals = "No attributes assigned yet!"
 
@@ -472,7 +244,7 @@ class BaseType(object):
 
     def _check_complex(self, name, value):
         if not isinstance(value, self._COMPLEX_PROPS[name]):
-            raise IncorrectTypeException(name, value, self._COMPLEX_PROPS[name])
+            raise IncorrectTypeException(self, name, value, self._COMPLEX_PROPS[name])
         return value
 
     def _check_simple(self, name, value):
@@ -481,262 +253,223 @@ class BaseType(object):
                 try:
                     value = self._SIMPLE_PROPS[name](value)
                 except:
-                    raise IncorrectTypeException(name, value, self._SIMPLE_PROPS[name])
+                    raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name])
             else:
-                raise IncorrectTypeException(name, value, self._SIMPLE_PROPS[name])
+                raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name])
         return value
 
     def _check_list(self, name, value):
         if not isinstance(value, list):
-            raise IncorrectTypeException(name, value, self._LIST_PROPS[name])
+            raise IncorrectTypeException(self, name, value, self._LIST_PROPS[name])
         for i in value:
             if not isinstance(i, self._LIST_PROPS[name]):
-                raise IncorrectTypeException(name, i, self._LIST_PROPS[name])
+                raise IncorrectTypeException(self, name, i, self._LIST_PROPS[name])
         return value
 
+    def to_xml(self, **kwargs):
+        """Deserialize self ``obj`` into an XML body, relies on tickle"""
+        result = self._TICKLE.to_xml(self, **kwargs)
+        return result
 
-class Row(object):
-    """A row in a result set.
+    def to_dict(self, **kwargs):
+        """Deserialize self ``obj`` into a dict, relies on tickle"""
+        result = self._TICKLE.to_dict(self, **kwargs)
+        return result
 
-    Values are stored in column order, also accessible
-    by key using []
-    """
-
-    def __init__(self, columns):
-        self.id = None
-        self.cid = None
-        self.vals = []
-        self.columns = columns
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        val = ', '.join([
-            "{}:{}".format(
-                self.columns[i].display_name,
-                len(self.vals[i]),
-            )
-            for i, _ in enumerate(self.columns)
-        ])
-        ret = '{}: {}'.format(class_name, val)
-        return ret
-
-    @classmethod
-    def from_soap_element(cls, el, columns):
-        row = Row(columns)
-        val = el.find("id")
-        if val is not None:
-            row.id = val.text
-        val = el.find("cid")
-        if val is not None:
-            row.cid = val.text
-        row_cols = el.findall("c")
-        for rc in row_cols:
-            row_vals = rc.findall("v")
-            vals_text = [v.text for v in row_vals]
-            row.vals.append(vals_text)
-        return row
-
-    def __len__(self):
-        return len(self.vals)
-
-    def __getitem__(self, column_name):
-        for i in range(len(self.columns)):
-            if self.columns[i].display_name == column_name:
-                return self.vals[i]
-        raise Exception('Column {} not found'.format(column_name))
-
-
-class Column(object):
-
-    def __init__(self):
-        self.what_hash = None
-        self.display_name = None
-        self.result_type = None
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        val = self.display_name
-        ret = '{}: {}'.format(class_name, val)
-        return ret
-
-    @classmethod
-    def from_soap_element(cls, el):
-        result = Column()
-        val = el.find('wh')
-        if val is not None:
-            result.what_hash = int(val.text)
-        val = el.find('dn')
-        if val is not None:
-            result.display_name = val.text
-        val = el.find('rt')
-        if val is not None:
-            val = int(val.text)
-            if val in utils.constants.SENSOR_TYPE_MAP:
-                result.result_type = utils.constants.SENSOR_TYPE_MAP[val]
-            else:
-                result.result_type = int(val)
-
+    def to_json(self, **kwargs):
+        """Deserialize self ``obj`` into a JSON string, relies on tickle"""
+        result = self._TICKLE.to_json(self, **kwargs)
         return result
 
 
-class ColumnSet(object):
+class ColumnList(BaseType):
     """Python Object representation for Tanium SOAP XML tag: ``cs``.
-
-    This is the columns in the return from GetResultData, and it is not defined in console.wsdl,
-    so it is statically defined.
-    """
-
-    def __init__(self):
-        self.columns = []
-
-    def __str__(self):
-        class_name = self.__class__.__name__
-        val = ', '.join([str(x.display_name) for x in self.columns])
-        ret = '{}: {}'.format(class_name, val)
-        return ret
-
-    @classmethod
-    def from_soap_elment(cls, el):
-        result = ColumnSet()
-        columns = el.findall('./c')
-        for column in columns:
-            result.columns.append(Column.from_soap_element(column))
-        return result
-
-    def __len__(self):
-        return len(self.columns)
-
-    def __getitem__(self, ndx):
-        return self.columns[ndx]
-
-
-class ResultInfo(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``result_infos``.
-
-    This is the return from GetResultInfo, and it is not defined in console.wsdl,
-    so it is statically defined.
-    """
-    _SOAP_TAG = 'result_infos'
-    _OVERRIDE_XPATH = {
-        'id': "./result_info/id",
-        'age': "./result_info/age",
-        'report_count': "./result_info/report_count",
-        'saved_question_id': "./result_info/saved_question_id",
-        'question_id': "./result_info/question_id",
-        'archived_question_id': "./result_info/archived_question_id",
-        'seconds_since_issued': "./result_info/seconds_since_issued",
-        'issue_seconds': "./result_info/issue_seconds",
-        'expire_seconds': "./result_info/expire_seconds",
-        'tested': "./result_info/tested",
-        'passed': "./result_info/passed",
-        'mr_tested': "./result_info/mr_tested",
-        'mr_passed': "./result_info/mr_passed",
-        'estimated_total': "./result_info/estimated_total",
-        'select_count': "./result_info/select_count",
-        'row_count': "./result_info/row_count",
-        'error_count': "./result_info/error_count",
-        'no_results_count': "./result_info/no_results_count",
-        'row_count_machines': "./result_info/row_count_machines",
-        'row_count_flag': "./result_info/row_count_flag",
-    }
-    """Override the normal xpath ``./property`` to find these elements"""
-
-    def __init__(self, **kwargs):
-        BaseType.__init__(
-            self,
-            simple_properties={
-                'now': text_type,
-                'id': int,
-                'age': int,
-                'report_count': int,
-                'saved_question_id': int,
-                'question_id': int,
-                'archived_question_id': int,
-                'seconds_since_issued': int,
-                'issue_seconds': int,
-                'expire_seconds': int,
-                'tested': int,
-                'passed': int,
-                'mr_tested': int,
-                'mr_passed': int,
-                'estimated_total': int,
-                'select_count': int,
-                'row_count': int,
-                'error_count': int,
-                'no_results_count': int,
-                'row_count_machines': int,
-                'row_count_flag': int,
-            },
-            complex_properties={
-                # no complex properties defined in console.wsdl
-            },
-            list_properties={
-                # no list properties defined in console.wsdl
-            },
-        )
-        self.id = None
-        self.age = None
-        self.now = None
-        self.report_count = None
-        self.saved_question_id = None
-        self.question_id = None
-        self.archived_question_id = None
-        self.seconds_since_issued = None
-        self.issue_seconds = None
-        self.expire_seconds = None
-        self.tested = None
-        self.passed = None
-        self.mr_tested = None
-        self.mr_passed = None
-        self.estimated_total = None
-        self.select_count = None
-        self.row_count = None
-        self.error_count = None
-        self.no_results_count = None
-        self.row_count_machines = None
-        self.row_count_flag = None
-        self._set_init_values()
-
-
-class ResultSet(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``result_sets``.
 
     This is the return from GetResultData, and it is not defined in console.wsdl,
     so it is statically defined.
     """
 
-    _SOAP_TAG = 'result_sets'
+    _SOAP_TAG = 'cs'
     _OVERRIDE_XPATH = {
-        'id': "./result_set/id",
-        'age': "./result_set/age",
-        'report_count': "./result_set/report_count",
-        'saved_question_id': "./result_set/saved_question_id",
-        'question_id': "./result_set/question_id",
-        'archived_question_id': "./result_set/archived_question_id",
-        'seconds_since_issued': "./result_set/seconds_since_issued",
-        'issue_seconds': "./result_set/issue_seconds",
-        'expire_seconds': "./result_set/expire_seconds",
-        'tested': "./result_set/tested",
-        'passed': "./result_set/passed",
-        'mr_tested': "./result_set/mr_tested",
-        'mr_passed': "./result_set/mr_passed",
-        'estimated_total': "./result_set/estimated_total",
-        'select_count': "./result_set/select_count",
-        'row_count': "./result_set/row_count",
-        'error_count': "./result_set/error_count",
-        'no_results_count': "./result_set/no_results_count",
-        'row_count_machines': "./result_set/row_count_machines",
-        'row_count_flag': "./result_set/row_count_flag",
-        "rows": ".//rs/r",  # ?
-        "columns": ".//cs",  # ?
+        'columns': './c',
     }
-    """Override the normal xpath ``./property`` to find these elements"""
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'now': text_type,
+            },
+            complex_properties={
+            },
+            list_properties={
+                'columns': Column,
+            },
+            **kwargs
+        )
+        self.columns = []
+        self._set_init_values()
+
+
+class Column(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``c``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'c'
+    _OVERRIDE_XPATH = {
+        'what_hash': './wh',
+        'display_name': './dn',
+        'result_type_int': './rt',
+        'values': './v',
+    }
+
+    _RESULT_TYPE_MAP = {
+        0: 'Hash',
+        # SENSOR_RESULT_TYPE_STRING
+        1: 'String',
+        # SENSOR_RESULT_TYPE_VERSION
+        2: 'Version',
+        # SENSOR_RESULT_TYPE_NUMERIC
+        3: 'NumericDecimal',
+        # SENSOR_RESULT_TYPE_DATE_BES
+        4: 'BESDate',
+        # SENSOR_RESULT_TYPE_IPADDRESS
+        5: 'IPAddress',
+        # SENSOR_RESULT_TYPE_DATE_WMI
+        6: 'WMIDate',
+        #  e.g. "2 years, 3 months, 18 days, 4 hours, 22 minutes:
+        # 'TimeDiff', and 3.67 seconds" or "4.2 hours"
+        # (numeric + "Y|MO|W|D|H|M|S" units)
+        7: 'TimeDiff',
+        #  e.g. 125MB or 23K or 34.2Gig (numeric + B|K|M|G|T units)
+        8: 'DataSize',
+        9: 'NumericInteger',
+        10: 'VariousDate',
+        11: 'RegexMatch',
+        12: 'LastOperatorType',
+    }
+    """
+    Maps a Result type from the Tanium SOAP API from an int to a string
+    """
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={
+                'what_hash': int,
+                'display_name': text_type,
+                'result_type_int': int,
+            },
+            complex_properties={},
+            list_properties={
+                'values': text_type,
+            },
+            **kwargs
+        )
+        self.what_hash = None
+        self.display_name = None
+        self.result_type_int = None
+        self.values = []
+        self._set_init_values()
+        self._ATTRS.append('result_type')
+        self._ALL_PROPS['result_type'] = text_type
+
+    @property
+    def result_type(self):
+        """Maps a Result type self.result_type_int int to a string using self._RESULT_TYPE_MAP."""
+        result = getattr(self, 'result_type_int', None)
+        if result in self._RESULT_TYPE_MAP:
+            result = self._RESULT_TYPE_MAP[result]
+        return result
+
+
+class RowList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``rs``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'rs'
+    _OVERRIDE_XPATH = {
+        'rows': './r',
+    }
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={},
+            complex_properties={},
+            list_properties={'rows': Row},
+            **kwargs
+        )
+        self.rows = []
+        self._set_init_values()
+
+
+class Row(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``r``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'r'
+    _OVERRIDE_XPATH = {
+        'columns': './c',
+    }
+    """Override the xpath used to find these elements"""
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={'id': int, 'cid': int},
+            complex_properties={},
+            list_properties={'columns': Column},
+            **kwargs
+        )
+        self.id = None
+        self.cid = None
+        self.columns = []
+        self._set_init_values()
+
+    def __getitem__(self, idx):
+        if isinstance(idx, int):
+            result = super(Row, self).__getitem__(idx)
+        else:
+            result = None
+            for c in self.columns:
+                if c.display_name == idx:
+                    result = c
+
+            if result is None:
+                err = "No column named {!r} found! Column names: {!r}"
+                err = err.format(idx, ', '.join([c.display_name for c in self.columns]))
+                raise TaniumNextGenException(err)
+
+        return result
+
+
+class ResultSet(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_set``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'result_set'
+    _OVERRIDE_XPATH = {
+        'rows': './rs',
+        'columns': './cs',
+    }
+    """Override the xpath used to find these elements"""
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={
                 'age': int,
                 'report_count': int,
                 'saved_question_id': int,
@@ -757,11 +490,12 @@ class ResultSet(BaseType):
                 'filtered_row_count_machines': int,
                 'item_count': int,
             },
-            complex_properties={},
-            list_properties={
-                # 'rows': RowSet,  !!
-                # 'columns': ColumnSet,
+            complex_properties={
+                'rows': RowList,
+                'columns': ColumnList
             },
+            list_properties={},
+            **kwargs
         )
 
         self.now = None
@@ -784,96 +518,224 @@ class ResultSet(BaseType):
         self.filtered_row_count = None
         self.filtered_row_count_machines = None
         self.item_count = None
-        self.rows = []
-        self.columns = []
+        self.rows = None
+        self.columns = None
         self._set_init_values()
 
-'''
-ResultSet.columns = ColumnSet = ./result_set/cs findone (complex?)
-    ColumnSet.columns = Column = ./c findall (list)
-        Column:
-            what_hash = ./wh findone (simple)
-            display_name = ./dn findone (simple)
-            result_type = ./rt findone (simple)
-ResultSet.rows = RowSet = ./result_set/rs findone (complex?)
-    RowSet.rows = Row = ./r findall (list)
-        Row:
-            id = ./id findone (simple)
-            cid = ./cid findone (simple)
-            columns = RowColumn = ./c findall (list) (index correlated to ColumnSet.columns)
-                RowColumn:
-                    values = ./v findall (list of str)
+    def _post_xml_hook(self):
+        # update all row column properties with their index correlated column properties
+        [
+            setattr(c, k, getattr(self.columns[i], k))
+            for r in self.rows
+            for i, c in enumerate(r)
+            for k in self.columns[i]._SIMPLE_PROPS
+        ]
+        # update all columns with the index correlated values from rows
+        [
+            getattr(c, 'values').append(getattr(r[i], 'values'))
+            for i, c in enumerate(self.columns)
+            for r in self.rows
+        ]
+
+    def get_row_col(self, n, idx):
+        result = self.rows[n][idx]
+        return result
 
 
-'''
-# END STATIC CODE
-# BEGIN DYNAMIC CODE
+class ResultSetList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_sets``.
+
+    This is the return from GetResultData, and it is not defined in console.wsdl,
+    so it is statically defined.
+
+    result_set could technically be a list, but the Tanium SOAP API only ever returns one, so
+    we have it defined as a complex property instead of a list property.
+    """
+
+    _SOAP_TAG = 'result_sets'
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={'now': text_type},
+            complex_properties={'result_set': ResultSet},
+            list_properties={},
+            **kwargs
+        )
+        self.now = None
+        self.result_set = None
+        self._set_init_values()
 
 
-class Action(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``action``."""
+class ResultInfo(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_info``.
 
-    _SOAP_TAG = 'action'
+    This is the return from GetResultInfo, and it is not defined in console.wsdl,
+    so it is statically defined.
+    """
+
+    _SOAP_TAG = 'result_info'
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'cache_row_id': int,
                 'id': int,
-                'name': text_type,
-                'status': text_type,
-                'stopped_flag': int,
-                'comment': text_type,
-                'skip_lock_flag': int,
+                'age': int,
+                'report_count': int,
+                'saved_question_id': int,
+                'question_id': int,
+                'archived_question_id': int,
+                'seconds_since_issued': int,
+                'issue_seconds': int,
                 'expire_seconds': int,
-                'creation_time': text_type,
-                'start_time': text_type,
-                'expiration_time': text_type,
+                'tested': int,
+                'passed': int,
+                'mr_tested': int,
+                'mr_passed': int,
+                'estimated_total': int,
+                'select_count': int,
+                'row_count': int,
+                'error_count': int,
+                'no_results_count': int,
+                'row_count_machines': int,
+                'row_count_flag': int,
+            },
+            complex_properties={},
+            list_properties={},
+            **kwargs
+        )
+        self.id = None
+        self.age = None
+        self.report_count = None
+        self.saved_question_id = None
+        self.question_id = None
+        self.archived_question_id = None
+        self.seconds_since_issued = None
+        self.issue_seconds = None
+        self.expire_seconds = None
+        self.tested = None
+        self.passed = None
+        self.mr_tested = None
+        self.mr_passed = None
+        self.estimated_total = None
+        self.select_count = None
+        self.row_count = None
+        self.error_count = None
+        self.no_results_count = None
+        self.row_count_machines = None
+        self.row_count_flag = None
+        self._set_init_values()
+
+
+class ResultInfoList(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``result_infos``.
+
+    This is the return from GetResultInfo, and it is not defined in console.wsdl,
+    so it is statically defined.
+
+    result_info could technically be a list, but the Tanium SOAP API only ever returns one, so
+    we have it defined as a complex property instead of a list property.
+    """
+
+    _SOAP_TAG = 'result_infos'
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={'now': text_type},
+            complex_properties={'result_info': ResultInfo},
+            list_properties={},
+            **kwargs
+        )
+        self.now = None
+        self.result_info = None
+        self._set_init_values()
+
+
+# END STATIC CODE
+# BEGIN DYNAMIC CODE
+
+
+class Action(BaseType):
+    """Python Object representation for Tanium SOAP XML tag: ``action``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
+
+    _SOAP_TAG = 'action'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
+
+    def __init__(self, **kwargs):
+        BaseType.__init__(
+            self,
+            simple_properties={
+                'id': int,
+                'comment': text_type,
                 'distribute_seconds': int,
+                'status': text_type,
+                'name': text_type,
+                'expire_seconds': int,
+                'cache_row_id': int,
+                'expiration_time': text_type,
+                'creation_time': text_type,
+                'stopped_flag': int,
+                'skip_lock_flag': int,
+                'start_time': text_type,
             },
             complex_properties={
-                'action_group': Group,
-                'package_spec': PackageSpec,
                 'saved_action': SavedAction,
-                'history_saved_question': SavedQuestion,
-                'target_group': Group,
-                'user': User,
                 'metadata': MetadataList,
+                'user': User,
+                'history_saved_question': SavedQuestion,
+                'action_group': Group,
                 'approver': User,
+                'package_spec': PackageSpec,
+                'target_group': Group,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.cache_row_id = None
         self.id = None
-        self.name = None
-        self.status = None
-        self.stopped_flag = None
         self.comment = None
-        self.skip_lock_flag = None
-        self.expire_seconds = None
-        self.creation_time = None
-        self.start_time = None
-        self.expiration_time = None
         self.distribute_seconds = None
-        self.action_group = None
-        self.package_spec = None
+        self.status = None
+        self.name = None
+        self.expire_seconds = None
+        self.cache_row_id = None
+        self.expiration_time = None
+        self.creation_time = None
+        self.stopped_flag = None
+        self.skip_lock_flag = None
+        self.start_time = None
         self.saved_action = None
-        self.history_saved_question = None
-        self.target_group = None
-        self.user = None
         self.metadata = None
+        self.user = None
+        self.history_saved_question = None
+        self.action_group = None
         self.approver = None
+        self.package_spec = None
+        self.target_group = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class ActionList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``actions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``actions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'actions'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -882,24 +744,32 @@ class ActionList(BaseType):
                 # no simple properties defined in console.wsdl
             },
             complex_properties={
-                'cache_info': CacheInfo,
                 'info': ActionListInfo,
+                'cache_info': CacheInfo,
             },
             list_properties={
                 'action': Action,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
-        self.cache_info = None
         self.info = None
+        self.cache_info = None
         self.action = []
         self._set_init_values()
 
 
 class ActionListInfo(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``info``."""
+    """Python Object representation for Tanium SOAP XML tag: ``info``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'info'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -914,6 +784,7 @@ class ActionListInfo(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.highest_id = None
         self.total_count = None
@@ -923,9 +794,16 @@ class ActionListInfo(BaseType):
 
 
 class ActionStop(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``action_stop``."""
+    """Python Object representation for Tanium SOAP XML tag: ``action_stop``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'action_stop'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -939,6 +817,7 @@ class ActionStop(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
         self.action = None
@@ -947,9 +826,16 @@ class ActionStop(BaseType):
 
 
 class ActionStopList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``action_stops``."""
+    """Python Object representation for Tanium SOAP XML tag: ``action_stops``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'action_stops'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -963,6 +849,7 @@ class ActionStopList(BaseType):
             list_properties={
                 'action_stop': ActionStop,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -971,9 +858,16 @@ class ActionStopList(BaseType):
 
 
 class ArchivedQuestion(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``archived_question``."""
+    """Python Object representation for Tanium SOAP XML tag: ``archived_question``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'archived_question'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -987,6 +881,7 @@ class ArchivedQuestion(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
         # no complex properties defined in console.wsdl
@@ -995,9 +890,16 @@ class ArchivedQuestion(BaseType):
 
 
 class ArchivedQuestionList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``archived_questions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``archived_questions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'archived_questions'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1011,6 +913,7 @@ class ArchivedQuestionList(BaseType):
             list_properties={
                 'archived_question': ArchivedQuestion,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1019,17 +922,24 @@ class ArchivedQuestionList(BaseType):
 
 
 class AuditData(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``audit_data``."""
+    """Python Object representation for Tanium SOAP XML tag: ``audit_data``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'audit_data'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'last_modified_by': text_type,
-                'creation_time': text_type,
                 'modification_time': text_type,
+                'creation_time': text_type,
+                'last_modified_by': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -1037,29 +947,37 @@ class AuditData(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.last_modified_by = None
-        self.creation_time = None
         self.modification_time = None
+        self.creation_time = None
+        self.last_modified_by = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class CacheFilter(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``filter``."""
+    """Python Object representation for Tanium SOAP XML tag: ``filter``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'filter'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'operator': text_type,
-                'field': text_type,
-                'value': text_type,
-                'type': text_type,
                 'not_flag': int,
+                'value': text_type,
+                'field': text_type,
+                'operator': text_type,
+                'type': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -1067,21 +985,29 @@ class CacheFilter(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.operator = None
-        self.field = None
-        self.value = None
-        self.type = None
         self.not_flag = None
+        self.value = None
+        self.field = None
+        self.operator = None
+        self.type = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class CacheFilterList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``cache_filters``."""
+    """Python Object representation for Tanium SOAP XML tag: ``cache_filters``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'cache_filters'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1095,6 +1021,7 @@ class CacheFilterList(BaseType):
             list_properties={
                 'filter': CacheFilter,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1103,9 +1030,16 @@ class CacheFilterList(BaseType):
 
 
 class CacheInfo(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``cache_info``."""
+    """Python Object representation for Tanium SOAP XML tag: ``cache_info``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'cache_info'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1113,9 +1047,9 @@ class CacheInfo(BaseType):
             simple_properties={
                 'page_row_count': int,
                 'cache_id': int,
-                'cache_row_count': int,
                 'filtered_row_count': int,
                 'expiration': text_type,
+                'cache_row_count': int,
             },
             complex_properties={
                 'errors': ErrorList,
@@ -1123,21 +1057,29 @@ class CacheInfo(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.page_row_count = None
         self.cache_id = None
-        self.cache_row_count = None
         self.filtered_row_count = None
         self.expiration = None
+        self.cache_row_count = None
         self.errors = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class ClientCount(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``client_count``."""
+    """Python Object representation for Tanium SOAP XML tag: ``client_count``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'client_count'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1151,6 +1093,7 @@ class ClientCount(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1159,27 +1102,34 @@ class ClientCount(BaseType):
 
 
 class ClientStatus(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``client_status``."""
+    """Python Object representation for Tanium SOAP XML tag: ``client_status``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'client_status'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'computer_id': text_type,
-                'host_name': text_type,
-                'last_registration': text_type,
-                'status': text_type,
-                'full_version': text_type,
-                'send_state': text_type,
-                'protocol_version': int,
-                'public_key_valid': int,
-                'cache_row_id': int,
-                'port_number': int,
-                'ipaddress_client': text_type,
                 'ipaddress_server': text_type,
+                'full_version': text_type,
+                'ipaddress_client': text_type,
+                'status': text_type,
+                'send_state': text_type,
+                'cache_row_id': int,
+                'host_name': text_type,
                 'receive_state': text_type,
+                'last_registration': text_type,
+                'public_key_valid': int,
+                'computer_id': text_type,
+                'port_number': int,
+                'protocol_version': int,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -1187,29 +1137,37 @@ class ClientStatus(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.computer_id = None
-        self.host_name = None
-        self.last_registration = None
-        self.status = None
-        self.full_version = None
-        self.send_state = None
-        self.protocol_version = None
-        self.public_key_valid = None
-        self.cache_row_id = None
-        self.port_number = None
-        self.ipaddress_client = None
         self.ipaddress_server = None
+        self.full_version = None
+        self.ipaddress_client = None
+        self.status = None
+        self.send_state = None
+        self.cache_row_id = None
+        self.host_name = None
         self.receive_state = None
+        self.last_registration = None
+        self.public_key_valid = None
+        self.computer_id = None
+        self.port_number = None
+        self.protocol_version = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class ComputerGroup(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``computer_group``."""
+    """Python Object representation for Tanium SOAP XML tag: ``computer_group``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'computer_group'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1225,6 +1183,7 @@ class ComputerGroup(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
         self.name = None
@@ -1235,9 +1194,16 @@ class ComputerGroup(BaseType):
 
 
 class ComputerGroupList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``computer_groups``."""
+    """Python Object representation for Tanium SOAP XML tag: ``computer_groups``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'computer_groups'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1251,6 +1217,7 @@ class ComputerGroupList(BaseType):
             list_properties={
                 'computer_group': ComputerGroup,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -1259,9 +1226,16 @@ class ComputerGroupList(BaseType):
 
 
 class ComputerGroupSpec(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``computer_spec``."""
+    """Python Object representation for Tanium SOAP XML tag: ``computer_spec``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'computer_spec'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1277,6 +1251,7 @@ class ComputerGroupSpec(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
         self.computer_name = None
@@ -1287,9 +1262,16 @@ class ComputerGroupSpec(BaseType):
 
 
 class ComputerSpecList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``computer_specs``."""
+    """Python Object representation for Tanium SOAP XML tag: ``computer_specs``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'computer_specs'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1303,6 +1285,7 @@ class ComputerSpecList(BaseType):
             list_properties={
                 'computer_spec': ComputerGroupSpec,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -1311,9 +1294,16 @@ class ComputerSpecList(BaseType):
 
 
 class ErrorList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``errors``."""
+    """Python Object representation for Tanium SOAP XML tag: ``errors``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'errors'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1327,6 +1317,7 @@ class ErrorList(BaseType):
             list_properties={
                 'error': XmlError,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1335,32 +1326,39 @@ class ErrorList(BaseType):
 
 
 class Filter(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``filter``."""
+    """Python Object representation for Tanium SOAP XML tag: ``filter``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'filter'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'id': int,
-                'substring_start': int,
-                'aggregation': text_type,
-                'value_type': text_type,
-                'substring_flag': int,
-                'delimiter_index': int,
                 'value': text_type,
-                'end_time': text_type,
-                'not_flag': int,
-                'max_age_seconds': int,
-                'utf8_flag': int,
-                'operator': text_type,
                 'substring_length': int,
-                'all_times_flag': int,
-                'start_time': text_type,
-                'all_values_flag': int,
-                'ignore_case_flag': int,
+                'delimiter_index': int,
+                'end_time': text_type,
+                'substring_start': int,
                 'delimiter': text_type,
+                'operator': text_type,
+                'aggregation': text_type,
+                'utf8_flag': int,
+                'start_time': text_type,
+                'not_flag': int,
+                'all_values_flag': int,
+                'value_type': text_type,
+                'ignore_case_flag': int,
+                'substring_flag': int,
+                'max_age_seconds': int,
+                'all_times_flag': int,
             },
             complex_properties={
                 'sensor': Sensor,
@@ -1368,34 +1366,42 @@ class Filter(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
-        self.substring_start = None
-        self.aggregation = None
-        self.value_type = None
-        self.substring_flag = None
-        self.delimiter_index = None
         self.value = None
-        self.end_time = None
-        self.not_flag = None
-        self.max_age_seconds = None
-        self.utf8_flag = None
-        self.operator = None
         self.substring_length = None
-        self.all_times_flag = None
-        self.start_time = None
-        self.all_values_flag = None
-        self.ignore_case_flag = None
+        self.delimiter_index = None
+        self.end_time = None
+        self.substring_start = None
         self.delimiter = None
+        self.operator = None
+        self.aggregation = None
+        self.utf8_flag = None
+        self.start_time = None
+        self.not_flag = None
+        self.all_values_flag = None
+        self.value_type = None
+        self.ignore_case_flag = None
+        self.substring_flag = None
+        self.max_age_seconds = None
+        self.all_times_flag = None
         self.sensor = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class FilterList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``filters``."""
+    """Python Object representation for Tanium SOAP XML tag: ``filters``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'filters'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1409,6 +1415,7 @@ class FilterList(BaseType):
             list_properties={
                 'filter': Filter,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1417,51 +1424,66 @@ class FilterList(BaseType):
 
 
 class Group(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``group``."""
+    """Python Object representation for Tanium SOAP XML tag: ``group``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'group'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'id': int,
+                'text': text_type,
+                'type': int,
+                'not_flag': int,
                 'name': text_type,
                 'deleted_flag': int,
-                'text': text_type,
-                'not_flag': int,
-                'source_id': int,
                 'and_flag': int,
-                'type': int,
+                'source_id': int,
             },
             complex_properties={
                 'parameters': ParameterList,
-                'filters': FilterList,
                 'sub_groups': GroupList,
+                'filters': FilterList,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
+        self.text = None
+        self.type = None
+        self.not_flag = None
         self.name = None
         self.deleted_flag = None
-        self.text = None
-        self.not_flag = None
-        self.source_id = None
         self.and_flag = None
-        self.type = None
+        self.source_id = None
         self.parameters = None
-        self.filters = None
         self.sub_groups = None
+        self.filters = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class GroupList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``groups``."""
+    """Python Object representation for Tanium SOAP XML tag: ``groups``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'groups'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1475,6 +1497,7 @@ class GroupList(BaseType):
             list_properties={
                 'group': Group,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1483,17 +1506,24 @@ class GroupList(BaseType):
 
 
 class MetadataItem(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``item``."""
+    """Python Object representation for Tanium SOAP XML tag: ``item``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'item'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'admin_flag': int,
-                'value': text_type,
                 'name': text_type,
+                'value': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -1501,19 +1531,27 @@ class MetadataItem(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.admin_flag = None
-        self.value = None
         self.name = None
+        self.value = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class MetadataList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``metadata``."""
+    """Python Object representation for Tanium SOAP XML tag: ``metadata``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'metadata'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1527,6 +1565,7 @@ class MetadataList(BaseType):
             list_properties={
                 'item': MetadataItem,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1535,9 +1574,16 @@ class MetadataList(BaseType):
 
 
 class ObjectList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``object_list``."""
+    """Python Object representation for Tanium SOAP XML tag: ``object_list``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'object_list'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1546,148 +1592,156 @@ class ObjectList(BaseType):
                 'export_id': text_type,
             },
             complex_properties={
-                'white_listed_urls': WhiteListedUrlList,
-                'roles': UserRoleList,
-                'client_count': ClientCount,
                 'questions': QuestionList,
                 'computer_groups': ComputerGroupList,
-                'saved_actions': SavedActionList,
                 'actions': ActionList,
-                'system_status': SystemStatusList,
                 'system_settings': SystemSettingList,
+                'roles': UserRoleList,
+                'white_listed_urls': WhiteListedUrlList,
+                'saved_actions': SavedActionList,
+                'client_count': ClientCount,
+                'system_status': SystemStatusList,
             },
             list_properties={
+                'plugin': Plugin,
+                'package_specs': PackageSpecList,
+                'parse_result_group': ParseResultGroup,
+                'plugins': PluginList,
                 'plugin_schedule': PluginSchedule,
-                'sensor': Sensor,
-                'users': UserList,
-                'package_spec': PackageSpec,
-                'saved_action_approval': SavedActionApproval,
-                'sensors': SensorList,
-                'package_file': PackageFile,
-                'parse_job': ParseJob,
-                'plugin_schedules': PluginScheduleList,
-                'client_status': ClientStatus,
-                'parse_jobs': ParseJobList,
+                'user': User,
+                'groups': GroupList,
+                'group': Group,
                 'white_listed_url': WhiteListedUrl,
                 'action': Action,
-                'question': Question,
                 'package_files': PackageFileList,
-                'user': User,
-                'parse_result_groups': ParseResultGroupList,
-                'archived_question': ArchivedQuestion,
-                'groups': GroupList,
-                'package_specs': PackageSpecList,
-                'computer_group': ComputerGroup,
-                'system_setting': SystemSetting,
-                'parse_result_group': ParseResultGroup,
-                'action_stop': ActionStop,
-                'soap_error': SoapError,
-                'group': Group,
-                'saved_question': SavedQuestion,
-                'saved_questions': SavedQuestionList,
-                'plugin': Plugin,
-                'saved_action': SavedAction,
                 'action_stops': ActionStopList,
+                'plugin_schedules': PluginScheduleList,
+                'package_spec': PackageSpec,
+                'users': UserList,
+                'soap_error': SoapError,
                 'upload_file_status': UploadFileStatus,
-                'archived_questions': ArchivedQuestionList,
+                'sensors': SensorList,
+                'parse_jobs': ParseJobList,
+                'parse_result_groups': ParseResultGroupList,
+                'package_file': PackageFile,
+                'saved_action_approval': SavedActionApproval,
+                'saved_questions': SavedQuestionList,
+                'saved_question': SavedQuestion,
+                'sensor': Sensor,
+                'saved_action': SavedAction,
+                'computer_group': ComputerGroup,
                 'upload_file': UploadFile,
-                'plugins': PluginList,
+                'client_status': ClientStatus,
+                'parse_job': ParseJob,
+                'action_stop': ActionStop,
+                'system_setting': SystemSetting,
+                'archived_question': ArchivedQuestion,
+                'archived_questions': ArchivedQuestionList,
+                'question': Question,
             },
+            **kwargs
         )
         self.export_id = None
-        self.white_listed_urls = None
-        self.roles = None
-        self.client_count = None
         self.questions = None
         self.computer_groups = None
-        self.saved_actions = None
         self.actions = None
-        self.system_status = None
         self.system_settings = None
+        self.roles = None
+        self.white_listed_urls = None
+        self.saved_actions = None
+        self.client_count = None
+        self.system_status = None
+        self.plugin = []
+        self.package_specs = []
+        self.parse_result_group = []
+        self.plugins = []
         self.plugin_schedule = []
-        self.sensor = []
-        self.users = []
-        self.package_spec = []
-        self.saved_action_approval = []
-        self.sensors = []
-        self.package_file = []
-        self.parse_job = []
-        self.plugin_schedules = []
-        self.client_status = []
-        self.parse_jobs = []
+        self.user = []
+        self.groups = []
+        self.group = []
         self.white_listed_url = []
         self.action = []
-        self.question = []
         self.package_files = []
-        self.user = []
-        self.parse_result_groups = []
-        self.archived_question = []
-        self.groups = []
-        self.package_specs = []
-        self.computer_group = []
-        self.system_setting = []
-        self.parse_result_group = []
-        self.action_stop = []
-        self.soap_error = []
-        self.group = []
-        self.saved_question = []
-        self.saved_questions = []
-        self.plugin = []
-        self.saved_action = []
         self.action_stops = []
+        self.plugin_schedules = []
+        self.package_spec = []
+        self.users = []
+        self.soap_error = []
         self.upload_file_status = []
-        self.archived_questions = []
+        self.sensors = []
+        self.parse_jobs = []
+        self.parse_result_groups = []
+        self.package_file = []
+        self.saved_action_approval = []
+        self.saved_questions = []
+        self.saved_question = []
+        self.sensor = []
+        self.saved_action = []
+        self.computer_group = []
         self.upload_file = []
-        self.plugins = []
+        self.client_status = []
+        self.parse_job = []
+        self.action_stop = []
+        self.system_setting = []
+        self.archived_question = []
+        self.archived_questions = []
+        self.question = []
         self._set_init_values()
 
 
 class Options(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``options``."""
+    """Python Object representation for Tanium SOAP XML tag: ``options``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'options'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'json_pretty_print': int,
-                'context_id': int,
-                'most_recent_flag': int,
-                'return_lists_flag': int,
-                'use_json': int,
+                'use_error_objects': int,
                 'include_hashes_flag': int,
-                'cache_sort_fields': text_type,
-                'export_format': int,
-                'export_leading_text': text_type,
-                'use_user_context_flag': int,
-                'pct_done_limit': int,
-                'row_start': int,
-                'flags': int,
-                'cache_id': int,
-                'sort_order': text_type,
-                'filter_string': text_type,
-                'hide_no_results_flag': int,
-                'row_count': int,
-                'suppress_scripts': int,
                 'return_cdata_flag': int,
-                'hide_errors_flag': int,
+                'most_recent_flag': int,
+                'use_user_context_flag': int,
+                'suppress_object_list': int,
+                'use_json': int,
                 'aggregate_over_time_flag': int,
-                'sample_frequency': int,
+                'hide_no_results_flag': int,
+                'cache_sort_fields': text_type,
                 'script_data': text_type,
-                'sample_count': int,
+                'filter_not_flag': int,
                 'include_hidden_flag': int,
                 'export_flag': int,
-                'suppress_object_list': int,
-                'sample_start': int,
-                'cache_expiration': int,
-                'export_trailing_text': text_type,
-                'recent_result_buckets': text_type,
-                'filter_not_flag': int,
-                'row_counts_only_flag': int,
+                'flags': int,
                 'include_user_details': int,
+                'cache_expiration': int,
+                'recent_result_buckets': text_type,
+                'export_leading_text': text_type,
+                'sort_order': text_type,
+                'hide_errors_flag': int,
+                'filter_string': text_type,
+                'sample_start': int,
+                'export_trailing_text': text_type,
+                'row_counts_only_flag': int,
+                'pct_done_limit': int,
+                'suppress_scripts': int,
+                'cache_id': int,
+                'context_id': int,
                 'include_answer_times_flag': int,
-                'use_error_objects': int,
+                'export_format': int,
+                'sample_frequency': int,
+                'row_count': int,
+                'row_start': int,
+                'sample_count': int,
+                'return_lists_flag': int,
             },
             complex_properties={
                 'cache_filters': CacheFilterList,
@@ -1695,72 +1749,80 @@ class Options(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.json_pretty_print = None
-        self.context_id = None
-        self.most_recent_flag = None
-        self.return_lists_flag = None
-        self.use_json = None
+        self.use_error_objects = None
         self.include_hashes_flag = None
-        self.cache_sort_fields = None
-        self.export_format = None
-        self.export_leading_text = None
-        self.use_user_context_flag = None
-        self.pct_done_limit = None
-        self.row_start = None
-        self.flags = None
-        self.cache_id = None
-        self.sort_order = None
-        self.filter_string = None
-        self.hide_no_results_flag = None
-        self.row_count = None
-        self.suppress_scripts = None
         self.return_cdata_flag = None
-        self.hide_errors_flag = None
+        self.most_recent_flag = None
+        self.use_user_context_flag = None
+        self.suppress_object_list = None
+        self.use_json = None
         self.aggregate_over_time_flag = None
-        self.sample_frequency = None
+        self.hide_no_results_flag = None
+        self.cache_sort_fields = None
         self.script_data = None
-        self.sample_count = None
+        self.filter_not_flag = None
         self.include_hidden_flag = None
         self.export_flag = None
-        self.suppress_object_list = None
-        self.sample_start = None
-        self.cache_expiration = None
-        self.export_trailing_text = None
-        self.recent_result_buckets = None
-        self.filter_not_flag = None
-        self.row_counts_only_flag = None
+        self.flags = None
         self.include_user_details = None
+        self.cache_expiration = None
+        self.recent_result_buckets = None
+        self.export_leading_text = None
+        self.sort_order = None
+        self.hide_errors_flag = None
+        self.filter_string = None
+        self.sample_start = None
+        self.export_trailing_text = None
+        self.row_counts_only_flag = None
+        self.pct_done_limit = None
+        self.suppress_scripts = None
+        self.cache_id = None
+        self.context_id = None
         self.include_answer_times_flag = None
-        self.use_error_objects = None
+        self.export_format = None
+        self.sample_frequency = None
+        self.row_count = None
+        self.row_start = None
+        self.sample_count = None
+        self.return_lists_flag = None
         self.cache_filters = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PackageFile(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``file``."""
+    """Python Object representation for Tanium SOAP XML tag: ``file``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'file'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'size': int,
                 'id': int,
-                'download_seconds': int,
+                'source': text_type,
                 'bytes_downloaded': int,
-                'name': text_type,
-                'status': int,
                 'last_download_progress_time': text_type,
-                'hash': text_type,
+                'status': int,
+                'name': text_type,
                 'deleted_flag': int,
-                'download_start_time': text_type,
                 'cache_status': text_type,
+                'size': int,
                 'trigger_download': int,
                 'bytes_total': int,
-                'source': text_type,
+                'download_start_time': text_type,
+                'hash': text_type,
+                'download_seconds': int,
             },
             complex_properties={
                 'file_status': PackageFileStatusList,
@@ -1768,30 +1830,38 @@ class PackageFile(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.size = None
         self.id = None
-        self.download_seconds = None
+        self.source = None
         self.bytes_downloaded = None
-        self.name = None
-        self.status = None
         self.last_download_progress_time = None
-        self.hash = None
+        self.status = None
+        self.name = None
         self.deleted_flag = None
-        self.download_start_time = None
         self.cache_status = None
+        self.size = None
         self.trigger_download = None
         self.bytes_total = None
-        self.source = None
+        self.download_start_time = None
+        self.hash = None
+        self.download_seconds = None
         self.file_status = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PackageFileList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``package_files``."""
+    """Python Object representation for Tanium SOAP XML tag: ``package_files``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'package_files'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1805,6 +1875,7 @@ class PackageFileList(BaseType):
             list_properties={
                 'file': PackageFile,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1813,23 +1884,30 @@ class PackageFileList(BaseType):
 
 
 class PackageFileStatus(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``status``."""
+    """Python Object representation for Tanium SOAP XML tag: ``status``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'status'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
+                'bytes_total': int,
+                'last_download_progress_time': text_type,
+                'server_id': int,
+                'bytes_downloaded': int,
                 'cache_message': text_type,
                 'status': int,
-                'cache_status': text_type,
-                'last_download_progress_time': text_type,
-                'bytes_downloaded': int,
-                'server_name': text_type,
-                'server_id': int,
                 'download_start_time': text_type,
-                'bytes_total': int,
+                'cache_status': text_type,
+                'server_name': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -1837,25 +1915,33 @@ class PackageFileStatus(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
+        self.bytes_total = None
+        self.last_download_progress_time = None
+        self.server_id = None
+        self.bytes_downloaded = None
         self.cache_message = None
         self.status = None
-        self.cache_status = None
-        self.last_download_progress_time = None
-        self.bytes_downloaded = None
-        self.server_name = None
-        self.server_id = None
         self.download_start_time = None
-        self.bytes_total = None
+        self.cache_status = None
+        self.server_name = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PackageFileStatusList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``file_status``."""
+    """Python Object representation for Tanium SOAP XML tag: ``file_status``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'file_status'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1869,6 +1955,7 @@ class PackageFileStatusList(BaseType):
             list_properties={
                 'status': PackageFileStatus,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1877,18 +1964,25 @@ class PackageFileStatusList(BaseType):
 
 
 class PackageFileTemplate(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``file_template``."""
+    """Python Object representation for Tanium SOAP XML tag: ``file_template``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'file_template'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'download_seconds': int,
-                'hash': text_type,
-                'source': text_type,
                 'name': text_type,
+                'source': text_type,
+                'hash': text_type,
+                'download_seconds': int,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -1896,20 +1990,28 @@ class PackageFileTemplate(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.download_seconds = None
-        self.hash = None
-        self.source = None
         self.name = None
+        self.source = None
+        self.hash = None
+        self.download_seconds = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PackageFileTemplateList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``file_templates``."""
+    """Python Object representation for Tanium SOAP XML tag: ``file_templates``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'file_templates'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -1923,6 +2025,7 @@ class PackageFileTemplateList(BaseType):
             list_properties={
                 'file_template': PackageFileTemplate,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -1931,81 +2034,96 @@ class PackageFileTemplateList(BaseType):
 
 
 class PackageSpec(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``package_spec``."""
+    """Python Object representation for Tanium SOAP XML tag: ``package_spec``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'package_spec'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'available_time': text_type,
                 'id': int,
-                'name': text_type,
-                'signature': text_type,
-                'command': text_type,
-                'parameter_definition': text_type,
-                'cache_row_id': int,
-                'source_id': int,
-                'skip_lock_flag': int,
-                'command_timeout': int,
-                'hidden_flag': int,
-                'display_name': text_type,
-                'expire_seconds': int,
-                'creation_time': text_type,
                 'modification_time': text_type,
-                'last_modified_by': text_type,
-                'deleted_flag': int,
-                'verify_expire_seconds': int,
-                'verify_group_id': int,
                 'last_update': text_type,
+                'verify_expire_seconds': int,
+                'command_timeout': int,
+                'name': text_type,
+                'expire_seconds': int,
+                'deleted_flag': int,
+                'parameter_definition': text_type,
+                'signature': text_type,
+                'cache_row_id': int,
+                'creation_time': text_type,
+                'hidden_flag': int,
+                'last_modified_by': text_type,
+                'command': text_type,
+                'verify_group_id': int,
+                'available_time': text_type,
+                'skip_lock_flag': int,
+                'display_name': text_type,
+                'source_id': int,
             },
             complex_properties={
-                'parameters': ParameterList,
-                'files': PackageFileList,
                 'sensors': SensorList,
-                'file_templates': PackageFileTemplateList,
-                'verify_group': Group,
                 'metadata': MetadataList,
+                'parameters': ParameterList,
+                'file_templates': PackageFileTemplateList,
+                'files': PackageFileList,
+                'verify_group': Group,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.available_time = None
         self.id = None
-        self.name = None
-        self.signature = None
-        self.command = None
-        self.parameter_definition = None
-        self.cache_row_id = None
-        self.source_id = None
-        self.skip_lock_flag = None
-        self.command_timeout = None
-        self.hidden_flag = None
-        self.display_name = None
-        self.expire_seconds = None
-        self.creation_time = None
         self.modification_time = None
-        self.last_modified_by = None
-        self.deleted_flag = None
-        self.verify_expire_seconds = None
-        self.verify_group_id = None
         self.last_update = None
-        self.parameters = None
-        self.files = None
+        self.verify_expire_seconds = None
+        self.command_timeout = None
+        self.name = None
+        self.expire_seconds = None
+        self.deleted_flag = None
+        self.parameter_definition = None
+        self.signature = None
+        self.cache_row_id = None
+        self.creation_time = None
+        self.hidden_flag = None
+        self.last_modified_by = None
+        self.command = None
+        self.verify_group_id = None
+        self.available_time = None
+        self.skip_lock_flag = None
+        self.display_name = None
+        self.source_id = None
         self.sensors = None
-        self.file_templates = None
-        self.verify_group = None
         self.metadata = None
+        self.parameters = None
+        self.file_templates = None
+        self.files = None
+        self.verify_group = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PackageSpecList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``package_specs``."""
+    """Python Object representation for Tanium SOAP XML tag: ``package_specs``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'package_specs'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2019,6 +2137,7 @@ class PackageSpecList(BaseType):
             list_properties={
                 'package_spec': PackageSpec,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -2027,9 +2146,16 @@ class PackageSpecList(BaseType):
 
 
 class Parameter(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parameter``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parameter``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parameter'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2045,6 +2171,7 @@ class Parameter(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.value = None
         self.key = None
@@ -2055,9 +2182,16 @@ class Parameter(BaseType):
 
 
 class ParameterList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parameters``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parameters``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parameters'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2071,6 +2205,7 @@ class ParameterList(BaseType):
             list_properties={
                 'parameter': Parameter,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2079,16 +2214,23 @@ class ParameterList(BaseType):
 
 
 class ParseJob(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parse_job``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parse_job``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parse_job'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'question_text': text_type,
                 'parser_version': int,
+                'question_text': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -2096,18 +2238,26 @@ class ParseJob(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.question_text = None
         self.parser_version = None
+        self.question_text = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class ParseJobList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parse_jobs``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parse_jobs``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parse_jobs'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2121,6 +2271,7 @@ class ParseJobList(BaseType):
             list_properties={
                 'parse_job': ParseJob,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2129,9 +2280,16 @@ class ParseJobList(BaseType):
 
 
 class ParseResult(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parse_result``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parse_result``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parse_result'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2146,6 +2304,7 @@ class ParseResult(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
         self.parameter_definition = None
@@ -2155,9 +2314,16 @@ class ParseResult(BaseType):
 
 
 class ParseResultGroup(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parse_result_group``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parse_result_group``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parse_result_group'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2173,6 +2339,7 @@ class ParseResultGroup(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.score = None
         self.question_text = None
@@ -2183,9 +2350,16 @@ class ParseResultGroup(BaseType):
 
 
 class ParseResultGroupList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parse_result_groups``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parse_result_groups``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parse_result_groups'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2199,6 +2373,7 @@ class ParseResultGroupList(BaseType):
             list_properties={
                 'parse_result_group': ParseResultGroup,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2207,9 +2382,16 @@ class ParseResultGroupList(BaseType):
 
 
 class ParseResultList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``parse_results``."""
+    """Python Object representation for Tanium SOAP XML tag: ``parse_results``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'parse_results'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2223,6 +2405,7 @@ class ParseResultList(BaseType):
             list_properties={
                 'parse_result': ParseResult,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2231,9 +2414,27 @@ class ParseResultList(BaseType):
 
 
 class PermissionList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``permissions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``permissions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'permissions'
+
+    CONSTANTS = [
+        {'name': 'ADMIN', 'value': 'admin', 'type': text_type},
+        {'name': 'QUESTION_READ', 'value': 'question_read', 'type': text_type},
+        {'name': 'QUESTION_WRITE', 'value': 'question_write', 'type': text_type},
+        {'name': 'SENSOR_READ', 'value': 'sensor_read', 'type': text_type},
+        {'name': 'SENSOR_WRITE', 'value': 'sensor_write', 'type': text_type},
+        {'name': 'ACTION_READ', 'value': 'action_read', 'type': text_type},
+        {'name': 'ACTION_WRITE', 'value': 'action_write', 'type': text_type},
+        {'name': 'ACTION_APPROVE', 'value': 'action_approval', 'type': text_type},
+        {'name': 'NOTIFICATION_WRITE', 'value': 'notification_write', 'type': text_type},
+        {'name': 'CLIENTS_READ', 'value': 'clients_read', 'type': text_type},
+        {'name': 'QUESTION_LOG_READ', 'value': 'question_log_read', 'type': text_type},
+        {'name': 'CONTENT_ADMIN', 'value': 'content_admin', 'type': text_type},
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2247,6 +2448,7 @@ class PermissionList(BaseType):
             list_properties={
                 'permission': text_type,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2255,81 +2457,97 @@ class PermissionList(BaseType):
 
 
 class Plugin(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``plugin``."""
+    """Python Object representation for Tanium SOAP XML tag: ``plugin``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'plugin'
+
+    CONSTANTS = [
+        {'name': 'SQL', 'value': 'SQL', 'type': text_type},
+        {'name': 'SCRIPT', 'value': 'Script', 'type': text_type},
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'timeout_seconds': int,
-                'run_detached_flag': int,
-                'name': text_type,
-                'status': text_type,
-                'input': text_type,
-                'local_admin_flag': int,
-                'use_json_flag': int,
-                'execution_id': int,
-                'status_file_content': text_type,
                 'allow_rest': int,
-                'cache_row_id': int,
-                'path': text_type,
-                'plugin_server': text_type,
-                'raw_http_request': int,
-                'exit_code': int,
-                'filename': text_type,
-                'raw_http_response': int,
                 'bundle': text_type,
-                'script_response': text_type,
-                'plugin_url': text_type,
+                'local_admin_flag': int,
                 'type': text_type,
+                'name': text_type,
+                'filename': text_type,
+                'execution_id': int,
+                'timeout_seconds': int,
+                'path': text_type,
+                'raw_http_response': int,
+                'cache_row_id': int,
+                'status_file_content': text_type,
+                'status': text_type,
+                'use_json_flag': int,
+                'exit_code': int,
+                'plugin_url': text_type,
+                'plugin_server': text_type,
+                'input': text_type,
+                'raw_http_request': int,
+                'script_response': text_type,
+                'run_detached_flag': int,
             },
             complex_properties={
-                'arguments': PluginArgumentList,
-                'commands': PluginCommandList,
-                'sql_response': PluginSql,
-                'metadata': MetadataList,
                 'permissions': PermissionList,
+                'metadata': MetadataList,
+                'arguments': PluginArgumentList,
+                'sql_response': PluginSql,
+                'commands': PluginCommandList,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.timeout_seconds = None
-        self.run_detached_flag = None
-        self.name = None
-        self.status = None
-        self.input = None
-        self.local_admin_flag = None
-        self.use_json_flag = None
-        self.execution_id = None
-        self.status_file_content = None
         self.allow_rest = None
-        self.cache_row_id = None
-        self.path = None
-        self.plugin_server = None
-        self.raw_http_request = None
-        self.exit_code = None
-        self.filename = None
-        self.raw_http_response = None
         self.bundle = None
-        self.script_response = None
-        self.plugin_url = None
+        self.local_admin_flag = None
         self.type = None
-        self.arguments = None
-        self.commands = None
-        self.sql_response = None
-        self.metadata = None
+        self.name = None
+        self.filename = None
+        self.execution_id = None
+        self.timeout_seconds = None
+        self.path = None
+        self.raw_http_response = None
+        self.cache_row_id = None
+        self.status_file_content = None
+        self.status = None
+        self.use_json_flag = None
+        self.exit_code = None
+        self.plugin_url = None
+        self.plugin_server = None
+        self.input = None
+        self.raw_http_request = None
+        self.script_response = None
+        self.run_detached_flag = None
         self.permissions = None
+        self.metadata = None
+        self.arguments = None
+        self.sql_response = None
+        self.commands = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PluginArgument(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``argument``."""
+    """Python Object representation for Tanium SOAP XML tag: ``argument``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'argument'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2345,6 +2563,7 @@ class PluginArgument(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.value = None
         self.name = None
@@ -2355,9 +2574,16 @@ class PluginArgument(BaseType):
 
 
 class PluginArgumentList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``arguments``."""
+    """Python Object representation for Tanium SOAP XML tag: ``arguments``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'arguments'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2371,6 +2597,7 @@ class PluginArgumentList(BaseType):
             list_properties={
                 'argument': PluginArgument,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2379,9 +2606,16 @@ class PluginArgumentList(BaseType):
 
 
 class PluginCommandList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``commands``."""
+    """Python Object representation for Tanium SOAP XML tag: ``commands``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'commands'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2395,6 +2629,7 @@ class PluginCommandList(BaseType):
             list_properties={
                 'command': text_type,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2403,9 +2638,16 @@ class PluginCommandList(BaseType):
 
 
 class PluginList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``plugins``."""
+    """Python Object representation for Tanium SOAP XML tag: ``plugins``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'plugins'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2419,6 +2661,7 @@ class PluginList(BaseType):
             list_properties={
                 'plugin': Plugin,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -2427,69 +2670,84 @@ class PluginList(BaseType):
 
 
 class PluginSchedule(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``plugin_schedule``."""
+    """Python Object representation for Tanium SOAP XML tag: ``plugin_schedule``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'plugin_schedule'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'end_hour': int,
                 'id': int,
-                'enabled': int,
-                'name': text_type,
-                'last_exit_code': int,
-                'input': text_type,
-                'start_date': int,
+                'run_interval_seconds': int,
+                'plugin_bundle': text_type,
                 'run_on_days': text_type,
+                'end_hour': int,
                 'end_date': int,
                 'last_run_text': text_type,
-                'last_run_time': text_type,
-                'plugin_bundle': text_type,
+                'name': text_type,
                 'deleted_flag': int,
-                'plugin_name': text_type,
-                'run_interval_seconds': int,
+                'last_run_time': text_type,
                 'start_hour': int,
+                'last_exit_code': int,
+                'enabled': int,
                 'plugin_server': text_type,
+                'input': text_type,
+                'start_date': int,
+                'plugin_name': text_type,
             },
             complex_properties={
+                'last_run_sql': PluginSql,
                 'arguments': PluginArgumentList,
                 'user': User,
-                'last_run_sql': PluginSql,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.end_hour = None
         self.id = None
-        self.enabled = None
-        self.name = None
-        self.last_exit_code = None
-        self.input = None
-        self.start_date = None
+        self.run_interval_seconds = None
+        self.plugin_bundle = None
         self.run_on_days = None
+        self.end_hour = None
         self.end_date = None
         self.last_run_text = None
-        self.last_run_time = None
-        self.plugin_bundle = None
+        self.name = None
         self.deleted_flag = None
-        self.plugin_name = None
-        self.run_interval_seconds = None
+        self.last_run_time = None
         self.start_hour = None
+        self.last_exit_code = None
+        self.enabled = None
         self.plugin_server = None
+        self.input = None
+        self.start_date = None
+        self.plugin_name = None
+        self.last_run_sql = None
         self.arguments = None
         self.user = None
-        self.last_run_sql = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class PluginScheduleList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``plugin_schedules``."""
+    """Python Object representation for Tanium SOAP XML tag: ``plugin_schedules``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'plugin_schedules'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2503,6 +2761,7 @@ class PluginScheduleList(BaseType):
             list_properties={
                 'plugin_schedule': PluginSchedule,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -2511,9 +2770,16 @@ class PluginScheduleList(BaseType):
 
 
 class PluginSql(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``sql_response``."""
+    """Python Object representation for Tanium SOAP XML tag: ``sql_response``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'sql_response'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2528,6 +2794,7 @@ class PluginSql(BaseType):
             list_properties={
                 'result_row': PluginSqlResult,
             },
+            **kwargs
         )
         self.rows_affected = None
         self.result_count = None
@@ -2537,9 +2804,16 @@ class PluginSql(BaseType):
 
 
 class PluginSqlColumn(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``columns``."""
+    """Python Object representation for Tanium SOAP XML tag: ``columns``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'columns'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2553,6 +2827,7 @@ class PluginSqlColumn(BaseType):
             list_properties={
                 'name': text_type,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2561,9 +2836,16 @@ class PluginSqlColumn(BaseType):
 
 
 class PluginSqlResult(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``result_row``."""
+    """Python Object representation for Tanium SOAP XML tag: ``result_row``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'result_row'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2577,6 +2859,7 @@ class PluginSqlResult(BaseType):
             list_properties={
                 'value': text_type,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2585,63 +2868,78 @@ class PluginSqlResult(BaseType):
 
 
 class Question(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``question``."""
+    """Python Object representation for Tanium SOAP XML tag: ``question``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'question'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'hidden_flag': int,
-                'cache_row_id': int,
                 'id': int,
-                'index': int,
-                'name': text_type,
                 'query_text': text_type,
-                'action_tracking_flag': int,
-                'force_computer_id_flag': int,
-                'expire_seconds': int,
-                'skip_lock_flag': int,
+                'hidden_flag': int,
                 'expiration': text_type,
+                'index': int,
+                'force_computer_id_flag': int,
+                'name': text_type,
+                'expire_seconds': int,
+                'cache_row_id': int,
+                'skip_lock_flag': int,
+                'action_tracking_flag': int,
             },
             complex_properties={
-                'saved_question': SavedQuestion,
-                'selects': SelectList,
                 'context_group': Group,
-                'management_rights_group': Group,
                 'user': User,
+                'saved_question': SavedQuestion,
+                'management_rights_group': Group,
                 'group': Group,
+                'selects': SelectList,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.hidden_flag = None
-        self.cache_row_id = None
         self.id = None
-        self.index = None
-        self.name = None
         self.query_text = None
-        self.action_tracking_flag = None
-        self.force_computer_id_flag = None
-        self.expire_seconds = None
-        self.skip_lock_flag = None
+        self.hidden_flag = None
         self.expiration = None
-        self.saved_question = None
-        self.selects = None
+        self.index = None
+        self.force_computer_id_flag = None
+        self.name = None
+        self.expire_seconds = None
+        self.cache_row_id = None
+        self.skip_lock_flag = None
+        self.action_tracking_flag = None
         self.context_group = None
-        self.management_rights_group = None
         self.user = None
+        self.saved_question = None
+        self.management_rights_group = None
         self.group = None
+        self.selects = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class QuestionList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``questions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``questions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'questions'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2650,24 +2948,32 @@ class QuestionList(BaseType):
                 # no simple properties defined in console.wsdl
             },
             complex_properties={
-                'cache_info': CacheInfo,
                 'info': QuestionListInfo,
+                'cache_info': CacheInfo,
             },
             list_properties={
                 'question': Question,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
-        self.cache_info = None
         self.info = None
+        self.cache_info = None
         self.question = []
         self._set_init_values()
 
 
 class QuestionListInfo(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``info``."""
+    """Python Object representation for Tanium SOAP XML tag: ``info``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'info'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2682,6 +2988,7 @@ class QuestionListInfo(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.highest_id = None
         self.total_count = None
@@ -2691,93 +2998,108 @@ class QuestionListInfo(BaseType):
 
 
 class SavedAction(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``saved_action``."""
+    """Python Object representation for Tanium SOAP XML tag: ``saved_action``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'saved_action'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'cache_row_id': int,
                 'id': int,
-                'name': text_type,
-                'status': int,
                 'comment': text_type,
-                'public_flag': int,
                 'last_start_time': text_type,
-                'policy_flag': int,
-                'user_start_time': text_type,
-                'action_group_id': int,
-                'creation_time': text_type,
-                'issue_seconds': int,
-                'issue_count': int,
-                'start_time': text_type,
-                'next_start_time': text_type,
                 'approved_flag': int,
-                'end_time': text_type,
-                'expire_seconds': int,
+                'issue_seconds': int,
                 'distribute_seconds': int,
+                'status': int,
+                'next_start_time': text_type,
+                'name': text_type,
+                'expire_seconds': int,
+                'policy_flag': int,
+                'end_time': text_type,
+                'issue_count': int,
+                'cache_row_id': int,
+                'creation_time': text_type,
+                'public_flag': int,
+                'action_group_id': int,
+                'user_start_time': text_type,
+                'start_time': text_type,
             },
             complex_properties={
+                'policy': SavedActionPolicy,
                 'last_action': Action,
+                'user': User,
+                'metadata': MetadataList,
+                'row_ids': SavedActionRowIdList,
                 'action_group': Group,
+                'approver': User,
                 'package_spec': PackageSpec,
                 'target_group': Group,
-                'row_ids': SavedActionRowIdList,
-                'user': User,
-                'policy': SavedActionPolicy,
-                'metadata': MetadataList,
-                'approver': User,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.cache_row_id = None
         self.id = None
-        self.name = None
-        self.status = None
         self.comment = None
-        self.public_flag = None
         self.last_start_time = None
-        self.policy_flag = None
-        self.user_start_time = None
-        self.action_group_id = None
-        self.creation_time = None
-        self.issue_seconds = None
-        self.issue_count = None
-        self.start_time = None
-        self.next_start_time = None
         self.approved_flag = None
-        self.end_time = None
-        self.expire_seconds = None
+        self.issue_seconds = None
         self.distribute_seconds = None
+        self.status = None
+        self.next_start_time = None
+        self.name = None
+        self.expire_seconds = None
+        self.policy_flag = None
+        self.end_time = None
+        self.issue_count = None
+        self.cache_row_id = None
+        self.creation_time = None
+        self.public_flag = None
+        self.action_group_id = None
+        self.user_start_time = None
+        self.start_time = None
+        self.policy = None
         self.last_action = None
+        self.user = None
+        self.metadata = None
+        self.row_ids = None
         self.action_group = None
+        self.approver = None
         self.package_spec = None
         self.target_group = None
-        self.row_ids = None
-        self.user = None
-        self.policy = None
-        self.metadata = None
-        self.approver = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SavedActionApproval(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``saved_action_approval``."""
+    """Python Object representation for Tanium SOAP XML tag: ``saved_action_approval``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'saved_action_approval'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'id': int,
-                'approved_flag': int,
                 'name': text_type,
+                'approved_flag': int,
             },
             complex_properties={
                 'metadata': MetadataList,
@@ -2785,19 +3107,27 @@ class SavedActionApproval(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
-        self.approved_flag = None
         self.name = None
+        self.approved_flag = None
         self.metadata = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SavedActionList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``saved_actions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``saved_actions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'saved_actions'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2811,6 +3141,7 @@ class SavedActionList(BaseType):
             list_properties={
                 'saved_action': SavedAction,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -2819,19 +3150,26 @@ class SavedActionList(BaseType):
 
 
 class SavedActionPolicy(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``policy``."""
+    """Python Object representation for Tanium SOAP XML tag: ``policy``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'policy'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'max_age': int,
-                'min_count': int,
-                'row_filter_group_id': int,
                 'saved_question_group_id': int,
+                'row_filter_group_id': int,
+                'max_age': int,
                 'saved_question_id': int,
+                'min_count': int,
             },
             complex_properties={
                 'row_filter_group': Group,
@@ -2840,12 +3178,13 @@ class SavedActionPolicy(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.max_age = None
-        self.min_count = None
-        self.row_filter_group_id = None
         self.saved_question_group_id = None
+        self.row_filter_group_id = None
+        self.max_age = None
         self.saved_question_id = None
+        self.min_count = None
         self.row_filter_group = None
         self.saved_question_group = None
         # no list properties defined in console.wsdl
@@ -2853,9 +3192,16 @@ class SavedActionPolicy(BaseType):
 
 
 class SavedActionRowIdList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``row_ids``."""
+    """Python Object representation for Tanium SOAP XML tag: ``row_ids``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'row_ids'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2869,6 +3215,7 @@ class SavedActionRowIdList(BaseType):
             list_properties={
                 'row_id': int,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -2877,75 +3224,90 @@ class SavedActionRowIdList(BaseType):
 
 
 class SavedQuestion(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``saved_question``."""
+    """Python Object representation for Tanium SOAP XML tag: ``saved_question``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'saved_question'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'cache_row_id': int,
                 'id': int,
-                'keep_seconds': int,
-                'name': text_type,
                 'query_text': text_type,
-                'index': int,
-                'most_recent_question_id': int,
-                'action_tracking_flag': int,
-                'public_flag': int,
-                'hidden_flag': int,
-                'expire_seconds': int,
-                'sort_column': int,
-                'issue_seconds': int,
-                'issue_seconds_never_flag': int,
-                'row_count_flag': int,
-                'mod_time': text_type,
                 'archive_enabled_flag': int,
+                'issue_seconds': int,
+                'most_recent_question_id': int,
+                'name': text_type,
+                'expire_seconds': int,
+                'public_flag': int,
+                'sort_column': int,
+                'cache_row_id': int,
+                'keep_seconds': int,
+                'hidden_flag': int,
+                'action_tracking_flag': int,
+                'index': int,
+                'row_count_flag': int,
+                'issue_seconds_never_flag': int,
+                'mod_time': text_type,
             },
             complex_properties={
+                'packages': PackageSpecList,
+                'metadata': MetadataList,
+                'user': User,
                 'mod_user': User,
                 'archive_owner': User,
                 'question': Question,
-                'user': User,
-                'packages': PackageSpecList,
-                'metadata': MetadataList,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.cache_row_id = None
         self.id = None
-        self.keep_seconds = None
-        self.name = None
         self.query_text = None
-        self.index = None
-        self.most_recent_question_id = None
-        self.action_tracking_flag = None
-        self.public_flag = None
-        self.hidden_flag = None
-        self.expire_seconds = None
-        self.sort_column = None
-        self.issue_seconds = None
-        self.issue_seconds_never_flag = None
-        self.row_count_flag = None
-        self.mod_time = None
         self.archive_enabled_flag = None
+        self.issue_seconds = None
+        self.most_recent_question_id = None
+        self.name = None
+        self.expire_seconds = None
+        self.public_flag = None
+        self.sort_column = None
+        self.cache_row_id = None
+        self.keep_seconds = None
+        self.hidden_flag = None
+        self.action_tracking_flag = None
+        self.index = None
+        self.row_count_flag = None
+        self.issue_seconds_never_flag = None
+        self.mod_time = None
+        self.packages = None
+        self.metadata = None
+        self.user = None
         self.mod_user = None
         self.archive_owner = None
         self.question = None
-        self.user = None
-        self.packages = None
-        self.metadata = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SavedQuestionList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``saved_questions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``saved_questions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'saved_questions'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2959,6 +3321,7 @@ class SavedQuestionList(BaseType):
             list_properties={
                 'saved_question': SavedQuestion,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -2967,9 +3330,16 @@ class SavedQuestionList(BaseType):
 
 
 class Select(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``select``."""
+    """Python Object representation for Tanium SOAP XML tag: ``select``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'select'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -2978,26 +3348,34 @@ class Select(BaseType):
                 # no simple properties defined in console.wsdl
             },
             complex_properties={
+                'group': Group,
                 'filter': Filter,
                 'sensor': Sensor,
-                'group': Group,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
+        self.group = None
         self.filter = None
         self.sensor = None
-        self.group = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SelectList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``selects``."""
+    """Python Object representation for Tanium SOAP XML tag: ``selects``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'selects'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3011,6 +3389,7 @@ class SelectList(BaseType):
             list_properties={
                 'select': Select,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3019,81 +3398,111 @@ class SelectList(BaseType):
 
 
 class Sensor(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``sensor``."""
+    """Python Object representation for Tanium SOAP XML tag: ``sensor``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'sensor'
+
+    CONSTANTS = [
+        {'name': 'WMI_SENSOR', 'value': '1', 'type': int},
+        {'name': 'BES_SENSOR', 'value': '2', 'type': int},
+        {'name': 'VBS_SENSOR', 'value': '4', 'type': int},
+        {'name': 'PSHELL_SENSOR', 'value': '5', 'type': int},
+        {'name': 'MULTITYPE_SENSOR', 'value': '6', 'type': int},
+        {'name': 'HASH_RESULT', 'value': '0', 'type': int},
+        {'name': 'TEXT_RESULT', 'value': '1', 'type': int},
+        {'name': 'VERSION_RESULT', 'value': '2', 'type': int},
+        {'name': 'NUMERIC_RESULT', 'value': '3', 'type': int},
+        {'name': 'BES_DATETIME_RESULT', 'value': '4', 'type': int},
+        {'name': 'IP_RESULT', 'value': '5', 'type': int},
+        {'name': 'WMI_DATETIME_RESULT', 'value': '6', 'type': int},
+        {'name': 'TIMEDIFF_REUSLT', 'value': '7', 'type': int},
+        {'name': 'DATASIZE_RESULT', 'value': '8', 'type': int},
+        {'name': 'NUMERIC_INTEGER_RESULT', 'value': '9', 'type': int},
+        {'name': 'REGEX_RESULT', 'value': '11', 'type': int},
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'hidden_flag': int,
                 'id': int,
+                'modification_time': text_type,
+                'string_count': int,
+                'description': text_type,
                 'source_hash': int,
                 'name': text_type,
-                'value_type': text_type,
-                'description': text_type,
+                'exclude_from_parse_flag': int,
+                'deleted_flag': int,
                 'parameter_definition': text_type,
-                'source_id': int,
-                'max_age_seconds': int,
-                'hash': int,
-                'preview_sensor_flag': int,
+                'delimiter': text_type,
                 'cache_row_id': int,
                 'category': text_type,
                 'creation_time': text_type,
-                'modification_time': text_type,
-                'string_count': int,
-                'exclude_from_parse_flag': int,
-                'deleted_flag': int,
-                'ignore_case_flag': int,
+                'hidden_flag': int,
                 'last_modified_by': text_type,
-                'delimiter': text_type,
+                'value_type': text_type,
+                'ignore_case_flag': int,
+                'preview_sensor_flag': int,
+                'hash': int,
+                'max_age_seconds': int,
+                'source_id': int,
             },
             complex_properties={
                 'parameters': ParameterList,
                 'string_hints': StringHintList,
-                'queries': SensorQueryList,
                 'subcolumns': SensorSubcolumnList,
+                'queries': SensorQueryList,
                 'metadata': MetadataList,
             },
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.hidden_flag = None
         self.id = None
+        self.modification_time = None
+        self.string_count = None
+        self.description = None
         self.source_hash = None
         self.name = None
-        self.value_type = None
-        self.description = None
+        self.exclude_from_parse_flag = None
+        self.deleted_flag = None
         self.parameter_definition = None
-        self.source_id = None
-        self.max_age_seconds = None
-        self.hash = None
-        self.preview_sensor_flag = None
+        self.delimiter = None
         self.cache_row_id = None
         self.category = None
         self.creation_time = None
-        self.modification_time = None
-        self.string_count = None
-        self.exclude_from_parse_flag = None
-        self.deleted_flag = None
-        self.ignore_case_flag = None
+        self.hidden_flag = None
         self.last_modified_by = None
-        self.delimiter = None
+        self.value_type = None
+        self.ignore_case_flag = None
+        self.preview_sensor_flag = None
+        self.hash = None
+        self.max_age_seconds = None
+        self.source_id = None
         self.parameters = None
         self.string_hints = None
-        self.queries = None
         self.subcolumns = None
+        self.queries = None
         self.metadata = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SensorList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``sensors``."""
+    """Python Object representation for Tanium SOAP XML tag: ``sensors``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'sensors'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3107,6 +3516,7 @@ class SensorList(BaseType):
             list_properties={
                 'sensor': Sensor,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -3115,18 +3525,25 @@ class SensorList(BaseType):
 
 
 class SensorQuery(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``query``."""
+    """Python Object representation for Tanium SOAP XML tag: ``query``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'query'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'signature': text_type,
-                'platform': text_type,
-                'script_type': text_type,
                 'script': text_type,
+                'script_type': text_type,
+                'platform': text_type,
+                'signature': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -3134,20 +3551,28 @@ class SensorQuery(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.signature = None
-        self.platform = None
-        self.script_type = None
         self.script = None
+        self.script_type = None
+        self.platform = None
+        self.signature = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SensorQueryList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``queries``."""
+    """Python Object representation for Tanium SOAP XML tag: ``queries``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'queries'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3161,6 +3586,7 @@ class SensorQueryList(BaseType):
             list_properties={
                 'query': SensorQuery,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3169,20 +3595,27 @@ class SensorQueryList(BaseType):
 
 
 class SensorSubcolumn(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``subcolumn``."""
+    """Python Object representation for Tanium SOAP XML tag: ``subcolumn``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'subcolumn'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'hidden_flag': int,
-                'name': text_type,
-                'value_type': text_type,
-                'exclude_from_parse_flag': int,
                 'index': int,
                 'ignore_case_flag': int,
+                'name': text_type,
+                'exclude_from_parse_flag': int,
+                'value_type': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -3190,22 +3623,30 @@ class SensorSubcolumn(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.hidden_flag = None
-        self.name = None
-        self.value_type = None
-        self.exclude_from_parse_flag = None
         self.index = None
         self.ignore_case_flag = None
+        self.name = None
+        self.exclude_from_parse_flag = None
+        self.value_type = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SensorSubcolumnList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``subcolumns``."""
+    """Python Object representation for Tanium SOAP XML tag: ``subcolumns``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'subcolumns'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3219,6 +3660,7 @@ class SensorSubcolumnList(BaseType):
             list_properties={
                 'subcolumn': SensorSubcolumn,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3227,18 +3669,25 @@ class SensorSubcolumnList(BaseType):
 
 
 class SoapError(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``soap_error``."""
+    """Python Object representation for Tanium SOAP XML tag: ``soap_error``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'soap_error'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
+                'object_name': text_type,
+                'object_request': text_type,
                 'exception_name': text_type,
                 'context': text_type,
-                'object_request': text_type,
-                'object_name': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -3246,20 +3695,28 @@ class SoapError(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
+        self.object_name = None
+        self.object_request = None
         self.exception_name = None
         self.context = None
-        self.object_request = None
-        self.object_name = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class StringHintList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``string_hints``."""
+    """Python Object representation for Tanium SOAP XML tag: ``string_hints``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'string_hints'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3273,6 +3730,7 @@ class StringHintList(BaseType):
             list_properties={
                 'string_hint': text_type,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3281,23 +3739,30 @@ class StringHintList(BaseType):
 
 
 class SystemSetting(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``system_setting``."""
+    """Python Object representation for Tanium SOAP XML tag: ``system_setting``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'system_setting'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'hidden_flag': int,
-                'read_only_flag': int,
                 'id': int,
-                'name': text_type,
+                'value': text_type,
+                'hidden_flag': int,
+                'cache_row_id': int,
                 'value_type': text_type,
                 'default_value': text_type,
+                'name': text_type,
                 'setting_type': text_type,
-                'value': text_type,
-                'cache_row_id': int,
+                'read_only_flag': int,
             },
             complex_properties={
                 'metadata': MetadataList,
@@ -3306,16 +3771,17 @@ class SystemSetting(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.hidden_flag = None
-        self.read_only_flag = None
         self.id = None
-        self.name = None
+        self.value = None
+        self.hidden_flag = None
+        self.cache_row_id = None
         self.value_type = None
         self.default_value = None
+        self.name = None
         self.setting_type = None
-        self.value = None
-        self.cache_row_id = None
+        self.read_only_flag = None
         self.metadata = None
         self.audit_data = None
         # no list properties defined in console.wsdl
@@ -3323,9 +3789,16 @@ class SystemSetting(BaseType):
 
 
 class SystemSettingList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``system_settings``."""
+    """Python Object representation for Tanium SOAP XML tag: ``system_settings``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'system_settings'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3339,6 +3812,7 @@ class SystemSettingList(BaseType):
             list_properties={
                 'system_setting': SystemSetting,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.cache_info = None
@@ -3347,26 +3821,33 @@ class SystemSettingList(BaseType):
 
 
 class SystemStatusAggregate(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``aggregate``."""
+    """Python Object representation for Tanium SOAP XML tag: ``aggregate``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'aggregate'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'send_none_count': int,
-                'send_ok_count': int,
-                'receive_backward_count': int,
-                'normal_count': int,
                 'slowlink_count': int,
-                'receive_none_count': int,
                 'receive_ok_count': int,
-                'send_backward_count': int,
-                'receive_forward_count': int,
-                'blocked_count': int,
+                'send_ok_count': int,
                 'leader_count': int,
+                'normal_count': int,
+                'send_none_count': int,
+                'blocked_count': int,
                 'send_forward_count': int,
+                'receive_backward_count': int,
+                'receive_forward_count': int,
+                'receive_none_count': int,
+                'send_backward_count': int,
             },
             complex_properties={
                 'versions': VersionAggregateList,
@@ -3374,28 +3855,36 @@ class SystemStatusAggregate(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.send_none_count = None
-        self.send_ok_count = None
-        self.receive_backward_count = None
-        self.normal_count = None
         self.slowlink_count = None
-        self.receive_none_count = None
         self.receive_ok_count = None
-        self.send_backward_count = None
-        self.receive_forward_count = None
-        self.blocked_count = None
+        self.send_ok_count = None
         self.leader_count = None
+        self.normal_count = None
+        self.send_none_count = None
+        self.blocked_count = None
         self.send_forward_count = None
+        self.receive_backward_count = None
+        self.receive_forward_count = None
+        self.receive_none_count = None
+        self.send_backward_count = None
         self.versions = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class SystemStatusList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``system_status``."""
+    """Python Object representation for Tanium SOAP XML tag: ``system_status``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'system_status'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3410,6 +3899,7 @@ class SystemStatusList(BaseType):
             list_properties={
                 'client_status': ClientStatus,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         self.aggregate = None
@@ -3419,25 +3909,32 @@ class SystemStatusList(BaseType):
 
 
 class UploadFile(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``upload_file``."""
+    """Python Object representation for Tanium SOAP XML tag: ``upload_file``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'upload_file'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'bytes': text_type,
                 'id': int,
-                'destination_file': text_type,
                 'key': text_type,
-                'file_size': int,
                 'force_overwrite': int,
-                'part_size': int,
-                'start_pos': int,
-                'file_cached': int,
-                'hash': text_type,
                 'percent_complete': int,
+                'start_pos': int,
+                'file_size': int,
+                'part_size': int,
+                'file_cached': int,
+                'destination_file': text_type,
+                'bytes': text_type,
+                'hash': text_type,
             },
             complex_properties={
                 # no complex properties defined in console.wsdl
@@ -3445,27 +3942,35 @@ class UploadFile(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.bytes = None
         self.id = None
-        self.destination_file = None
         self.key = None
-        self.file_size = None
         self.force_overwrite = None
-        self.part_size = None
-        self.start_pos = None
-        self.file_cached = None
-        self.hash = None
         self.percent_complete = None
+        self.start_pos = None
+        self.file_size = None
+        self.part_size = None
+        self.file_cached = None
+        self.destination_file = None
+        self.bytes = None
+        self.hash = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class UploadFileList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``file_parts``."""
+    """Python Object representation for Tanium SOAP XML tag: ``file_parts``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'file_parts'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3479,6 +3984,7 @@ class UploadFileList(BaseType):
             list_properties={
                 'upload_file': UploadFile,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3487,9 +3993,16 @@ class UploadFileList(BaseType):
 
 
 class UploadFileStatus(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``upload_file_status``."""
+    """Python Object representation for Tanium SOAP XML tag: ``upload_file_status``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'upload_file_status'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3505,6 +4018,7 @@ class UploadFileStatus(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.file_cached = None
         self.hash = None
@@ -3515,21 +4029,28 @@ class UploadFileStatus(BaseType):
 
 
 class User(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``user``."""
+    """Python Object representation for Tanium SOAP XML tag: ``user``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'user'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
                 'id': int,
+                'group_id': int,
+                'last_login': text_type,
+                'local_admin_flag': int,
                 'domain': text_type,
                 'name': text_type,
                 'active_session_count': int,
-                'last_login': text_type,
-                'local_admin_flag': int,
-                'group_id': int,
                 'deleted_flag': int,
             },
             complex_properties={
@@ -3540,14 +4061,15 @@ class User(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.id = None
+        self.group_id = None
+        self.last_login = None
+        self.local_admin_flag = None
         self.domain = None
         self.name = None
         self.active_session_count = None
-        self.last_login = None
-        self.local_admin_flag = None
-        self.group_id = None
         self.deleted_flag = None
         self.permissions = None
         self.roles = None
@@ -3557,9 +4079,16 @@ class User(BaseType):
 
 
 class UserList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``users``."""
+    """Python Object representation for Tanium SOAP XML tag: ``users``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'users'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3573,6 +4102,7 @@ class UserList(BaseType):
             list_properties={
                 'user': User,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3581,17 +4111,24 @@ class UserList(BaseType):
 
 
 class UserRole(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``role``."""
+    """Python Object representation for Tanium SOAP XML tag: ``role``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'role'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'description': text_type,
                 'id': int,
                 'name': text_type,
+                'description': text_type,
             },
             complex_properties={
                 'permissions': PermissionList,
@@ -3599,19 +4136,27 @@ class UserRole(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.description = None
         self.id = None
         self.name = None
+        self.description = None
         self.permissions = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class UserRoleList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``roles``."""
+    """Python Object representation for Tanium SOAP XML tag: ``roles``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'roles'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3625,6 +4170,7 @@ class UserRoleList(BaseType):
             list_properties={
                 'role': UserRole,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3633,16 +4179,23 @@ class UserRoleList(BaseType):
 
 
 class VersionAggregate(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``version``."""
+    """Python Object representation for Tanium SOAP XML tag: ``version``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'version'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'filtered': int,
                 'version_string': text_type,
+                'filtered': int,
                 'count': int,
             },
             complex_properties={
@@ -3651,9 +4204,10 @@ class VersionAggregate(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.filtered = None
         self.version_string = None
+        self.filtered = None
         self.count = None
         # no complex properties defined in console.wsdl
         # no list properties defined in console.wsdl
@@ -3661,9 +4215,16 @@ class VersionAggregate(BaseType):
 
 
 class VersionAggregateList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``versions``."""
+    """Python Object representation for Tanium SOAP XML tag: ``versions``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'versions'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3677,6 +4238,7 @@ class VersionAggregateList(BaseType):
             list_properties={
                 'version': VersionAggregate,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3685,18 +4247,25 @@ class VersionAggregateList(BaseType):
 
 
 class WhiteListedUrl(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``white_listed_url``."""
+    """Python Object representation for Tanium SOAP XML tag: ``white_listed_url``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'white_listed_url'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
             self,
             simple_properties={
-                'chunk_id': text_type,
                 'id': int,
-                'download_seconds': int,
+                'chunk_id': text_type,
                 'url_regex': text_type,
+                'download_seconds': int,
             },
             complex_properties={
                 'metadata': MetadataList,
@@ -3704,20 +4273,28 @@ class WhiteListedUrl(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
-        self.chunk_id = None
         self.id = None
-        self.download_seconds = None
+        self.chunk_id = None
         self.url_regex = None
+        self.download_seconds = None
         self.metadata = None
         # no list properties defined in console.wsdl
         self._set_init_values()
 
 
 class WhiteListedUrlList(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``white_listed_urls``."""
+    """Python Object representation for Tanium SOAP XML tag: ``white_listed_urls``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'white_listed_urls'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3731,6 +4308,7 @@ class WhiteListedUrlList(BaseType):
             list_properties={
                 'white_listed_url': WhiteListedUrl,
             },
+            **kwargs
         )
         # no simple properties defined in console.wsdl
         # no complex properties defined in console.wsdl
@@ -3739,9 +4317,16 @@ class WhiteListedUrlList(BaseType):
 
 
 class XmlError(BaseType):
-    """Python Object representation for Tanium SOAP XML tag: ``error``."""
+    """Python Object representation for Tanium SOAP XML tag: ``error``.
+
+    This class is dynamically generated from the console.wsdl for the Tanium Server SOAP API.
+    """
 
     _SOAP_TAG = 'error'
+
+    CONSTANTS = [
+        # no constants defined in console.wsdl
+    ]
 
     def __init__(self, **kwargs):
         BaseType.__init__(
@@ -3757,6 +4342,7 @@ class XmlError(BaseType):
             list_properties={
                 # no list properties defined in console.wsdl
             },
+            **kwargs
         )
         self.error_context = None
         self.exception = None
@@ -3765,12 +4351,17 @@ class XmlError(BaseType):
         # no list properties defined in console.wsdl
         self._set_init_values()
 
+
 BASE_TYPES = {}
 """Maps Tanium XML soap tags to the Tanium NG Python BaseType object"""
-
-# TODO ADD ME TO BUILDER
-BASE_TYPES['result_infos'] = ResultInfo  # static
-BASE_TYPES['result_sets'] = ResultSet  # static
+BASE_TYPES['result_infos'] = ResultInfoList  # static
+BASE_TYPES['result_info'] = ResultInfo  # static
+BASE_TYPES['result_sets'] = ResultSetList  # static
+BASE_TYPES['result_set'] = ResultSet  # static
+BASE_TYPES['cs'] = ColumnList  # static
+BASE_TYPES['c'] = Column  # static
+BASE_TYPES['rs'] = RowList  # static
+BASE_TYPES['r'] = Row  # static
 
 BASE_TYPES['action'] = Action
 BASE_TYPES['actions'] = ActionList
