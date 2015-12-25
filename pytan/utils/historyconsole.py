@@ -6,6 +6,7 @@ import platform
 
 mylog = logging.getLogger(__name__)
 
+# TODO figure out pyreadline later
 if platform.system().lower() == 'windows':
     from . import readline
 else:

@@ -7,6 +7,7 @@
   - [HUMAN PARSING](#human-parsing)
   - [HANDLER/MAIN](#handlermain)
   - [UTILS](#utils)
+- [TODO figure out pyreadline later](#todo-figure-out-pyreadline-later)
   - [TEST](#test)
   - [PLATFORM](#platform)
   - [LOW](#low)
@@ -52,7 +53,6 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * argparse for specs/left/right/etc
 
 ## HANDLER/MAIN
-* play with absolute imports again? (from pytan import blah instead of from . import blah)
 * create_parent_group_obj broken, fix it and add debug logging!
 * add logger to tanium_ng and tickle_ng
 * increase loglevel range to 50
@@ -82,6 +82,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## UTILS
 * remove external deps from utils, move version into utils
+# TODO figure out pyreadline later
 
 ## TEST
 * add approve action to pytan (need doc update and test update)
