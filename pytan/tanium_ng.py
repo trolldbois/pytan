@@ -9,7 +9,9 @@
 
 """
 # BEGIN STATIC CODE
+# This module is meant to be a completely standalone module!
 import sys
+import json
 
 # Useful for very coarse version differentiation.
 PY3 = sys.version_info[0] == 3
@@ -3495,6 +3497,19 @@ class Sensor(BaseType):
         self.metadata = None
         # no list properties defined in console.wsdl
         self._set_init_values()
+
+    @property
+    def parameter_definition_dict(self):
+        # TODO: ADD parameter_definition_dict TO BUILDER
+        try:
+            result = json.loads(self.parameter_definition)
+        except Exception as e:
+            result = {
+                "msg": "Unable to parse parameter_definition as JSON!",
+                "parameter_definition": self.parameter_definition,
+                "exception": e,
+            }
+        return result
 
 
 class SensorList(BaseType):

@@ -41,6 +41,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * move tickle bools to constants
 * add result info to tickle.from_sse_xml (passthrough from handler)
 * add utility method to deserialize json in parameter_definition (will need to come up with manual override in dynamic generator, maybe __getattr__ with lookup reference to _JSONS=['parameter_definition'])
+        # TODO: ADD parameter_definition_dict TO BUILDER
 
 ## SESSION
 * http/s proxy
