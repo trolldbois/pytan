@@ -15,8 +15,12 @@ import sys
 PY3 = sys.version_info[0] == 3
 if PY3:
     text_type = str  # noqa
+    string_types = str,  # noqa
+    integer_types = int,  # noqa
 else:
     text_type = unicode  # noqa
+    string_types = basestring,  # noqa
+    integer_types = (int, long)  # noqa
 
 
 class TaniumNextGenException(Exception):
@@ -25,12 +29,13 @@ class TaniumNextGenException(Exception):
 
 class IncorrectTypeException(TaniumNextGenException):
     """Raised when a property is not of the expected type"""
-    def __init__(self, obj, name, value, expected):
+    def __init__(self, obj, name, value, expected, original=None):
         self.name = name
         self.expected = expected
         self.value = value
-        err = "Object {!r} attribute '{}' expected type '{}', got '{}' (value: '{}')"
-        err = err.format(obj, name, expected.__name__, type(value).__name__, value)
+        self.original = original
+        err = "Object {!r} attribute '{}' expected type '{}', got '{}' (value: '{}') (orig: {})"
+        err = err.format(obj, name, expected.__name__, type(value).__name__, value, original)
         TaniumNextGenException.__init__(self, err)
 
 
@@ -248,13 +253,13 @@ class BaseType(object):
         return value
 
     def _check_simple(self, name, value):
-        if not isinstance(value, self._SIMPLE_PROPS[name]):
-            if self._SIMPLE_PROPS[name] == int:
-                try:
-                    value = self._SIMPLE_PROPS[name](value)
-                except:
-                    raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name])
-            else:
+        if self._SIMPLE_PROPS[name] == int:
+            try:
+                value = int(self._SIMPLE_PROPS[name](value))
+            except ValueError as e:
+                raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name], e)
+        elif self._SIMPLE_PROPS[name] == text_type:
+            if not isinstance(value, string_types):
                 raise IncorrectTypeException(self, name, value, self._SIMPLE_PROPS[name])
         return value
 
