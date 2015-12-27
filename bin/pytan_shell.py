@@ -39,6 +39,7 @@ path_adds = [os.path.abspath(os.path.expanduser(aa)) for aa in path_adds]
 # END BOOTSTRAP CODE
 
 import pytan  # noqa
+from pytan import tickle  # noqa
 i = "pytan.shell.{}".format(my_name)
 __import__(i)
 module = eval(i)
@@ -54,76 +55,12 @@ if __name__ == "__main__":
     result = worker.get_result()
     exec(worker.get_exec())
 
-# from pytan.utils import taniumpy  # noqa
-# from pytan.utils import constants  # noqa
-# from pytan import utils  # noqa
-# self = handler  # noqa
+# BROKEN DUE TO HIDE SOURCE SPEC GETTING ADDED TO A NEWLIST!:
+#    [{'value': 'Computer Name', 'field': 'name'}]
+#    [{'value': '0', 'field': 'source_id'}]
+# spec1 = {'sensor': {'value': "Computer Name"}}
+# v = handler.ask_manual(left=[spec1], get_results=False)
+# print(v)
 
-
-# Computer Name, that =:TPT1.pytanlab.com
-spec1 = {
-    'sensor': {'value': "Computer Name"},
-    # 'sensor_object': {'id': 3, 'hash': "3409330187"},  # NEEDED FROM SENSOR
-    'filter': {'value': "TPT1.pytanlab.com", 'operator': 'Equal', 'and_flag': 1},
-    # NEEDED FROM USER
-    # 'group': {'value': 492},
-    # 'group_object': None,  # NEEDED FROM USER
-}
-
-# Computer Name
-spec2 = {
-    'sensor': {'value': "Computer Name"},
-    # 'sensor_object': {'id': 3, 'hash': "3409330187"},  # NEEDED FROM SENSOR
-}
-
-# Folder Contents{folderPath=C:\\Program Files}, that =:Folder : Windows NT
-spec3 = {
-    'sensor': {'value': "Folder Contents"},
-    # 'sensor_object': {'id': 508, 'hash': "3881863289"},  # NEEDED FROM SENSOR
-    'parameters': {'folderPath': 'C:\\Program Files'},  # NEEDED FROM USER
-    'filter': {'value': "Folder : Windows NT", 'operator': 'Equal', 'and_flag': 1},
-    # NEEDED FROM USER
-}
-
-# Folder Contents{folderPath=C:\\Program Files}, that re:Folder : Windows NT
-spec5 = {
-    'sensor': {'value': "Folder Contents"},
-    # 'sensor_object': {'id': 508, 'hash': "3881863289"},  # NEEDED FROM SENSOR
-    'parameters': {'folderPath': 'C:\\Program Files'},  # NEEDED FROM USER
-    'filter': {'value': ".*", 'operator': 'RegexMatch', 'and_flag': 0},  # NEEDED FROM USER
-}
-
-# Folder Contents{folderPath=C:\\Program Files}
-spec4 = {
-    'sensor': {'value': "Folder Contents"},
-    # 'sensor_object': {'id': 508, 'hash': "3881863289"},  # NEEDED FROM SENSOR
-    'parameters': {'folderPath': 'C:\\Program Files'},  # NEEDED FROM USER
-}
-
-# # left = [spec1, spec4]
-# # right = [spec1, spec3, spec5]
-# v = handler.ask_manual(left=[spec1, spec4], right=[spec1, spec3, spec5], get_results=False)
-# # x = handler.get_groups({'value': 615}, limit_exact=1)
-
-# q = v.question_object
-# group = q.group
-# pytan.utils.tanium_obj.recurse_group(group)
-a = handler.tanium_ng.SensorList()
-b = handler.tanium_ng.SensorList()
-c = handler.tanium_ng.Sensor()
-
-from pytan.tanium_ng import *  # noqa
-from pytan.tickle import *  # noqa
-
-
-def eval_timing(c):
-    import datetime
-    t_start = datetime.datetime.now()
-    r = eval(c)
-    t_end = datetime.datetime.now()
-    t_elapsed = t_end - t_start
-    m = "Timing info for {} -- START: {}, END: {}, ELAPSED: {}, RESPONSE LEN: {}"
-    m = m.format(c, t_start, t_end, t_elapsed, len(r))
-    print(m)
-    result = (c, r, t_start, t_end, t_elapsed)
-    return result
+v = handler.ask_parsed(question_text='computer name', picker=1, get_results=False)
+rd = handler.get_result_data(v.question_object)

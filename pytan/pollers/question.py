@@ -6,16 +6,29 @@
 
 import time
 import logging
+import datetime
 
-from datetime import datetime
-from datetime import timedelta
+from pytan import PytanError, Store, tanium_ng
+from pytan.utils import get_percent
+from pytan.tickle import seconds_from_now, timestr_to_datetime
+from pytan.pollers.constants import Q_COMPLETE_PCT
+from pytan.pollers.constants import Q_POLLING_SECS
+from pytan.pollers.constants import Q_TIMEOUT_SECS
+from pytan.pollers.constants import Q_EXPIRE_SECS
+from pytan.pollers.constants import Q_PASSED_DONE
+from pytan.pollers.constants import Q_EST_TOTAL_DONE
 
-from pytan import tanium_ng
-from pytan.utils import constants, tools, exceptions, helpstr
+MYLOG = logging.getLogger(__name__)
+PROGRESSLOG = logging.getLogger(__name__ + ".progress")
+RESOLVERLOG = logging.getLogger(__name__ + ".resolver")
 
-mylog = logging.getLogger(__name__)
-progresslog = logging.getLogger(__name__ + ".progress")
-resolverlog = logging.getLogger(__name__ + ".resolver")
+HELPS = Store()
+HELPS.gri = "Re-issuing a GetResultInfo since the estimated_total came back 0, {}"
+HELPS.reget = "ID: {} attribute {!r} is not set, issuing GetObject to get the full object"
+
+
+class QuestionPollingError(PytanError):
+    pass
 
 
 class QuestionPoller(object):
@@ -40,101 +53,169 @@ class QuestionPoller(object):
     complete_pct : int/float, optional
         * default: 99
         * Percentage of mr_tested out of estimated_total to consider the question "done"
-    override_timeout_secs : int, optional
+    TIMEOUT_secs : int, optional
         * default: 0
         * If supplied and not 0, timeout in seconds instead of when object expires
-    override_estimated_total : int, optional
+    est_total_done : int, optional
         * instead of getting number of systems that should see this question from
         result_info.estimated_total, use this number
-    force_passed_done_count : int, optional
+    passed_done : int, optional
         * when this number of systems have passed the right hand side of the question, consider
         the question complete
     """
 
-    OBJECT_TYPE = 'Question'
-    """valid type of object that can be passed in as obj to __init__"""
-
-    STR_ATTRS = constants.Q_STR_ATTRS
-    """Class attributes to include in __str__ output"""
-
-    COMPLETE_PCT_DEFAULT = constants.Q_COMPLETE_PCT_DEFAULT
-    """default value for self.complete_pct"""
-
-    POLLING_SECS_DEFAULT = constants.Q_POLLING_SECS_DEFAULT
-    """default value for self.polling_secs"""
-
-    OVERRIDE_TIMEOUT_SECS_DEFAULT = constants.Q_OVERRIDE_TIMEOUT_SECS_DEFAULT
-    """default value for self.override_timeout_secs"""
-
-    EXPIRATION_ATTR = constants.Q_EXPIRATION_ATTR
-    """attribute of self.obj that contains the expiration for this object"""
-
-    EXPIRY_FALLBACK_SECS = constants.Q_EXPIRY_FALLBACK_SECS
-    """If the EXPIRATION_ATTR of `obj` can't be automatically determined, then this is used as a
-    fallback for timeout - polling will failed after this many seconds if completion not reached"""
-
-    obj = None
+    OBJ = None
     """The object for this poller"""
 
-    handler = None
+    HANDLER = None
     """The handler.Handler object for this poller"""
 
-    result_info = None
+    INFO = None
     """This will be updated with the ResultInfo object during run() calls"""
 
-    _stop = False
+    LAST_INFO = None
+    """This will be updated with previous ResultInfo object during run() calls"""
+
+    RUN_START = None
+    """datetime.datetime object that indicates when run() was started"""
+
+    TIMEOUT = None
+    """
+    datetime.datetime object that will be created when run() starts if
+    self.OVERRIDE_TIMEOUT_SECS is not 0. this will be self.RUN_START + self.TIMEOUT_SECS.
+    """
+
+    POLLER_RESULT = None
+    """bool that run() stores the overall result in"""
+
+    PASSED_EQ_TOTAL = None
+    """bool that run() stores the result of passed_eq_est_total_loop()"""
+
+    CURRENT_PCT = 0
+    """int/float that run() stores the current percent completion in"""
+
+    LOOP_COUNT = 0
+    """int/float that run() stores the current loop count in"""
+
+    PROGRESS_STR = ''
+    """str that run() stores the current progress in"""
+
+    TIMING_STR = ''
+    """str that run() stores the current timing info in"""
+
+    COMPLETE_PCT = Q_COMPLETE_PCT
+    """int/float to consider the question done when mr_tested is percent of estimated_total"""
+
+    POLLING_SECS = Q_POLLING_SECS
+    """int of seconds to wait in between run() loops"""
+
+    TIMEOUT_SECS = Q_TIMEOUT_SECS
+    """int of timeout in seconds instead of when object expires, 0 uses objects expiration"""
+
+    EXPIRE_SECS = Q_EXPIRE_SECS
+    """int of timeout in seconds to use if the EXPIRATION_ATTR of `obj` can't be determined"""
+
+    EST_TOTAL_DONE = Q_EST_TOTAL_DONE
+    """int to use in place of estimated_total from result info when considering COMPLETE_PCT"""
+
+    PASSED_DONE = Q_PASSED_DONE
+    """
+    int of passed_count to consider question done instead of using estimated_total
+    passed_count is the number of systems that have passed the right hand side of the question
+    """
+
+    EXPIRATION = None
+    """datetime.datetime object created from the _EXPIRATION_ATTR of self.OBJ"""
+
+    MYLOG = MYLOG
+    """logger used by this class for logging general messages"""
+
+    RESOLVERLOG = RESOLVERLOG
+    """logger used by this class for logging attribute resolving messages"""
+
+    PROGRESSLOG = PROGRESSLOG
+    """logger used by this class for logging progress messages"""
+
+    _ARG_OVERRIDES = [
+        'polling_secs',
+        'timeout_secs',
+        'complete_pct',
+        'est_total_done',
+        'passed_done',
+    ]
+    """list of arguments that can be overridden via kwargs to __init__"""
+
+    _OBJECT_TYPE = tanium_ng.Question
+    """valid type of tanium_ng object that can be passed in as obj to __init__"""
+
+    _STR_ATTRS = [
+        'OBJECT_INFO',
+        'POLLING_SECS',
+        'TIMEOUT',
+        'COMPLETE_PCT',
+        'CURRENT_PCT',
+        'EXPIRATION',
+    ]
+    """list of str of class attributes to include in __str__ output"""
+
+    _EXPIRATION_ATTR = 'expiration'
+    """attribute of self.OBJ that contains the expiration for this object"""
+
+    _STOP = False
     """Controls whether a run() loop should stop or not"""
 
+    _ID = -1
+    """int that stores the ID of OBJ"""
+
     def __init__(self, handler, obj, **kwargs):
-        polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
-        complete_pct = kwargs.get('complete_pct', self.COMPLETE_PCT_DEFAULT)
-        override_timeout = kwargs.get('override_timeout_secs', self.OVERRIDE_TIMEOUT_SECS_DEFAULT)
-        forced_passed_done_count = kwargs.get('force_passed_done_count', 0)
-
-        from pytan.handler import Handler as BaseHandler
+        self.HANDLER = handler
+        self.OBJ = obj
         self.setup_logging()
-
-        if not isinstance(handler, BaseHandler):
-            err = "{} is not a valid handler instance! Must be a: {!r}"
-            err = err.format(type(handler), BaseHandler)
-            raise exceptions.PollingError(err)
-
-        self.OBJECT_TYPE = getattr(tanium_ng, self.OBJECT_TYPE)
-
-        if not isinstance(obj, self.OBJECT_TYPE):
-            err = "{} is not a valid object type! Must be a: {}"
-            err = err.format(type(obj), self.OBJECT_TYPE)
-            raise exceptions.PollingError(err)
-
-        self.handler = handler
-        self.obj = obj
-        self.polling_secs = polling_secs
-        self.complete_pct = complete_pct
-        self.override_timeout_secs = override_timeout
-        self.force_passed_done_count = forced_passed_done_count
-
-        self.id_str = "ID {}: ".format(getattr(self.obj, 'id', '-1'))
-        self.obj_id = self._derive_attribute(attr='id', fallback=None)
-        self.id_str = "ID {}: ".format(self.obj_id)
-        self.poller_result = None
+        self.check_handler()
+        self.check_obj()
+        self.get_overrides(**kwargs)
         self._post_init(**kwargs)
 
     def __str__(self):
         class_name = self.__class__.__name__
-        attrs = ", ".join(['{0}: "{1}"'.format(x, getattr(self, x, None)) for x in self.STR_ATTRS])
-        result = "{} {}"
-        result = result.format(class_name, attrs)
+        attrs = ['{0}: "{1}"'.format(x.lower(), getattr(self, x, None)) for x in self.STR_ATTRS]
+        attrs = ", ".join(attrs)
+        result = "{} {}".format(class_name, attrs)
         return result
+
+    def get_overrides(self, **kwargs):
+        [
+            setattr(self, k.upper(), kwargs.get(k, getattr(self, k.upper())))
+            for k in self._ARG_OVERRIDES
+        ]
+
+    def check_handler(self):
+        if self.HANDLER.__class__.__name__ != 'Handler':
+            err = "{} is not a valid Pytan Handler instance!"
+            err = err.format(type(self.HANDLER))
+            self.MYLOG.critical(err)
+            raise QuestionPollingError(err)
+
+    def check_obj(self):
+        if not isinstance(self.OBJ, self._OBJECT_TYPE):
+            err = "{} is not a valid object type! Must be a: {}"
+            err = err.format(type(self.OBJ), self._OBJECT_TYPE)
+            self.MYLOG.critical(err)
+            raise QuestionPollingError(err)
 
     def setup_logging(self):
         """Setup loggers for this object"""
-        self.mylog = mylog
-        self.progresslog = progresslog
-        self.resolverlog = resolverlog
+        self.MYLOG = MYLOG
+        self.PROGRESSLOG = PROGRESSLOG
+        self.RESOLVERLOG = RESOLVERLOG
 
     def _post_init(self, **kwargs):
         """Post init class setup"""
-        self.override_estimated_total = kwargs.get('override_estimated_total', 0)
+
+        self._ID = getattr(self.OBJ, 'id', self._ID)
+        self._ID = self._derive_attribute(attr='id', fallback=None)
+        self.POLLER_RESULT = None
+
         self._derive_expiration(**kwargs)
         self._derive_object_info(**kwargs)
 
@@ -144,25 +225,26 @@ class QuestionPoller(object):
         This is used in the case that the obj supplied does not have all the metadata
         available
         """
-        kwargs['obj'] = self.obj
-        obj = self.handler._find(kwargs)
+        kwargs['obj'] = self.OBJ
+        obj = self.HANDLER.SESSION.find(kwargs)
 
         if not obj:
             err = "Unable to find object: {}"
-            err = err.format(self.obj)
-            raise exceptions.PollingError(err)
+            err = err.format(self.OBJ)
+            self.MYLOG.critical(err)
+            raise QuestionPollingError(err)
 
-        self.obj = obj
+        self.OBJ = obj
 
     def _derive_attribute(self, attr, **kwargs):
-        """Derive an attributes value from self.obj
+        """Derive an attributes value from self.OBJ
 
-        Will re-fetch self.obj if the attribute is not set
+        Will re-fetch self.OBJ if the attribute is not set
 
         Parameters
         ----------
         attr : string
-            string of attribute name to fetch from self.obj
+            string of attribute name to fetch from self.OBJ
         fallback : string
             value to fallback to if it still can't be accessed after re-fetching the obj
             if fallback is None, an exception will be raised
@@ -170,41 +252,40 @@ class QuestionPoller(object):
         Returns
         -------
         val : perspective
-            The value of the attr from self.obj
+            The value of the attr from self.OBJ
 
         """
         fallback = kwargs.get('fallback', '')
 
-        result = getattr(self.obj, attr, None)
+        result = getattr(self.OBJ, attr, None)
 
         # if attr isn't available on the object, maybe it's only a partial object
         # let's use the handler to re-fetch it
         if result is None:
-            m = "{}attribute {!r} is not set, issuing GetObject to get the full object"
-            m = m.format(self.id_str, attr)
-            self.resolverlog.debug(m)
-            kwargs['pytan_help'] = m
+            kwargs['pytan_help'] = HELPS.reget.format(self._ID, attr)
+            self.RESOLVERLOG.debug(kwargs['pytan_help'])
             self._refetch_obj(**kwargs)
 
-        result = getattr(self.obj, attr, '')
+        result = getattr(self.OBJ, attr, '')
         if result is None:
             if fallback is None:
-                err = "{}{!r} is None, even after re-fetching object"
-                err = err.format(self.id_str, attr)
-                raise exceptions.PollingError(err)
+                err = "ID: {} {!r} is None, even after re-fetching object"
+                err = err.format(self._ID, attr)
+                self.MYLOG.critical(err)
+                raise QuestionPollingError(err)
 
-            m = "{}attribute {!r} is not set after re-fetching object - using fallback of {}"
-            m = m.format(self.id_str, attr, fallback)
-            self.resolverlog.debug(m)
+            m = "ID: {} attribute {!r} is not set after re-fetching object - using fallback of {}"
+            m = m.format(self._ID, attr, fallback)
+            self.RESOLVERLOG.debug(m)
             result = fallback
 
-        m = "{}attribute '{}' resolved to '{}'"
-        m = m.format(self.id_str, attr, result)
-        self.mylog.debug(m)
+        m = "ID: {} attribute '{}' resolved to '{}'"
+        m = m.format(self._ID, attr, result)
+        self.MYLOG.debug(m)
         return result
 
     def _derive_object_info(self, **kwargs):
-        """Derive self.object_info from self.obj"""
+        """Derive self.OBJECT_INFO from self.OBJ"""
         kwargs['attr'] = 'query_text'
         kwargs['fallback'] = 'Unable to fetch question text'
         question_text = self._derive_attribute(**kwargs)
@@ -216,20 +297,21 @@ class QuestionPoller(object):
         object_info = "Question ID: {}, Query: {}"
         object_info = object_info.format(question_id, question_text)
 
-        m = "{}'object_info' resolved to '{}'"
-        m = m.format(self.id_str, object_info)
-        self.resolverlog.debug(m)
-        self.object_info = object_info
+        m = "ID: {} 'object_info' resolved to '{}'"
+        m = m.format(self._ID, object_info)
+        self.RESOLVERLOG.debug(m)
+        self.OBJECT_INFO = object_info
 
     def _derive_expiration(self, **kwargs):
         """Derive the expiration datetime string from a object
 
-        Will generate a datetime string from self.EXPIRY_FALLBACK_SECS if unable to get the
-        expiration from the object (self.obj) itself.
+        Will generate a datetime string from self.EXPIRE_SECS if unable to get the
+        expiration from the object (self.OBJ) itself.
         """
-        kwargs['attr'] = self.EXPIRATION_ATTR
-        kwargs['fallback'] = tools.seconds_from_now(secs=self.EXPIRY_FALLBACK_SECS)
-        self.expiration = self._derive_attribute(**kwargs)
+        kwargs['attr'] = self._EXPIRATION_ATTR
+        kwargs['fallback'] = seconds_from_now(secs=self.EXPIRE_SECS)
+        self.EXPIRATION = self._derive_attribute(**kwargs)
+        self.EXPIRATION = timestr_to_datetime(timestr=self.EXPIRATION)
 
     def run_callback(self, callback, pct, **kwargs):
         """Utility method to find a callback in callbacks dict and run it"""
@@ -242,14 +324,14 @@ class QuestionPoller(object):
 
         m = "Running callback: {} with args: {}"
         m = m.format(callback, kwargs)
-        self.mylog.debug(m)
+        self.MYLOG.debug(m)
 
         try:
             callbacks[callback](**kwargs)
         except Exception as e:
             err = "Exception occurred in '{}' Callback: {}"
             err = err.format(callback, e)
-            self.mylog.warning(err)
+            self.MYLOG.warning(err)
 
     def set_complect_pct(self, val): # noqa
         """Set the complete_pct to a new value
@@ -257,9 +339,9 @@ class QuestionPoller(object):
         Parameters
         ----------
         val : int/float
-            float value representing the new percentage to consider self.obj complete
+            float value representing the new percentage to consider self.OBJ complete
         """
-        self.complete_pct = val
+        self.COMPLETE_PCT = val
 
     def get_result_info(self, **kwargs):
         """Simple utility wrapper around :func:`handler.Handler.get_result_info`
@@ -278,11 +360,11 @@ class QuestionPoller(object):
         gri_retry_count = kwargs.get('gri_retry_count', 10)
         gri_retry_sleep = kwargs.get('gri_retry_sleep', 1)
 
-        kwargs['obj'] = self.obj
+        kwargs['obj'] = self.OBJ
         current_try = 1
 
         while True:
-            result = self.handler.get_result_info(**kwargs)
+            result = self.HANDLER.get_result_info(**kwargs)
 
             if result.estimated_total != 0:
                 break
@@ -291,12 +373,11 @@ class QuestionPoller(object):
             if current_try >= gri_retry_count:
                 err = "Estimated Total of Clients is 0 -- no clients available?, {}"
                 err = err.format(attempt_text)
-                raise exceptions.PollingError(err)
+                raise QuestionPollingError(err)
             else:
                 current_try += 1
-                myhelp = helpstr.GRI_RETRY.format(attempt_text)
-                kwargs['pytan_help'] = myhelp
-                self.mylog.debug(myhelp)
+                kwargs['pytan_help'] = HELPS.gri.format(attempt_text)
+                self.MYLOG.debug(kwargs['pytan_help'])
                 time.sleep(gri_retry_sleep)
                 continue
         return result
@@ -308,8 +389,8 @@ class QuestionPoller(object):
         -------
         result_data : :class:`tanium_ng.ResultSet`
         """
-        kwargs['obj'] = self.obj
-        result = self.handler.get_result_data(**kwargs)
+        kwargs['obj'] = self.OBJ
+        result = self.HANDLER.get_result_data(**kwargs)
         return result
 
     def run(self, **kwargs):
@@ -341,45 +422,44 @@ class QuestionPoller(object):
             * Any callback can call setPercentCompleteThreshold to change what "done" means on the
             fly
         """
-        self.start = datetime.utcnow()
-        self.expiration_timeout = tools.timestr_to_datetime(timestr=self.expiration)
+        self.RUN_START = datetime.datetime.utcnow()
 
-        if self.override_timeout_secs:
-            td_obj = timedelta(seconds=self.override_timeout_secs)
-            self.override_timeout = self.start + td_obj
+        if self.TIMEOUT_SECS:
+            td_obj = datetime.timedelta(seconds=self.TIMEOUT_SECS)
+            self.TIMEOUT = self.RUN_START + td_obj
         else:
-            self.override_timeout = None
+            self.TIMEOUT = None
 
-        self.passed_eq_total = self.passed_eq_est_total_loop(**kwargs)
-        self.poller_result = all([self.passed_eq_total])
-        return self.poller_result
+        self.PASSED_EQ_TOTAL = self.passed_eq_est_total_loop(**kwargs)
+        self.POLLER_RESULT = all([self.PASSED_EQ_TOTAL])
+        return self.POLLER_RESULT
 
     def passed_eq_est_total_loop(self, **kwargs):
-        """Method to poll Result Info for self.obj until the percentage of 'passed' out of
+        """Method to poll Result Info for self.OBJ until the percentage of 'passed' out of
         'estimated_total' is greater than or equal to self.complete_pct
         """
         # current percentage tracker
-        self.pct = None
+        self.CURRENT_PCT = None
         # loop counter
-        self.loop_count = 1
+        self.LOOP_COUNT = 1
         # establish a previous result_info that's empty
-        self.previous_result_info = tanium_ng.ResultInfo()
+        self.LAST_INFO = tanium_ng.ResultInfo()  # TODO FIX FOR NEW RI OBJ
 
-        while not self._stop:
+        while not self._STOP:
             # perform a GetResultInfo SOAP call
-            kwargs['pytan_help'] = ''
-            self.result_info = self.get_result_info(**kwargs)
+            del(kwargs['pytan_help'])
+            self.INFO = self.get_result_info(**kwargs)
 
             # derive the current percentage of completion by calculating percentage of
             # mr_tested out of estimated_total
             # mr_tested = number of systems that have seen the question
             # estimated_total = rough estimate of total number of systems
             # passed = number of systems that have passed any filters for the question
-            tested = self.result_info.mr_tested
-            est_total = self.override_estimated_total or self.result_info.estimated_total
-            passed = self.result_info.passed
+            tested = self.INFO.mr_tested
+            est_total = self.EST_TOTAL_DONE or self.INFO.estimated_total
+            passed = self.INFO.passed
 
-            new_pct = tools.get_percent(base=tested, amount=est_total)
+            new_pct = get_percent(base=tested, amount=est_total)
             new_pct_str = "{0:.0f}%".format(new_pct)
             complete_pct_str = "{0:.0f}%".format(self.complete_pct)
 
@@ -388,60 +468,60 @@ class QuestionPoller(object):
                 "MR Tested: {0.mr_tested}, MR Passed: {0.mr_passed}, "
                 "Est Total: {0.estimated_total}, Row Count: {0.row_count}, Override Est Total: {1}"
             )
-            prog = prog.format(self.result_info, self.override_estimated_total)
-            self.progress_str = prog
+            prog = prog.format(self.INFO, self.EST_TOTAL_DONE)
+            self.PROGRESS_STR = prog
 
-            if self.override_timeout:
-                time_till_expiry = self.override_timeout - datetime.utcnow()
+            if self.TIMEOUT:
+                time_till_expiry = self.TIMEOUT - datetime.datetime.utcnow()
             else:
-                time_till_expiry = self.expiration_timeout - datetime.utcnow()
+                time_till_expiry = self.EXPIRATION - datetime.datetime.utcnow()
 
             timing = (
                 "Timing: Started: {}, Expiration: {}, Override Timeout: {}, "
                 "Elapsed Time: {}, Left till expiry: {}, Loop Count: {}"
             )
             timing = timing.format(
-                self.start,
-                self.expiration_timeout,
-                self.override_timeout,
-                datetime.utcnow() - self.start,
+                self.RUN_START,
+                self.EXPIRATION,
+                self.TIMEOUT,
+                datetime.datetime.utcnow() - self.RUN_START,
                 time_till_expiry,
-                self.loop_count,
+                self.LOOP_COUNT,
             )
-            self.timing_str = timing
+            self.TIMING_STR = timing
 
             # print a progress debug string
-            m = "{}{}"
-            m = m.format(self.id_str, prog)
-            self.progresslog.debug(m)
+            m = "ID: {} {}"
+            m = m.format(self._ID, prog)
+            self.PROGRESSLOG.debug(m)
 
             # print a timing debug string
-            m = "{}{}"
-            m = m.format(self.id_str, timing)
-            self.progresslog.debug(m)
+            m = "ID: {} {}"
+            m = m.format(self._ID, timing)
+            self.PROGRESSLOG.debug(m)
 
             # check to see if progress has changed, if so run the callback
             progress_changed = any([
-                self.previous_result_info.tested != self.result_info.tested,
-                self.previous_result_info.passed != self.result_info.passed,
-                self.previous_result_info.mr_tested != self.result_info.mr_tested,
-                self.previous_result_info.mr_passed != self.result_info.mr_passed,
-                self.previous_result_info.estimated_total != self.result_info.estimated_total,
-                self.pct != new_pct,
+                self.LAST_INFO.tested != self.INFO.tested,
+                self.LAST_INFO.passed != self.INFO.passed,
+                self.LAST_INFO.mr_tested != self.INFO.mr_tested,
+                self.LAST_INFO.mr_passed != self.INFO.mr_passed,
+                self.LAST_INFO.estimated_total != self.INFO.estimated_total,
+                self.CURRENT_PCT != new_pct,
             ])
 
             if progress_changed:
-                m = "{}Progress Changed {} ({} of {})"
-                m = m.format(self.id_str, new_pct_str, tested, est_total)
-                self.progresslog.info(m)
+                m = "ID: {} Progress Changed {} ({} of {})"
+                m = m.format(self._ID, new_pct_str, tested, est_total)
+                self.PROGRESSLOG.info(m)
                 kwargs['callback'] = 'ProgressChanged'
                 kwargs['pct'] = new_pct
                 self.run_callback(**kwargs)
 
             # check to see if answers have changed, if so run the callback
             answers_changed = any([
-                self.previous_result_info.tested != self.result_info.tested,
-                self.previous_result_info.passed != self.result_info.passed,
+                self.LAST_INFO.tested != self.INFO.tested,
+                self.LAST_INFO.passed != self.INFO.passed,
             ])
 
             if answers_changed:
@@ -451,51 +531,50 @@ class QuestionPoller(object):
 
             # check to see if new_pct has reached complete_pct threshold, if so return True
             if new_pct >= self.complete_pct:
-                m = "{}Reached Threshold of {} ({} of {})"
-                m = m.format(self.id_str, complete_pct_str, tested, est_total)
-                self.mylog.info(m)
+                m = "ID: {} Reached Threshold of {} ({} of {})"
+                m = m.format(self._ID, complete_pct_str, tested, est_total)
+                self.MYLOG.info(m)
                 kwargs['callback'] = 'AnswersComplete'
                 kwargs['pct'] = new_pct
                 self.run_callback(**kwargs)
                 return True
 
-            if self.force_passed_done_count and passed >= self.force_passed_done_count:
-                m = "{}Reached forced passed done count of {} ({} of {})"
-                m = m.format(self.id_str, self.force_passed_done_count, tested, est_total)
-                self.mylog.info(m)
+            if self.PASSED_DONE and passed >= self.PASSED_DONE:
+                m = "ID: {} Reached forced passed done count of {} ({} of {})"
+                m = m.format(self._ID, self.PASSED_DONE, tested, est_total)
+                self.MYLOG.info(m)
                 kwargs['callback'] = 'AnswersComplete'
                 kwargs['pct'] = new_pct
                 self.run_callback(**kwargs)
                 return True
 
-            # check to see if override timeout is specified, if so and we have passed it, return
-            # False
-            if self.override_timeout and datetime.utcnow() >= self.override_timeout:
-                m = "{}Reached override timeout of {}"
-                m = m.format(self.id_str, self.override_timeout)
-                self.mylog.warning(m)
+            # check to see if timeout is specified, if so and we have passed it, return False
+            if self.TIMEOUT and datetime.datetime.utcnow() >= self.TIMEOUT:
+                m = "ID: {} Reached timeout of {}"
+                m = m.format(self._ID, self.TIMEOUT)
+                self.MYLOG.warning(m)
                 return False
 
             # check to see if we have passed the actions expiration timeout, if so return False
-            if datetime.utcnow() >= self.expiration_timeout:
-                m = "{}Reached expiration timeout of {}"
-                m = m.format(self.id_str, self.expiration_timeout)
-                self.mylog.warning(m)
+            if datetime.datetime.utcnow() >= self.EXPIRATION_TIMEOUT:
+                m = "ID: {} Reached expiration timeout of {}"
+                m = m.format(self._ID, self.EXPIRATION_TIMEOUT)
+                self.MYLOG.warning(m)
                 return False
 
             # if stop is called, return True
-            if self._stop:
-                m = "{}Stop called at {}"
-                m = m.format(self.id_str, new_pct_str)
-                self.mylog.info(m)
+            if self._STOP:
+                m = "ID: {} Stop called at {}"
+                m = m.format(self._ID, new_pct_str)
+                self.MYLOG.info(m)
                 return False
 
             # update our class variables to the new values determined by this loop
-            self.pct = new_pct
-            self.previous_result_info = self.result_info
+            self.CURRENT_PCT = new_pct
+            self.LAST_INFO = self.INFO
 
-            time.sleep(self.polling_secs)
-            self.loop_count += 1
+            time.sleep(self.POLLING_SECS)
+            self.LOOP_COUNT += 1
 
     def stop(self):
-        self._stop = True
+        self._STOP = True

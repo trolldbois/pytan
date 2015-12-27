@@ -5,10 +5,16 @@ import pprint
 import getpass
 import argparse
 
-from pytan import input
-from pytan import utils
-from pytan.utils import constants, exceptions, ShellParser
-from pytan.utils.version import __version__
+from pytan import PytanError, input
+from pytan.handler import Handler
+from pytan.shell import ShellParser, HistoryConsole
+from pytan.version import __version__
+from pytan.constants import HANDLER_DEFAULTS
+from pytan.pollers.constants import Q_COMPLETE_PCT, Q_POLLING_SECS
+
+
+class VersionMismatchError(PytanError):
+    pass
 
 
 class Base(object):
@@ -17,13 +23,8 @@ class Base(object):
     INTERACTIVE = False
 
     def __init__(self, **kwargs):
-        from pytan import handler
-        self.handler_module = handler
-        # self.tanium_obj = tanium_obj
-        self.utils = utils
-        self.constants = constants
-        self.input = input
-        self.ShellParser = ShellParser
+        self.Handler = Handler
+        self.HistoryConsole = HistoryConsole
         self.SUPPRESS = argparse.SUPPRESS
         self.pf = pprint.pformat
 
@@ -43,7 +44,7 @@ class Base(object):
         pass
 
     def set_base(self):
-        self.base = self.ShellParser(
+        self.base = ShellParser(
             my_file=self.my_file,
             description=self.DESCRIPTION,
             add_help=False,
@@ -54,7 +55,7 @@ class Base(object):
         self.add_session_opts()
 
     def set_parser(self):
-        self.parser = self.ShellParser(
+        self.parser = ShellParser(
             my_file=self.my_file,
             description=self.DESCRIPTION,
             parents=[self.base]
@@ -88,7 +89,7 @@ class Base(object):
             help='Hostname/ip of SOAP Server',
         )
         port_h = "Port to use when connecting to SOAP Server (default: {})"
-        port_h = port_h.format(self.constants.DEFAULTS['port'])
+        port_h = port_h.format(HANDLER_DEFAULTS['port'])
         self.grp.add_argument(
             '--port',
             required=False, action='store', default=self.SUPPRESS, type=int, dest='port',
@@ -104,14 +105,14 @@ class Base(object):
             help='Logging level to use, increase for more verbosity (default: 0)',
         )
         fl_h = "Log file to write to if --enable_file_log (default: {})"
-        fl_h = fl_h.format(self.constants.DEFAULTS['logfile_output'])
+        fl_h = fl_h.format(HANDLER_DEFAULTS['logfile_output'])
         self.grp.add_argument(
             '--file_log',
             required=False, action='store', default=self.SUPPRESS, dest='logfile_output',
             help=fl_h
         )
         puc_h = "PyTan User Config file to use for PyTan arguments (default: {})"
-        puc_h = puc_h.format(self.constants.DEFAULTS['config_file'])
+        puc_h = puc_h.format(HANDLER_DEFAULTS['config_file'])
         self.grp.add_argument(
             '--config_file',
             required=False, action='store', default=self.SUPPRESS, dest='config_file',
@@ -359,7 +360,7 @@ class Base(object):
         self.grp.add_argument(
             '--complete_pct',
             required=False, type=float, action='store', dest='complete_pct',
-            default=self.constants.Q_COMPLETE_PCT_DEFAULT,
+            default=Q_COMPLETE_PCT,
             help='Percent to consider questions complete',
         )
         self.grp.add_argument(
@@ -371,7 +372,7 @@ class Base(object):
         self.grp.add_argument(
             '--polling_secs',
             required=False, type=int, action='store', dest='polling_secs',
-            default=self.constants.Q_POLLING_SECS_DEFAULT,
+            default=Q_POLLING_SECS,
             help='Number of seconds to wait in between GetResultInfo loops while polling for '
             'each question',
         )
@@ -415,7 +416,7 @@ class Base(object):
     def _input_prompts(self):
         """Utility function to prompt for username, `, and host if empty"""
         puc_kwarg = self.args.__dict__.get('config_file', '')
-        puc = puc_kwarg or self.constants.DEFAULTS['config_file']
+        puc = puc_kwarg or HANDLER_DEFAULTS['config_file']
         puc = os.path.expanduser(puc)
 
         puc_dict = {}
@@ -450,7 +451,7 @@ class Base(object):
 
         if not session_id:
             if not username:
-                username = self.input('Tanium Username: ')
+                username = input('Tanium Username: ')
                 self.args.username = username.strip()
 
             if not password:
@@ -458,7 +459,7 @@ class Base(object):
                 self.args.password = password.strip()
 
         if not host:
-            host = self.input('Tanium Host: ')
+            host = input('Tanium Host: ')
             self.args.host = host.strip()
 
         return self.args
@@ -494,15 +495,13 @@ class Base(object):
             err = "PyTan v{} is not greater than {} v{}"
             err = err.format(version.__version__, self.my_name, version)
             self.mylog.critical(err)
-            raise exceptions.VersionMismatchError(err)
+            raise VersionMismatchError(err)
         return True
 
     def interactive_check(self):
         self.console = None
         if self.INTERACTIVE:
-            from pytan.utils import historyconsole
-            self.historyconsole = historyconsole
-            self.console = self.historyconsole.HistoryConsole()
+            self.console = self.HistoryConsole()
         return self.console
 
     def get_parser_args(self, grps):
@@ -533,7 +532,7 @@ class Base(object):
             'PyTan Session Options',
         ]
         kwargs = self.get_parser_args(grps)
-        self.handler = self.handler_module.Handler(**kwargs)
+        self.handler = self.Handler(**kwargs)
         return self.handler
 
     def get_result(self):

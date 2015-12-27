@@ -1,10 +1,12 @@
-"""Logging module for :mod:`pytan`."""
-
-import copy
 import logging
 
-from pytan import string_types, integer_types, text_type
-from pytan.utils import constants, exceptions
+from pytan import PytanError, string_types, integer_types, text_type
+from pytan.parsers.constants import SPEC_FIELD_FALLBACKS
+from pytan.parsers.constants import OPERATORS_PYTAN
+from pytan.parsers.constants import OPERATORS_TANIUM
+from pytan.parsers.constants import TRUE_TYPES
+from pytan.parsers.constants import FALSE_TYPES
+from pytan.parsers.constants import FIELD_TYPES
 
 mylog = logging.getLogger(__name__)
 
@@ -26,7 +28,7 @@ def get_str(spec):
     """
     # TODO
     err = "TODO"
-    raise exceptions.PytanError(err)
+    raise PytanError(err)
 
 
 class Spec(object):
@@ -48,14 +50,14 @@ class Spec(object):
             ttxt = ', '.join([x.__name__ for x in types])
             err = "{}: key {!r} must be one of type {!r}; supplied type {!r} value {!r}"
             err = err.format(self.meerr, k, ttxt, type(d[k]).__name__, d[k])
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
     def has_dict_key(self, k, d):
         # check if d has key k
         if k not in d or d.get(k, '') == '':
             err = "{} key {!r} must be supplied and not empty in {!r}!"
             err = err.format(self.meerr, k, d)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
     def chk_value(self, spec):
         # if spec is a dict with out value defined
@@ -78,7 +80,7 @@ class Spec(object):
                 val_type = type(spec['value']).__name__
                 err = "{}: key 'value' must be of type {!r}; supplied type {!r} value {!r}"
                 err = err.format(self.meerr, obj_txt, val_type, spec['value'])
-                raise exceptions.PytanError(err)
+                raise PytanError(err)
         return spec
 
     def chk_field(self, spec):
@@ -94,7 +96,7 @@ class Spec(object):
         # if field not specified, derive it based off fallbacks if they exist in single_obj
         # {"value": "Computer Name"}
         if 'field' not in spec:
-            for x in constants.SPEC_FIELD_FALLBACKS:
+            for x in SPEC_FIELD_FALLBACKS:
                 if x not in self.props:
                     continue
                 spec['field'] = x
@@ -104,14 +106,14 @@ class Spec(object):
         if not spec.get('field', ''):
             err = "{} key 'field' must be supplied in {!r}, must be one of: {}"
             err = err.format(self.meerr, spec, self.props_txt)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         # if field is not a valid property in single_class
         # {"value": "Computer Name", "field": "die"}
         if spec['field'] not in self.props:
             err = "{} key 'field' value {!r} not valid for {!r}, must be one of: {}"
             err = err.format(self.meerr, spec['field'], self.single_name, self.props_txt)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         # validate field is a string
         self.chk_dict_key('field', spec, string_types)
@@ -123,8 +125,8 @@ class Spec(object):
         self.chk_dict_key('operator', spec, string_types)
 
         # if operator is a pytan extended operator, map it back to a Tanium operator
-        if spec['operator'].lower() in constants.OPERATORS_PYTAN:
-            emap = constants.OPERATORS_PYTAN[spec['operator'].lower()]
+        if spec['operator'].lower() in OPERATORS_PYTAN:
+            emap = OPERATORS_PYTAN[spec['operator'].lower()]
             pre_value = emap.get('pre_value', '')
             post_value = emap.get('post_value', '')
             spec['operator'] = emap.get('operator')
@@ -137,7 +139,7 @@ class Spec(object):
         # validate operator is a valid Tanium Operator
         op_valid = [
             x
-            for x in constants.OPERATORS_TANIUM
+            for x in OPERATORS_TANIUM
             if x.lower() == spec['operator'].lower()
         ]
 
@@ -148,26 +150,26 @@ class Spec(object):
         # operator did not match a Tanium operator
         # {"value": "Computer Name", "field": "name", "operator": "die"}
         if not op_valid:
-            op_list = ', '.join(constants.OPERATORS_TANIUM + constants.OPERATORS_PYTAN.keys())
+            op_list = ', '.join(OPERATORS_TANIUM + OPERATORS_PYTAN.keys())
             err = "{} key 'operator' value {!r} invalid, must be one of: {}"
             err = err.format(self.meerr, spec['operator'], op_list)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
         return spec
 
     def chk_not_flag(self, spec):
         # validate not_flag is a valid true or false type
-        if spec['not_flag'] in constants.TRUE_TYPES:
+        if spec['not_flag'] in TRUE_TYPES:
             spec['not_flag'] = 1
-        elif spec['not_flag'] in constants.FALSE_TYPES:
+        elif spec['not_flag'] in FALSE_TYPES:
             spec['not_flag'] = 0
         else:
             # not_flag did not match a valid type
             # {"value": "Computer Name", "field": "name", "not_flag": "die"}
-            types_txt = constants.TRUE_TYPES + constants.FALSE_TYPES
+            types_txt = TRUE_TYPES + FALSE_TYPES
             types_txt = ', '.join([repr(x) for x in types_txt])
             err = "{} key 'not_flag' value {!r} invalid, must be one of: {}"
             err = err.format(self.meerr, spec['not_flag'], types_txt)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
         return spec
 
     def chk_field_type(self, spec):
@@ -176,8 +178,8 @@ class Spec(object):
 
         # validate field_type is a valid field type
         type_valid = [
-            constants.FIELD_TYPES[x]
-            for x in constants.FIELD_TYPES
+            FIELD_TYPES[x]
+            for x in FIELD_TYPES
             if x.lower() == spec['field_type'].lower()
         ]
 
@@ -187,134 +189,8 @@ class Spec(object):
         # field_type did not match a valid field type
         # {"value": "Computer Name", "field": "name", "field_type": "die"}
         if not type_valid:
-            type_list = ', '.join(constants.FIELD_TYPES)
+            type_list = ', '.join(FIELD_TYPES)
             err = "{} key 'field_type' value {!r} invalid, must be one of: {}"
             err = err.format(self.meerr, spec['field_type'], type_list)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
         return spec
-
-
-class GetObject(Spec):
-    """pass."""
-
-    def post_init(self, all_class, spec, **kwargs):
-        """pass."""
-        self.single_class = all_class()._LIST_TYPE
-        self.single_name = self.single_class.__name__
-        self.single_obj = self.single_class()
-        self.props = self.single_obj._SIMPLE_PROPS
-        self.props_txt = ', '.join(self.props)
-        self.me = "{}() for object {!r}"
-        self.me = self.me.format(self.__class__.__name__, self.single_class.__name__)
-        self.meerr = "{}.{}".format(__name__, self.me)
-
-        # check that spec is a dict
-        self.chk_dict_key('spec', {'spec': spec}, (dict,))
-
-        # make a copy of spec into result
-        self.original_spec = spec
-        self.parsed_spec = copy.deepcopy(self.original_spec)
-
-        # check that field key exists and is valid
-        self.parsed_spec = self.chk_field(self.parsed_spec)
-
-        # check that value key exists and is valid
-        self.parsed_spec = self.chk_value(self.parsed_spec)
-
-        # if operator key exists, parse & validate
-        if 'operator' in self.parsed_spec:
-            self.parsed_spec = self.chk_operator(self.parsed_spec)
-
-        if 'not_flag' in self.parsed_spec:
-            self.parsed_spec = self.chk_not_flag(self.parsed_spec)
-
-        if 'field_type' in self.parsed_spec:
-            self.parsed_spec = self.chk_field_type(self.parsed_spec)
-
-        # if changed, log the change
-        if self.original_spec != self.parsed_spec:
-            m = "{} parsed from {!r} into {!r}"
-            m = m.format(self.me, self.original_spec, self.parsed_spec)
-            mylog.info(m)
-        else:
-            m = "{} parsed without change {!r}"
-            m = m.format(self.me, self.parsed_spec)
-            mylog.info(m)
-
-
-class FilterObject(Spec):
-
-    def post_init(self, spec, **kwargs):
-        """pass."""
-        self.single_class = self.tanium_ng.Filter()
-        self.single_name = self.single_class.__name__
-        self.single_obj = self.single_class()
-        self.props = self.single_obj._simple_properties
-        self.props_txt = ', '.join(self.props)
-        self.me = "{}() for object {!r}"
-        self.me = self.me.format(self.__class__.__name__, self.single_class.__name__)
-        self.meerr = "{}.{}".format(__name__, self.me)
-
-        # check that spec is a dict
-        self.chk_dict_key('spec', {'spec': spec}, (dict,))
-
-        # make a copy of spec into result
-        self.original_spec = spec
-        self.parsed_spec = copy.deepcopy(self.original_spec)
-
-        # check that field key exists and is valid
-        self.parsed_spec = self.chk_field(self.parsed_spec)
-
-        # check that value key exists and is valid
-        self.parsed_spec = self.chk_value(self.parsed_spec)
-
-        # if operator key exists, parse & validate
-        if 'operator' in self.parsed_spec:
-            self.parsed_spec = self.chk_operator(self.parsed_spec)
-
-        if 'not_flag' in self.parsed_spec:
-            self.parsed_spec = self.chk_not_flag(self.parsed_spec)
-
-        if 'field_type' in self.parsed_spec:
-            self.parsed_spec = self.chk_field_type(self.parsed_spec)
-
-        # if changed, log the change
-        if self.original_spec != self.parsed_spec:
-            m = "{} parsed from {!r} into {!r}"
-            m = m.format(self.me, self.original_spec, self.parsed_spec)
-            mylog.info(m)
-        else:
-            m = "{} parsed without change {!r}"
-            m = m.format(self.me, self.parsed_spec)
-            mylog.info(m)
-
-
-class LeftSide(Spec):
-
-    def post_init(self, specs, **kwargs):
-        """pass."""
-        self.me = "{}()".format(self.__class__.__name__)
-        self.meerr = "{}.{}".format(__name__, self.me)
-
-        self.chk_dict_key('specs', {'specs': specs}, (dict, list, tuple,))
-
-        self.original_specs = specs
-
-        if not isinstance(self.original_specs, (list, tuple)):
-            self.original_specs = [self.original_specs]
-
-        self.parsed_specs = [self.parse_spec(s) for s in self.original_specs]
-
-    def parse_spec(self, spec):
-        parsed_spec = copy.deepcopy(spec)
-        # check that spec is a dict
-        self.chk_dict_key('spec', {'spec': spec}, (dict,))
-
-        # check that sensor key exists and is a dict
-        self.has_dict_key('sensor', spec)
-        self.chk_dict_key('sensor', spec, (dict,))
-
-        # parse the sensor dict
-        sensor_parser = GetObject(self.tanium_ng.SensorList, spec['sensor'])
-        parsed_spec['sensor'] = sensor_parser.parsed_spec
-        return parsed_spec

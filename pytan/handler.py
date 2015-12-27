@@ -5,12 +5,22 @@ import json
 import logging
 import datetime
 
-from pytan import string_types
-from pytan import session, tanium_ng, pollers, parsers, tickle
-from pytan.utils import exceptions, log, tools, constants, helpers, Store, helpstr
-from pytan.utils.version import __version__
+from pytan import PytanError, string_types, Store, tanium_ng
+from pytan.tickle import from_sse_xml, create_question_obj, create_cf_listobj
+from pytan.tickle import obfuscate, deobfuscate, shrink_obj, check_limits
+from pytan.session import Session
+from pytan.pollers import QuestionPoller, SSEPoller
+from pytan.parsers import GetObject
+from pytan.version import __version__
+from pytan.constants import (
+    PYTAN_KEY, HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LEVEL, DEBUG_BUMP
+)
+from pytan.utils import (
+    get_all_logs, set_all_logs, create_log_handler, set_log_tz, add_log_handler,
+    remove_log_handler
+)
 
-mylog = logging.getLogger(__name__)
+MYLOG = logging.getLogger(__name__)
 
 
 class Handler(object):
@@ -42,7 +52,7 @@ class Handler(object):
         * default: None
         * session_id to use while authenticating instead of username/password
     pytan_user_config : str, optional
-        * default: constants.PYTAN_USER_CONFIG
+        * default: PYTAN_USER_CONFIG
         * JSON file containing key/value pairs to override class variables
 
     Notes
@@ -54,7 +64,7 @@ class Handler(object):
 
     See Also
     --------
-    :data:`constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names
+    :data:`LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names
     and their logger levels
     :class:`session.Session` : Session object used by Handler
 
@@ -68,54 +78,62 @@ class Handler(object):
         >>> handler = pytan.Handler(username='username', password='password', host='host')
     """
 
+    MYLOG = MYLOG
+
+    SESSION = None
+
+    ARGS_DB = {}
+
     def __init__(self, **kwargs):
         super(Handler, self).__init__()
-        self.tanium_ng = tanium_ng
-        self.mylog = mylog
-        if kwargs.get('loglevel', 0) >= 30:
-            log.install_console()
-            log.set_all_levels()
+        self.MYLOG = MYLOG
+
+        add_override(**kwargs)
 
         self._parse_args(kwargs)
         self._validate_args()
-        log.setup(**self.args_db['parsed_args'])
+
+        setup_log(**self.ARGS_DB['parsed_args'])
+
         self._log_args()
 
         # establish our Session to the Tanium server
-        self.session = session.Session(**self.args_db['parsed_args'])
+        self.SESSION = Session(**self.ARGS_DB['parsed_args'])
 
     def __repr__(self):
         return self.__str__()
 
     def __str__(self):
         str_tpl = "PyTan v{} Handler for {}".format
-        ret = str_tpl(__version__, self.session)
+        ret = str_tpl(__version__, self.SESSION)
         return ret
 
     def read_config_file(self):
         """Read a PyTan User Config and update the current class variables"""
-        puc_env = self.args_db['env_args'].get('config_file', '')
-        puc_kwarg = self.args_db['original_args'].get('config_file', '')
-        puc_def = self.args_db['default_args']['config_file']
+        puc_env = self.ARGS_DB['env_args'].get('config_file', '')
+        puc_kwarg = self.ARGS_DB['original_args'].get('config_file', '')
+        puc_def = self.ARGS_DB['default_args']['config_file']
         puc = puc_env or puc_kwarg or puc_def
         puc = os.path.expanduser(puc)
         puc_dict = {}
 
-        if not os.path.isfile(puc):
+        if os.path.isfile(puc):
+            try:
+                with open(puc) as fh:
+                    puc_dict = json.load(fh)
+            except Exception as e:
+                err = "PyTan User config file at: {} is invalid, exception: {}"
+                err = err.format(puc, e)
+                self.MYLOG.exception(err)
+                raise PytanError(err)
+            else:
+                m = "PyTan User config file successfully loaded: {} "
+                m = m.format(puc)
+                self.MYLOG.debug(m)
+        else:
             m = "Unable to find PyTan User config file at: {}".format
-            self.mylog.debug(m(puc))
+            self.MYLOG.debug(m(puc))
             return puc_dict
-
-        try:
-            with open(puc) as fh:
-                puc_dict = json.load(fh)
-            m = "PyTan User config file successfully loaded: {} "
-            m = m.format(puc)
-            self.mylog.debug(m)
-        except Exception as e:
-            err = "PyTan User config file at: {} is invalid, exception: {}"
-            err = err.format(puc, e)
-            raise exceptions.PytanError(err)
         return puc_dict
 
     def write_config_file(self, **kwargs):
@@ -133,15 +151,15 @@ class Handler(object):
         result : str
             * filename of PyTan User Config that was written to
         """
-        result = kwargs.get('config_file', '') or self.args_db['parsed_args']['config_file']
+        result = kwargs.get('config_file', '') or self.ARGS_DB['parsed_args']['config_file']
         result = os.path.expanduser(result)
 
-        puc_dict = dict(self.args_db['parsed_args'])
+        puc_dict = dict(self.ARGS_DB['parsed_args'])
 
         # obfuscate the password
         if puc_dict['password']:
-            puc_dict['password'] = tools.obfuscate(
-                key=constants.PYTAN_KEY,
+            puc_dict['password'] = obfuscate(
+                key=PYTAN_KEY,
                 string=puc_dict['password'],
             )
 
@@ -151,11 +169,11 @@ class Handler(object):
         except Exception as e:
             err = "Failed to write PyTan User config: '{}', exception: {}"
             err = err.format(result, e)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
         else:
             m = "PyTan User config file successfully written: {} "
             m = m.format(result)
-            self.mylog.info(m)
+            self.MYLOG.info(m)
         return result
 
     def get_server_version(self, **kwargs):
@@ -166,7 +184,7 @@ class Handler(object):
         result: str
             * Version of Tanium Server in string format
         """
-        result = self.session.get_server_version(**kwargs)
+        result = self.SESSION.get_server_version(**kwargs)
         return result
 
     def ask_manual(self, **kwargs):
@@ -175,7 +193,7 @@ class Handler(object):
         right = kwargs.get('right', [])
         max_age_seconds = kwargs.get('max_age_seconds', 0)
         get_results = kwargs.get('get_results', True)
-        helpers.check_for_help(kwargs)
+        # helpers.check_for_help(kwargs)
 
         # parser = parsers.LeftSide(left)
         # print parser.parsed_specs
@@ -183,26 +201,24 @@ class Handler(object):
         left = self._get_spec_objects(left)
         right = self._get_spec_objects(right)
 
-        kwargs['obj'] = tickle.create_question_obj(left=left, right=right)
+        kwargs['obj'] = create_question_obj(left=left, right=right)
 
         if max_age_seconds:
             kwargs['obj'].max_age_seconds = int(max_age_seconds)
 
-        self.obj = kwargs['obj']
-
         m = "Question Built: {}"
-        m = m.format(kwargs['obj'].to_json(kwargs['obj']))
-        self.mylog.debug(m)
+        m = m.format(kwargs['obj'].to_json())
+        self.MYLOG.debug(m)
 
         kwargs['obj'] = self._add(**kwargs)
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
         m = m.format(kwargs['obj'])
-        self.mylog.info(m)
+        self.MYLOG.info(m)
 
         result = Store()
         result.question_object = kwargs['obj']
-        result.poller_object = pollers.QuestionPoller(handler=self, **kwargs)
+        result.poller_object = QuestionPoller(handler=self, **kwargs)
         result.question_results = None
         result.poller_success = None
 
@@ -256,7 +272,7 @@ class Handler(object):
 
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved question to ask"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         # creatStore() object for storing the results
         result = Store()
@@ -268,37 +284,37 @@ class Handler(object):
         result.saved_question_object = self.get_saved_questions(limit_exact=1, **kwargs)
 
         # get the last asked question for this saved question
-        kwargs['pytan_help'] = helpstr.SQ_GETQ
+        kwargs['pytan_help'] = HELPS.sq_getq
         kwargs['obj'] = result['saved_question_object'].question
-        result.question_object = self.session.find(**kwargs)
+        result.question_object = self.SESSION.find(**kwargs)
 
         if refresh:
             # if GetResultInfo is issued on a saved question, Tanium will issue a new question
             # to fetch new/updated results
-            kwargs['pytan_help'] = helpstr.SQ_RI
+            kwargs['pytan_help'] = HELPS.sq_ri
             kwargs['obj'] = result.saved_question_object
             self.get_result_info(**kwargs)
 
             # re-fetch the saved question object to get the newly asked question info
-            kwargs['pytan_help'] = helpstr.SQ_RESQ
-            kwargs['obj'] = tickle.shrink_obj(obj=result.saved_question_object)
-            result.saved_question_object = self.session.find(**kwargs)
+            kwargs['pytan_help'] = HELPS.sq_resq
+            kwargs['obj'] = shrink_obj(obj=result.saved_question_object)
+            result.saved_question_object = self.SESSION.find(**kwargs)
 
             # get the last asked question for this saved question
-            kwargs['pytan_help'] = helpstr.SQ_GETQ
+            kwargs['pytan_help'] = HELPS.sq_getq
             kwargs['obj'] = result.saved_question_object.question
-            result.question_object = self.session.find(**kwargs)
+            result.question_object = self.SESSION.find(**kwargs)
 
             m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
             m = m.format(kwargs['obj'])
-            self.mylog.info(m)
+            self.MYLOG.info(m)
 
             # setup a poller for the last question for this saved question
             poll_args = {}
             poll_args.update(kwargs)
             poll_args['obj'] = result.question_object
             poll_args['handler'] = self
-            result.poller_object = pollers.QuestionPoller(**poll_args)
+            result.poller_object = QuestionPoller(**poll_args)
 
         if get_results:
             # run the poller if one exists to wait for answers to complete
@@ -322,24 +338,24 @@ class Handler(object):
         -------
         result : :class:`tanium_ng.parse_result_group.ParseResultGroup`
         """
-        if not self.session.platform_is_6_5(**kwargs):
+        if not self.SESSION.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
             m = m.format(self.get_server_version(**kwargs))
-            raise exceptions.UnsupportedVersionError(m)
+            raise UnsupportedVersionError(m)
 
         obj = tanium_ng.ParseJob()
         obj.question_text = question_text
         obj.parser_version = 2
 
         m = "ParseJob Built: {}"
-        m = m.format(obj.to_json(obj))
-        self.mylog.debug(m)
+        m = m.format(obj.to_json())
+        self.MYLOG.debug(m)
 
         pq_args = {}
         pq_args.update(kwargs)
         pq_args['obj'] = obj
 
-        result = self.session.add(**pq_args)
+        result = self.SESSION.add(**pq_args)
         return result
 
     def ask_parsed(self, question_text, **kwargs):
@@ -388,20 +404,20 @@ class Handler(object):
         picker = kwargs.get('picker', 0)
         get_results = kwargs.get('get_results', True)
 
-        if not self.session.platform_is_6_5(**kwargs):
+        if not self.SESSION.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}"
-            m = m.format(self.session.server_version)
-            raise exceptions.UnsupportedVersionError(m)
+            m = m.format(self.SESSION.server_version)
+            raise UnsupportedVersionError(m)
 
         pq_args = {}
         pq_args.update(kwargs)
         pq_args['question_text'] = question_text
-        pq_args['pytan_help'] = helpstr.PJ
+        pq_args['pytan_help'] = HELPS.pj
         parse_job_results = self.parse_query(**pq_args)
 
         if not parse_job_results:
             m = "Question Text '{}' was unable to be parsed into a valid query text by the server"
-            raise exceptions.ServerParseError(m)
+            raise ParseJobError(m)
 
         pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}"
         pw = (
@@ -410,35 +426,35 @@ class Handler(object):
         )
 
         if picker is 0:
-            self.mylog.critical(pw)
+            self.MYLOG.critical(pw)
             for idx, x in enumerate(parse_job_results):
-                self.mylog.critical(pi.format(idx + 1, x))
-            raise exceptions.PickerError(pw)
+                self.MYLOG.critical(pi.format(idx + 1, x))
+            raise PickerError(pw)
 
         try:
             picked_parse_job = parse_job_results[picker - 1]
         except:
             m = "You supplied an invalid picker index {} - {}"
             m = m.format(picker, pw)
-            self.mylog.critical(m)
+            self.MYLOG.critical(m)
 
             for idx, x in enumerate(parse_job_results):
-                self.mylog.critical(pi.format(idx + 1, x))
-            raise exceptions.PickerError(pw)
+                self.MYLOG.critical(pi.format(idx + 1, x))
+            raise PickerError(pw)
 
         # add our Question and get a Question ID back
         kwargs['obj'] = picked_parse_job.question
 
         m = "Question Picked: {}"
-        m = m.format(kwargs['obj'].to_json(kwargs['obj']))
-        self.mylog.debug(m)
+        m = m.format(kwargs['obj'].to_json())
+        self.MYLOG.debug(m)
 
-        kwargs['pytan_help'] = helpstr.PJ_ADD
+        kwargs['pytan_help'] = HELPS.pj_add
         kwargs['obj'] = self._add(**kwargs)
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
         m = m.format(kwargs['obj'])
-        self.mylog.info(m)
+        self.MYLOG.info(m)
 
         result = Store()
         result.parse_results = parse_job_results
@@ -449,7 +465,7 @@ class Handler(object):
         poll_args = {}
         poll_args.update(kwargs)
         poll_args['handler'] = self
-        result.poller_object = pollers.QuestionPoller(**poll_args)
+        result.poller_object = QuestionPoller(**poll_args)
 
         if get_results:
             # poll the Question ID returned above to wait for results
@@ -521,7 +537,7 @@ class Handler(object):
     #         :class:`tanium_ng.result_info.ResultInfo`
     #         the initial GetResultInfo call done before getting results
     #         * `poller_object` :
-    #         :class:`pytan.pollers.ActionPoller`
+    #         :class:`pytan.ActionPoller`
     #         poller object used to wait until all results are in before getting `action_results`
     #         * `poller_success` : None if `get_results` == False, elsewise True or False
     #         * `action_results` :
@@ -548,8 +564,8 @@ class Handler(object):
 
     #     See Also
     #     --------
-    #     :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
-    #     :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+    #     :data:`FILTER_MAPS` : valid filter dictionaries for filters
+    #     :data:`OPTION_MAPS` : valid option dictionaries for options
     #     :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow
     #     used to create and add the action object
     #     """
@@ -599,7 +615,7 @@ class Handler(object):
 
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved action to approve"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         # get the saved_question object the user passed in
         sa_obj = self.get_saved_actions(limit_exact=1, **kwargs)
@@ -609,13 +625,13 @@ class Handler(object):
         result.approved_flag = 1
 
         # we dont want to re-fetch the object, so use sessions add instead of handlers add
-        kwargs['pytan_help'] = helpstr.SAA
+        kwargs['pytan_help'] = HELPS.saa
         kwargs['obj'] = result
-        result = self.session.add(**kwargs)
+        result = self.SESSION.add(**kwargs)
 
         m = 'Action approved successfully: {}'
         m = m.format(result)
-        self.mylog.debug(m)
+        self.MYLOG.debug(m)
         return result
 
     def stop_action(self, *args, **kwargs):
@@ -635,7 +651,7 @@ class Handler(object):
 
         if not kwargs['specs']:
             err = "Must supply arg 'specs' for identifying the saved action to approve"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         # get the action object the user passed in
         a_obj_before = self.get_actions(limit_exact=1, **kwargs)
@@ -643,22 +659,22 @@ class Handler(object):
         result = tanium_ng.ActionStop()
         result.action = a_obj_before
 
-        kwargs['pytan_help'] = helpstr.STOPA
+        kwargs['pytan_help'] = HELPS.stopa
         kwargs['obj'] = result
-        result = self.session.add(**kwargs)
+        result = self.SESSION.add(**kwargs)
 
-        kwargs['pytan_help'] = helpstr.STOPAR
+        kwargs['pytan_help'] = HELPS.stopar
         kwargs['obj'] = a_obj_before
-        a_obj_after = self.session.find(**kwargs)
+        a_obj_after = self.SESSION.find(**kwargs)
 
         if a_obj_after.stopped_flag:
             m = 'Action stopped successfully, ID of action stop: {0.id}'
             m = m.format(result)
-            self.mylog.debug(m)
+            self.MYLOG.debug(m)
         else:
             m = "Action not stopped successfully, json of action after issuing StopAction: {}"
             m = m.format(self.export_obj(a_obj_after, 'json'))
-            raise exceptions.PytanError(m)
+            raise PytanError(m)
         return result
 
     # TODO: add question/saved_question/action grd/gri
@@ -722,11 +738,11 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.SSE_FORMAT_MAP` :
+        :data:`SSE_FORMAT_MAP` :
         maps `sse_format` to an integer for use by the SOAP API
-        :data:`constants.SSE_RESTRICT_MAP` :
+        :data:`SSE_RESTRICT_MAP` :
         maps sse_format integers to supported platform versions
-        :data:`constants.SSE_CRASH_MAP` :
+        :data:`SSE_CRASH_MAP` :
         maps platform versions that can cause issues in various scenarios
 
         Returns
@@ -759,7 +775,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         if shrink:
-            kwargs['obj'] = tickle.shrink_obj(obj=obj)
+            kwargs['obj'] = shrink_obj(obj=obj)
 
         if aggregate:
             kwargs['row_counts_only_flag'] = 1
@@ -770,7 +786,7 @@ class Handler(object):
 
             grd_args = {}
             grd_args.update(kwargs)
-            grd_args['pytan_help'] = helpstr.GRD_SSE.format(obj.__class__.__name__)
+            grd_args['pytan_help'] = HELPS.grd_sse.format(obj.__class__.__name__)
             # add the export_flag = 1 to the kwargs for inclusion in options node
             grd_args['export_flag'] = 1
             # add the export_format to the kwargs for inclusion in options node
@@ -783,25 +799,25 @@ class Handler(object):
                 grd_args['export_trailing_text'] = sse_trailing
 
             # do a getresultdata to start the SSE and get
-            export_id = self.session.get_result_data_sse(**grd_args)
+            export_id = self.SESSION.get_result_data_sse(**grd_args)
 
             m = "Server Side Export Started, id: '{}'"
             m = m.format(export_id)
-            self.mylog.debug(m)
+            self.MYLOG.debug(m)
 
             poll_args = {}
             poll_args.update(kwargs)
             poll_args['export_id'] = export_id
             poll_args['handler'] = self
 
-            poller = pollers.SSEPoller(**poll_args)
+            poller = SSEPoller(**poll_args)
             poller_success = poller.run(**kwargs)
-            sse_status = getattr(poller, 'sse_status', 'Unknown')
+            sse_status = getattr(poller, 'STATUS', 'Unknown')
 
             if not poller_success:
                 m = "SSE Poller failed while waiting for completion, last status: {}"
                 m = m.format()
-                raise exceptions.ServerSideExportError(m)
+                raise ServerSideExportError(m)
 
             result = poller.get_sse_data(**kwargs)
 
@@ -809,11 +825,11 @@ class Handler(object):
                 if not result:
                     result = sse_status
                 else:
-                    result = tickle.from_sse_xml(result)
+                    result = from_sse_xml(result)
         else:
             # do a normal getresultdata
-            kwargs['pytan_help'] = helpstr.GRD.format(obj.__class__.__name__)
-            result = self.session.get_result_data(**kwargs)
+            kwargs['pytan_help'] = HELPS.grd.format(obj.__class__.__name__)
+            result = self.SESSION.get_result_data(**kwargs)
 
         return result
 
@@ -840,10 +856,10 @@ class Handler(object):
         """
         shrink = kwargs.get('shrink', True)
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
-        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.GRI)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.gri)
         if shrink:
-            kwargs['obj'] = tickle.shrink_obj(obj=obj)
-        ri = self.session.get_result_info(**kwargs)
+            kwargs['obj'] = shrink_obj(obj=obj)
+        ri = self.SESSION.get_result_info(**kwargs)
         return ri
 
     # Objects
@@ -865,21 +881,21 @@ class Handler(object):
 
     #     See Also
     #     --------
-    #     :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
+    #     :data:`GET_OBJ_MAP` : maps objtype to supported 'create_json' types
     #     """
 
-    #     obj_map = tickle.get_obj_map(objtype=objtype)
+    #     obj_map = get_obj_map(objtype=objtype)
 
     #     create_json_ok = obj_map['create_json']
 
     #     if not create_json_ok:
     #         json_createable = ', '.join([
-    #             x for x, y in constants.GET_OBJ_MAP.items() if y['create_json']
+    #             x for x, y in GET_OBJ_MAP.items() if y['create_json']
     #         ])
     #         m = "{} is not a json createable object! Supported objects: {}".format
-    #         raise exceptions.PytanError(m(objtype, json_createable))
+    #         raise PytanError(m(objtype, json_createable))
 
-    #     add_obj = tickle.load_taniumpy_from_json(json_file=json_file)
+    #     add_obj = load_taniumpy_from_json(json_file=json_file)
 
     #     if getattr(add_obj, '_list_properties', ''):
     #         obj_list = [x for x in add_obj]
@@ -898,7 +914,7 @@ class Handler(object):
     #     else:
     #         all_type = obj_map['all']
 
-    #     ret = tickle.get_taniumpy_obj(obj_map=all_type)()
+    #     ret = get_taniumpy_obj(obj_map=all_type)()
 
     #     h = "Issue an AddObject to add an object"
     #     kwargs['pytan_help'] = kwargs.get('pytan_help', h)
@@ -913,10 +929,10 @@ class Handler(object):
     #             m = (
     #                 "Failure while importing {}: {}\nJSON Dump of object: {}"
     #             ).format
-    #             raise exceptions.PytanError(m(x, e, x.to_json(x)))
+    #             raise PytanError(m(x, e, x.to_json(x)))
 
     #         m = "New {} (ID: {}) created successfully!".format
-    #         self.mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
+    #         self.MYLOG.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
 
     #         ret.append(list_obj)
     #     return ret
@@ -946,10 +962,10 @@ class Handler(object):
     #     clean_keys = ['obj', 'p']
     #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-    #     plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
+    #     plugin_result = self.SESSION.run_plugin(obj=obj, **clean_kwargs)
 
     #     # zip up the sql results into a list of python dictionaries
-    #     sql_zipped = tickle.plugin_zip(p=plugin_result)
+    #     sql_zipped = plugin_zip(p=plugin_result)
 
     #     # return the plugin result and the python dictionary of results
     #     return plugin_result, sql_zipped
@@ -1120,7 +1136,7 @@ class Handler(object):
         #     sql_zipped = [x for x in sql_zipped if x['name'] == name]
         #     if not sql_zipped:
         #         m = "No dashboards found that match name: {!r}".format
-        #         raise exceptions.NotFoundError(m(name))
+        #         raise NotFoundError(m(name))
 
         # # return the plugin result and the python dictionary of results
         # return plugin_result, sql_zipped
@@ -1186,8 +1202,8 @@ class Handler(object):
 
     #     See Also
     #     --------
-    #     :data:`constants.FILTER_MAPS` : valid filters for verify_filters
-    #     :data:`constants.OPTION_MAPS` : valid options for verify_filter_options
+    #     :data:`FILTER_MAPS` : valid filters for verify_filters
+    #     :data:`OPTION_MAPS` : valid options for verify_filter_options
     #     """
     #     helpers.check_for_help(kwargs=kwargs)
 
@@ -1195,7 +1211,7 @@ class Handler(object):
     #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
     #     metadata = kwargs.get('metadata', [])
-    #     metadatalist_obj = tickle.build_metadatalist_obj(properties=metadata)
+    #     metadatalist_obj = build_metadatalist_obj(properties=metadata)
 
     #     # bare minimum arguments for new package: name, command
     #     add_package_obj = tanium_ng.PackageSpec()
@@ -1212,7 +1228,7 @@ class Handler(object):
     #         v_filter_defs = parsers.parse_filters(filters=verify_filters)
     #         v_option_defs = parsers.parse_options(options=verify_filter_options)
     #         v_filter_defs = self._get_sensor_defs(defs=v_filter_defs, **clean_kwargs)
-    #         add_verify_group = tickle.build_group_obj(
+    #         add_verify_group = build_group_obj(
     #             filter_defs=v_filter_defs,
     #             option_defs=v_option_defs,
     #         )
@@ -1226,7 +1242,7 @@ class Handler(object):
 
     #     # PARAMETERS
     #     if parameters_json_file:
-    #         add_package_obj.parameter_definition = tickle.load_param_json_file(
+    #         add_package_obj.parameter_definition = load_param_json_file(
     #             parameters_json_file=parameters_json_file
     #         )
 
@@ -1257,7 +1273,7 @@ class Handler(object):
     #     package_obj = self._add(obj=add_package_obj, pytan_help=h, **clean_kwargs)
 
     #     m = "New package {!r} created with ID {!r}, command: {!r}".format
-    #     self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
+    #     self.MYLOG.info(m(package_obj.name, package_obj.id, package_obj.command))
     #     return package_obj
 
     # TODO
@@ -1290,8 +1306,8 @@ class Handler(object):
 
     #     See Also
     #     --------
-    #     :data:`constants.FILTER_MAPS` : valid filters for filters
-    #     :data:`constants.OPTION_MAPS` : valid options for filter_options
+    #     :data:`FILTER_MAPS` : valid filters for filters
+    #     :data:`OPTION_MAPS` : valid options for filter_options
     #     """
 
     #     helpers.check_for_help(kwargs=kwargs)
@@ -1306,7 +1322,7 @@ class Handler(object):
     #     )
     #     filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-    #     add_group_obj = tickle.build_group_obj(
+    #     add_group_obj = build_group_obj(
     #         filter_defs=filter_defs, option_defs=option_defs,
     #     )
     #     add_group_obj.name = groupname
@@ -1315,7 +1331,7 @@ class Handler(object):
     #     group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
 
     #     m = "New group {!r} created with ID {!r}, filter text: {!r}".format
-    #     self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
+    #     self.MYLOG.info(m(group_obj.name, group_obj.id, group_obj.text))
     #     return group_obj
 
     # TODO
@@ -1364,7 +1380,7 @@ class Handler(object):
     #     else:
     #         rolelist_obj = tanium_ng.RoleList()
 
-    #     metadatalist_obj = tickle.build_metadatalist_obj(
+    #     metadatalist_obj = build_metadatalist_obj(
     #         properties=properties, nameprefix='TConsole.User.Property',
     #     )
     #     add_user_obj = tanium_ng.User()
@@ -1377,7 +1393,7 @@ class Handler(object):
     #     user_obj = self._add(obj=add_user_obj, pytan_help=h, **clean_kwargs)
 
     #     m = "New user {!r} created with ID {!r}, roles: {!r}".format
-    #     self.mylog.info(m(
+    #     self.MYLOG.info(m(
     #         user_obj.name, user_obj.id, [x.name for x in rolelist_obj]
     #     ))
     #     return user_obj
@@ -1413,7 +1429,7 @@ class Handler(object):
     #     if regex:
     #         url = 'regex:' + url
 
-    #     metadatalist_obj = tickle.build_metadatalist_obj(
+    #     metadatalist_obj = build_metadatalist_obj(
     #         properties=properties, nameprefix='TConsole.WhitelistedURL',
     #     )
 
@@ -1428,7 +1444,7 @@ class Handler(object):
     #     url_obj = self._add(obj=add_url_obj, pytan_help=h, **clean_kwargs)
 
     #     m = "New Whitelisted URL {!r} created with ID {!r}".format
-    #     self.mylog.info(m(url_obj.url_regex, url_obj.id))
+    #     self.MYLOG.info(m(url_obj.url_regex, url_obj.id))
     #     return url_obj
 
     # TODO
@@ -1496,7 +1512,7 @@ class Handler(object):
 
     #     See Also
     #     --------
-    #     :data:`constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the
+    #     :data:`EXPORT_MAPS` : maps the type `obj` to `export_format` and the
     #     optional args supported for each
     #     """
 
@@ -1508,7 +1524,7 @@ class Handler(object):
 
     #     # see if supplied obj is a supported object type
     #     type_match = [
-    #         x for x in constants.EXPORT_MAPS if isinstance(obj, getattr(tanium_ng, x))
+    #         x for x in EXPORT_MAPS if isinstance(obj, getattr(tanium_ng, x))
     #     ]
 
     #     if not type_match:
@@ -1517,17 +1533,17 @@ class Handler(object):
     #         ).format
 
     #         # build a list of supported object types
-    #         supp_types = ', '.join(constants.EXPORT_MAPS.keys())
-    #         raise exceptions.PytanError(err(objtype, supp_types))
+    #         supp_types = ', '.join(EXPORT_MAPS.keys())
+    #         raise PytanError(err(objtype, supp_types))
 
     #     # get the export formats for this obj type
-    #     export_formats = constants.EXPORT_MAPS.get(type_match[0], '')
+    #     export_formats = EXPORT_MAPS.get(type_match[0], '')
 
     #     if export_format not in export_formats:
     #         err = (
     #             "{!r} not a supported export format for {}, must be one of: {}"
     #         ).format(export_format, objclassname, ', '.join(export_formats))
-    #         raise exceptions.PytanError(err)
+    #         raise PytanError(err)
 
     #     # perform validation on optional kwargs, if they exist
     #     opt_keys = export_formats.get(export_format, [])
@@ -1550,7 +1566,7 @@ class Handler(object):
     #         result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
     #     else:
     #         err = "{!r} not supported by Handler!".format
-    #         raise exceptions.PytanError(err(objclassname))
+    #         raise PytanError(err(objclassname))
 
     #     return result
 
@@ -1581,7 +1597,7 @@ class Handler(object):
     #     """
 
     #     if report_file is None:
-    #         report_file = 'pytan_report_{}.txt'.format(tools.get_now())
+    #         report_file = 'pytan_report_{}.txt'.format(get_now())
 
     #     # try to get report_dir from the report_file
     #     report_dir = os.path.dirname(report_file)
@@ -1614,7 +1630,7 @@ class Handler(object):
     #         fd.write(contents)
 
     #     m = "Report file {!r} written with {} bytes".format
-    #     self.mylog.info(m(report_path, len(contents)))
+    #     self.MYLOG.info(m(report_path, len(contents)))
     #     return report_path
 
     # TODO
@@ -1706,10 +1722,10 @@ class Handler(object):
 
     #     if not report_file:
     #         report_file = "{}_{}.{}".format(
-    #             type(obj).__name__, tools.get_now(), export_format,
+    #             type(obj).__name__, get_now(), export_format,
     #         )
     #         m = "No report file name supplied, generated name: {!r}".format
-    #         self.mylog.debug(m(report_file))
+    #         self.MYLOG.debug(m(report_file))
 
     #     clean_keys = ['obj', 'export_format', 'contents', 'report_file']
     #     clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -1868,14 +1884,14 @@ class Handler(object):
 
         if use_filters:
             # get objects using cache filter
-            kwargs['pytan_help'] = helpstr.GETF.format(all_class.__name__)
+            kwargs['pytan_help'] = HELPS.getf.format(all_class.__name__)
             result = self._find_filter(**kwargs)
         else:
             # get all objects
-            kwargs['pytan_help'] = helpstr.GET.format(all_class.__name__)
-            result = self.session.find(**kwargs)
+            kwargs['pytan_help'] = HELPS.geta.format(all_class.__name__)
+            result = self.SESSION.find(**kwargs)
             kwargs['objects'] = result
-            tickle.check_limits(**kwargs)
+            check_limits(**kwargs)
 
         if limit_exact is not None:
             # if just one item returned and limit_exact == 1, return result as a single item
@@ -1888,7 +1904,7 @@ class Handler(object):
 
         m = "get_objects found '{}' (using filters: {})"
         m = m.format(result, use_filters)
-        self.mylog.info(m)
+        self.MYLOG.info(m)
         return result
 
     def _get_spec_objects(self, specs):
@@ -1911,7 +1927,7 @@ class Handler(object):
             result = kwargs['all_class']._LIST_TYPE()
             m = "FIXIT_SINGLE: changed class from {} to {}"
             m = m.format(kwargs['all_class'].__name__, result.__name__)
-            self.mylog.debug(m)
+            self.MYLOG.debug(m)
         return result
 
     def _fixit_group_id(self, specs, **kwargs):
@@ -1926,7 +1942,7 @@ class Handler(object):
                     setattr(result, spec['field'], spec['value'])
                     m = "FIXIT_GROUP_ID: changed class to 'Group' and set {field!r} to {value!r}"
                     m = m.format(**spec)
-                    self.mylog.debug(m)
+                    self.MYLOG.debug(m)
         return result
 
     def _fixit_broken_filter(self, objects, specs, **kwargs):
@@ -1947,14 +1963,14 @@ class Handler(object):
 
                     if match_found:
                         if r not in new_objects:
-                            self.mylog.debug(m('found', r, spec))
+                            self.MYLOG.debug(m('found', r, spec))
                             new_objects.append(r)
                     else:
-                        self.mylog.debug(m('not found', r, spec))
+                        self.MYLOG.debug(m('not found', r, spec))
 
             m = "FIXIT_BROKEN_FILTER: original objects '{}', new objects '{}'"
             m = m.format(objects, new_objects)
-            self.mylog.debug(m)
+            self.MYLOG.debug(m)
             result = new_objects
         return result
 
@@ -1984,7 +2000,7 @@ class Handler(object):
             # if not isinstance(spec, (dict,)):
             #     spec = parsers.get_str(spec)
 
-            parser = parsers.GetObject
+            parser = GetObject
             # validate & parse the specs
             if isinstance(spec, (list, tuple)):
                 parsed_specs = [parser(all_class=all_class, spec=x).parsed_spec for x in spec]
@@ -1995,14 +2011,14 @@ class Handler(object):
             kwargs['obj'] = self._fixit_group_id(**kwargs)
 
             # create a cache filter list object using the parsed_specs
-            kwargs['cache_filters'] = tickle.create_cf_listobj(parsed_specs)
+            kwargs['cache_filters'] = create_cf_listobj(parsed_specs)
 
             # use getobject to find the results using the cache_filters to limit the returns
-            cf_result = self.session.find(**kwargs)
+            cf_result = self.SESSION.find(**kwargs)
 
             m = "{} found using parsed specs: {!r}"
             m = m.format(cf_result, parsed_specs)
-            self.mylog.debug(m)
+            self.MYLOG.debug(m)
 
             # if cf_result is a list, append each item to result
             try:
@@ -2020,7 +2036,7 @@ class Handler(object):
         result = self._fixit_broken_filter(**kwargs)
 
         kwargs['objects'] = result
-        tickle.check_limits(**kwargs)
+        check_limits(**kwargs)
         return result
 
     def _add(self, obj, **kwargs):
@@ -2045,37 +2061,37 @@ class Handler(object):
 
         m = "Adding object {}"
         m = m.format(search_str)
-        self.mylog.debug(m)
+        self.MYLOG.debug(m)
 
-        kwargs['pytan_help'] = helpstr.ADD.format(obj.__class__.__name__)
+        kwargs['pytan_help'] = HELPS.addobj.format(obj.__class__.__name__)
         kwargs['obj'] = obj
 
         try:
-            added_obj = self.session.add(**kwargs)
+            added_obj = self.SESSION.add(**kwargs)
         except:
             err = "Error while trying to add object: '{}'!!"
             err = err.format(search_str)
-            self.mylog.critical(err)
+            self.MYLOG.critical(err)
             raise
 
         m = "Added Object: {}"
         m = m.format(added_obj)
-        self.mylog.debug(m)
+        self.MYLOG.debug(m)
 
-        kwargs['pytan_help'] = helpstr.ADDGET.format(obj.__class__.__name__)
+        kwargs['pytan_help'] = HELPS.addget.format(obj.__class__.__name__)
         kwargs['obj'] = added_obj
 
         try:
-            result = self.session.find(**kwargs)
+            result = self.SESSION.find(**kwargs)
         except:
             err = "Error while trying to find recently added object {}!!"
             err = err.format(search_str)
-            self.mylog.critical(err)
+            self.MYLOG.critical(err)
             raise
 
         m = "Successfully added and fetched full object: {}"
         m = m.format(result)
-        self.mylog.debug(m)
+        self.MYLOG.debug(m)
         return result
 
     def _delete_objects(self, objs, **kwargs):
@@ -2089,11 +2105,11 @@ class Handler(object):
     def _delete(self, obj, **kwargs):
         """pass."""
         kwargs['obj'] = obj
-        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.DEL)
-        result = self.session.delete(**kwargs)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.delobj)
+        result = self.SESSION.delete(**kwargs)
         m = "Deleted '{}'"
         m = m.format(result)
-        self.mylog.info(m)
+        self.MYLOG.info(m)
         return result
 
     # TODO
@@ -2123,7 +2139,7 @@ class Handler(object):
     #         result = format_handler(obj=obj, **clean_kwargs)
     #     else:
     #         err = "{!r} not coded for in Handler!".format
-    #         raise exceptions.PytanError(err(export_format))
+    #         raise PytanError(err(export_format))
 
     #     return result
 
@@ -2174,7 +2190,7 @@ class Handler(object):
     #         result = format_handler(obj=obj, **clean_kwargs)
     #     else:
     #         err = "{!r} not coded for in Handler!".format
-    #         raise exceptions.PytanError(err(export_format))
+    #         raise PytanError(err(export_format))
 
     #     return result
 
@@ -2196,7 +2212,7 @@ class Handler(object):
 
     #     if not hasattr(obj, 'write_csv'):
     #         err = "{!r} has no write_csv() method!".format
-    #         raise exceptions.PytanError(err(obj))
+    #         raise PytanError(err(obj))
 
     #     out = io.BytesIO()
 
@@ -2229,7 +2245,7 @@ class Handler(object):
 
         # if not hasattr(obj, 'to_json'):
         #     err = "{!r} has no to_json() method!".format
-        #     raise exceptions.PytanError(err(obj))
+        #     raise PytanError(err(obj))
 
         # clean_keys = ['jsonable']
         # clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
@@ -2261,12 +2277,12 @@ class Handler(object):
         #     raw_xml = obj._RAW_XML
         # else:
         #     err = "{!r} has no toSOAPBody() method or _RAW_XML attribute!".format
-        #     raise exceptions.PytanError(err(obj))
+        #     raise PytanError(err(obj))
 
         # clean_keys = ['x']
         # clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        # result = tools.xml_pretty(x=raw_xml, **clean_kwargs)
+        # result = xml_pretty(x=raw_xml, **clean_kwargs)
         # return result
 
     '''
@@ -2318,20 +2334,20 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pytan.ActionPoller`
         complete_pct : int/float, optional
             * default: 100
             * Percentage of passed_count out of successfully run actions to consider the action
             "done"
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pytan.ActionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pytan.ActionPoller`
         override_passed_count : int, optional
             * instead of getting number of systems that should run this action by asking a
             question, use this number
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pytan.ActionPoller`
 
         Returns
         -------
@@ -2349,7 +2365,7 @@ class Handler(object):
             :class:`tanium_ng.result_info.ResultInfo`
             the initial GetResultInfo call done before getting results
             * `poller_object` :
-            :class:`pytan.pollers.ActionPoller`
+            :class:`pytan.ActionPoller`
             poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
             * `action_results` : None if `get_results` == False
@@ -2379,8 +2395,8 @@ class Handler(object):
 
         See Also
         --------
-        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`OPTION_MAPS` : valid option dictionaries for options
 
         Notes
         -----
@@ -2417,7 +2433,7 @@ class Handler(object):
 
         clean_kwargs = validate.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        if not self.session.platform_is_6_5(**kwargs):
+        if not self.SESSION.platform_is_6_5(**kwargs):
             objtype = tanium_ng.Action
             objlisttype = None
             force_start_time = True
@@ -2524,11 +2540,11 @@ class Handler(object):
 
             passed_count = pre_action_question['question_results'].passed
             m = "Number of systems that match action filter (passed_count): {}".format
-            self.mylog.debug(m(passed_count))
+            self.MYLOG.debug(m(passed_count))
 
             if passed_count == 0:
                 m = "Number of systems that match the action filters provided is zero!"
-                raise exceptions.PytanError(m)
+                raise PytanError(m)
 
             default_format = 'csv'
             export_format = kwargs.get('export_format', default_format)
@@ -2552,10 +2568,10 @@ class Handler(object):
                 "View and verify the contents of {} (length: {} bytes)\n"
                 "Re-run this deploy action with run=True after verifying"
             ).format
-            raise exceptions.RunError(m(report_path, len(result)))
+            raise RunError(m(report_path, len(result)))
 
         # BUILD THE PACKAGE OBJECT TO BE ADDED TO THE ACTION
-        add_package_obj = tickle.copy_package_obj_for_action(
+        add_package_obj = copy_package_obj_for_action(
         obj=package_def['package_obj'])
 
         # if source_id is specified, a new package will be created with the parameters
@@ -2563,7 +2579,7 @@ class Handler(object):
         # is hidden
         add_package_obj.hidden_flag = 1
 
-        param_objlist = tickle.build_param_objlist(
+        param_objlist = build_param_objlist(
             obj=package_def['package_obj'],
             user_params=package_def['params'],
             delim='',
@@ -2580,7 +2596,7 @@ class Handler(object):
             add_package_obj.source_id = None
 
         m = "DEPLOY_ACTION objtype: {}, objlisttype: {}, force_start_time: {}, version: {}".format
-        self.mylog.debug(m(objtype, objlisttype, force_start_time, self.session.server_version))
+        self.MYLOG.debug(m(objtype, objlisttype, force_start_time, self.SESSION.server_version))
 
         # BUILD THE ACTION OBJECT TO BE ADDED
         add_obj = objtype()
@@ -2599,7 +2615,7 @@ class Handler(object):
         add_obj.issue_count = 0
 
         if filter_defs or option_defs:
-            targetgroup_obj = tickle.build_group_obj(
+            targetgroup_obj = build_group_obj(
                 filter_defs=filter_defs, option_defs=option_defs,
             )
             add_obj.target_group = targetgroup_obj
@@ -2607,12 +2623,12 @@ class Handler(object):
             targetgroup_obj = None
 
         if start_seconds_from_now:
-            add_obj.start_time = tools.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = seconds_from_now(secs=start_seconds_from_now)
 
         if force_start_time and not add_obj.start_time:
             if not start_seconds_from_now:
                 start_seconds_from_now = 1
-            add_obj.start_time = tools.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = seconds_from_now(secs=start_seconds_from_now)
 
         if package_def['package_obj'].expire_seconds:
             add_obj.expire_seconds = package_def['package_obj'].expire_seconds
@@ -2628,7 +2644,7 @@ class Handler(object):
             added_obj = added_objs[0]
 
             m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
-            self.mylog.debug(m(added_obj.__class__.__name__, added_obj.id))
+            self.MYLOG.debug(m(added_obj.__class__.__name__, added_obj.id))
 
             h = "Issue a GetObject to get the last action created for a SavedAction"
             action_obj = self._find(obj=added_obj.last_action, pytan_help=h, **clean_kwargs)
@@ -2641,10 +2657,10 @@ class Handler(object):
         action_package = self._find(obj=action_obj.package_spec, pytan_help=h, **clean_kwargs)
 
         m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
-        self.mylog.debug(m(action_package.__class__.__name__, action_package.id))
+        self.MYLOG.debug(m(action_package.__class__.__name__, action_package.id))
 
         m = "DEPLOY_ACTION ADDED: {}, ID: {}".format
-        self.mylog.debug(m(action_obj.__class__.__name__, action_obj.id))
+        self.MYLOG.debug(m(action_obj.__class__.__name__, action_obj.id))
 
         h = (
             "Issue a GetResultInfo on an Action to have the Server create a question that "
@@ -2653,9 +2669,9 @@ class Handler(object):
         action_info = self.get_result_info(obj=action_obj, pytan_help=h, **clean_kwargs)
 
         m = "DEPLOY_ACTION ADDED: Question for Action Results, ID: {}".format
-        self.mylog.debug(m(action_info.question_id))
+        self.MYLOG.debug(m(action_info.question_id))
 
-        poller = pollers.ActionPoller(handler=self, obj=action_obj, **clean_kwargs)
+        poller = ActionPoller(handler=self, obj=action_obj, **clean_kwargs)
         ret = {
             'saved_action_object': added_obj,
             'action_object': action_obj,
@@ -2684,25 +2700,25 @@ class Handler(object):
         ----------
         v_maps : list of str
             * each str should be a platform version
-            * each str will be checked against self.session.server_version
-            * if self.session.server_version is not greater than or equal to any str in v_maps,
+            * each str will be checked against self.SESSION.server_version
+            * if self.SESSION.server_version is not greater than or equal to any str in v_maps,
             return will be False
-            * if self.session.server_version is greater than all strs in v_maps, return will be True
+            * if self.SESSION.server_version is greater than all strs in v_maps, return will be True
             * if self.server_version is invalid/can't be determined, return will be False
 
         Returns
         -------
         bool
             * True if all values in all v_maps are greater than or equal to
-            self.session.server_version
+            self.SESSION.server_version
             * False otherwise
         """
         result = True
-        if self.session._invalid_server_version():
+        if self.SESSION._invalid_server_version():
             # server version is not valid, force a refresh right now
             self.get_server_version(**kwargs)
 
-        if self.session._invalid_server_version():
+        if self.SESSION._invalid_server_version():
             # server version is STILL invalid, return False
             result = False
         else:
@@ -2721,10 +2737,10 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        if sse_format_int not in constants.SSE_RESTRICT_MAP:
+        if sse_format_int not in SSE_RESTRICT_MAP:
             return
 
-        restrict_maps = constants.SSE_RESTRICT_MAP[sse_format_int]
+        restrict_maps = SSE_RESTRICT_MAP[sse_format_int]
         kwargs['v_maps'] = restrict_maps
         if not self._version_support_check(**kwargs):
             restrict_maps_txt = '\n'.join([str(x) for x in restrict_maps])
@@ -2732,8 +2748,8 @@ class Handler(object):
                 "Server version {} does not support export format {!r}, "
                 "server version must be equal to or greater than one of:\n{}"
             )
-            err = err.format(self.session.server_version, sse_format, restrict_maps_txt)
-            raise exceptions.UnsupportedVersionError(err)
+            err = err.format(self.SESSION.server_version, sse_format, restrict_maps_txt)
+            raise UnsupportedVersionError(err)
 
     def _resolve_sse_format(self, sse_format, **kwargs):
         """Resolves the server side export format the user supplied to an integer for the API
@@ -2748,21 +2764,21 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        result = [x[-1] for x in constants.SSE_FORMAT_MAP if sse_format.lower() in x]
+        result = [x[-1] for x in SSE_FORMAT_MAP if sse_format.lower() in x]
 
         if not result:
             ef_map_txt = '\n'.join(
-                [', '.join(['{!r}'.format(x) for x in y]) for y in constants.SSE_FORMAT_MAP]
+                [', '.join(['{!r}'.format(x) for x in y]) for y in SSE_FORMAT_MAP]
             )
             err = "Unsupport export format {!r}, must be one of:\n{}"
             err = err.format(sse_format, ef_map_txt)
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         result = result[0]
 
         m = "'sse_format resolved from '{}' to '{}'"
         m = m.format(sse_format, result)
-        self.mylog.debug(m)
+        self.MYLOG.debug(m)
 
         kwargs['sse_format'] = sse_format
         kwargs['sse_format_int'] = result
@@ -2771,10 +2787,10 @@ class Handler(object):
 
     def _check_sse_version(self, **kwargs):
         """Validates that the server version supports server side export"""
-        if not self.session.platform_is_6_5(**kwargs):
+        if not self.SESSION.platform_is_6_5(**kwargs):
             err = "Server side export not supported in version: {}"
-            err = err.format(self.session.server_version)
-            raise exceptions.UnsupportedVersionError(err)
+            err = err.format(self.get_server_version())
+            raise UnsupportedVersionError(err)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
         """Runs a number of methods used to prevent crashing the platform server when performing
@@ -2785,7 +2801,7 @@ class Handler(object):
         obj : :class:`tanium_ng.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
-        kwargs['v_maps'] = constants.SSE_CRASH_MAP
+        kwargs['v_maps'] = SSE_CRASH_MAP
         kwargs['ok_version'] = self._version_support_check(**kwargs)
         kwargs['obj'] = obj
         self._check_sse_timing(**kwargs)
@@ -2793,7 +2809,7 @@ class Handler(object):
 
     def _check_sse_timing(self, ok_version, **kwargs):
         """Checks that the last server side export was at least 1 second ago if server version is
-        less than any versions in constants.SSE_CRASH_MAP
+        less than any versions in SSE_CRASH_MAP
 
         Parameters
         ----------
@@ -2805,12 +2821,12 @@ class Handler(object):
             last_elapsed = datetime.datetime.utcnow() - last_get_rd_sse
             if last_elapsed.seconds == 0 and not ok_version:
                 err = "You must wait at least one second between server side export requests!"
-                raise exceptions.ServerSideExportError(err)
+                raise ServerSideExportError(err)
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
         """Checks if the server version is less than any versions in
-        constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
+        SSE_CRASH_MAP, if so verifies that the result set is not empty
 
         Parameters
         ----------
@@ -2825,33 +2841,33 @@ class Handler(object):
             if ri.row_count == 0:
                 err = "No rows available to perform a server side export with, result info: {}"
                 err = err.format(ri)
-                raise exceptions.ServerSideExportError(err)
+                raise ServerSideExportError(err)
 
     def _parse_args(self, kwargs):
         """pass."""
-        self.args_db = {}
-        self.args_db['original_args'] = kwargs
-        self.args_db['handler_args'] = self._get_src_args(kwargs)
-        self.args_db['default_args'] = self._get_src_args(constants.DEFAULTS)
-        self.args_db['env_args'] = {
+        self.ARGS_DB = {}
+        self.ARGS_DB['original_args'] = kwargs
+        self.ARGS_DB['handler_args'] = self._get_src_args(kwargs)
+        self.ARGS_DB['default_args'] = self._get_src_args(HANDLER_DEFAULTS)
+        self.ARGS_DB['env_args'] = {
             k.lower().replace('pytan_', ''): v
             for k, v in os.environ.items()
             if k.lower().startswith('pytan_')
         }
-        self.args_db['env_args'] = self._get_src_args(self.args_db['env_args'])
-        self.args_db['puc_dict'] = self.read_config_file()
-        self.args_db['config_args'] = self._get_src_args(self.args_db['puc_dict'])
-        self.args_db['parsed_args_source'] = {}
-        self.args_db['parsed_args'] = {}
+        self.ARGS_DB['env_args'] = self._get_src_args(self.ARGS_DB['env_args'])
+        self.ARGS_DB['puc_dict'] = self.read_config_file()
+        self.ARGS_DB['config_args'] = self._get_src_args(self.ARGS_DB['puc_dict'])
+        self.ARGS_DB['parsed_args_source'] = {}
+        self.ARGS_DB['parsed_args'] = {}
 
         args_order = ['config_args', 'env_args', 'handler_args', 'default_args']
-        for k in constants.HANDLER_ARGS:
+        for k in HANDLER_ARGTYPES:
             src = None
-            def_val = self.args_db['default_args'].get(k, None)
+            def_val = self.ARGS_DB['default_args'].get(k, None)
             for args in args_order:
                 if src is not None:
                     break
-                args_dict = self.args_db[args]
+                args_dict = self.ARGS_DB[args]
                 if k in args_dict and args_dict[k] != def_val:
                     val = args_dict[k]
                     src = args
@@ -2862,8 +2878,8 @@ class Handler(object):
             if src is None and def_val is None:
                 continue
 
-            self.args_db['parsed_args'][k] = val
-            self.args_db['parsed_args_source'][k] = src
+            self.ARGS_DB['parsed_args'][k] = val
+            self.ARGS_DB['parsed_args_source'][k] = src
 
             if k == 'password':
                 pval = '{}'.format('*' * len(val))
@@ -2872,12 +2888,12 @@ class Handler(object):
 
             m = "_parse_args(): arg = {!r}, val = {!r}, type = {!r}, src = {!r}"
             m = m.format(k, pval, type(val).__name__, src)
-            self.mylog.debug(m)
+            self.MYLOG.debug(m)
 
-        if self.args_db['parsed_args']['password']:
-            self.args_db['parsed_args']['password'] = tools.deobfuscate(
-                key=constants.PYTAN_KEY,
-                string=self.args_db['parsed_args']['password'],
+        if self.ARGS_DB['parsed_args']['password']:
+            self.ARGS_DB['parsed_args']['password'] = deobfuscate(
+                key=PYTAN_KEY,
+                string=self.ARGS_DB['parsed_args']['password'],
             )
 
     def _handle_string_arg(self, argname, argtype, value):
@@ -2890,7 +2906,7 @@ class Handler(object):
             else:
                 err = "Argument {!r} must be one of {!r}, supplied string containing {!r}"
                 err = err.format(argname, ','.join(valid), value)
-                raise exceptions.PytanError(err)
+                raise PytanError(err)
 
         if argtype == dict:
             try:
@@ -2898,14 +2914,14 @@ class Handler(object):
             except Exception as e:
                 err = "Tried to evaluate a dictionary from string {}, exception: {}"
                 err = err.format(value, e)
-                raise exceptions.PytanError(err)
+                raise PytanError(err)
         return result
 
     def _validate_args(self):
         """pass."""
-        pa = self.args_db['parsed_args']
-        pas = self.args_db['parsed_args_source']
-        for arg, argtype in constants.HANDLER_ARGS.items():
+        pa = self.ARGS_DB['parsed_args']
+        pas = self.ARGS_DB['parsed_args_source']
+        for arg, argtype in HANDLER_ARGTYPES.items():
             if arg not in pa:
                 continue
 
@@ -2922,32 +2938,314 @@ class Handler(object):
                 err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}"
                 err = err.format(arg, argtype.__name__, pa_type, pas[arg])
                 err = "{} exception: {}".format(err, e)
-                raise exceptions.PytanError(err)
+                raise PytanError(err)
 
         if not pa['host']:
             err = "Must supply host!"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         if not pa['port']:
             err = "Must supply port!"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         if not pa['session_id'] and not pa['username']:
             err = "Must supply username if no session_id!"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
         if not pa['session_id'] and not pa['password']:
             err = "Must supply password if no session_id!"
-            raise exceptions.PytanError(err)
+            raise PytanError(err)
 
     def _log_args(self):
         """pass."""
         m = "Argument {!r} supplied by {!r} type {!r}"
-        for k, v in self.args_db['parsed_args'].items():
-            mm = m.format(k, self.args_db['parsed_args_source'][k], type(v).__name__)
-            self.mylog.debug(mm)
+        for k, v in self.ARGS_DB['parsed_args'].items():
+            mm = m.format(k, self.ARGS_DB['parsed_args_source'][k], type(v).__name__)
+            self.MYLOG.debug(mm)
 
     def _get_src_args(self, kwargs):
         """pass."""
-        src_args = {k: kwargs[k] for k in constants.HANDLER_ARGS if k in kwargs}
+        src_args = {k: kwargs[k] for k in HANDLER_ARGTYPES if k in kwargs}
         return src_args
+
+
+class ServerSideExportError(PytanError):
+    pass
+
+
+class UnsupportedVersionError(PytanError):
+    pass
+
+
+class PickerError(PytanError):
+    pass
+
+
+class ParseJobError(PytanError):
+    pass
+
+
+def add_override(**kwargs):
+    myargs = {}
+    myargs.update(HANDLER_DEFAULTS)
+    myargs.update(kwargs)
+
+    loglevel = int(myargs.get('loglevel', 0))
+    all_loggers = get_all_logs()
+
+    if loglevel >= OVERRIDE_LEVEL:
+        MYLOG.setLevel(logging.DEBUG)
+        handler = create_log_handler(name='override_console')
+        [v.addHandler(handler) for k, v in all_loggers.items()]
+        set_all_logs(propagate=False)
+        MYLOG.debug("added override log and set all python loggers to debug")
+
+
+def del_override(**kwargs):
+    myargs = {}
+    myargs.update(HANDLER_DEFAULTS)
+    myargs.update(kwargs)
+
+    loglevel = int(myargs.get('loglevel', 0))
+    all_loggers = get_all_logs()
+
+    if loglevel >= OVERRIDE_LEVEL:
+        MYLOG.debug("removed override log")
+        [remove_log_handler(v, name='override_console') for k, v in all_loggers.items()]
+
+
+def setup_log(**kwargs):
+    """Setup logging for PyTan."""
+    check_logging_setup()
+    del_override(**kwargs)
+
+    myargs = {}
+    myargs.update(HANDLER_DEFAULTS)
+    myargs.update(kwargs)
+
+    loglevel = int(myargs.get('loglevel', 0))
+
+    msgs = []
+    msgs += set_log_tz(**myargs)
+    msgs += config_log_handler(argpre='logconsole', **myargs)
+    msgs += config_log_handler(argpre='logfile', **myargs)
+
+    if loglevel >= OVERRIDE_LEVEL:
+        msgs += set_all_logs(propagate=False)
+        m = 'loglevel is over {}, setting all loggers to DEBUG'
+    else:
+        msgs += set_log_levels(**kwargs)
+        m = 'loglevel is not over {}, set all loggers according to constants'
+
+    m = m.format(OVERRIDE_LEVEL)
+    msgs.append(m)
+
+    for i in msgs:
+        MYLOG.debug(i)
+    return msgs
+
+
+def check_logging_setup():
+    all_loggers = get_all_logs()
+
+    for pytanlog in sorted(LOGMAP):
+        if pytanlog not in all_loggers:
+            err = "pytan logger {!r} does not exist in logging system!!"
+            err = err.format(pytanlog)
+            raise PytanError(err)
+
+    for name, logger in sorted(all_loggers.items()):
+        if name.startswith('pytan') and name not in LOGMAP:
+            err = "pytan logger {!r} is not defined in constants!"
+            err = err.format(pytanlog)
+            raise PytanError(err)
+
+
+def config_log_handler(argpre, **kwargs):
+    args = ['enable', 'formatter', 'output', 'handler', 'level', 'name']
+
+    myargs = {}
+    myargs.update(kwargs)
+    myargs = {k: kwargs.get(argpre + '_' + k) for k in args}
+
+    msgs = []
+
+    all_loggers = get_all_logs()
+
+    modded = []
+    not_modded = []
+
+    handler = create_log_handler(**myargs)
+
+    for l in sorted(LOGMAP):
+        if myargs['enable']:
+            mod = add_log_handler(all_loggers[l], handler)
+        else:
+            mod = remove_log_handler(all_loggers[l], myargs['name'])
+
+        if mod:
+            modded.append(l)
+        else:
+            not_modded.append(l)
+
+    myargs['action'] = 'added' if myargs['enable'] else 'removed'
+    myargs['modded'] = ', '.join(modded)
+    myargs['not_modded'] = ', '.join(modded)
+
+    m = "{action} handler: '{name}' for loggers {modded!r}, but not for loggers {not_modded!r}"
+    m = m.format(**myargs)
+    msgs.append(m)
+    return msgs
+
+
+def set_log_levels(loglevel=0, **kwargs):
+    """Enable loggers based on loglevel and :data:`LOGMAP`.
+
+    Parameters
+    ----------
+    loglevel : int, optional
+        * loglevel to match against each item in :data:`LOGMAP` -
+          each item that is greater than or equal to loglevel will have the
+          according loggers set to their respective levels identified there-in.
+    """
+    msgs = []
+    loggers = get_all_logs()
+    loggers_done = []
+    for pytanlog, pytanlvl in sorted(LOGMAP.items()):
+        if pytanlog in loggers_done:
+            err = "pytan logger {} already processed!!"
+            err = err.format(pytanlog)
+            raise PytanError(err)
+
+        oldlvl = loggers[pytanlog].level
+        dbglvl = pytanlvl + DEBUG_BUMP
+        if pytanlvl == 0 or loglevel >= dbglvl:
+            m = "{} set from {} to {} (DEBUG)"
+            newlvl = logging.DEBUG
+        elif loglevel >= pytanlvl:
+            m = "{} set from {} to {} (INFO)"
+            newlvl = logging.INFO
+        else:
+            m = "{} set from {} to {} ({})"
+            newlvl = getattr(logging, DEFAULT_LEVEL)
+
+        loggers[pytanlog].setLevel(newlvl)
+        loggers[pytanlog].propagate = False
+        loggers_done.append(pytanlog)
+        m = m.format(pytanlog, oldlvl, newlvl, DEFAULT_LEVEL)
+        msgs.append(m)
+
+    loggers_not_done = [x for x in loggers if x not in loggers_done]
+    if loggers_not_done:
+        m = 'loggers not set: {}'
+        m = m.format(', '.join(loggers_not_done))
+        msgs.append(m)
+    return msgs
+
+
+def print_levels(**kwargs):
+    """Utility to print info about each logger."""
+    loggers = get_all_logs()
+    loggers_done = []
+
+    m = "{} logger {!r} {} and above messages shown at pytan loglevel {} and above"
+    t = "pytan"
+    for pytanlog, pytanlvl in sorted(LOGMAP.items()):
+        loggers_done.append(pytanlog)
+        dbglvl = pytanlvl + DEBUG_BUMP
+        if pytanlvl == 0:
+            print(m.format(t, pytanlog, 'DEBUG', 0))
+        else:
+            print(m.format(t, pytanlog, DEFAULT_LEVEL, 0))
+            print(m.format(t, pytanlog, 'INFO', pytanlvl))
+            print(m.format(t, pytanlog, 'DEBUG', dbglvl))
+
+    loggers_not_done = [x for x in loggers if x not in loggers_done]
+    t = "NON-pytan"
+    for logger in loggers_not_done:
+        print(m.format(t, logger, 'DEBUG', OVERRIDE_LEVEL))
+
+
+HELPS = Store()
+HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question"
+HELPS.sq_ri = (
+    "Use GetResultInfo on a saved question in order to issue a new question, "
+    "which refreshes the data for that saved question"
+)
+HELPS.sq_resq = (
+    "Use GetObject to re-fetch the saved question in order get the ID of the newly asked question"
+)
+HELPS.pj = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
+HELPS.pj_add = "Use AddObject to add the Question object from the chosen ParseResultGroup"
+HELPS.grd = "Use GetResultData to get answers for {} object"
+HELPS.grd_sse = "Issue a GetResultData on {} to start a Server Side Export and get an export_id"
+HELPS.gri = "Issue a GetResultInfo for a {} to check the current progress of answers"
+HELPS.saa = "Issue an AddObject to add a SavedActionApproval"
+HELPS.stopa = "Issue an AddObject to add a StopAction"
+HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
+HELPS.getf = "Use GetObject to find {} objects with cache filters to limit the results"
+HELPS.geta = "Use GetObject to find all {} objects"
+HELPS.addobj = "Issue an AddObject to add a {} object"
+HELPS.addget = "Issue a GetObject on the recently added {} object in order to get the full object"
+HELPS.delobj = "Issue a DeleteObject to delete an object"
+
+
+SSE_FORMAT_MAP = [
+    ('csv', '0', 0),
+    ('xml', '1', 1),
+    ('xml_obj', '1', 1),
+    ('cef', '2', 2),
+]
+"""
+Mapping of human friendly strings to API integers for server side export
+"""
+
+SSE_RESTRICT_MAP = {
+    1: ['6.5.314.4300'],
+    2: ['6.5.314.4300'],
+}
+"""
+Mapping of API integers for server side export format to version support
+"""
+
+SSE_CRASH_MAP = ['6.5.314.4300']
+"""
+Mapping of versions to watch out for crashes/handle bugs for server side export
+"""
+
+HANDLER_ARGTYPES = {
+    # pytan.handler.Handler args:
+    'username': str,
+    'password': str,
+    'domain': str,
+    'secondary': str,
+    'session_id': str,
+    'host': str,
+    'port': int,
+    'loglevel': int,
+    'loggmt': bool,
+    'logconsole_enable': bool,
+    'logconsole_formatter': str,
+    'logfile_enable': bool,
+    'logfile_output': str,
+    'logfile_formatter': str,
+    'config_file': str,
+    # pytan.session.Session args:
+    'soap_request_headers': dict,
+    'http_debug': bool,
+    'http_auth_retry': bool,
+    'http_retry_count': int,
+    'auth_connect_timeout_sec': int,
+    'auth_response_timeout_sec': int,
+    'info_connect_timeout_sec': int,
+    'info_response_timeout_sec': int,
+    'soap_connect_timeout_sec': int,
+    'soap_response_timeout_sec': int,
+    'stats_loop_enabled': bool,
+    'stats_loop_sleep_sec': int,
+    'stats_loop_targets': dict,
+    'record_all_requests': bool,
+}
+"""
+List of arguments that Handler can accept and their types
+"""

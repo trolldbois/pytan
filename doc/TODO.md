@@ -2,7 +2,7 @@
 
 - [DOC](#doc)
   - [TANIUMNG](#taniumng)
-- [dont want to raise exception in tanium_ng for import of tickle, but do want to log! (maybe Warning class like req?)](#dont-want-to-raise-exception-in-tanium_ng-for-import-of-tickle-but-do-want-to-log-maybe-warning-class-like-req)
+  - [TICKLE](#tickle)
   - [SESSION](#session)
   - [HUMAN PARSING](#human-parsing)
   - [HANDLER/MAIN](#handlermain)
@@ -33,15 +33,23 @@
 grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## TANIUMNG
+* TODO: ADD parameter_definition_dict TO BUILDER
+* TODO ADD DOCSTR TO BUILDER HEADER
+* dont want to raise exception in tanium_ng for import of tickle, but do want to log! (maybe Warning class like req?)
+* write tests!
+* rebuild taniumpy with latest wsdl (LAST)
+
+## TICKLE
 * move serializers out => tickle NOW
   * csv => NOW
+    * TODO FIGURE OUT ResultSet 
+    * maybe use string api for what_hash instead of getting sensors?
+  * TODO test on py2
+* TODO: this wont work, need to check for _tickled_list ??
 * make tickle use its own exceptions => NEXT
-* rebuild taniumpy with latest wsdl (LAST)
-# dont want to raise exception in tanium_ng for import of tickle, but do want to log! (maybe Warning class like req?)
 * move tickle bools to constants
 * add result info to tickle.from_sse_xml (passthrough from handler)
-* add utility method to deserialize json in parameter_definition (will need to come up with manual override in dynamic generator, maybe __getattr__ with lookup reference to _JSONS=['parameter_definition'])
-        # TODO: ADD parameter_definition_dict TO BUILDER
+* write tests!
 
 ## SESSION
 * http/s proxy
@@ -49,6 +57,8 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * move stats threading into it's own class
 * i plan to extend that signature to add “domain” and “secondary” as part of my current pytan refactor, in order to support all 4 fields the /auth api supports
 * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
+* Add string API method
+* add get user info and server version from that init call after auth
 
 ## HUMAN PARSING
 * argparse for specs/left/right/etc

@@ -9,6 +9,7 @@ import time
 from datetime import datetime
 from datetime import timedelta
 
+from pytan import tickle
 from pytan.pollers import question
 from pytan.utils import constants, tools
 
@@ -254,7 +255,7 @@ class ActionPoller(question.QuestionPoller):
 
         """
         self.start = datetime.utcnow()
-        self.expiration_timeout = tools.timestr_to_datetime(timestr=self.expiration)
+        self.expiration_timeout = tickle.timestr_to_datetime(timestr=self.expiration)
 
         if self.override_timeout_secs:
             td_obj = timedelta(seconds=self.override_timeout_secs)

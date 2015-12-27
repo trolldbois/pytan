@@ -1,5 +1,9 @@
 """Tanium NG: A Python object representation layer for the XML used by the Tanium SOAP API.
 
+This module is meant to be a completely standalone module, but it does have
+some convenience methods for serialization that rely on pytan.tickle
+These methods will not work if tanium_ng is not being used from within pytan!
+
 * License: MIT
 * Copyright: Copyright Tanium Inc. 2015
 * Generated from ``console.wsdl`` by ``build_tanium_ng.py`` on D2015-12-24T23-33-06Z-0400
@@ -9,9 +13,28 @@
 
 """
 # BEGIN STATIC CODE
-# This module is meant to be a completely standalone module!
+# TODO ADD TO BUILDER HEADER
+
 import sys
 import json
+import logging
+
+# try to load the tickle module from pytan
+try:
+    from pytan import tickle
+    TICKLE = tickle
+except:
+    print("WARNING: UNABLE TO LOAD TICKLE!!!")
+    TICKLE = None
+
+# try to use PytanError as the base class for all exceptions
+try:
+    from pytan import PytanError
+    PytanError = PytanError
+except:
+    PytanError = Exception
+
+mylog = logging.getLogger(__name__)
 
 # Useful for very coarse version differentiation.
 PY3 = sys.version_info[0] == 3
@@ -25,7 +48,7 @@ else:
     integer_types = (int, long)  # noqa
 
 
-class TaniumNextGenException(Exception):
+class TaniumNextGenException(PytanError):
     pass
 
 
@@ -84,16 +107,13 @@ class BaseType(object):
     _ATTRS = []
     """list that stores a preferentially sorted list of non-list attributes for this object"""
 
+    _TICKLE = None
+    """Holds the tickle module which provides serialization/deserialization of objects"""
+
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         self._INITIALIZED = False
 
-        try:
-            from . import tickle
-            self._TICKLE = tickle
-        except:
-            print("WARNING: UNABLE TO LOAD TICKLE!!!")
-            self._TICKLE = None
-
+        self._TICKLE = TICKLE
         self._INIT_VALUES = kwargs.get('values', {}) or {}
 
         self._SIMPLE_PROPS = simple_properties
@@ -286,6 +306,11 @@ class BaseType(object):
     def to_json(self, **kwargs):
         """Deserialize self ``obj`` into a JSON string, relies on tickle"""
         result = self._TICKLE.to_json(self, **kwargs)
+        return result
+
+    def to_csv(self, **kwargs):
+        """Deserialize self ``obj`` into a CSV string, relies on tickle"""
+        result = self._TICKLE.to_csv(self, **kwargs)
         return result
 
 
@@ -536,12 +561,14 @@ class ResultSet(BaseType):
             for r in self.rows
             for i, c in enumerate(r)
             for k in self.columns[i]._SIMPLE_PROPS
+            if getattr(self.columns[i], k) is not None
         ]
         # update all columns with the index correlated values from rows
         [
             getattr(c, 'values').append(getattr(r[i], 'values'))
             for i, c in enumerate(self.columns)
             for r in self.rows
+            if getattr(r[i], 'values')
         ]
 
     def get_row_col(self, n, idx):
@@ -3500,7 +3527,7 @@ class Sensor(BaseType):
 
     @property
     def parameter_definition_dict(self):
-        # TODO: ADD parameter_definition_dict TO BUILDER
+        # TODO: ADD parameter_definition_dict TO BUILDER, and add for all other objs that have pd
         try:
             result = json.loads(self.parameter_definition)
         except Exception as e:

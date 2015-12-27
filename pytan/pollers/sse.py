@@ -3,21 +3,29 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Server Side Export Poller for :mod:`pytan`"""
-import logging
 import time
+import logging
+import datetime
 
-from datetime import datetime
-from datetime import timedelta
+from pytan import PytanError, Store
+from pytan.pollers.question import QuestionPoller
+from pytan.pollers.constants import S_POLLING_SECS
+from pytan.pollers.constants import S_TIMEOUT_SECS
 
-from pytan.pollers import question
-from pytan.utils import constants, exceptions, helpstr
+MYLOG = logging.getLogger(__name__)
+PROGRESSLOG = logging.getLogger(__name__ + ".progress")
+RESOLVERLOG = logging.getLogger(__name__ + ".resolver")
 
-mylog = logging.getLogger(__name__)
-progresslog = logging.getLogger(__name__ + ".progress")
-resolverlog = logging.getLogger(__name__ + ".resolver")
+HELPS = Store()
+HELPS.progress = "Perform an HTTP get to retrieve the status of a server side export"
+HELPS.getdata = "Perform an HTTP get to retrieve the data of a server side export"
 
 
-class SSEPoller(question.QuestionPoller):
+class SSEPollingError(PytanError):
+    pass
+
+
+class SSEPoller(QuestionPoller):
     """A class to poll the progress of a Server Side Export.
 
     The primary function of this class is to poll for status of server side exports.
@@ -33,71 +41,93 @@ class SSEPoller(question.QuestionPoller):
         * Number of seconds to wait in between status check loops
     timeout_secs : int, optional
         * default: 600
-        * timeout in seconds for waiting for status completion, 0 does not time out
+        * timeout in seconds for waiting for status completion
     """
-    STR_ATTRS = constants.S_STR_ATTRS
+
+    POLLING_SECS = S_POLLING_SECS
+    """int of seconds to wait in between run() loops"""
+
+    TIMEOUT_SECS = S_TIMEOUT_SECS
+    """int of timeout in seconds"""
+
+    EXPORT_ID = ''
+    """str of export_id to poll"""
+
+    LOOP_COUNT = 0
+    """int/float that run() stores the current loop count in"""
+
+    STATUS = None
+    """This will be updated with the current SSE status during run() calls"""
+
+    LAST_STATUS = None
+    """This will be updated with previous SSE status during run() calls"""
+
+    STATUS = "Not yet run"
+    """str of status updated by run()"""
+
+    PROGRESS_STR = ''
+    """str that run() stores the current progress in"""
+
+    TIMING_STR = ''
+    """str that run() stores the current timing info in"""
+
+    TIMEOUT = None
+    """datetime.datetime object created from RUN_START + TIMEOUT_SECS"""
+
+    RUN_START = None
+    """datetime.datetime object that indicates when run() was started"""
+
+    LOOP_COUNT = 0
+    """int/float that run() stores the current loop count in"""
+
+    MYLOG = MYLOG
+    """logger used by this class for logging general messages"""
+
+    PROGRESSLOG = PROGRESSLOG
+    """logger used by this class for logging progress messages"""
+
+    _ARG_OVERRIDES = [
+        'polling_secs',
+        'timeout_secs',
+    ]
+    """list of arguments that can be overridden via kwargs to __init__"""
+
+    _STR_ATTRS = [
+        'export_id',
+        'polling_secs',
+        'timeout_secs',
+        'sse_status',
+    ]
     """Class attributes to include in __str__ output"""
 
-    POLLING_SECS_DEFAULT = constants.S_POLLING_SECS_DEFAULT
-    """default value for self.polling_secs"""
-
-    TIMEOUT_SECS_DEFAULT = constants.S_TIMEOUT_SECS_DEFAULT
-    """default value for self.timeout_secs"""
-
-    export_id = None
-    """The export_id for this poller"""
-
     def __init__(self, handler, export_id, **kwargs):
-        polling_secs = kwargs.get('polling_secs', self.POLLING_SECS_DEFAULT)
-        timeout_secs = kwargs.get('timeout_secs', self.TIMEOUT_SECS_DEFAULT)
-
-        from ..handler import Handler as BaseHandler
-
-        self.mylog = mylog
-        self.progresslog = progresslog
-        self.resolverlog = resolverlog
-
-        if not isinstance(handler, BaseHandler):
-            err = "{} is not a valid handler instance! Must be a: {!r}"
-            err = err.format(type(handler), BaseHandler)
-            raise exceptions.PollingError(err)
-
-        self.handler = handler
-        self.export_id = export_id
-        self.polling_secs = polling_secs
-        self.timeout_secs = timeout_secs
-
-        self.id_str = "ID '{}': ".format(export_id)
-        self.poller_result = None
-        self.sse_status = "Not yet run"
-        self._post_init(**kwargs)
+        self.HANDLER = handler
+        self.EXPORT_ID = export_id
+        self.setup_logging()
+        self.check_handler()
+        self.get_overrides(**kwargs)
 
     def setup_logging(self):
         """Setup loggers for this object"""
-        self.mylog = mylog
-        self.progresslog = progresslog
-        self.resolverlog = resolverlog
-
-    def _post_init(self, **kwargs):
-        """Post init class setup"""
-        pass
+        self.MYLOG = MYLOG
+        self.PROGRESSLOG = PROGRESSLOG
 
     def get_sse_status(self, **kwargs):
         """Function to get the status of a server side export
 
         Constructs a URL via: export/${export_id}.status and performs an authenticated HTTP get
         """
-        export_id = kwargs.get('export_id', self.export_id)
+        export_id = kwargs.get('export_id', self.EXPORT_ID)
 
-        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.SSE_PROGRESS)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.progress)
         kwargs['url'] = 'export/{}.status'.format(export_id)
-        result = self.handler.session.http_request_auth(**kwargs).strip()
+        result = self.HANDLER.SESSION.http_request_auth(**kwargs).strip()
 
         # print a progress debug string
-        full_url = self.handler.session._get_full_url(url=kwargs['url'])
-        m = "{}Server Side Export Progress: '{}' from URL: {}"
-        m = m.format(self.id_str, result, full_url)
-        self.progresslog.debug(m)
+        full_url = self.HANDLER.SESSION._get_full_url(url=kwargs['url'])
+        m = "ID: {} Server Side Export Progress: '{}' from URL: {}"
+        m = m.format(export_id, result, full_url)
+        self.PROGRESSLOG.debug(m)
         return result
 
     def get_sse_data(self, **kwargs):
@@ -105,106 +135,100 @@ class SSEPoller(question.QuestionPoller):
 
         Constructs a URL via: export/${export_id}.gz and performs an authenticated HTTP get
         """
-        export_id = kwargs.get('export_id', self.export_id)
+        export_id = kwargs.get('export_id', self.EXPORT_ID)
 
-        kwargs['pytan_help'] = kwargs.get('pytan_help', helpstr.SSE_GET)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.getdata)
         kwargs['url'] = 'export/{}.gz'.format(export_id)
         kwargs['empty_ok'] = True
-        result = self.handler.session.http_request_auth(**kwargs).strip()
+        result = self.HANDLER.SESSION.http_request_auth(**kwargs).strip()
 
         # print a progress debug string
-        full_url = self.handler.session._get_full_url(url=kwargs['url'])
-        m = "{}Server Side Export Data Length: {} from URL: {}"
-        m = m.format(self.id_str, len(result), full_url)
-        self.progresslog.debug(m)
+        full_url = self.HANDLER.SESSION._get_full_url(url=kwargs['url'])
+        m = "ID: {} Server Side Export Data Length: {} from URL: {}"
+        m = m.format(export_id, len(result), full_url)
+        self.PROGRESSLOG.debug(m)
         return result
 
     def run(self, **kwargs):
         """Poll for server side export status"""
-        self.start = datetime.utcnow()
+        self.RUN_START = datetime.datetime.utcnow()
 
-        if self.timeout_secs:
-            td_obj = timedelta(seconds=self.timeout_secs)
-            self.timeout = self.start + td_obj
-        else:
-            self.timeout = None
+        td_obj = datetime.timedelta(seconds=self.TIMEOUT_SECS)
+        self.TIMEOUT = self.RUN_START + td_obj
 
-        self.sse_status_completed = self.sse_status_has_completed_loop(**kwargs)
-        self.poller_result = all([self.sse_status_completed])
-        return self.poller_result
+        self.STATUS = self.status_loop(**kwargs)
+        self.POLLER_RESULT = all([self.STATUS])
+        return self.POLLER_RESULT
 
-    def sse_status_has_completed_loop(self, **kwargs):
+    def status_loop(self, **kwargs):
         """Method to poll the status file for a server side export until it contains 'Completed'"""
-        # loop counter
-        self.loop_count = 1
-        # establish a previous result_info that's empty
-        self.previous_sse_status = ''
+        self.LOOP_COUNT = 1
+        self.LAST_STATUS = ''
 
-        while not self._stop:
-            # get the SSE status
-            self.sse_status = self.get_sse_status(**kwargs)
-
-            # print a timing debug string
-            if self.timeout:
-                time_till_expiry = self.timeout - datetime.utcnow()
-            else:
-                time_till_expiry = 'Never'
+        while not self._STOP:
+            self.STATUS = self.get_sse_status(**kwargs)
 
             timing = (
                 "Timing: Started: {}, Timeout: {}, Elapsed Time: {}, Left till expiry: {}, "
                 "Loop Count: {}"
             )
+
             timing = timing.format(
-                self.start,
-                self.timeout,
-                datetime.utcnow() - self.start,
-                time_till_expiry,
-                self.loop_count,
+                self.RUN_START,
+                self.TIMEOUT,
+                datetime.datetime.utcnow() - self.RUN_START,
+                self.TIMEOUT - datetime.datetime.utcnow(),
+                self.LOOP_COUNT,
             )
-            self.timing_str = timing
+            self.TIMING_STR = timing
 
-            m = "{}{}"
-            m = m.format(self.id_str, timing)
-            self.progresslog.debug(m)
+            m = "ID: {} {}"
+            m = m.format(self.EXPORT_ID, timing)
+            self.PROGRESSLOG.debug(m)
 
-            # check to see if progress has changed, if so print progress log info
             progress_changed = any([
-                self.previous_sse_status != self.sse_status,
+                self.LAST_STATUS != self.STATUS,
             ])
 
+            print(1)
             if progress_changed:
-                m = "{}Progress Changed: '{}'"
-                m = m.format(self.id_str, self.sse_status)
-                self.progresslog.info(m)
+                m = "ID: {} Progress Changed: '{}'"
+                m = m.format(self.EXPORT_ID, self.STATUS)
+                self.PROGRESSLOG.info(m)
 
-            if 'failed' in self.sse_status.lower():
-                err = "{}Server Side Export Failed: '{}'"
-                err = err.format(self.id_str, self.sse_status)
-                raise exceptions.ServerSideExportError(err)
+            print(2)
 
-            if 'completed' in self.sse_status.lower():
-                m = "{}Server Side Export Completed: '{}'"
-                m = m.format(self.id_str, self.sse_status)
-                self.mylog.info(m)
+            if 'failed' in self.STATUS.lower():
+                err = "ID: {} Server Side Export Failed: '{}'"
+                err = err.format(self.EXPORT_ID, self.STATUS)
+                raise SSEPollingError(err)
+
+            print(3)
+
+            if 'completed' in self.STATUS.lower():
+                m = "ID: {} Server Side Export Completed: '{}'"
+                m = m.format(self.EXPORT_ID, self.STATUS)
+                self.MYLOG.info(m)
                 return True
 
-            # check to see if timeout is specified, if so and we have passed it, return
-            # False
-            if self.timeout and datetime.utcnow() >= self.timeout:
-                m = "{}Reached timeout of {}"
-                m = m.format(self.id_str, self.timeout)
-                self.mylog.warning(m)
+            print(4)
+
+            if self.TIMEOUT and datetime.datetime.utcnow() >= self.TIMEOUT:
+                m = "ID: {} Reached timeout of {}"
+                m = m.format(self.EXPORT_ID, self.TIMEOUT)
+                self.MYLOG.warning(m)
                 return False
 
-            # if stop is called, return True
-            if self._stop:
-                m = "{}Stop called at {}"
-                m = m.format(self.id_str, self.sse_status)
-                self.mylog.info(m)
+            print(5)
+
+            if self._STOP:
+                m = "ID: {} Stop called at {}"
+                m = m.format(self.EXPORT_ID, self.STATUS)
+                self.MYLOG.info(m)
                 return False
 
             # update our class variables to the new values determined by this loop
-            self.previous_sse_status = self.sse_status
+            self.LAST_STATUS = self.STATUS
 
-            time.sleep(self.polling_secs)
-            self.loop_count += 1
+            time.sleep(self.POLLING_SECS)
+            self.LOOP_COUNT += 1
