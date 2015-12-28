@@ -1,23 +1,28 @@
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 
 import os
+import sys  # noqa
 import json
 import logging
 import datetime
 
 from pytan import PytanError, string_types, Store, tanium_ng
-from pytan.tickle import from_sse_xml, create_question_obj, create_cf_listobj
-from pytan.tickle import obfuscate, deobfuscate, shrink_obj, check_limits
+from pytan.tickle import from_sse_xml
 from pytan.session import Session
 from pytan.pollers import QuestionPoller, SSEPoller
 from pytan.parsers import GetObject
 from pytan.version import __version__
-from pytan.constants import (
-    PYTAN_KEY, HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LEVEL, DEBUG_BUMP
+
+from pytan.tickle.tools import (
+    obfuscate, deobfuscate, shrink_obj, check_limits, create_question, create_cachefilterlist
 )
+
 from pytan.utils import (
     get_all_logs, set_all_logs, create_log_handler, set_log_tz, add_log_handler,
     remove_log_handler
+)
+from pytan.constants import (
+    PYTAN_KEY, HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LEVEL, DEBUG_BUMP
 )
 
 MYLOG = logging.getLogger(__name__)
@@ -82,23 +87,17 @@ class Handler(object):
 
     SESSION = None
 
-    ARGS_DB = {}
+    ARGSTORE = None
 
     def __init__(self, **kwargs):
         super(Handler, self).__init__()
         self.MYLOG = MYLOG
-
-        add_override(**kwargs)
-
-        self._parse_args(kwargs)
-        self._validate_args()
-
-        setup_log(**self.ARGS_DB['parsed_args'])
-
-        self._log_args()
-
+        self.ARGSTORE = Store()
+        add_override_log(**kwargs)
+        self.PARSED_ARGS = self._parse_args(kwargs)
+        setup_log(**self.PARSED_ARGS)
         # establish our Session to the Tanium server
-        self.SESSION = Session(**self.ARGS_DB['parsed_args'])
+        self.SESSION = Session(**self.PARSED_ARGS)
 
     def __repr__(self):
         return self.__str__()
@@ -110,9 +109,9 @@ class Handler(object):
 
     def read_config_file(self):
         """Read a PyTan User Config and update the current class variables"""
-        puc_env = self.ARGS_DB['env_args'].get('config_file', '')
-        puc_kwarg = self.ARGS_DB['original_args'].get('config_file', '')
-        puc_def = self.ARGS_DB['default_args']['config_file']
+        puc_env = self.ARGSTORE.osenv_args.get('config_file', '')
+        puc_kwarg = self.ARGSTORE.original_args.get('config_file', '')
+        puc_def = self.ARGSTORE.default_args['config_file']
         puc = puc_env or puc_kwarg or puc_def
         puc = os.path.expanduser(puc)
         puc_dict = {}
@@ -151,10 +150,10 @@ class Handler(object):
         result : str
             * filename of PyTan User Config that was written to
         """
-        result = kwargs.get('config_file', '') or self.ARGS_DB['parsed_args']['config_file']
+        result = kwargs.get('config_file', '') or self.ARGSTORE.parsed_args['config_file']
         result = os.path.expanduser(result)
 
-        puc_dict = dict(self.ARGS_DB['parsed_args'])
+        puc_dict = dict(self.ARGSTORE.parsed_args)
 
         # obfuscate the password
         if puc_dict['password']:
@@ -201,7 +200,7 @@ class Handler(object):
         left = self._get_spec_objects(left)
         right = self._get_spec_objects(right)
 
-        kwargs['obj'] = create_question_obj(left=left, right=right)
+        kwargs['obj'] = create_question(left=left, right=right)
 
         if max_age_seconds:
             kwargs['obj'].max_age_seconds = int(max_age_seconds)
@@ -2011,7 +2010,7 @@ class Handler(object):
             kwargs['obj'] = self._fixit_group_id(**kwargs)
 
             # create a cache filter list object using the parsed_specs
-            kwargs['cache_filters'] = create_cf_listobj(parsed_specs)
+            kwargs['cache_filters'] = create_cachefilterlist(parsed_specs)
 
             # use getobject to find the results using the cache_filters to limit the returns
             cf_result = self.SESSION.find(**kwargs)
@@ -2843,72 +2842,87 @@ class Handler(object):
                 err = err.format(ri)
                 raise ServerSideExportError(err)
 
+    def _find_arg_source(self, arg):
+        args_order = ['puc_config_args', 'osenv_args', 'handler_args']
+        src = 'default_args'
+        for args_src in args_order:
+            def_val = self.ARGSTORE.default_args[arg]
+            args_src_dict = self.ARGSTORE[args_src]
+            args_src_val = args_src_dict.get(arg, None)
+
+            # checks
+            in_args_src = arg in args_src_dict
+            not_def_val = args_src_val != def_val
+            not_empty = args_src_val not in ['', None]
+
+            if all([in_args_src, not_def_val, not_empty]):
+                src = args_src
+                break
+        return src
+
     def _parse_args(self, kwargs):
         """pass."""
-        self.ARGS_DB = {}
-        self.ARGS_DB['original_args'] = kwargs
-        self.ARGS_DB['handler_args'] = self._get_src_args(kwargs)
-        self.ARGS_DB['default_args'] = self._get_src_args(HANDLER_DEFAULTS)
-        self.ARGS_DB['env_args'] = {
+        env_args = {
             k.lower().replace('pytan_', ''): v
             for k, v in os.environ.items()
             if k.lower().startswith('pytan_')
         }
-        self.ARGS_DB['env_args'] = self._get_src_args(self.ARGS_DB['env_args'])
-        self.ARGS_DB['puc_dict'] = self.read_config_file()
-        self.ARGS_DB['config_args'] = self._get_src_args(self.ARGS_DB['puc_dict'])
-        self.ARGS_DB['parsed_args_source'] = {}
-        self.ARGS_DB['parsed_args'] = {}
 
-        args_order = ['config_args', 'env_args', 'handler_args', 'default_args']
-        for k in HANDLER_ARGTYPES:
-            src = None
-            def_val = self.ARGS_DB['default_args'].get(k, None)
-            for args in args_order:
-                if src is not None:
-                    break
-                args_dict = self.ARGS_DB[args]
-                if k in args_dict and args_dict[k] != def_val:
-                    val = args_dict[k]
-                    src = args
+        self.ARGSTORE.original_args = kwargs
+        self.ARGSTORE.default_args = HANDLER_DEFAULTS
+        self.ARGSTORE.handler_args = self._get_src_args(kwargs)
+        self.ARGSTORE.osenv_args = self._get_src_args(env_args)
+        self.ARGSTORE.parsed_args_source = {}
+        self.ARGSTORE.parsed_args = {}
 
-            if src is None and def_val is not None:
-                src = 'default_args'
-                val = def_val
-            if src is None and def_val is None:
-                continue
+        puc_args = self.read_config_file()
+        self.ARGSTORE.puc_config_args = self._get_src_args(puc_args)
 
-            self.ARGS_DB['parsed_args'][k] = val
-            self.ARGS_DB['parsed_args_source'][k] = src
+        for arg, def_val in HANDLER_DEFAULTS.items():
+            arg_src = self._find_arg_source(arg)
+            val = self.ARGSTORE[arg_src][arg]
 
-            if k == 'password':
+            val_is_str = isinstance(val, string_types)
+            def_val_is_str = isinstance(def_val, string_types)
+
+            if val_is_str and not def_val_is_str:
+                val = self._handle_string_arg(arg, val)
+
+            val = self._enforce_arg_type(arg, val, arg_src)
+
+            self.ARGSTORE.parsed_args[arg] = val
+            self.ARGSTORE.parsed_args_source[arg] = arg_src
+
+            pval = val
+            if arg == 'password':
                 pval = '{}'.format('*' * len(val))
-            else:
-                pval = val
 
             m = "_parse_args(): arg = {!r}, val = {!r}, type = {!r}, src = {!r}"
-            m = m.format(k, pval, type(val).__name__, src)
+            m = m.format(arg, pval, type(val).__name__, arg_src)
             self.MYLOG.debug(m)
 
-        if self.ARGS_DB['parsed_args']['password']:
-            self.ARGS_DB['parsed_args']['password'] = deobfuscate(
+        if self.ARGSTORE.parsed_args['password']:
+            self.ARGSTORE.parsed_args['password'] = deobfuscate(
                 key=PYTAN_KEY,
-                string=self.ARGS_DB['parsed_args']['password'],
+                string=self.ARGSTORE.parsed_args['password'],
             )
 
-    def _handle_string_arg(self, argname, argtype, value):
+        result = self.ARGSTORE.parsed_args
+        return result
+
+    def _handle_string_arg(self, arg, value):
         """handle string types that actually should be other types."""
         result = value
-        if argtype == bool:
+        def_argtype = type(HANDLER_DEFAULTS[arg])
+        if def_argtype == bool:
             valid = ["True", "False"]
             if value.capitalize() in valid:
                 result = eval(value.capitalize())
             else:
                 err = "Argument {!r} must be one of {!r}, supplied string containing {!r}"
-                err = err.format(argname, ','.join(valid), value)
+                err = err.format(arg, ','.join(valid), value)
                 raise PytanError(err)
-
-        if argtype == dict:
+        if def_argtype == dict:
             try:
                 result = dict(eval(value))
             except Exception as e:
@@ -2917,55 +2931,22 @@ class Handler(object):
                 raise PytanError(err)
         return result
 
-    def _validate_args(self):
-        """pass."""
-        pa = self.ARGS_DB['parsed_args']
-        pas = self.ARGS_DB['parsed_args_source']
-        for arg, argtype in HANDLER_ARGTYPES.items():
-            if arg not in pa:
-                continue
-
-            pa_is_str = isinstance(pa[arg], string_types)
-            argtype_is_str = isinstance(argtype(), string_types)
-
-            if pa_is_str and not argtype_is_str:
-                pa[arg] = self._handle_string_arg(arg, argtype, pa[arg])
-
-            try:
-                pa[arg] = argtype(pa[arg])
-            except Exception as e:
-                pa_type = type(pa[arg]).__name__
-                err = "Argument {!r} must be type {!r}, supplied type {!r} via {!r}"
-                err = err.format(arg, argtype.__name__, pa_type, pas[arg])
-                err = "{} exception: {}".format(err, e)
-                raise PytanError(err)
-
-        if not pa['host']:
-            err = "Must supply host!"
+    def _enforce_arg_type(self, arg, val, source):
+        pa_type = type(val).__name__
+        def_argtype = type(HANDLER_DEFAULTS[arg])
+        m = "Validated argument {!r} supplied by {!r} is of type {!r}"
+        err = "Argument {!r} value {!r} must be type {!r}, supplied type {!r} via {!r}: {}"
+        try:
+            result = def_argtype(val)
+        except Exception as e:
+            err = err.format(arg, val, def_argtype.__name__, pa_type, source, e)
             raise PytanError(err)
-
-        if not pa['port']:
-            err = "Must supply port!"
-            raise PytanError(err)
-
-        if not pa['session_id'] and not pa['username']:
-            err = "Must supply username if no session_id!"
-            raise PytanError(err)
-
-        if not pa['session_id'] and not pa['password']:
-            err = "Must supply password if no session_id!"
-            raise PytanError(err)
-
-    def _log_args(self):
-        """pass."""
-        m = "Argument {!r} supplied by {!r} type {!r}"
-        for k, v in self.ARGS_DB['parsed_args'].items():
-            mm = m.format(k, self.ARGS_DB['parsed_args_source'][k], type(v).__name__)
-            self.MYLOG.debug(mm)
+        self.MYLOG.debug(m.format(arg, source, def_argtype.__name__))
+        return result
 
     def _get_src_args(self, kwargs):
         """pass."""
-        src_args = {k: kwargs[k] for k in HANDLER_ARGTYPES if k in kwargs}
+        src_args = {k: kwargs[k] for k in HANDLER_DEFAULTS if k in kwargs}
         return src_args
 
 
@@ -2985,7 +2966,7 @@ class ParseJobError(PytanError):
     pass
 
 
-def add_override(**kwargs):
+def add_override_log(**kwargs):
     myargs = {}
     myargs.update(HANDLER_DEFAULTS)
     myargs.update(kwargs)
@@ -3001,7 +2982,7 @@ def add_override(**kwargs):
         MYLOG.debug("added override log and set all python loggers to debug")
 
 
-def del_override(**kwargs):
+def del_override_log(**kwargs):
     myargs = {}
     myargs.update(HANDLER_DEFAULTS)
     myargs.update(kwargs)
@@ -3017,7 +2998,7 @@ def del_override(**kwargs):
 def setup_log(**kwargs):
     """Setup logging for PyTan."""
     check_logging_setup()
-    del_override(**kwargs)
+    del_override_log(**kwargs)
 
     myargs = {}
     myargs.update(HANDLER_DEFAULTS)
@@ -3211,41 +3192,4 @@ Mapping of API integers for server side export format to version support
 SSE_CRASH_MAP = ['6.5.314.4300']
 """
 Mapping of versions to watch out for crashes/handle bugs for server side export
-"""
-
-HANDLER_ARGTYPES = {
-    # pytan.handler.Handler args:
-    'username': str,
-    'password': str,
-    'domain': str,
-    'secondary': str,
-    'session_id': str,
-    'host': str,
-    'port': int,
-    'loglevel': int,
-    'loggmt': bool,
-    'logconsole_enable': bool,
-    'logconsole_formatter': str,
-    'logfile_enable': bool,
-    'logfile_output': str,
-    'logfile_formatter': str,
-    'config_file': str,
-    # pytan.session.Session args:
-    'soap_request_headers': dict,
-    'http_debug': bool,
-    'http_auth_retry': bool,
-    'http_retry_count': int,
-    'auth_connect_timeout_sec': int,
-    'auth_response_timeout_sec': int,
-    'info_connect_timeout_sec': int,
-    'info_response_timeout_sec': int,
-    'soap_connect_timeout_sec': int,
-    'soap_response_timeout_sec': int,
-    'stats_loop_enabled': bool,
-    'stats_loop_sleep_sec': int,
-    'stats_loop_targets': dict,
-    'record_all_requests': bool,
-}
-"""
-List of arguments that Handler can accept and their types
 """

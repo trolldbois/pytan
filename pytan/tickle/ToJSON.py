@@ -47,9 +47,6 @@ class ToJSON(object):
 
     _PARENT = True
 
-    FLAT = False
-    """bool that controls if all nested objects of OBJ will be flattened out when creating DICT"""
-
     _SORT_KEYS = JSON_SORT_KEYS
 
     _FLAT_PRE = ''
@@ -57,6 +54,9 @@ class ToJSON(object):
 
     _FLAT_SEP = FLAT_SEP
     """str to seperate FLAT_PRE and property name with if FLAT=True"""
+
+    FLAT = False
+    """bool that controls if all nested objects of OBJ will be flattened out when creating DICT"""
 
     OBJ = None
     """tanium_ng object to convert to DICT"""
@@ -175,10 +175,7 @@ class ToJSON(object):
 
             new_vals = []
             for idx, val in enumerate(vals):
-                # if self.FLAT:
                 prop_name = '{}{}{}{}'.format(self._PROP_PRE, prop, self._FLAT_SEP, idx)
-                # else:
-                # prop_name = prop
 
                 if issubclass(prop_type, tanium_ng.BaseType):
                     tickle_args = {}

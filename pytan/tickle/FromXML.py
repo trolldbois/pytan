@@ -1,5 +1,5 @@
-from pytan import tanium_ng
-from pytan.tickle import ET, DeserializeError
+from pytan import PytanError, tanium_ng
+from pytan.tickle import ET
 from pytan.tickle.constants import OBJECT_XPATH, RESULT_XPATH
 
 
@@ -157,3 +157,7 @@ class FromXML(object):
                 else:
                     prop_list.append(prop_elem.text)
             setattr(self.OBJ, prop, prop_list)
+
+
+class DeserializeError(PytanError):
+    pass

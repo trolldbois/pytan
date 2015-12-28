@@ -19,13 +19,6 @@ import sys
 import json
 import logging
 
-# try to load the tickle module from pytan
-try:
-    from pytan import tickle
-    TICKLE = tickle
-except:
-    print("WARNING: UNABLE TO LOAD TICKLE!!!")
-    TICKLE = None
 
 # try to use PytanError as the base class for all exceptions
 try:
@@ -113,7 +106,14 @@ class BaseType(object):
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         self._INITIALIZED = False
 
-        self._TICKLE = TICKLE
+        # try to load the tickle module from pytan
+        try:
+            from pytan import tickle
+            self._TICKLE = tickle
+        except Exception as e:
+            print("WARNING: UNABLE TO LOAD TICKLE: {}".format(e))
+            self._TICKLE = None
+
         self._INIT_VALUES = kwargs.get('values', {}) or {}
 
         self._SIMPLE_PROPS = simple_properties

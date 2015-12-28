@@ -43,5 +43,3 @@ SSE_WRAP = (
 """str of XML to wrap XML received from a server side data export with"""
 TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 """str of Tanium's format for date time strings"""
-MISSING_CR_TEXT = r"([^\r])\n"
-r"""regex to look for missing carriage returns ``\\r`` before line feeds ``\\n``."""

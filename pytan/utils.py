@@ -6,13 +6,18 @@ import time
 import pprint
 import string
 import shutil
-import socket
 import logging
 import platform
 import argparse
 
 from argparse import ArgumentDefaultsHelpFormatter as A1 # noqa
 from argparse import RawDescriptionHelpFormatter as A2 # noqa
+
+PY3 = sys.version_info[0] == 3
+if PY3:
+    string_types = str,  # noqa
+else:
+    string_types = basestring,  # noqa
 
 
 class CustomArgFormat(A1, A2):
@@ -127,29 +132,6 @@ def capcase(val):
     val = [a[0].upper() + (a[1:]if len(a) > 0 else '') for a in re.split('[-_]', val)]
     result = ''.join(val)
     return result
-
-
-def port_check(address, port, timeout=5):
-    """Check if `address`:`port` can be reached within `timeout`
-
-    Parameters
-    ----------
-    address : str
-        * hostname/ip address to check `port` on
-    port : int
-        * port to check on `address`
-    timeout : int, optional
-        * timeout after N seconds of not being able to connect
-
-    Returns
-    -------
-    :mod:`socket` or False :
-        * if connection succeeds, the socket object is returned, else False is returned
-    """
-    try:
-        return socket.create_connection((address, port), timeout)
-    except socket.error:
-        return False
 
 
 def get_percent(base, amount, text=None, textformat="{0:.2f}%"):
@@ -291,9 +273,17 @@ def create_log_handler(**kwargs):
     """Utility to create a logging handler."""
     level = kwargs.get('level', 'DEBUG')
     formatter = kwargs.get('formatter', '%(levelname)-8s [%(name)s] %(message)s')
-    output = kwargs.get('output', sys.stdout)
+    output = kwargs.get('output', 'sys.stdout')
     name = kwargs.get('name', 'console')
     handler = kwargs.get('handler', 'StreamHandler')
+
+    if isinstance(output, string_types) and output.startswith('sys.'):
+        try:
+            output = eval(output)
+        except Exception as e:
+            err = "Unable to evaluate log output as string {}, exception: {}"
+            err = err.format(output, e)
+            raise Exception(err)
 
     try:
         output = os.path.expanduser(output)

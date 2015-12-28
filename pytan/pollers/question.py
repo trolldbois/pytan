@@ -10,7 +10,7 @@ import datetime
 
 from pytan import PytanError, Store, tanium_ng
 from pytan.utils import get_percent
-from pytan.tickle import seconds_from_now, timestr_to_datetime
+from pytan.tickle.tools import secs_from_now, str_to_dt
 from pytan.pollers.constants import Q_COMPLETE_PCT
 from pytan.pollers.constants import Q_POLLING_SECS
 from pytan.pollers.constants import Q_TIMEOUT_SECS
@@ -309,9 +309,9 @@ class QuestionPoller(object):
         expiration from the object (self.OBJ) itself.
         """
         kwargs['attr'] = self._EXPIRATION_ATTR
-        kwargs['fallback'] = seconds_from_now(secs=self.EXPIRE_SECS)
+        kwargs['fallback'] = secs_from_now(secs=self.EXPIRE_SECS)
         self.EXPIRATION = self._derive_attribute(**kwargs)
-        self.EXPIRATION = timestr_to_datetime(timestr=self.EXPIRATION)
+        self.EXPIRATION = str_to_dt(timestr=self.EXPIRATION)
 
     def run_callback(self, callback, pct, **kwargs):
         """Utility method to find a callback in callbacks dict and run it"""

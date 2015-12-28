@@ -1,7 +1,6 @@
 import json
 
-from pytan import tanium_ng
-from pytan.tickle import DeserializeError
+from pytan import PytanError, tanium_ng
 from pytan.tickle.constants import TAG_NAME, LIST_NAME, EXPLODE_NAME
 
 
@@ -107,3 +106,7 @@ class FromJSON(object):
                 else:
                     new_vals.append(val)
             setattr(self.OBJ, prop, new_vals)
+
+
+class DeserializeError(PytanError):
+    pass

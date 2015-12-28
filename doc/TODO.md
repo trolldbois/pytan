@@ -47,7 +47,6 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
   * TODO test on py2
 * TODO: this wont work, need to check for _tickled_list ??
 * make tickle use its own exceptions => NEXT
-* move tickle bools to constants
 * add result info to tickle.from_sse_xml (passthrough from handler)
 * write tests!
 
@@ -59,6 +58,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
 * Add string API method
 * add get user info and server version from that init call after auth
+* KEEP PASSWORD OBFUSCATED IN MEMORY
 
 ## HUMAN PARSING
 * argparse for specs/left/right/etc

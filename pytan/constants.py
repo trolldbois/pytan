@@ -1,62 +1,78 @@
 """Constants for :mod:`pytan`."""
 
-import sys
+CRED_DEFAULTS = {}
+CRED_DEFAULTS['username'] = ''
+CRED_DEFAULTS['password'] = ''
+CRED_DEFAULTS['domain'] = ''
+CRED_DEFAULTS['secondary'] = ''
+CRED_DEFAULTS['session_id'] = ''
+CRED_DEFAULTS['persistent'] = False
 
-HANDLER_DEFAULTS = {
-    'logfile_enable': False,
-    'logfile_output': "~/pytan.log",
-    'logfile_name': "pytan_file",
-    'logfile_handler': "FileHandler",
-    'logfile_level': "NOTSET",
-    'logfile_formatter': '%(asctime)s %(levelname)-8s [%(name)s] %(message)s',
-    'logconsole_enable': True,
-    'logconsole_output': sys.stdout,
-    'logconsole_handler': "StreamHandler",
-    'logconsole_name': "pytan_console",
-    'logconsole_level': "NOTSET",
-    'logconsole_formatter': '%(levelname)-8s [%(name)s] %(message)s',
-    'loglevel': 0,
-    'loggmt': True,
-    'username': '',
-    'password': '',
-    'domain': '',
-    'secondary': '',
-    'session_id': '',
-    'host': '',
-    'port': 443,
-    'config_file': "~/.pytan_config.json",
+SESSION_DEFAULTS = {}
+SESSION_DEFAULTS['host'] = ''
+SESSION_DEFAULTS['port'] = 443
+SESSION_DEFAULTS['protocol'] = 'https'
+SESSION_DEFAULTS['port_fallback'] = 444
+SESSION_DEFAULTS['session_fallback'] = True
+SESSION_DEFAULTS['retry_count'] = 5
+SESSION_DEFAULTS['record_all'] = False
+SESSION_DEFAULTS['force_version'] = ''
+SESSION_DEFAULTS['connect_secs'] = 5
+SESSION_DEFAULTS['connect_secs_soap'] = 15
+SESSION_DEFAULTS['response_secs'] = 15
+SESSION_DEFAULTS['response_secs_soap'] = 540
+SESSION_DEFAULTS['clean_xml_restricted'] = True
+SESSION_DEFAULTS['clean_xml_invalid'] = True
+SESSION_DEFAULTS['request_headers'] = {
+    'Accept-Encoding': 'gzip',
+    'User-Agent': '{title}/{version}',
 }
 
-LOGMAP = {
-    'pytan': 0,
-    # 'pytan.session.stats': 0,
-    'pytan.handler': 2,
-    'pytan.tanium_ng': 0,
-    'pytan.tickle': 0,
-    # 'pytan.pollers.action': 3,
-    'pytan.pollers.question': 3,
-    'pytan.pollers.sse': 4,
-    # 'pytan.pollers.action.progress': 5,
-    'pytan.pollers.question.progress': 5,
-    'pytan.pollers.sse.progress': 5,
-    # 'pytan.pollers.action.resolver': 6,
-    'pytan.pollers.question.resolver': 6,
-    'pytan.pollers.sse.resolver': 6,
-    'pytan.parsers.filterobject': 7,
-    'pytan.parsers.getobject': 8,
-    'pytan.parsers.spec': 9,
-    'pytan.session.help': 10,
-    'pytan.session': 11,
-    'pytan.session.http': 12,
-    'pytan.session.auth': 13,
-    'pytan.session.body': 14,
-    'pytan.xml_clean': 16,
-    'pytan.requests': 20,
-    'pytan.requests.packages.urllib3': 21,
-    'pytan.requests.packages.urllib3.connectionpool': 22,
-    'pytan.requests.packages.urllib3.poolmanager': 23,
-    'pytan.requests.packages.urllib3.util.retry': 24,
-}
+HANDLER_DEFAULTS = {}
+HANDLER_DEFAULTS['logfile_enable'] = False
+HANDLER_DEFAULTS['logfile_output'] = "~/pytan.log"
+HANDLER_DEFAULTS['logfile_name'] = "pytan_file"
+HANDLER_DEFAULTS['logfile_handler'] = "FileHandler"
+HANDLER_DEFAULTS['logfile_level'] = "NOTSET"
+HANDLER_DEFAULTS['logfile_formatter'] = '%(asctime)s %(levelname)-8s [%(name)s] %(message)s'
+HANDLER_DEFAULTS['logconsole_enable'] = True
+HANDLER_DEFAULTS['logconsole_output'] = 'sys.stdout'
+HANDLER_DEFAULTS['logconsole_handler'] = "StreamHandler"
+HANDLER_DEFAULTS['logconsole_name'] = "pytan_console"
+HANDLER_DEFAULTS['logconsole_level'] = "NOTSET"
+HANDLER_DEFAULTS['logconsole_formatter'] = '%(levelname)-8s [%(name)s] %(message)s'
+HANDLER_DEFAULTS['loglevel'] = 0
+HANDLER_DEFAULTS['loggmt'] = True
+HANDLER_DEFAULTS['config_file'] = "~/.pytan_config.json"
+HANDLER_DEFAULTS.update(CRED_DEFAULTS)
+HANDLER_DEFAULTS.update(SESSION_DEFAULTS)
+
+LOGMAP = {}
+LOGMAP['pytan'] = 0
+LOGMAP['pytan.handler'] = 2
+LOGMAP['pytan.tanium_ng'] = 0
+LOGMAP['pytan.tickle'] = 0
+LOGMAP['pytan.tickle.tools'] = 0
+LOGMAP['pytan.pollers.question'] = 3
+LOGMAP['pytan.pollers.sse'] = 4
+LOGMAP['pytan.pollers.question.progress'] = 5
+LOGMAP['pytan.pollers.sse.progress'] = 5
+LOGMAP['pytan.pollers.question.resolver'] = 6
+LOGMAP['pytan.pollers.sse.resolver'] = 6
+LOGMAP['pytan.parsers.filterobject'] = 7
+LOGMAP['pytan.parsers.getobject'] = 8
+LOGMAP['pytan.parsers.spec'] = 9
+LOGMAP['pytan.session.help'] = 10
+LOGMAP['pytan.session'] = 11
+LOGMAP['pytan.session.http'] = 12
+LOGMAP['pytan.session.auth'] = 13
+LOGMAP['pytan.session.body'] = 14
+LOGMAP['pytan.xml_clean'] = 16
+LOGMAP['pytan.requests'] = 20
+LOGMAP['pytan.requests.packages.urllib3'] = 21
+LOGMAP['pytan.requests.packages.urllib3.connectionpool'] = 22
+LOGMAP['pytan.requests.packages.urllib3.poolmanager'] = 23
+LOGMAP['pytan.requests.packages.urllib3.util.retry'] = 24
 
 DEFAULT_LEVEL = "WARN"
 """Set all logs in LOGMAP to this level before setting them to INFO or DEBUG"""
@@ -70,90 +86,30 @@ DEBUG_BUMP = 20
 PYTAN_KEY = "mT1er@iUa1kP9pelSW"
 """Key used for obfuscation/de-obfsucation of password when writing/reading user config"""
 
-AUTH_CONNECT = 5
-"""number of seconds before timing out for a connection while authenticating"""
-
-AUTH_RESPONSE = 15
-"""number of seconds before timing out for a response while authenticating"""
-
-INFO_CONNECT = 5
-"""number of seconds before timing out for a connection while getting server info"""
-
-INFO_RESPONSE = 15
-"""number of seconds before timing out for a response while getting server info"""
-
-SOAP_CONNECT = 15
-"""number of seconds before timing out for a connection while sending a SOAP Request"""
-
-SOAP_RESPONSE = 540
-"""number of seconds before timing out for a response while sending a SOAP request"""
-
 XMLNS = {
-    'SOAP-ENV': 'xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"',
-    'xsd': 'xmlns:xsd="http://www.w3.org/2001/XMLSchema"',
-    'xsi': 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"',
-    'typens': 'xmlns:typens="urn:TaniumSOAP"',
+    'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+    'xsd': 'http://www.w3.org/2001/XMLSchema',
+    'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    'typens': 'urn:TaniumSOAP',
 }
 """The namespace mappings for use in SOAP_REQUEST_BODY by Session"""
 
 SOAP_REQUEST_BODY = (
-    '<SOAP-ENV:Envelope {SOAP-ENV} {xsd} {xsi}>\n'
-    '<SOAP-ENV:Body>\n'
-    '  <typens:tanium_soap_request {typens}>\n'
-    '    <command>$command</command>\n'
-    '    <object_list>$object_list</object_list>\n'
-    '    $options\n'
-    '  </typens:tanium_soap_request>\n'
-    '</SOAP-ENV:Body>\n'
-    '</SOAP-ENV:Envelope>\n'
-)
-"""The XML template used for all SOAP Requests in string form"""
-
-REQUEST_HEADERS = {'Accept-Encoding': 'gzip'}
-"""dictionary of headers to add to every HTTP GET/POST"""
-
-RETRY_COUNT = 5
-"""number of times to retry HTTP GET/POST's if the connection times out/fails"""
-
-AUTH_RETRY = True
-"""retry HTTP GET/POST's with username/password if session_id fails or not"""
-
-DEFAULT_PORT = 443
-"""port to connect to"""
-
-DEFAULT_HOST = None
-"""host to connect to"""
-
-RECORD_ALL_REQUESTS = False
-"""Controls whether each requests response object is appended to the
-ALL_REQUESTS_RESPONSES list in Session
+    '''<?xml version="1.0" encoding="utf-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="{soapenv}" xmlns:xsd="{xsd}" xmlns:xsi="{xsi}">
+<SOAP-ENV:Body>
+  <typens:tanium_soap_request xmlns:typens="{typens}">
+    <command>$command</command>
+    <object_list>$object_list</object_list>
+    $options
+  </typens:tanium_soap_request>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+''')
+"""
+The XML template used for all SOAP Requests in string form
+{} variables will be replaced with keys from XMLNS
+$ variables will be replaced with strings from the objects during request time
 """
 
-FORCE_SERVER_VERSION = ''
-"""
-In the case where the user wants to have pytan act as if the server is a specific version,
-regardless of what server_version is.
-"""
-
-STATS_LOOP = False
-"""enable the statistics loop thread or not"""
-
-STATS_LOOP_SLEEP = 5
-"""seconds to sleep in between printing the statistics when stats_loop_enabled is True """
-
-STATS_LOOP_TARGETS = [
-    {'Version': 'Settings/Version'},
-    {'Active Questions': 'Active Question Cache/Active Question Estimate'},
-    {'Clients': 'Active Question Cache/Active Client Estimate'},
-    {'Strings': 'String Cache/Total String Count'},
-    {'Handles': 'System Performance Info/HandleCount'},
-    {'Processes': 'System Performance Info/ProcessCount'},
-    {'Memory Available': (
-        'percentage(System Performance Info/PhysicalAvailable,System Performance Info/'
-        'PhysicalTotal)'
-    )
-    },
-]
-"""list of dictionaries with the key being the section of info.json to print info from, and
-the value being the item with in that section to print the value
-"""
+SOAP_CONTENT_TYPE = 'text/xml; charset=utf-8'

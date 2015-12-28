@@ -8,3 +8,16 @@ __description__ = 'A python package that makes using the Tanium Server SOAP API 
 __license__ = 'MIT'
 __copyright__ = 'Copyright Tanium Inc. 2016'
 __status__ = 'development - refactor beta'
+
+VERSION_INFO = {
+    'version': __version__,
+    'codename': __codename__,
+    'title': __title__,
+    'url': __url__,
+    'author': __author__,
+    'email': __email__,
+    'description': __description__,
+    'license': __license__,
+    'copyright': __copyright__,
+    'status': __status__,
+}
