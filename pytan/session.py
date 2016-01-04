@@ -86,15 +86,18 @@ class CredStore(dict):
         old_value = self.get(name, '')
         old_attr_value = getattr(self, name, '')
 
+        if name in self._NORMAL_CREDS and value:
+            self.session_id = ''
+
+        if name == 'persistent' and old_value != value:
+            self.session_id = ''
+
         if name == 'password':
             value = obfuscate(key=PYTAN_KEY, string=value)
 
-        if name == 'session_id':
-            if not value:
-                self.session_dt = None
-                self.user_obj = None
-            elif old_value != value:
-                self.session_dt = datetime.datetime.utcnow()
+        if name == 'session_id' and (not value or old_value != value):
+            self.session_dt = None
+            self.user_obj = None
 
         if old_value != value:
             self[name] = value
@@ -122,10 +125,6 @@ class CredStore(dict):
         return result
 
     def persist_type(self):
-        if self.has_session_creds and not self.has_normal_creds and self.persistent:
-            err = "Unable to establish a persistent session when authenticating via session_id"
-            raise AuthorizationError(err)
-
         if self.persistent:
             result = "persistent (up to 1 week)"
         else:
@@ -152,18 +151,22 @@ class CredStore(dict):
         result = any(self.session_creds)
         return result
 
-    @property
-    def headers(self):
+    def get_headers(self, **kwargs):
         """pass."""
         result = {}
+        supplied_headers = kwargs.get('headers', {}) or {}
+        result.update(supplied_headers)
 
         # if session_id is in creds, add that to the result
         if self.has_session_creds:
             m = "Using Session ID for authentication headers"
             AUTHLOG.debug(m)
             result['session'] = self.session_id
+            [result.pop(k) for k in self._NORMAL_CREDS if k in result]
         elif self.has_normal_creds:
             adds = []
+            if 'session' in result:
+                result.pop('session')
             for k in self._NORMAL_CREDS:
                 if not self.get(k):
                     continue
@@ -198,9 +201,12 @@ class CredStore(dict):
         return result
 
     def session_is_expired(self):
-        if not self.session_id or self.session_seconds() > 260:
+        if not self.session_id or self.session_dt is None:
             result = True
-            self.session_id = ''
+        elif self.persistent:
+            result = False
+        elif self.session_seconds() > 260:
+            result = True
         else:
             result = False
         return result
@@ -242,6 +248,9 @@ class Session(object):
 
     _SOAP_RES = 'soap'
     """The URL to use for SOAP requests"""
+
+    _STRING_RES = 'string'
+    _HASH_RES = 'hash'
 
     _INFO_RES = 'info.json'
     """The URL to use for server info requests"""
@@ -340,6 +349,17 @@ class Session(object):
         return result
 
     @property
+    def user_obj(self):
+        """Property to fetch the session_id for this object
+
+        Returns
+        -------
+        self._SESSION_ID : str
+        """
+        result = self._CREDS.user_obj
+        return result
+
+    @property
     def session_id(self):
         """Property to fetch the session_id for this object
 
@@ -348,6 +368,16 @@ class Session(object):
         self._SESSION_ID : str
         """
         result = self._CREDS.session_id
+        return result
+
+    @property
+    def session_user_id(self):
+        try:
+            result = int(self.session_id.split('-')[0])
+        except:
+            err = "Unable to parse user ID from session {!r}"
+            err = err.format(self.session_id)
+            raise SessionError(err)
         return result
 
     def logout(self, **kwargs):
@@ -366,17 +396,12 @@ class Session(object):
         all_sessions = kwargs.get('all_sessions', False)
         state = "all session ids" if all_sessions else "current session id"
 
-        supplied_headers = kwargs.get('headers', {}) or {}
-        headers = {}
-        headers['session'] = self.session_id
-        headers['logout'] = int(all_sessions)
-
-        headers.update(supplied_headers)
+        kwargs['headers'] = self._CREDS.get_headers(**kwargs)
+        kwargs['headers']['logout'] = int(all_sessions)
 
         kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
         kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
         kwargs['url'] = self._AUTH_RES
-        kwargs['headers'] = headers
         kwargs['pytan_help'] = HELPS.logout
 
         m = "Attempting to log out {} for current user"
@@ -395,6 +420,20 @@ class Session(object):
         m = "Successfully logged out {} for current user"
         m = m.format(state)
         self.AUTHLOG.info(m)
+
+    def get_hash(self, from_str, **kwargs):
+        kwargs['url'] = "{}/{}".format(self._HASH_RES, from_str)
+        kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
+        kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
+        result = self.http_request(**kwargs)
+        return result
+
+    def get_string(self, from_hash, **kwargs):
+        self.authenticate(**kwargs)
+        kwargs['url'] = "{}/{}".format(self._STRING_RES, from_hash)
+        result = self.http_request_auth(**kwargs)
+        result = result.splitlines()[0]
+        return result
 
     def authenticate(self, **kwargs):
         """Authenticate against a Tanium Server using a username/password or a session ID
@@ -458,64 +497,51 @@ class Session(object):
         NTLM is enabled by default in 6.3 or greater and requires a persistent connection until a
         session is generated.
         """
-        for k in self._CREDS._NORMAL_CREDS:
-            if k not in kwargs or not kwargs.get(k, ''):
-                continue
-            setattr(self._CREDS, k, kwargs[k])
-            self._CREDS.session_id = ''
+        c = self._CREDS._NORMAL_CREDS + ['persistent', 'session_id']
+        [setattr(self._CREDS, k, kwargs[k]) for k in c if k in kwargs]
 
-        self._CREDS.session_id = kwargs.get('session_id', self._CREDS.session_id)
-        self._CREDS.persistent = kwargs.get('persistent', self._CREDS.persistent)
+        if self._CREDS.session_is_expired():
+            m = "authenticate creds:\n{}"
+            m = m.format(self._CREDS)
+            self.AUTHLOG.debug(m)
 
-        if self._CREDS.session_id and not self._CREDS.session_is_expired():
-            return
+            auth_type = self._CREDS.auth_type()
+            persist_type = self._CREDS.persist_type()
 
-        m = "authenticate creds:\n{}"
-        m = m.format(self._CREDS)
-        self.AUTHLOG.debug(m)
-
-        auth_type = self._CREDS.auth_type()
-        persist_type = self._CREDS.persist_type()
-
-        m = "Attempting to authenticate and receive a {} session id using {}"
-        m = m.format(persist_type, auth_type)
-        self.AUTHLOG.info(m)
-
-        supplied_headers = kwargs.get('headers', {}) or {}
-
-        kwargs['headers'] = {}
-        kwargs['headers'].update(self._CREDS.headers)
-        kwargs['headers']['persistent'] = int(self._CREDS.persistent)
-        kwargs['headers'].update(supplied_headers)
-
-        kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
-        kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
-        kwargs['url'] = self._AUTH_RES
-        kwargs['pytan_help'] = HELPS.auth
-
-        if self._CREDS.has_session_creds:
-            try:
-                self._CREDS.session_id = self.http_request(**kwargs)
-            except AuthorizationError:
-                self._CREDS.session_id = ''
-                kwargs['headers'] = {}
-                kwargs['headers'].update(self._CREDS.headers)
-                kwargs['headers']['persistent'] = int(self._CREDS.persistent)
-                kwargs['headers'].update(supplied_headers)
-                self._CREDS.session_id = self.http_request(**kwargs)
-        else:
-            self._CREDS.session_id = self.http_request(**kwargs)
-
-        if self._CREDS.has_session_creds:
-            m = "Successfully authenticated and received a {} session id using {}"
+            m = "Attempting to authenticate and receive a {} session id using {}"
             m = m.format(persist_type, auth_type)
             self.AUTHLOG.info(m)
-        else:
-            err = "Authentication failed, no {} session id received using {}"
-            err = err.format(persist_type, auth_type)
-            raise AuthorizationError(err)
 
-        self.get_userinfo()
+            kwargs['headers'] = self._CREDS.get_headers(**kwargs)
+            kwargs['headers']['persistent'] = int(self._CREDS.persistent)
+
+            kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
+            kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
+            kwargs['url'] = self._AUTH_RES
+            kwargs['pytan_help'] = HELPS.auth
+
+            if self._CREDS.has_session_creds and self._CREDS.has_normal_creds:
+                try:
+                    self._CREDS.session_id = self.http_request(**kwargs)
+                except AuthorizationError:
+                    self._CREDS.session_id = ''
+                    kwargs['headers'] = self._CREDS.get_headers(**kwargs)
+                    kwargs['headers']['persistent'] = int(self._CREDS.persistent)
+                    self._CREDS.session_id = self.http_request(**kwargs)
+            else:
+                self._CREDS.session_id = self.http_request(**kwargs)
+
+            if self._CREDS.has_session_creds:
+                m = "Successfully authenticated and received a {} session id using {}"
+                m = m.format(persist_type, auth_type)
+                self.AUTHLOG.info(m)
+            else:
+                err = "Authentication failed, no {} session id received using {}"
+                err = err.format(persist_type, auth_type)
+                raise AuthorizationError(err)
+
+            self._CREDS.session_dt = datetime.datetime.utcnow()
+            self.get_userinfo()
 
     def platform_is_6_5(self, **kwargs):
         """Check to see if self.SERVER_VERSION is less than 6.5
@@ -886,20 +912,16 @@ class Session(object):
         current_try = 0
         a = ['session_fallback', 'retry_count', 'host', 'port']
         kwargs.update({k: kwargs.get(k, self._ARGS[k]) for k in a})
-        supplied_headers = kwargs.get('headers', {}) or {}
 
         while True:
             current_try += 1
-
-            kwargs['headers'] = {}
-            kwargs['headers'].update(self._CREDS.headers)
-            kwargs['headers'].update(supplied_headers)
-
             auth_error = None
             http_error = None
+            kwargs['headers'] = self._CREDS.get_headers(**kwargs)
 
             try:
                 result = self.http_request(**kwargs)
+                self._CREDS.session_dt = datetime.datetime.utcnow()
                 break
             except AuthorizationError as e:
                 auth_error = e
@@ -944,6 +966,9 @@ class Session(object):
 
         # determine the supplied request method, default to get
         request_method = kwargs.get('request_method', 'get').lower()
+
+        # see if a proxy was passed
+        https_proxy = kwargs.get('https_proxy', self._ARGS['https_proxy'])
 
         # determine whether or not response body can be empty
         empty_ok = kwargs.get('empty_ok', False)
@@ -990,6 +1015,9 @@ class Session(object):
         req_args = {}
         req_args['headers'] = headers
         req_args['timeout'] = (connect_secs, response_secs)
+
+        if https_proxy:
+            req_args['proxies'] = {'https': https_proxy}
 
         # if doing a post, add the body to the request args and print a debug log message with body
         if request_method == 'post':
@@ -1171,8 +1199,7 @@ class Session(object):
     def get_userinfo(self, **kwargs):
         result = self._CREDS.user_obj
         if not result:
-            session_user_id = self.session_id.split('-')[0]
-            user_obj = tanium_ng.User(values={'id': session_user_id})
+            user_obj = tanium_ng.User(values={'id': self.session_user_id})
             kwargs['extract_version'] = True
             kwargs['pytan_help'] = HELPS.getuser
             result = self.find(user_obj, **kwargs)
