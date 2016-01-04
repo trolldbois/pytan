@@ -23,6 +23,7 @@ SESSION_DEFAULTS['response_secs'] = 15
 SESSION_DEFAULTS['response_secs_soap'] = 540
 SESSION_DEFAULTS['clean_xml_restricted'] = True
 SESSION_DEFAULTS['clean_xml_invalid'] = True
+SESSION_DEFAULTS['https_proxy'] = ''
 SESSION_DEFAULTS['request_headers'] = {
     'Accept-Encoding': 'gzip',
     'User-Agent': '{title}/{version}',
