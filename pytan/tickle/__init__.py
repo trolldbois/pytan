@@ -49,8 +49,10 @@ if ET is None:
 
 
 from pytan.tickle import tools
+from pytan.tickle import monkey
 
 __all__ = [
     'ET',
     'tools',
+    'monkey',
 ]

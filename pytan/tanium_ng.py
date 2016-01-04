@@ -109,9 +109,6 @@ class BaseType(object):
     _ITEM_ATTRS = []
     """list that stores a preferentially sorted list of non-list attributes for this object"""
 
-    _TICKLE = None
-    """Holds the tickle module which provides serialization/deserialization of objects"""
-
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         """pass."""
         self._INITIALIZED = False
@@ -270,26 +267,6 @@ class BaseType(object):
                 raise BadTypeError(self, name, i, self._LIST_PROPS[name])
         '''
         return value
-
-    def to_xml(self, **kwargs):
-        """Deserialize self ``obj`` into an XML body, relies on tickle."""
-        result = self._TICKLE.tools.to_xml(self, **kwargs)
-        return result
-
-    def to_dict(self, **kwargs):
-        """Deserialize self ``obj`` into a dict, relies on tickle."""
-        result = self._TICKLE.tools.to_dict(self, **kwargs)
-        return result
-
-    def to_json(self, **kwargs):
-        """Deserialize self ``obj`` into a JSON string, relies on tickle."""
-        result = self._TICKLE.tools.to_json(self, **kwargs)
-        return result
-
-    def to_csv(self, **kwargs):
-        """Deserialize self ``obj`` into a CSV string, relies on tickle."""
-        result = self._TICKLE.tools.to_csv(self, **kwargs)
-        return result
 
 
 class ColumnList(BaseType):
