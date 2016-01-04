@@ -326,3 +326,11 @@ def set_log_tz(**kwargs):
         logging.Formatter.converter = time.localtime
         msgs.append("Using local time zone for logging")
     return msgs
+
+
+def coerce_list(o):
+    if isinstance(o, (list, tuple)):
+        result = list(o)
+    else:
+        result = [o]
+    return result

@@ -7,7 +7,8 @@ import time
 import logging
 import datetime
 
-from pytan import PytanError, Store
+from pytan import PytanError
+from pytan.store import Store
 from pytan.pollers.question import QuestionPoller
 from pytan.pollers.constants import S_POLLING_SECS
 from pytan.pollers.constants import S_TIMEOUT_SECS
@@ -190,20 +191,15 @@ class SSEPoller(QuestionPoller):
                 self.LAST_STATUS != self.STATUS,
             ])
 
-            print(1)
             if progress_changed:
                 m = "ID: {} Progress Changed: '{}'"
                 m = m.format(self.EXPORT_ID, self.STATUS)
                 self.PROGRESSLOG.info(m)
 
-            print(2)
-
             if 'failed' in self.STATUS.lower():
                 err = "ID: {} Server Side Export Failed: '{}'"
                 err = err.format(self.EXPORT_ID, self.STATUS)
                 raise SSEPollingError(err)
-
-            print(3)
 
             if 'completed' in self.STATUS.lower():
                 m = "ID: {} Server Side Export Completed: '{}'"
@@ -211,15 +207,11 @@ class SSEPoller(QuestionPoller):
                 self.MYLOG.info(m)
                 return True
 
-            print(4)
-
             if self.TIMEOUT and datetime.datetime.utcnow() >= self.TIMEOUT:
                 m = "ID: {} Reached timeout of {}"
                 m = m.format(self.EXPORT_ID, self.TIMEOUT)
                 self.MYLOG.warning(m)
                 return False
-
-            print(5)
 
             if self._STOP:
                 m = "ID: {} Stop called at {}"

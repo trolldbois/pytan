@@ -8,7 +8,8 @@ import time
 import logging
 import datetime
 
-from pytan import PytanError, Store, tanium_ng
+from pytan import PytanError, tanium_ng
+from pytan.store import Store
 from pytan.utils import get_percent
 from pytan.tickle.tools import secs_from_now, str_to_dt
 from pytan.pollers.constants import Q_COMPLETE_PCT
@@ -178,10 +179,13 @@ class QuestionPoller(object):
 
     def __str__(self):
         class_name = self.__class__.__name__
-        attrs = ['{0}: "{1}"'.format(x.lower(), getattr(self, x, None)) for x in self.STR_ATTRS]
+        attrs = ['{0}: "{1}"'.format(x.lower(), getattr(self, x, None)) for x in self._STR_ATTRS]
         attrs = ", ".join(attrs)
         result = "{} {}".format(class_name, attrs)
         return result
+
+    def __repr__(self):
+        return self.__str__()
 
     def get_overrides(self, **kwargs):
         [
@@ -366,7 +370,7 @@ class QuestionPoller(object):
         while True:
             result = self.HANDLER.get_result_info(**kwargs)
 
-            if result.estimated_total != 0:
+            if result.result_info.estimated_total != 0:
                 break
 
             attempt_text = "attempt {} out of {}".format(current_try, gri_retry_count)
@@ -436,18 +440,18 @@ class QuestionPoller(object):
 
     def passed_eq_est_total_loop(self, **kwargs):
         """Method to poll Result Info for self.OBJ until the percentage of 'passed' out of
-        'estimated_total' is greater than or equal to self.complete_pct
+        'estimated_total' is greater than or equal to self.COMPLETE_PCT
         """
         # current percentage tracker
-        self.CURRENT_PCT = None
+        self.CURRENT_PCT = 0
         # loop counter
         self.LOOP_COUNT = 1
         # establish a previous result_info that's empty
-        self.LAST_INFO = tanium_ng.ResultInfo()  # TODO FIX FOR NEW RI OBJ
+        self.LAST_INFO = tanium_ng.ResultInfoList()
+        self.LAST_INFO.result_info = tanium_ng.ResultInfo()
 
         while not self._STOP:
             # perform a GetResultInfo SOAP call
-            del(kwargs['pytan_help'])
             self.INFO = self.get_result_info(**kwargs)
 
             # derive the current percentage of completion by calculating percentage of
@@ -455,20 +459,20 @@ class QuestionPoller(object):
             # mr_tested = number of systems that have seen the question
             # estimated_total = rough estimate of total number of systems
             # passed = number of systems that have passed any filters for the question
-            tested = self.INFO.mr_tested
-            est_total = self.EST_TOTAL_DONE or self.INFO.estimated_total
-            passed = self.INFO.passed
+            tested = self.INFO.result_info.mr_tested
+            est_total = self.EST_TOTAL_DONE or self.INFO.result_info.estimated_total
+            passed = self.INFO.result_info.passed
 
             new_pct = get_percent(base=tested, amount=est_total)
             new_pct_str = "{0:.0f}%".format(new_pct)
-            complete_pct_str = "{0:.0f}%".format(self.complete_pct)
+            complete_pct_str = "{0:.0f}%".format(self.COMPLETE_PCT)
 
             prog = (
                 "Progress: Tested: {0.tested}, Passed: {0.passed}, "
                 "MR Tested: {0.mr_tested}, MR Passed: {0.mr_passed}, "
                 "Est Total: {0.estimated_total}, Row Count: {0.row_count}, Override Est Total: {1}"
             )
-            prog = prog.format(self.INFO, self.EST_TOTAL_DONE)
+            prog = prog.format(self.INFO.result_info, self.EST_TOTAL_DONE)
             self.PROGRESS_STR = prog
 
             if self.TIMEOUT:
@@ -477,7 +481,7 @@ class QuestionPoller(object):
                 time_till_expiry = self.EXPIRATION - datetime.datetime.utcnow()
 
             timing = (
-                "Timing: Started: {}, Expiration: {}, Override Timeout: {}, "
+                "Timing: Started: {}, Expiration: {}, Timeout: {}, "
                 "Elapsed Time: {}, Left till expiry: {}, Loop Count: {}"
             )
             timing = timing.format(
@@ -500,17 +504,14 @@ class QuestionPoller(object):
             m = m.format(self._ID, timing)
             self.PROGRESSLOG.debug(m)
 
-            # check to see if progress has changed, if so run the callback
-            progress_changed = any([
-                self.LAST_INFO.tested != self.INFO.tested,
-                self.LAST_INFO.passed != self.INFO.passed,
-                self.LAST_INFO.mr_tested != self.INFO.mr_tested,
-                self.LAST_INFO.mr_passed != self.INFO.mr_passed,
-                self.LAST_INFO.estimated_total != self.INFO.estimated_total,
-                self.CURRENT_PCT != new_pct,
-            ])
+            progress_changed = ['tested', 'passed', 'mr_tested', 'mr_passed', 'estimated_total']
+            progress_changed = [
+                getattr(self.LAST_INFO.result_info, t) != getattr(self.INFO.result_info, t)
+                for t in progress_changed
+            ]
+            progress_changed += [self.CURRENT_PCT != new_pct]
 
-            if progress_changed:
+            if any(progress_changed):
                 m = "ID: {} Progress Changed {} ({} of {})"
                 m = m.format(self._ID, new_pct_str, tested, est_total)
                 self.PROGRESSLOG.info(m)
@@ -518,19 +519,19 @@ class QuestionPoller(object):
                 kwargs['pct'] = new_pct
                 self.run_callback(**kwargs)
 
-            # check to see if answers have changed, if so run the callback
-            answers_changed = any([
-                self.LAST_INFO.tested != self.INFO.tested,
-                self.LAST_INFO.passed != self.INFO.passed,
-            ])
+            answers_changed = ['tested', 'passed']
+            answers_changed = [
+                getattr(self.LAST_INFO.result_info, t) != getattr(self.INFO.result_info, t)
+                for t in answers_changed
+            ]
 
-            if answers_changed:
+            if any(answers_changed):
                 kwargs['callback'] = 'AnswersChanged'
                 kwargs['pct'] = new_pct
                 self.run_callback(**kwargs)
 
             # check to see if new_pct has reached complete_pct threshold, if so return True
-            if new_pct >= self.complete_pct:
+            if new_pct >= self.COMPLETE_PCT:
                 m = "ID: {} Reached Threshold of {} ({} of {})"
                 m = m.format(self._ID, complete_pct_str, tested, est_total)
                 self.MYLOG.info(m)
@@ -556,9 +557,9 @@ class QuestionPoller(object):
                 return False
 
             # check to see if we have passed the actions expiration timeout, if so return False
-            if datetime.datetime.utcnow() >= self.EXPIRATION_TIMEOUT:
+            if datetime.datetime.utcnow() >= self.EXPIRATION:
                 m = "ID: {} Reached expiration timeout of {}"
-                m = m.format(self._ID, self.EXPIRATION_TIMEOUT)
+                m = m.format(self._ID, self.EXPIRATION)
                 self.MYLOG.warning(m)
                 return False
 

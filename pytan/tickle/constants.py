@@ -27,10 +27,6 @@ FLAT_WARN = {'_TICKLE_WARN': "Flattened objects can not be deserialized back lat
 FLAT_SEP = '_'
 """str to seperate the tree of property names in serialized flat dicts with if FLAT=True"""
 
-OBJECT_XPATH = ".//result_object/*"
-"""str of xpath to find objects in Tanium SOAP API XML"""
-RESULT_XPATH = ".//ResultXML"
-"""str of xpath to find result data/result info in Tanium SOAP API XML"""
 SSE_WRAP = (
     '''<return><ResultXML>
 <![CDATA[<result_sets><result_set>
@@ -43,3 +39,8 @@ SSE_WRAP = (
 """str of XML to wrap XML received from a server side data export with"""
 TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 """str of Tanium's format for date time strings"""
+
+FIRSTS = ['id', 'name', 'description']
+LASTS = []
+SKIPS = [TAG_NAME, LIST_NAME, EXPLODE_NAME]
+SKIPS += list(FLAT_WARN.keys())

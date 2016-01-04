@@ -166,8 +166,9 @@ def xml_cleaner(text, **kwargs):
         * the cleaned version of `s`
     """
     clean_xml_restricted = kwargs.get('clean_xml_restricted', True)
+    clean_xml_invalid = kwargs.get('clean_xml_invalid', True)
     xml_replace_char = kwargs.get('xml_replace_char', DEFAULT_REPLACEMENT)
-    clean_xml_invalid = kwargs.get('clean_xml_invalid', False)
+
     result = text
     if clean_xml_invalid or clean_xml_restricted:
         kwargs['text'] = text

@@ -1,79 +1,115 @@
-import io
-import re
-import csv
 import time
 import json
 import base64
 import logging
 import datetime
 
-from pytan import PytanError, tanium_ng, xmltodict, string_types, integer_types, range, b
+from pytan import PytanError, tanium_ng, xmltodict, integer_types, range, b, text_type, encoding
 from pytan.utils import read_file
-from pytan.tickle.constants import TIME_FORMAT
+from pytan.tickle import ET
+from pytan.tickle.toet import ToET
+from pytan.tickle.todict import ToDict
+from pytan.tickle.fromxml import FromXML
+from pytan.tickle.fromdict import FromDict
+from pytan.tickle.resulttorows import ResultToRows
+from pytan.tickle.constants import SSE_WRAP, TIME_FORMAT, LIST_NAME, SKIPS, FIRSTS, LASTS
+from pytan.excelwriter import ExcelWriter
 
 MYLOG = logging.getLogger(__name__)
 
-MISSING_CR_TEXT = r"([^\r])\n"
-r"""regex to look for missing carriage returns ``\\r`` before line feeds ``\\n``."""
-MISSING_CR_RE = re.compile(MISSING_CR_TEXT)
+
+# CONVENIENCE WRAPPERS AROUND TICKLE CLASSES::
+
+def to_xml(obj, **kwargs):
+    converter = ToET(obj, **kwargs)
+    result = ET.tostring(converter.RESULT, encoding=encoding)
+    return result
 
 
-def get_row_headers(rows_list, **kwargs):
-    """Utility to get all the keys for a list of dicts"""
-    headers = list(set([h for r in rows_list for h in r]))
-    return headers
+def to_dict(obj, **kwargs):
+    converter = ToDict(obj, **kwargs)
+    result = converter.RESULT
+    return result
 
 
-def sort_headers(headers, **kwargs):
-    sort = kwargs.get('sort', [])
-    headers = sorted(headers)
-    if isinstance(sort, list) and sort:
-        new_headers = []
-        for s in sort:
-            for idx, h in enumerate(headers):
-                if h.lower() == s.lower():
-                    new_headers.append(headers.pop(idx))
-        headers = new_headers + headers
-    return headers
+def to_json(obj, **kwargs):
+    obj_dict = to_dict(obj, **kwargs)
+    result = jsonify(obj_dict, **kwargs)
+    return result
 
 
-def fix_newlines(val):
-    # turn \n into \r\n
-    if isinstance(val, string_types):
-        val = MISSING_CR_RE.sub(r"\1\r\n", val)
-    return val
+def to_csv(obj, **kwargs):
+    kwargs['flat'] = kwargs.get('flat', True)  # TODO CONSTANT
+    obj_dict = to_dict(obj, **kwargs)
+
+    if LIST_NAME in obj_dict:
+        kwargs['rows'] = obj_dict[LIST_NAME]
+    else:
+        kwargs['rows'] = [obj_dict]
+
+    kwargs['skips'] = kwargs.get('skips', []) + SKIPS
+    kwargs['firsts'] = kwargs.get('firsts', []) + FIRSTS
+    kwargs['lasts'] = kwargs.get('lasts', []) + LASTS
+
+    writer = ExcelWriter()
+    result = writer.run(**kwargs)
+    return result
 
 
-def csvdictwriter(rows, **kwargs):
-    """returns the rows (list of dicts) as a CSV string"""
-    headers = kwargs.get('headers', []) or get_row_headers(rows)
-    skips = kwargs.get('skips', [])
-    sort = kwargs.get('sort', True)
-    linefix = kwargs.get('linefix', True)
+def result_to_dicts(obj, **kwargs):
+    converter = ResultToRows(obj, **kwargs)
+    result = converter.RESULT
+    return result
 
-    if skips:
-        headers = [x for x in headers if x.lower() not in [y.lower() for y in skips]]
 
-    if sort not in [False, None]:
-        headers = sort_headers(headers, **kwargs)
+def result_to_json(obj, **kwargs):
+    rows = result_to_dicts(obj, **kwargs)
+    result = jsonify(rows, **kwargs)
+    return result
 
-    if linefix:
-        rows = [{k: fix_newlines(v) for k, v in x.items()} for x in rows]
 
-    # TODO test on py2
+def result_to_csv(obj, **kwargs):
+    rows = result_to_dicts(obj, **kwargs)
+    writer = ExcelWriter()
+    result = writer.run(rows, **kwargs)
+    return result
 
-    csv_io = io.StringIO()
-    writer = csv.DictWriter(
-        csv_io,
-        fieldnames=headers,
-        quoting=csv.QUOTE_NONNUMERIC,
-        extrasaction='ignore',
-    )
 
-    writer.writeheader()
-    writer.writerows(rows)
-    csv_str = csv_io.getvalue()
-    return csv_str
+def from_json(jsonstr, **kwargs):
+    obj_dict = json.loads(jsonstr)
+    result = from_dict(obj_dict, **kwargs)
+    return result
+
+
+def from_dict(obj_dict, **kwargs):
+    converter = FromDict(obj_dict=obj_dict, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def from_xml(xml, **kwargs):
+    converter = FromXML(xml=xml, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def from_sse_xml(xml, **kwargs):
+    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a
+    ResultSet object
+
+    Parameters
+    ----------
+    x : str
+        * str of XML to convert to a ResultSet object
+
+    Returns
+    -------
+    rs : :class:`tanium_ng.result_set.ResultSet`
+        * x converted into a ResultSet object
+    """
+    rs_xml = SSE_WRAP.format(SSE_DATA=xml)
+    result = from_xml(rs_xml, **kwargs)
+    return result
 
 
 def get_now_dt(gmt=True):
@@ -103,6 +139,7 @@ def human_time(dt, dtformat='D%Y-%m-%dT%H-%M-%S', tz=True):
     return result
 
 
+# TODO: kwargs and CONSTANT
 def secs_from_now(secs=0, gmt=True, tformat='%Y-%m-%dT%H:%M:%S'):
     """Get time in Tanium SOAP API format `secs` from now
 
@@ -162,11 +199,14 @@ def dt_to_str(dt):
     return result
 
 
-def json_read(f):
-    return json.loads(read_file(f))
+def read_json_file(f):
+    contents = read_file(f)
+    result = json.loads(contents)
+    return result
 
 
-def jsonify(v, indent=2, sort_keys=True):
+# TODO kwargs and constants
+def jsonify(obj, **kwargs):
     """Turns python object `v` into a pretty printed JSON string
 
     Parameters
@@ -185,7 +225,10 @@ def jsonify(v, indent=2, sort_keys=True):
     str :
         * JSON pretty printed string
     """
-    return json.dumps(v, indent=indent, sort_keys=sort_keys)
+    indent = kwargs.get('json_indent', 2)
+    sort = kwargs.get('json_sort', True)
+    result = json.dumps(obj, indent=indent, sort_keys=sort)
+    return result
 
 
 def xml_pretty(x, pretty=True, indent='  ', **kwargs):
@@ -265,18 +308,24 @@ def obfuscate(key, string):
     encoded_string : str
         * encoded string
     """
-    encoded_chars = []
-    for i in range(len(string)):
-        key_c = key[i % len(key)]
-        key_ord = ord(key_c) % 256
-        string_c = string[i]
-        string_ord = ord(string_c)
-        encoded_c = chr(string_ord + key_ord)
-        encoded_chars.append(encoded_c)
+    result = string
+    if string and not (string.startswith('::') and string.endswith('::')):
+        encoded_chars = []
 
-    encoded_str = "".join(encoded_chars)
-    string_enc = base64.urlsafe_b64encode(encoded_str)
-    result = '::{}::'.format(string_enc)
+        for i in range(len(string)):
+            key_c = key[i % len(key)]
+            key_ord = ord(key_c) % 256
+            string_c = string[i]
+            if isinstance(string_c, integer_types):
+                string_ord = string_c
+            else:
+                string_ord = ord(string_c)
+            encoded_c = chr(string_ord + key_ord)
+            encoded_chars.append(encoded_c)
+
+        encoded_str = "".join(encoded_chars)
+        string_enc = base64.urlsafe_b64encode(b(encoded_str)).decode()
+        result = '::{}::'.format(text_type(string_enc))
     return result
 
 

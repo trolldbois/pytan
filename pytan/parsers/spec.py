@@ -1,12 +1,9 @@
 import logging
 
-from pytan import PytanError, string_types, integer_types, text_type
-from pytan.parsers.constants import SPEC_FIELD_FALLBACKS
-from pytan.parsers.constants import OPERATORS_PYTAN
-from pytan.parsers.constants import OPERATORS_TANIUM
-from pytan.parsers.constants import TRUE_TYPES
-from pytan.parsers.constants import FALSE_TYPES
-from pytan.parsers.constants import FIELD_TYPES
+from pytan import PytanError, string_types, integer_types, text_type, tanium_ng, tickle
+from pytan.parsers.constants import (
+    SPEC_FIELD_FALLBACKS, OPERATORS_PYTAN, OPERATORS_TANIUM, TRUE_TYPES, FALSE_TYPES, FIELD_TYPES
+)
 
 mylog = logging.getLogger(__name__)
 
@@ -35,8 +32,6 @@ class Spec(object):
     """pass."""
 
     def __init__(self, **kwargs):
-        from . import tanium_ng
-        from . import tickle
         self.tanium_ng = tanium_ng
         self.tickle = tickle
         self.post_init(**kwargs)

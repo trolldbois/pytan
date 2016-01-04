@@ -6,26 +6,92 @@ import json
 import logging
 import datetime
 
-from pytan import PytanError, string_types, Store, tanium_ng
-from pytan.tickle import from_sse_xml
+from pytan import PytanError, string_types, tanium_ng
+from pytan.store import Store
+from pytan.utils import coerce_list
 from pytan.session import Session
 from pytan.pollers import QuestionPoller, SSEPoller
 from pytan.parsers import GetObject
 from pytan.version import __version__
+from pytan.tickle.tools import from_sse_xml
 
 from pytan.tickle.tools import (
-    obfuscate, deobfuscate, shrink_obj, check_limits, create_question, create_cachefilterlist
+    obfuscate, shrink_obj, check_limits, create_question, create_cachefilterlist
 )
 
 from pytan.utils import (
     get_all_logs, set_all_logs, create_log_handler, set_log_tz, add_log_handler,
     remove_log_handler
 )
+
 from pytan.constants import (
     PYTAN_KEY, HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LEVEL, DEBUG_BUMP
 )
 
 MYLOG = logging.getLogger(__name__)
+
+HELPS = Store()
+HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question"
+HELPS.sq_ri = (
+    "Use GetResultInfo on a saved question in order to issue a new question, "
+    "which refreshes the data for that saved question"
+)
+HELPS.sq_resq = (
+    "Use GetObject to re-fetch the saved question in order get the ID of the newly asked question"
+)
+HELPS.pj = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
+HELPS.pj_add = "Use AddObject to add the Question object from the chosen ParseResultGroup"
+HELPS.grd = "Use GetResultData to get answers for {} object"
+HELPS.grd_sse = "Issue a GetResultData on {} to start a Server Side Export and get an export_id"
+HELPS.gri = "Issue a GetResultInfo for a {} to check the current progress of answers"
+HELPS.saa = "Issue an AddObject to add a SavedActionApproval"
+HELPS.stopa = "Issue an AddObject to add a StopAction"
+HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
+HELPS.getf = "Use GetObject to find {} objects with cache filters to limit the results"
+HELPS.geta = "Use GetObject to find all {} objects"
+HELPS.addobj = "Issue an AddObject to add a {} object"
+HELPS.addget = "Issue a GetObject on the recently added {} object in order to get the full object"
+HELPS.delobj = "Issue a DeleteObject to delete an object"
+
+
+SSE_FORMAT_MAP = [
+    ('csv', '0', 0),
+    ('xml', '1', 1),
+    ('xml_obj', '1', 1),
+    ('cef', '2', 2),
+]
+"""
+Mapping of human friendly strings to API integers for server side export
+"""
+
+SSE_RESTRICT_MAP = {
+    1: ['6.5.314.4300'],
+    2: ['6.5.314.4300'],
+}
+"""
+Mapping of API integers for server side export format to version support
+"""
+
+SSE_CRASH_MAP = ['6.5.314.4300']
+"""
+Mapping of versions to watch out for crashes/handle bugs for server side export
+"""
+
+
+class ServerSideExportError(PytanError):
+    pass
+
+
+class UnsupportedVersionError(PytanError):
+    pass
+
+
+class PickerError(PytanError):
+    pass
+
+
+class ParseJobError(PytanError):
+    pass
 
 
 class Handler(object):
@@ -83,7 +149,7 @@ class Handler(object):
         >>> handler = pytan.Handler(username='username', password='password', host='host')
     """
 
-    MYLOG = MYLOG
+    MYLOG = logging.getLogger(__name__)
 
     SESSION = None
 
@@ -91,7 +157,7 @@ class Handler(object):
 
     def __init__(self, **kwargs):
         super(Handler, self).__init__()
-        self.MYLOG = MYLOG
+        self.MYLOG = logging.getLogger(__name__)
         self.ARGSTORE = Store()
         add_override_log(**kwargs)
         self.PARSED_ARGS = self._parse_args(kwargs)
@@ -157,10 +223,7 @@ class Handler(object):
 
         # obfuscate the password
         if puc_dict['password']:
-            puc_dict['password'] = obfuscate(
-                key=PYTAN_KEY,
-                string=puc_dict['password'],
-            )
+            puc_dict['password'] = obfuscate(key=PYTAN_KEY, string=puc_dict['password'])
 
         try:
             with open(result, 'w+') as fh:
@@ -765,7 +828,7 @@ class Handler(object):
         """
         shrink = kwargs.get('shrink', True)
         aggregate = kwargs.get('aggregate', False)
-        sse = kwargs.get('sse', True)
+        sse = kwargs.get('sse', False)
         export_flag = kwargs.get('export_flag', 0)
         sse_format = kwargs.get('sse_format', 'xml_obj')
         sse_leading = kwargs.get('sse_leading', '')
@@ -1977,34 +2040,30 @@ class Handler(object):
         """pass."""
         hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
 
+        # ensure specs is a list of lists
+        specs = [coerce_list(s) for s in coerce_list(specs)]
+
         # create a base instance of all_class which all results will be added to
         result = all_class()
 
-        if isinstance(specs, tuple):
-            specs = list(specs)
-        elif not isinstance(specs, list):
-            specs = [specs]
-
-        hide_spec = {'value': '0', 'field': 'source_id'}
-
         # if we want to hide sourced sensors, add hide_spec
-        if hide_sourced_sensors and hide_spec not in specs:
-            specs.append(hide_spec)
+        hide_spec = {'value': '0', 'field': 'source_id'}
+        if hide_sourced_sensors and not specs:
+            specs = [[hide_spec]]
 
         all_parsed_specs = []
 
         for spec in specs:
+            if hide_sourced_sensors and hide_spec not in spec:
+                spec.append(hide_spec)
+
             # TODO: AWAITING MANUAL PARSER
             # validate & parse a string into a spec
             # if not isinstance(spec, (dict,)):
             #     spec = parsers.get_str(spec)
 
-            parser = GetObject
             # validate & parse the specs
-            if isinstance(spec, (list, tuple)):
-                parsed_specs = [parser(all_class=all_class, spec=x).parsed_spec for x in spec]
-            else:
-                parsed_specs = [parser(all_class=all_class, spec=spec).parsed_spec]
+            parsed_specs = [GetObject(all_class=all_class, spec=x).parsed_spec for x in spec]
 
             kwargs['specs'] = parsed_specs
             kwargs['obj'] = self._fixit_group_id(**kwargs)
@@ -2895,17 +2954,12 @@ class Handler(object):
 
             pval = val
             if arg == 'password':
+                val = obfuscate(key=PYTAN_KEY, string=val)
                 pval = '{}'.format('*' * len(val))
 
             m = "_parse_args(): arg = {!r}, val = {!r}, type = {!r}, src = {!r}"
             m = m.format(arg, pval, type(val).__name__, arg_src)
             self.MYLOG.debug(m)
-
-        if self.ARGSTORE.parsed_args['password']:
-            self.ARGSTORE.parsed_args['password'] = deobfuscate(
-                key=PYTAN_KEY,
-                string=self.ARGSTORE.parsed_args['password'],
-            )
 
         result = self.ARGSTORE.parsed_args
         return result
@@ -2948,22 +3002,6 @@ class Handler(object):
         """pass."""
         src_args = {k: kwargs[k] for k in HANDLER_DEFAULTS if k in kwargs}
         return src_args
-
-
-class ServerSideExportError(PytanError):
-    pass
-
-
-class UnsupportedVersionError(PytanError):
-    pass
-
-
-class PickerError(PytanError):
-    pass
-
-
-class ParseJobError(PytanError):
-    pass
 
 
 def add_override_log(**kwargs):
@@ -3029,17 +3067,23 @@ def setup_log(**kwargs):
 def check_logging_setup():
     all_loggers = get_all_logs()
 
+    errs = []
     for pytanlog in sorted(LOGMAP):
         if pytanlog not in all_loggers:
             err = "pytan logger {!r} does not exist in logging system!!"
             err = err.format(pytanlog)
-            raise PytanError(err)
+            errs.append(err)
 
     for name, logger in sorted(all_loggers.items()):
         if name.startswith('pytan') and name not in LOGMAP:
             err = "pytan logger {!r} is not defined in constants!"
-            err = err.format(pytanlog)
-            raise PytanError(err)
+            err = err.format(name)
+            errs.append(err)
+
+    if errs:
+        err = '\n'.join(errs)
+        MYLOG.critical(err)
+        raise PytanError(err)
 
 
 def config_log_handler(argpre, **kwargs):
@@ -3145,51 +3189,3 @@ def print_levels(**kwargs):
     t = "NON-pytan"
     for logger in loggers_not_done:
         print(m.format(t, logger, 'DEBUG', OVERRIDE_LEVEL))
-
-
-HELPS = Store()
-HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question"
-HELPS.sq_ri = (
-    "Use GetResultInfo on a saved question in order to issue a new question, "
-    "which refreshes the data for that saved question"
-)
-HELPS.sq_resq = (
-    "Use GetObject to re-fetch the saved question in order get the ID of the newly asked question"
-)
-HELPS.pj = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
-HELPS.pj_add = "Use AddObject to add the Question object from the chosen ParseResultGroup"
-HELPS.grd = "Use GetResultData to get answers for {} object"
-HELPS.grd_sse = "Issue a GetResultData on {} to start a Server Side Export and get an export_id"
-HELPS.gri = "Issue a GetResultInfo for a {} to check the current progress of answers"
-HELPS.saa = "Issue an AddObject to add a SavedActionApproval"
-HELPS.stopa = "Issue an AddObject to add a StopAction"
-HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
-HELPS.getf = "Use GetObject to find {} objects with cache filters to limit the results"
-HELPS.geta = "Use GetObject to find all {} objects"
-HELPS.addobj = "Issue an AddObject to add a {} object"
-HELPS.addget = "Issue a GetObject on the recently added {} object in order to get the full object"
-HELPS.delobj = "Issue a DeleteObject to delete an object"
-
-
-SSE_FORMAT_MAP = [
-    ('csv', '0', 0),
-    ('xml', '1', 1),
-    ('xml_obj', '1', 1),
-    ('cef', '2', 2),
-]
-"""
-Mapping of human friendly strings to API integers for server side export
-"""
-
-SSE_RESTRICT_MAP = {
-    1: ['6.5.314.4300'],
-    2: ['6.5.314.4300'],
-}
-"""
-Mapping of API integers for server side export format to version support
-"""
-
-SSE_CRASH_MAP = ['6.5.314.4300']
-"""
-Mapping of versions to watch out for crashes/handle bugs for server side export
-"""

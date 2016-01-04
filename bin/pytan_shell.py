@@ -55,12 +55,8 @@ if __name__ == "__main__":
     result = worker.get_result()
     exec(worker.get_exec())
 
-# BROKEN DUE TO HIDE SOURCE SPEC GETTING ADDED TO A NEWLIST!:
-#    [{'value': 'Computer Name', 'field': 'name'}]
-#    [{'value': '0', 'field': 'source_id'}]
-# spec1 = {'sensor': {'value': "Computer Name"}}
-# v = handler.ask_manual(left=[spec1], get_results=False)
-# print(v)
 
-v = handler.ask_parsed(question_text='computer name', picker=1, get_results=False)
-rd = handler.get_result_data(v.question_object)
+# q = 'computer name and ip route details and ip address and installed applications'
+# v = handler.ask_parsed(question_text=q, picker=1, sse=False)
+# rd = v.question_results
+# # rd = handler.get_result_data(v.question_object)

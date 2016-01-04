@@ -47,9 +47,18 @@ HANDLER_DEFAULTS['config_file'] = "~/.pytan_config.json"
 HANDLER_DEFAULTS.update(CRED_DEFAULTS)
 HANDLER_DEFAULTS.update(SESSION_DEFAULTS)
 
+# short hand reference to python
+OFF = 'NOTSET'  # python logging int: 0
+DEBUG = 'DEBUG'  # python logging int: 10
+INFO = 'INFO'  # python logging int: 20
+WARN = 'WARNING'  # python logging int: 30
+ERR = 'ERROR'  # python logging int: 40
+CRIT = 'CRITICAL'  # python logging int: 50
+# {0: ERR, 1: WARN, 10: INFO, 20: DEBUG}
+
 LOGMAP = {}
 LOGMAP['pytan'] = 0
-LOGMAP['pytan.handler'] = 2
+LOGMAP['pytan.handler'] = 1
 LOGMAP['pytan.tanium_ng'] = 0
 LOGMAP['pytan.tickle'] = 0
 LOGMAP['pytan.tickle.tools'] = 0
@@ -68,6 +77,7 @@ LOGMAP['pytan.session.http'] = 12
 LOGMAP['pytan.session.auth'] = 13
 LOGMAP['pytan.session.body'] = 14
 LOGMAP['pytan.xml_clean'] = 16
+LOGMAP['pytan.excelwriter'] = 0
 LOGMAP['pytan.requests'] = 20
 LOGMAP['pytan.requests.packages.urllib3'] = 21
 LOGMAP['pytan.requests.packages.urllib3.connectionpool'] = 22

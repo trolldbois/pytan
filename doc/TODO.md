@@ -35,15 +35,17 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 ## TANIUMNG
 * TODO: ADD parameter_definition_dict TO BUILDER
 * TODO ADD DOCSTR TO BUILDER HEADER
-* dont want to raise exception in tanium_ng for import of tickle, but do want to log! (maybe Warning class like req?)
-* write tests!
 * rebuild taniumpy with latest wsdl (LAST)
 
 ## TICKLE
+* OVERLOAD BASETYPE WITH TICKLE METHODS
 * move serializers out => tickle NOW
   * csv => NOW
-    * TODO FIGURE OUT ResultSet 
+    * DONT UPDATE COLUMNS WITH VALUES
     * maybe use string api for what_hash instead of getting sensors?
+    * add what_name to session GRD 
+    * add hash/ and string/ api to session
+    * from xml / from dict not working on ResultSet
   * TODO test on py2
 * TODO: this wont work, need to check for _tickled_list ??
 * make tickle use its own exceptions => NEXT
@@ -51,19 +53,20 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * write tests!
 
 ## SESSION
-* http/s proxy
-* reauth broke
-* move stats threading into it's own class
-* i plan to extend that signature to add “domain” and “secondary” as part of my current pytan refactor, in order to support all 4 fields the /auth api supports
-* on 6.2, block info.json (block 444), fix _regex_for_body_element when _get_response tries to parse for server_version but it doesn't exist
-* Add string API method
-* add get user info and server version from that init call after auth
-* KEEP PASSWORD OBFUSCATED IN MEMORY
-
+* 1http/s proxy 
+* 2Add string API method
+https://<hostname>:<soap port>/hash/<String>  ---  will return the hash of a string
+https://<hostname>:<soap_port>/string/<hash>  --- will return all of the strings that are known that match that hash
+ 
+so, you could just call to the server
+https://<hostname>:444/hash/Registry Value Data[HKLM\Software\Tanium\Tanium Client,Version]   (Url encode required, though)
+* move stats threading into it's own class LAST
+ 
 ## HUMAN PARSING
 * argparse for specs/left/right/etc
 
 ## HANDLER/MAIN
+* re-do logging yet again, add support for {0: -1, 11: 20, 12: 30, 14: 50} (pytan level: logging level)
 * create_parent_group_obj broken, fix it and add debug logging!
 * add logger to tanium_ng and tickle_ng
 * increase loglevel range to 50
