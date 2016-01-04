@@ -38,7 +38,6 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * rebuild taniumpy with latest wsdl (LAST)
 
 ## TICKLE
-* OVERLOAD BASETYPE WITH TICKLE METHODS
 * move serializers out => tickle NOW
   * csv => NOW
     * DONT UPDATE COLUMNS WITH VALUES
@@ -53,13 +52,6 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * write tests!
 
 ## SESSION
-* 1http/s proxy 
-* 2Add string API method
-https://<hostname>:<soap port>/hash/<String>  ---  will return the hash of a string
-https://<hostname>:<soap_port>/string/<hash>  --- will return all of the strings that are known that match that hash
- 
-so, you could just call to the server
-https://<hostname>:444/hash/Registry Value Data[HKLM\Software\Tanium\Tanium Client,Version]   (Url encode required, though)
 * move stats threading into it's own class LAST
  
 ## HUMAN PARSING
@@ -95,21 +87,17 @@ https://<hostname>:444/hash/Registry Value Data[HKLM\Software\Tanium\Tanium Clie
 * change Exceptions to end with Error
 
 ## UTILS
-* remove external deps from utils, move version into utils
 # TODO figure out pyreadline later
 
 ## TEST
 * add approve action to pytan (need doc update and test update)
 * add tests for dashboard stuffs
-* add unit tests for logout()
-* add unit tests for auth with session
 * cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
 * test verify checks work against package with verification (unable to do) (UNKNOWN)
 * test against all the different levels of user privs (UNKNOWN)
 
 ## PLATFORM
 * open enhancement for console.wsdl to contain platform version
-* await update on cs values in SSE XML
 
 ## LOW
 * figure out cert based auth/plugin based auth? (HUGE)
