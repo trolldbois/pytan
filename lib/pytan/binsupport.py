@@ -1637,6 +1637,15 @@ def setup_ask_manual_argparser(doc):
         help='Get the results after asking the quesiton '
         '(default)',
     )
+    group.add_argument(
+        '--complete_pct',
+        required=False,
+        type=float,
+        action='store',
+        default=pytan.pollers.QuestionPoller.COMPLETE_PCT_DEFAULT,
+        dest='complete_pct',
+        help='Percent to consider questions complete',
+    )
     parser = add_ask_report_argparser(parser=parser)
     return parser
 
