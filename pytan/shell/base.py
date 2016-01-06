@@ -7,9 +7,11 @@ import argparse
 
 from pytan import PytanError, input
 from pytan.handler import Handler
-from pytan.shell import ShellParser, HistoryConsole
 from pytan.version import __version__
-from pytan.constants import HANDLER_DEFAULTS
+from pytan.shellparser import ShellParser, add_arg_group
+from pytan.historyconsole import HistoryConsole
+
+from pytan.constants import SHELL_OPTS, HANDLER_DEFAULTS
 from pytan.pollers.constants import Q_COMPLETE_PCT, Q_POLLING_SECS
 
 
@@ -49,10 +51,8 @@ class Base(object):
             description=self.DESCRIPTION,
             add_help=False,
         )
-        self.add_handler_conn()
-        self.add_handler_auth()
-        self.add_handler_opts()
-        self.add_session_opts()
+        for k, v in SHELL_OPTS.items():
+            add_arg_group(self.base, k, v, HANDLER_DEFAULTS)
 
     def set_parser(self):
         self.parser = ShellParser(
@@ -60,110 +60,7 @@ class Base(object):
             description=self.DESCRIPTION,
             parents=[self.base]
         )
-
-    def add_handler_auth(self):
-        name = 'PyTan Authentication Options'
-        self.grp = self.base.add_argument_group(name)
-        self.grp.add_argument(
-            '-u', '--username',
-            required=False, action='store', dest='username', default=self.SUPPRESS,
-            help='Name of user',
-        )
-        self.grp.add_argument(
-            '-p', '--password',
-            required=False, action='store', default=self.SUPPRESS, dest='password',
-            help='Password of user',
-        )
-        self.grp.add_argument(
-            '--session_id',
-            required=False, action='store', default=self.SUPPRESS, dest='session_id',
-            help='Session ID to authenticate with instead of username/password',
-        )
-
-    def add_handler_conn(self):
-        name = 'PyTan Connection Options'
-        self.grp = self.base.add_argument_group(name)
-        self.grp.add_argument(
-            '--host',
-            required=False, action='store', default=self.SUPPRESS, dest='host',
-            help='Hostname/ip of SOAP Server',
-        )
-        port_h = "Port to use when connecting to SOAP Server (default: {})"
-        port_h = port_h.format(HANDLER_DEFAULTS['port'])
-        self.grp.add_argument(
-            '--port',
-            required=False, action='store', default=self.SUPPRESS, type=int, dest='port',
-            help=port_h,
-        )
-
-    def add_handler_opts(self):
-        name = 'PyTan Handler Options'
-        self.grp = self.base.add_argument_group(name)
-        self.grp.add_argument(
-            '-l', '--loglevel',
-            required=False, action='store', type=int, default=self.SUPPRESS, dest='loglevel',
-            help='Logging level to use, increase for more verbosity (default: 0)',
-        )
-        fl_h = "Log file to write to if --enable_file_log (default: {})"
-        fl_h = fl_h.format(HANDLER_DEFAULTS['logfile_output'])
-        self.grp.add_argument(
-            '--file_log',
-            required=False, action='store', default=self.SUPPRESS, dest='logfile_output',
-            help=fl_h
-        )
-        puc_h = "PyTan User Config file to use for PyTan arguments (default: {})"
-        puc_h = puc_h.format(HANDLER_DEFAULTS['config_file'])
-        self.grp.add_argument(
-            '--config_file',
-            required=False, action='store', default=self.SUPPRESS, dest='config_file',
-            help=puc_h
-        )
-        self.grp.add_argument(
-            '--localtime',
-            required=False, action='store_false', default=self.SUPPRESS, dest='loggmt',
-            help="Use local time instead of GMT for logging",
-        )
-        self.grp.add_argument(
-            '--disable_con_log',
-            required=False, action='store_false', default=self.SUPPRESS, dest='logconsole_enable',
-            help="Disable console log",
-        )
-        self.grp.add_argument(
-            '--enable_file_log',
-            required=False, action='store_true', default=self.SUPPRESS, dest='logfile_enable',
-            help="Enable file log",
-        )
-
-    def add_session_opts(self):
-        name = 'PyTan Session Options'
-        self.grp = self.base.add_argument_group(name)
-
-        self.grp.add_argument(
-            '--record_all_requests',
-            required=False, action='store_true', default=self.SUPPRESS, dest='record_all_requests',
-            help="Record all requests in handler.session.ALL_REQUESTS_RESPONSES",
-        )
-        self.grp.add_argument(
-            '--enable_stats_loop',
-            required=False, action='store_true', default=self.SUPPRESS, dest='stats_loop_enabled',
-            help="Enable the statistics loop",
-        )
-        self.grp.add_argument(
-            '--disable_auth_retry',
-            required=False, action='store_true', default=self.SUPPRESS, dest='http_auth_retry',
-            help="Disable re-auth with username/password if session_id fails",
-        )
-        self.grp.add_argument(
-            '--http_retry_count',
-            required=False, action='store', type=int, default=self.SUPPRESS,
-            dest='http_retry_count',
-            help="Retry count for HTTP failures/invalid responses",
-        )
-        self.grp.add_argument(
-            '--force_server_version',
-            required=False, action='store', default=self.SUPPRESS, dest='force_server_version',
-            help="Force PyTan to consider the server version as this"
-        )
+        self.parser.add_argument('--version', action='version', version=__version__)
 
     def add_help_opts(self):
         name = 'PyTan Help Options'

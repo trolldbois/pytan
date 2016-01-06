@@ -1,4 +1,5 @@
 """Constants for :mod:`pytan`."""
+from collections import OrderedDict
 
 CRED_DEFAULTS = {}
 CRED_DEFAULTS['username'] = ''
@@ -48,6 +49,7 @@ HANDLER_DEFAULTS['config_file'] = "~/.pytan_config.json"
 HANDLER_DEFAULTS.update(CRED_DEFAULTS)
 HANDLER_DEFAULTS.update(SESSION_DEFAULTS)
 
+
 # short hand reference to python
 OFF = 'NOTSET'  # python logging int: 0
 DEBUG = 'DEBUG'  # python logging int: 10
@@ -56,6 +58,7 @@ WARN = 'WARNING'  # python logging int: 30
 ERR = 'ERROR'  # python logging int: 40
 CRIT = 'CRITICAL'  # python logging int: 50
 # {0: ERR, 1: WARN, 10: INFO, 20: DEBUG}
+LOGGER_LEVELS = [OFF, DEBUG, INFO, WARN, ERR, CRIT]
 
 LOGMAP = {}
 LOGMAP['pytan'] = 0
@@ -79,11 +82,11 @@ LOGMAP['pytan.session.auth'] = 13
 LOGMAP['pytan.session.body'] = 14
 LOGMAP['pytan.xml_clean'] = 16
 LOGMAP['pytan.excelwriter'] = 0
-LOGMAP['pytan.requests'] = 20
-LOGMAP['pytan.requests.packages.urllib3'] = 21
-LOGMAP['pytan.requests.packages.urllib3.connectionpool'] = 22
-LOGMAP['pytan.requests.packages.urllib3.poolmanager'] = 23
-LOGMAP['pytan.requests.packages.urllib3.util.retry'] = 24
+LOGMAP['pytan.ext.requests'] = 20
+LOGMAP['pytan.ext.requests.packages.urllib3'] = 21
+LOGMAP['pytan.ext.requests.packages.urllib3.connectionpool'] = 22
+LOGMAP['pytan.ext.requests.packages.urllib3.poolmanager'] = 23
+LOGMAP['pytan.ext.requests.packages.urllib3.util.retry'] = 24
 
 DEFAULT_LEVEL = "WARN"
 """Set all logs in LOGMAP to this level before setting them to INFO or DEBUG"""
@@ -124,3 +127,102 @@ $ variables will be replaced with strings from the objects during request time
 """
 
 SOAP_CONTENT_TYPE = 'text/xml; charset=utf-8'
+
+SESSION_OPTS = OrderedDict()
+SESSION_OPTS['host'] = {
+    'help': 'Hostname/ip of Tanium SOAP Server',
+}
+SESSION_OPTS['port'] = {
+    'help': 'Port to use of Tanium SOAP Server',
+}
+SESSION_OPTS['port_fallback'] = {
+    'help': 'Fallback port to use of Tanium SOAP Server',
+}
+SESSION_OPTS['https_proxy'] = {
+    'help': 'Proxy to use when connecting to the Tanium SOAP Server',
+}
+SESSION_OPTS['retry_count'] = {
+    'help': 'Number of times to retry when an HTTP error occurs',
+}
+SESSION_OPTS['record_all'] = {
+    'help': 'Record all requests in ALL_RESPONSES',
+}
+SESSION_OPTS['force_version'] = {
+    'help': 'Ignore the version of the Tanium server and force PyTan version as this',
+}
+SESSION_OPTS['connect_secs'] = {
+    'help': 'Number of seconds before timing out on all non-SOAP connections',
+}
+SESSION_OPTS['connect_secs_soap'] = {
+    'help': 'Number of seconds before timing out on all SOAP connections',
+}
+SESSION_OPTS['response_secs'] = {
+    'help': 'Number of seconds before timing out on all non-SOAP responses',
+}
+SESSION_OPTS['response_secs_soap'] = {
+    'help': 'Number of seconds before timing out on all SOAP responses',
+}
+
+AUTH_OPTS = OrderedDict()
+AUTH_OPTS['username'] = {
+    'help': 'Name of user to authenticate against Tanium with',
+    'short': 'u',
+}
+AUTH_OPTS['password'] = {
+    'help': 'Password of user to authenticate against Tanium with',
+    'short': 'p',
+}
+AUTH_OPTS['domain'] = {
+    'help': 'Domain of user to authenticate against Tanium with',
+}
+AUTH_OPTS['secondary'] = {
+    'help': 'Secondary of user to authenticate against Tanium with',
+}
+AUTH_OPTS['session_id'] = {
+    'help': 'session ID to authenticate against Tanium with (will be used in favor of '
+    'username/password/domain/secondary if both are suppleid).',
+}
+AUTH_OPTS['persistent'] = {
+    'help': 'Get a persistent session_id (lasts up to 1 week between uses)',
+}
+
+HANDLER_OPTS = OrderedDict()
+HANDLER_OPTS['logfile_enable'] = {
+    'help': 'Enable logging to file in --logfile_output',
+}
+HANDLER_OPTS['logfile_output'] = {
+    'help': "Log file to write to if --logfile_enable true",
+}
+HANDLER_OPTS['logfile_level'] = {
+    'help': "Only show file logs at this level or above (NOTSET logs all levels)",
+    'choices': LOGGER_LEVELS,
+}
+HANDLER_OPTS['logfile_formatter'] = {
+    'help': 'Python logging format to use for file logging',
+}
+HANDLER_OPTS['logconsole_enable'] = {
+    'help': 'Enable logging to the console',
+}
+HANDLER_OPTS['logconsole_level'] = {
+    'help': "Only show console logs at this level or above (NOTSET logs all levels)",
+    'choices': LOGGER_LEVELS,
+}
+HANDLER_OPTS['logconsole_formatter'] = {
+    'help': 'Python logging format to use for console logging',
+}
+HANDLER_OPTS['loggmt'] = {
+    'help': 'Use GMT for logging (true) or local time (false)',
+}
+HANDLER_OPTS['loglevel'] = {
+    'help': 'Logging level to use, increase for more verbosity '
+    '(0 = no logging, {} and up turns on all logging)'.format(OVERRIDE_LEVEL),
+    'short': 'l',
+}
+HANDLER_OPTS['config_file'] = {
+    'help': "PyTan User Config file to use for PyTan arguments",
+}
+
+SHELL_OPTS = OrderedDict()
+SHELL_OPTS['PyTan Authentication Options'] = AUTH_OPTS
+SHELL_OPTS['PyTan Session Options'] = SESSION_OPTS
+SHELL_OPTS['PyTan Handler Options'] = HANDLER_OPTS
