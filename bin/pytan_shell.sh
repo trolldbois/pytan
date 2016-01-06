@@ -7,12 +7,14 @@ my_dir=`cd ${my_dirname} ; pwd`
 
 . ${my_dir}/config.sh
 
-export PYTHONINSPECT="True"
-
 for a in "${@}"; do pargs="${pargs}'${a}' "; done
 
-spew "Executing: \"${PYTHON_BINARY}\" \"${WORKER_PATH}\" \"shell:${my_script}\" ${pargs}"
-"${PYTHON_BINARY}" "${WORKER_PATH}" "shell:${my_script}" "${@}"
+if ! echo "${pargs}" | grep -- "'--help'\|'--version'" 2>&1 > /dev/null; then
+    export PYTHONINSPECT="True"
+fi
+
+spew "Executing: \"${PYTHON_BINARY}\" ${PYTHON_OPTIONS} \"${WORKER_PATH}\" \"shell:${my_script}\" ${pargs}"
+"${PYTHON_BINARY}" ${PYTHON_OPTIONS} "${WORKER_PATH}" "shell:${my_script}" "${@}"
 EXITCODE=$?
 spew "Exited with exit code: ${EXITCODE}"
 exit ${EXITCODE}
