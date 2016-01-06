@@ -12,19 +12,10 @@ This module is meant to be a completely standalone module.
 """
 # BEGIN STATIC CODE
 # TODO ADD TO BUILDER HEADER
-# TODO MAKE TICKLE DYNAMICALLY LOAD
 
 import sys
 import json
 import logging
-
-
-# try to use PytanError as the base class for all exceptions
-try:
-    from pytan import PytanError
-    PytanError = PytanError
-except:
-    PytanError = Exception
 
 mylog = logging.getLogger(__name__)
 
@@ -40,7 +31,7 @@ else:
     integer_types = (int, long)  # noqa
 
 
-class TaniumNGError(PytanError):
+class TaniumNGError(Exception):
 
     """For errors in Tanium NG."""
 
