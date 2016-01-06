@@ -2902,7 +2902,7 @@ class Handler(object):
                 raise ServerSideExportError(err)
 
     def _find_arg_source(self, arg):
-        args_order = ['puc_config_args', 'osenv_args', 'handler_args']
+        args_order = ['handler_args', 'osenv_args', 'puc_config_args']
         src = 'default_args'
         for args_src in args_order:
             def_val = self.ARGSTORE.default_args[arg]
