@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -ttB
+#!/usr/bin/env python3
 
 # BEGIN BOOTSTRAP CODE
 
@@ -34,19 +34,26 @@ path_adds = [os.path.abspath(os.path.expanduser(aa)) for aa in path_adds]
 # add the path_adds to beginning of PYTHONPATH
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import pytan  # noqa
+try:
+    import pytan  # noqa
+except:
+    err = "Unable to import pytan package, looked in paths: '{}', full PYTHONPATH: {}"
+    err = err.format(', '.join(path_adds), sys.path)
+    raise Exception(err)
+
 # END BOOTSTRAP CODE
 
-# from pytan import tanium_ng
-import time  # noqa
+import time
 import pytest
-import threaded_http
+
+from pytan import threaded_http
 from pytan import session
+from pytan import tanium_ng
 
 pytan.handler.add_override_log(loglevel=50)
 
 # OPTS:
-RUN_SLOW = False
+RUN_SLOW = True
 HOST = '10.0.1.240'
 USERNAME = 'Administrator'
 PASSWORD = 'Tanium2015!'
@@ -120,7 +127,7 @@ def test_valid_creds(validsession):
     s = validsession
     assert isinstance(s, session.Session)
     assert isinstance(s._CREDS, session.CredStore)
-    assert isinstance(s._CREDS.user_obj, pytan.tanium_ng.User)
+    assert isinstance(s._CREDS.user_obj, tanium_ng.User)
     assert isinstance(s.session_id, pytan.string_types)
     assert isinstance(s.session_user_id, pytan.integer_types)
 
@@ -146,36 +153,36 @@ def test_get_string(validsession):
 
 def test_invalid_find(validsession):
     s = validsession
-    obj = pytan.tanium_ng.User(values={'id': 99999})
+    obj = tanium_ng.User(values={'id': 99999})
     with pytest.raises(session.BadResponseError):
         s.find(obj)
 
 
 def test_valid_find(validsession):
     s = validsession
-    obj = pytan.tanium_ng.User(values={'id': s.session_user_id})
+    obj = tanium_ng.User(values={'id': s.session_user_id})
     result = s.find(obj)
-    assert isinstance(result, pytan.tanium_ng.User)
+    assert isinstance(result, tanium_ng.User)
     assert isinstance(result.name, pytan.string_types)
 
 
 def test_valid_add_find_modify(validsession):
     s = validsession
-    userlist = s.find(pytan.tanium_ng.UserList())
+    userlist = s.find(tanium_ng.UserList())
     test_user_found = [x for x in userlist if x.name == 'pytest user']
     if test_user_found:
         s.delete(test_user_found[0])
 
-    admin_role = pytan.tanium_ng.UserRole(values={'name': 'Administrator'})
-    sensor_role = pytan.tanium_ng.UserRole(values={'name': 'Sensor Author'})
+    admin_role = tanium_ng.UserRole(values={'name': 'Administrator'})
+    sensor_role = tanium_ng.UserRole(values={'name': 'Sensor Author'})
 
-    obj = pytan.tanium_ng.User()
+    obj = tanium_ng.User()
     obj.name = 'pytest user'
-    obj.roles = pytan.tanium_ng.UserRoleList()
+    obj.roles = tanium_ng.UserRoleList()
     obj.roles.role = [admin_role]
 
     added_obj = s.add(obj)
-    assert isinstance(added_obj, pytan.tanium_ng.User)
+    assert isinstance(added_obj, tanium_ng.User)
     assert isinstance(added_obj.name, pytan.string_types)
     added_roles = [x.name for x in added_obj.roles]
     assert added_roles == ['Administrator']
@@ -184,27 +191,27 @@ def test_valid_add_find_modify(validsession):
         s.add(obj)
 
     found_obj = s.find(added_obj)
-    assert isinstance(found_obj, pytan.tanium_ng.User)
+    assert isinstance(found_obj, tanium_ng.User)
     assert isinstance(found_obj.name, pytan.string_types)
 
     found_obj.roles.role = [sensor_role]
 
     modified_obj = s.save(found_obj)
-    assert isinstance(modified_obj, pytan.tanium_ng.User)
+    assert isinstance(modified_obj, tanium_ng.User)
     assert isinstance(modified_obj.name, pytan.string_types)
     modified_roles = [x.name for x in modified_obj.roles]
     assert modified_roles == ['Sensor Author']
 
     deleted_obj = s.delete(modified_obj)
     assert deleted_obj.deleted_flag == 1
-    assert isinstance(deleted_obj, pytan.tanium_ng.User)
+    assert isinstance(deleted_obj, tanium_ng.User)
 
 
 def test_valid_creds_bad_session_id():
     s = session.Session(session_id=BAD, **VALID_ARGS)
     assert isinstance(s, session.Session)
     assert isinstance(s._CREDS, session.CredStore)
-    assert isinstance(s._CREDS.user_obj, pytan.tanium_ng.User)
+    assert isinstance(s._CREDS.user_obj, tanium_ng.User)
 
 
 def test_session_id():
@@ -214,7 +221,7 @@ def test_session_id():
     session2 = s2.session_id
     assert isinstance(s2, session.Session)
     assert isinstance(s2._CREDS, session.CredStore)
-    assert isinstance(s2._CREDS.user_obj, pytan.tanium_ng.User)
+    assert isinstance(s2._CREDS.user_obj, tanium_ng.User)
     assert session1 == session2
 
 
@@ -267,7 +274,7 @@ def test_proxy():
     s = session.Session(https_proxy=HTTPS_PROXY, **VALID_ARGS)
     assert isinstance(s, session.Session)
     assert isinstance(s._CREDS, session.CredStore)
-    assert isinstance(s._CREDS.user_obj, pytan.tanium_ng.User)
+    assert isinstance(s._CREDS.user_obj, tanium_ng.User)
 
 
 @slow_test

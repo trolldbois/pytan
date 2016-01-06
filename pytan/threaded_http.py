@@ -4,9 +4,15 @@ from __future__ import print_function
 
 import sys
 import cgi
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from SocketServer import ThreadingMixIn
 import threading
+
+PY3 = sys.version_info[0] == 3
+if PY3:
+    from http.server import HTTPServer, BaseHTTPRequestHandler
+    from socketserver import ThreadingMixIn
+else:
+    from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+    from SocketServer import ThreadingMixIn
 
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 -ttB
+#!/usr/bin/env python3
 
 # BEGIN BOOTSTRAP CODE
 
@@ -34,11 +34,17 @@ path_adds = [os.path.abspath(os.path.expanduser(aa)) for aa in path_adds]
 # add the path_adds to beginning of PYTHONPATH
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import pytan  # noqa
+try:
+    import pytan  # noqa
+except:
+    err = "Unable to import pytan package, looked in paths: '{}', full PYTHONPATH: {}"
+    err = err.format(', '.join(path_adds), sys.path)
+    raise Exception(err)
+
 # END BOOTSTRAP CODE
 
-from pytan import tanium_ng
 import pytest
+from pytan import tanium_ng
 
 BASE_TYPES = list(tanium_ng.BASE_TYPES.items())
 LIST_TYPES = [x for x in BASE_TYPES if x[1]()._IS_LIST]
