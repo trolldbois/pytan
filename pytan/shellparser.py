@@ -85,10 +85,10 @@ def add_arg_group(parser, name, opt_dict, defaults={}):
         if v.get('choices', []):
             add_opts['choices'] = v['choices']
 
-        if isinstance(hd, int):
-            add_opts['type'] = int
-        elif isinstance(hd, bool):
+        if isinstance(hd, bool):
             add_opts['type'] = str2bool
+        elif isinstance(hd, int):
+            add_opts['type'] = int
 
         # print("adding arg to group {!r} opts: {!r}, {!r}".format(name, opts, add_opts))
         grp.add_argument(*opts, **add_opts)
