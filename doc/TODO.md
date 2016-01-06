@@ -39,7 +39,8 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## TICKLE
 * move serializers out => tickle NOW
-  * csv => NOW
+  * ADD TESTS => NOW (need datafiles)
+  * csv 
     * DONT UPDATE COLUMNS WITH VALUES
     * maybe use string api for what_hash instead of getting sensors?
     * add what_name to session GRD 

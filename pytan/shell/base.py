@@ -58,9 +58,11 @@ class Base(object):
         self.parser = ShellParser(
             my_file=self.my_file,
             description=self.DESCRIPTION,
-            parents=[self.base]
+            parents=[self.base],
+            add_help=False,
         )
         self.parser.add_argument('--version', action='version', version=__version__)
+        self.parser.add_argument('--help', action='help')
 
     def add_help_opts(self):
         name = 'PyTan Help Options'
