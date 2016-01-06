@@ -13,7 +13,7 @@ from pytan.session import Session
 from pytan.pollers import QuestionPoller, SSEPoller
 from pytan.parsers import GetObject
 from pytan.version import __version__
-from pytan.tickle.tools import from_sse_xml
+from pytan.tickle import from_sse_xml
 
 from pytan.tickle.tools import (
     obfuscate, shrink_obj, check_limits, create_question, create_cachefilterlist

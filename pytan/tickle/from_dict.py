@@ -4,6 +4,22 @@ from pytan import PytanError, tanium_ng
 from pytan.tickle.constants import TAG_NAME, LIST_NAME, EXPLODE_NAME
 
 
+def from_dict(obj_dict, **kwargs):
+    converter = FromDict(obj_dict=obj_dict, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def from_json(jsonstr, **kwargs):
+    obj_dict = json.loads(jsonstr)
+    result = from_dict(obj_dict, **kwargs)
+    return result
+
+
+class DictDeserializeError(PytanError):
+    pass
+
+
 class FromDict(object):
     """Convert a single or list of dict into a tanium_ng BaseType object
 
@@ -32,15 +48,17 @@ class FromDict(object):
 
         # TODO: this wont work, need to check for _tickled_list ??
         if isinstance(self.OBJ_DICT, list):
-            self.RESULT = [FromDict(pyobj=v).RESULT for v in self.OBJ_DICT]
+            self.RESULT = [from_dict(pyobj=v) for v in self.OBJ_DICT]
+
         elif isinstance(self.OBJ_DICT, dict):
             if LIST_NAME in self.OBJ_DICT:
-                self.RESULT = [FromDict(pyobj=v).RESULT for v in self.OBJ_DICT[LIST_NAME]]
+                self.RESULT = [from_dict(pyobj=v) for v in self.OBJ_DICT[LIST_NAME]]
             else:
                 if TAG_NAME not in self.OBJ_DICT:
                     err = "Dictionary missing attribute {!r}, unable to deserialize!"
                     err = err.format(TAG_NAME)
                     raise DictDeserializeError(err)
+
                 soap_tag = self.OBJ_DICT[TAG_NAME]
                 self.RESULT = tanium_ng.get_obj_type(soap_tag)()
                 self.base_simple()
@@ -67,8 +85,7 @@ class FromDict(object):
             val = self.OBJ_DICT.get(prop, None)
             if val is None:
                 continue
-            converter = FromDict(obj_dict=val)
-            setattr(self.RESULT, prop, converter.RESULT)
+            setattr(self.RESULT, prop, from_dict(obj_dict=val))
 
     def base_list(self):
         """Process the list properties from the tanium_ng object"""
@@ -80,12 +97,7 @@ class FromDict(object):
             new_vals = []
             for val in vals:
                 if issubclass(prop_type, tanium_ng.BaseType):
-                    converter = FromDict(obj_dict=val)
-                    new_vals.append(converter.RESULT)
+                    new_vals.append(from_dict(obj_dict=val))
                 else:
                     new_vals.append(val)
             setattr(self.RESULT, prop, new_vals)
-
-
-class DictDeserializeError(PytanError):
-    pass

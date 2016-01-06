@@ -1,9 +1,41 @@
 import json
 
 from pytan import tanium_ng
+from pytan.excelwriter import ExcelWriter
+from pytan.tickle.tools import jsonify
 from pytan.tickle.constants import (
-    TAG_NAME, LIST_NAME, EXPLODE_NAME, FLAT_WARN, FLAT_SEP, INCLUDE_EMPTY
+    TAG_NAME, LIST_NAME, EXPLODE_NAME, FLAT_WARN, FLAT_SEP, INCLUDE_EMPTY, SKIPS, FIRSTS, LASTS
 )
+
+
+def to_dict(obj, **kwargs):
+    converter = ToDict(obj, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def to_json(obj, **kwargs):
+    obj_dict = to_dict(obj, **kwargs)
+    result = jsonify(obj_dict, **kwargs)
+    return result
+
+
+def to_csv(obj, **kwargs):
+    kwargs['flat'] = kwargs.get('flat', True)  # TODO CONSTANT
+    obj_dict = to_dict(obj, **kwargs)
+
+    if LIST_NAME in obj_dict:
+        kwargs['rows'] = obj_dict[LIST_NAME]
+    else:
+        kwargs['rows'] = [obj_dict]
+
+    kwargs['skips'] = kwargs.get('skips', []) + SKIPS
+    kwargs['firsts'] = kwargs.get('firsts', []) + FIRSTS
+    kwargs['lasts'] = kwargs.get('lasts', []) + LASTS
+
+    writer = ExcelWriter()
+    result = writer.run(**kwargs)
+    return result
 
 
 class ToDict(object):
@@ -84,11 +116,9 @@ class ToDict(object):
 
         self.RESULT[LIST_NAME] = []
         for val in self.OBJ:
-            conv_args = {}
-            conv_args.update(self.KWARGS)
-            conv_args['parent'] = False
-            converter = ToDict(val, **conv_args)
-            self.RESULT[LIST_NAME].append(converter.RESULT)
+            child_args = self.get_child_args()
+            child_val = to_dict(val, **child_args)
+            self.RESULT[LIST_NAME].append(child_val)
 
     def base_simple(self):
         """Process the simple properties from the tanium_ng object"""
@@ -120,12 +150,11 @@ class ToDict(object):
 
             if val is not None:
                 child_args = self.get_child_args(flat_pre=prop_name)
-                converter = ToDict(val, **child_args)
-                val = converter.RESULT
+                child_val = to_dict(val, **child_args)
                 if self.FLAT:
-                    self.RESULT.update(val)
+                    self.RESULT.update(child_val)
                 else:
-                    self.RESULT[prop_name] = val
+                    self.RESULT[prop_name] = child_val
             else:
                 self.RESULT[prop_name] = val
 
@@ -142,8 +171,8 @@ class ToDict(object):
 
                 if issubclass(prop_type, tanium_ng.BaseType):
                     child_args = self.get_child_args(flat_pre=prop_name)
-                    val = ToDict(val, **child_args).RESULT
-                    new_vals.append(val)
+                    child_val = to_dict(val, **child_args)
+                    new_vals.append(child_val)
                 else:
                     if self.FLAT:
                         new_vals.append({prop_name: val})

@@ -4,112 +4,20 @@ import base64
 import logging
 import datetime
 
-from pytan import PytanError, tanium_ng, xmltodict, integer_types, range, b, text_type, encoding
+from pytan import PytanError, tanium_ng, integer_types, range, b, text_type
+from pytan.ext import xmltodict
 from pytan.utils import read_file
-from pytan.tickle import ET
-from pytan.tickle.toet import ToET
-from pytan.tickle.todict import ToDict
-from pytan.tickle.fromxml import FromXML
-from pytan.tickle.fromdict import FromDict
-from pytan.tickle.resulttorows import ResultToRows
-from pytan.tickle.constants import SSE_WRAP, TIME_FORMAT, LIST_NAME, SKIPS, FIRSTS, LASTS
-from pytan.excelwriter import ExcelWriter
+from pytan.tickle.constants import TIME_FORMAT
 
 MYLOG = logging.getLogger(__name__)
 
 
-# CONVENIENCE WRAPPERS AROUND TICKLE CLASSES::
-
-def to_xml(obj, **kwargs):
-    converter = ToET(obj, **kwargs)
-    result = ET.tostring(converter.RESULT, encoding=encoding)
-    return result
+class ObjectTypeError(PytanError):
+    pass
 
 
-def to_dict(obj, **kwargs):
-    converter = ToDict(obj, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def to_json(obj, **kwargs):
-    obj_dict = to_dict(obj, **kwargs)
-    result = jsonify(obj_dict, **kwargs)
-    return result
-
-
-def to_csv(obj, **kwargs):
-    kwargs['flat'] = kwargs.get('flat', True)  # TODO CONSTANT
-    obj_dict = to_dict(obj, **kwargs)
-
-    if LIST_NAME in obj_dict:
-        kwargs['rows'] = obj_dict[LIST_NAME]
-    else:
-        kwargs['rows'] = [obj_dict]
-
-    kwargs['skips'] = kwargs.get('skips', []) + SKIPS
-    kwargs['firsts'] = kwargs.get('firsts', []) + FIRSTS
-    kwargs['lasts'] = kwargs.get('lasts', []) + LASTS
-
-    writer = ExcelWriter()
-    result = writer.run(**kwargs)
-    return result
-
-
-def result_to_dicts(obj, **kwargs):
-    converter = ResultToRows(obj, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def result_to_json(obj, **kwargs):
-    rows = result_to_dicts(obj, **kwargs)
-    result = jsonify(rows, **kwargs)
-    return result
-
-
-def result_to_csv(obj, **kwargs):
-    rows = result_to_dicts(obj, **kwargs)
-    writer = ExcelWriter()
-    result = writer.run(rows, **kwargs)
-    return result
-
-
-def from_json(jsonstr, **kwargs):
-    obj_dict = json.loads(jsonstr)
-    result = from_dict(obj_dict, **kwargs)
-    return result
-
-
-def from_dict(obj_dict, **kwargs):
-    converter = FromDict(obj_dict=obj_dict, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def from_xml(xml, **kwargs):
-    converter = FromXML(xml=xml, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def from_sse_xml(xml, **kwargs):
-    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a
-    ResultSet object
-
-    Parameters
-    ----------
-    x : str
-        * str of XML to convert to a ResultSet object
-
-    Returns
-    -------
-    rs : :class:`tanium_ng.result_set.ResultSet`
-        * x converted into a ResultSet object
-    """
-    rs_xml = SSE_WRAP.format(SSE_DATA=xml)
-    result = from_xml(rs_xml, **kwargs)
-    return result
+class LimitCheckError(PytanError):
+    pass
 
 
 def get_now_dt(gmt=True):
@@ -693,11 +601,3 @@ def q_start(q):
     start_time = dt_to_str(start_time_dt)
     result = (start_time, start_time_dt)
     return result
-
-
-class ObjectTypeError(PytanError):
-    pass
-
-
-class LimitCheckError(PytanError):
-    pass

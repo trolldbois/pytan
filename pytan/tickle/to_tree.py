@@ -1,12 +1,24 @@
-from pytan import text_type, tanium_ng
+from pytan import text_type, encoding, tanium_ng
 from pytan.tickle import ET
 from pytan.tickle.constants import INCLUDE_EMPTY
 
 
-class ToET(object):
+def to_tree(obj, **kwargs):
+    converter = ToTree(obj, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def to_xml(obj, **kwargs):
+    tree = to_tree(obj, **kwargs)
+    result = ET.tostring(tree, encoding=encoding)
+    return result
+
+
+class ToTree(object):
     """Convert a tanium_ng BaseType object into an ElementTree object.
 
-    x = ToET(obj)
+    x = ToTree(obj)
 
     Get RESULT:
     x.RESULT
@@ -19,7 +31,6 @@ class ToET(object):
     """ElementTree object created from OBJ"""
 
     def __init__(self, obj, **kwargs):
-        # print("New ToET for obj: {}".format(obj))
         self.KWARGS = kwargs
         self.INCLUDE_EMPTY = kwargs.get('include_empty', INCLUDE_EMPTY)
         self.OBJ = obj
@@ -52,8 +63,8 @@ class ToET(object):
 
             if isinstance(val, tanium_ng.BaseType):
                 el = ET.Element(prop)
-                converter = ToET(val, **self.KWARGS)
-                [el.append(c) for c in list(converter.RESULT)]
+                child_val = to_tree(val, **self.KWARGS)
+                [el.append(c) for c in list(child_val)]
                 self.RESULT.append(el)
             else:
                 self.add_simple_el(prop, val)
@@ -67,8 +78,8 @@ class ToET(object):
 
             if issubclass(prop_type, tanium_ng.BaseType):
                 for val in vals:
-                    converter = ToET(val, **self.KWARGS)
-                    self.RESULT.append(converter.RESULT)
+                    child_val = to_tree(val, **self.KWARGS)
+                    self.RESULT.append(child_val)
             else:
                 for val in vals:
                     if val is None and not self.INCLUDE_EMPTY:

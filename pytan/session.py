@@ -7,11 +7,13 @@ import socket
 import logging
 import datetime
 
-from pytan import PytanError, requests, tanium_ng
+from pytan import PytanError, tanium_ng
+from pytan.ext import requests
 from pytan.store import Store
 from pytan.version import VERSION_INFO
 from pytan.xml_clean import xml_cleaner
-from pytan.tickle.tools import to_xml, from_xml, b64encode, xml_pretty, obfuscate, deobfuscate
+from pytan.tickle import to_xml, from_xml
+from pytan.tickle.tools import b64encode, xml_pretty, obfuscate, deobfuscate
 
 from pytan.constants import (
     SOAP_REQUEST_BODY, SOAP_CONTENT_TYPE, XMLNS, SESSION_DEFAULTS, CRED_DEFAULTS, PYTAN_KEY

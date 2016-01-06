@@ -48,11 +48,80 @@ if ET is None:
     raise XMLEngineError(err)
 
 
+from pytan.tickle.to_tree import to_xml, to_tree
+from pytan.tickle.to_dict import to_dict, to_json, to_csv
+from pytan.tickle.from_xml import from_xml, from_sse_xml
+from pytan.tickle.from_tree import from_tree
+from pytan.tickle.from_dict import from_dict, from_json
+from pytan.tickle.to_dict_report import to_dict_report, to_json_report, to_csv_report
+from pytan import tanium_ng
 from pytan.tickle import tools
-from pytan.tickle import monkey
 
 __all__ = [
     'ET',
     'tools',
-    'monkey',
+    'to_xml',
+    'to_tree',
+    'to_dict',
+    'to_json',
+    'to_csv',
+    'to_dict_report',
+    'to_json_report',
+    'to_csv_report',
+    'from_xml',
+    'from_sse_xml',
+    'from_tree',
+    'from_dict',
+    'from_json',
 ]
+
+
+def monkey_to_xml(self, **kwargs):
+    """Deserialize self ``obj`` into an XML body, relies on tickle"""
+    result = to_xml(self, **kwargs)
+    return result
+
+
+def monkey_to_dict(self, **kwargs):
+    """Deserialize self ``obj`` into a dict, relies on tickle"""
+    result = to_dict(self, **kwargs)
+    return result
+
+
+def monkey_to_json(self, **kwargs):
+    """Deserialize self ``obj`` into a JSON string, relies on tickle"""
+    result = to_json(self, **kwargs)
+    return result
+
+
+def monkey_to_csv(self, **kwargs):
+    """Deserialize self ``obj`` into a CSV string, relies on tickle"""
+    result = to_csv(self, **kwargs)
+    return result
+
+
+def monkey_to_csv_report(self, **kwargs):
+    """Deserialize self ``obj`` into a CSV string, relies on tickle"""
+    result = to_csv_report(self, **kwargs)
+    return result
+
+
+def monkey_to_json_report(self, **kwargs):
+    """Deserialize self ``obj`` into a JSON string, relies on tickle"""
+    result = to_json_report(self, **kwargs)
+    return result
+
+
+def monkey_to_dict_report(self, **kwargs):
+    """Deserialize self ``obj`` into a list of dicts, relies on tickle"""
+    result = to_dict_report(self, **kwargs)
+    return result
+
+
+tanium_ng.BaseType.to_xml = monkey_to_xml
+tanium_ng.BaseType.to_dict = monkey_to_dict
+tanium_ng.BaseType.to_json = monkey_to_json
+tanium_ng.BaseType.to_csv = monkey_to_csv
+tanium_ng.ResultSetList.to_csv_report = monkey_to_csv_report
+tanium_ng.ResultSetList.to_json_report = monkey_to_json_report
+tanium_ng.ResultSetList.to_dict_report = monkey_to_dict_report

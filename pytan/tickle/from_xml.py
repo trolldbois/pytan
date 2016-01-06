@@ -1,9 +1,34 @@
 from pytan import PytanError, tanium_ng
 from pytan.tickle import ET
-from pytan.tickle.fromet import FromET
+from pytan.tickle.from_tree import from_tree
+from pytan.tickle.constants import SSE_WRAP
 
 
-# TODO LOGGING
+def from_xml(xml, **kwargs):
+    converter = FromXML(xml=xml, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def from_sse_xml(xml, **kwargs):
+    """Wraps a Result Set XML from a server side export in the appropriate tags and returns a
+    ResultSet object
+
+    Parameters
+    ----------
+    x : str
+        * str of XML to convert to a ResultSet object
+
+    Returns
+    -------
+    rs : :class:`tanium_ng.result_set.ResultSet`
+        * x converted into a ResultSet object
+    """
+    rs_xml = SSE_WRAP.format(SSE_DATA=xml)
+    result = from_xml(rs_xml, **kwargs)
+    return result
+
+
 class FromXML(object):
     """Convert an XML String into a tanium_ng BaseType object.
 
@@ -44,9 +69,7 @@ class FromXML(object):
 
         if self.TARGET_TREE is not None:
             self.TARGET_CLASS = tanium_ng.get_obj_type(self.TARGET_TREE.tag)
-
-            converter = FromET(self.TARGET_TREE, self.TARGET_CLASS, **kwargs)
-            self.RESULT = converter.RESULT
+            self.RESULT = from_tree(self.TARGET_TREE, self.TARGET_CLASS, **kwargs)
         else:
             self.RESULT = self.TARGET_CLASS()
 

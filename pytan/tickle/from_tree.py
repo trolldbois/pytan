@@ -1,10 +1,16 @@
 from pytan import PytanError, tanium_ng
 
 
-class FromET(object):
+def from_tree(objtree, objclass, **kwargs):
+    converter = FromTree(objtree, objclass, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+class FromTree(object):
     """Convert an XML String or an ElementTree object into a tanium_ng BaseType object.
 
-    x = FromET(objtree=ElementTreeObject, objclass=tanium_ng.Sensor)
+    x = FromTree(objtree=ElementTreeObject, objclass=tanium_ng.Sensor)
 
     Get RESULT:
     x.RESULT
@@ -20,7 +26,7 @@ class FromET(object):
     """Taniumg NG object class to create RESULT as"""
 
     def __init__(self, objtree, objclass, **kwargs):
-        # print("New FromET kwargs: {}".format(kwargs))
+        # print("New FromTree kwargs: {}".format(kwargs))
         self.OBJTREE = objtree
         self.OBJCLASS = objclass
         self.RESULT = objclass()
@@ -60,8 +66,7 @@ class FromET(object):
                 err = err.format(len(prop_elems), prop, xpath)
                 raise DeserializeError(err)
             elif len(prop_elems) == 1:
-                converter = FromET(prop_elems[0], prop_type)
-                setattr(self.RESULT, prop, converter.RESULT)
+                setattr(self.RESULT, prop, from_tree(prop_elems[0], prop_type))
             else:
                 setattr(self.RESULT, prop, None)
 
@@ -73,8 +78,7 @@ class FromET(object):
             prop_list = []
             for prop_elem in prop_elems:
                 if issubclass(prop_type, tanium_ng.BaseType):
-                    converter = FromET(prop_elem, prop_type)
-                    prop_list.append(converter.RESULT)
+                    prop_list.append(from_tree(prop_elem, prop_type))
                 else:
                     prop_list.append(prop_elem.text)
             setattr(self.RESULT, prop, prop_list)

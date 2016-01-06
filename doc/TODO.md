@@ -43,7 +43,6 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
     * DONT UPDATE COLUMNS WITH VALUES
     * maybe use string api for what_hash instead of getting sensors?
     * add what_name to session GRD 
-    * add hash/ and string/ api to session
     * from xml / from dict not working on ResultSet
   * TODO test on py2
 * TODO: this wont work, need to check for _tickled_list ??
@@ -52,6 +51,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * write tests!
 
 ## SESSION
+* add permission checking from user_obj
 * move stats threading into it's own class LAST
  
 ## HUMAN PARSING
@@ -88,6 +88,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## UTILS
 # TODO figure out pyreadline later
+* add "advanced" options capability to shellparser (custom action, custom formatter, custom format_help on shellparser)
 
 ## TEST
 * add approve action to pytan (need doc update and test update)
