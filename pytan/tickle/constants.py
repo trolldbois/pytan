@@ -37,10 +37,11 @@ SSE_WRAP = (
 </return>
 ''')
 """str of XML to wrap XML received from a server side data export with"""
-TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
+TANIUM_TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
 """str of Tanium's format for date time strings"""
 
 FIRSTS = ['id', 'name', 'description']
 LASTS = []
 SKIPS = [TAG_NAME, LIST_NAME, EXPLODE_NAME]
 SKIPS += list(FLAT_WARN.keys())
+HUMAN_TIME_FORMAT = 'D%Y-%m-%dT%H-%M-%S-%f'
