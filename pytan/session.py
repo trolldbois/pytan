@@ -13,7 +13,10 @@ from pytan.store import Store
 from pytan.version import VERSION_INFO
 from pytan.xml_clean import xml_cleaner
 from pytan.tickle import to_xml, from_xml
-from pytan.tickle.tools import b64encode, xml_pretty, obfuscate, deobfuscate
+from pytan.tickle.tools import (
+    b64encode, obfuscate, deobfuscate, get_pretty_bodies, get_all_pretty_bodies,
+    write_all_pretty_bodies
+)
 
 from pytan.constants import (
     SOAP_REQUEST_BODY, SOAP_CONTENT_TYPE, XMLNS, SESSION_DEFAULTS, CRED_DEFAULTS, PYTAN_KEY
@@ -1032,6 +1035,8 @@ class Session(object):
         requests_func = getattr(self._REQUESTS_SESSION, request_method)
 
         # perform the request
+        sent = datetime.datetime.utcnow()
+
         try:
             response = requests_func(full_url, **req_args)
         except Exception as e:
@@ -1039,15 +1044,21 @@ class Session(object):
             err = err.format(request_method.upper(), full_url, e)
             raise HttpError(err)
 
+        received = datetime.datetime.utcnow()
+
+        # add the pytan 'helper' attributes to the response
+        response.pytan_sent = sent
+        response.pytan_received = received
+        response.pytan_request_args = req_args
+        response.pytan_http_request_args = kwargs
+        response.pytan_help = pytan_help
+
         # set the response as LAST_RESPONSE
         self.LAST_RESPONSE = response
 
         # if recrod_all is set, add the response to ALL_RESPONSES
         if self._ARGS['record_all']:
             self.ALL_RESPONSES.append(response)
-
-        # add the pytan_help arg as an attribute to the response
-        response.pytan_help = pytan_help
 
         # get the text from the response
         response_body = response.text
@@ -1083,29 +1094,6 @@ class Session(object):
             raise HttpError(err)
 
         return response_body
-
-    def get_pretty_bodies(self, **kwargs):
-        """Uses :func:`xml_pretty` to pretty print the last request and response bodies from the
-        session object
-
-        """
-        response = kwargs.get('response', self.LAST_RESPONSE)
-
-        request_body = response.request.body
-        response_body = response.text
-
-        try:
-            req = xml_pretty(request_body)
-        except Exception as e:
-            req = "Failed to prettify xml: {}, raw xml:\n{}".format(e, request_body)
-
-        try:
-            resp = xml_pretty(response_body)
-        except Exception as e:
-            resp = "Failed to prettify xml: {}, raw xml:\n{}".format(e, response_body)
-
-        result = (req, resp)
-        return result
 
     def _flatten_server_info(self, structure):
         """Utility method for flattening the JSON structure for info.json into a more python usable format
@@ -1210,6 +1198,25 @@ class Session(object):
             self.AUTHLOG.info(m)
             self._CREDS.user_obj = result
         return result
+
+    def get_last_pretty_bodies(self, **kwargs):
+        result = get_pretty_bodies(self.LAST_RESPONSE, **kwargs)
+        return result
+
+    def get_all_pretty_bodies(self, **kwargs):
+        if not self.ALL_RESPONSES:
+            err = "No responses found in self.ALL_RESPONSES!"
+            raise SessionError(err)
+
+        result = get_all_pretty_bodies(self.ALL_RESPONSES, **kwargs)
+        return result
+
+    def write_all_pretty_bodies(self, **kwargs):
+        if not self.ALL_RESPONSES:
+            err = "No responses found in self.ALL_RESPONSES!"
+            raise SessionError(err)
+
+        write_all_pretty_bodies(self.ALL_RESPONSES, **kwargs)
 
     def _get_full_url(self, **kwargs):
         """Utility method for constructing a full url
