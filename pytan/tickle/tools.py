@@ -1,4 +1,5 @@
-import time
+import os
+# import time
 import json
 import base64
 import logging
@@ -6,8 +7,8 @@ import datetime
 
 from pytan import PytanError, tanium_ng, integer_types, range, b, text_type
 from pytan.ext import xmltodict
-from pytan.utils import read_file
-from pytan.tickle.constants import TIME_FORMAT
+from pytan.utils import read_file, write_file
+from pytan.tickle.constants import TANIUM_TIME_FORMAT, HUMAN_TIME_FORMAT
 
 MYLOG = logging.getLogger(__name__)
 
@@ -20,60 +21,31 @@ class LimitCheckError(PytanError):
     pass
 
 
-def get_now_dt(gmt=True):
-    """pass."""
-    if gmt:
-        result = datetime.datetime.utcnow()
-    else:
-        result = datetime.datetime.now()
-    return result
-
-
-def get_now(gmt=True):
+def get_now(**kwargs):
     """Get current time in human friendly format """
-    now = get_now_dt(gmt)
-    result = human_time(now)
+    result = human_time(dt=datetime.datetime.utcnow(), **kwargs)
     return result
 
 
-def human_time(dt, dtformat='D%Y-%m-%dT%H-%M-%S', tz=True):
-    """Get time in human friendly format"""
+def human_time(dt, **kwargs):
+    """Get datetime object in human friendly format"""
+    dtformat = kwargs.get('dtformat', HUMAN_TIME_FORMAT)
+
     result = dt.strftime(dtformat)
-    if tz:
-        tz_pre = '-' if time.altzone > 0 else '+'
-        add_tz = 'Z{}{:0>2}{:0>2}'
-        add_tz = add_tz.format(tz_pre, abs(time.altzone) // 3600, abs(time.altzone // 60) % 60)
-        result = result + add_tz
     return result
 
 
-# TODO: kwargs and CONSTANT
-def secs_from_now(secs=0, gmt=True, tformat='%Y-%m-%dT%H:%M:%S'):
-    """Get time in Tanium SOAP API format `secs` from now
+def secs_from_now(**kwargs):
+    """Get time in Tanium SOAP API format `secs` from now"""
+    secs = kwargs.get('secs', 0) or 0
+    dtformat = kwargs.get('dtformat', TANIUM_TIME_FORMAT)
 
-    Parameters
-    ----------
-    secs : int
-        * seconds from now to get time str
-    tz : str, optional
-        * time zone to return string in, default is 'utc' - supplying anything else will supply
-        local time
-
-    Returns
-    -------
-    str :
-        * time `secs` from now in Tanium SOAP API format
-    """
-    if secs is None:
-        secs = 0
-
-    now = get_now_dt(gmt)
-    from_now = now + datetime.timedelta(seconds=secs)
-    result = from_now.strftime(tformat)
+    from_now = datetime.datetime.utcnow() + datetime.timedelta(seconds=secs)
+    result = from_now.strftime(dtformat)
     return result
 
 
-def str_to_dt(timestr):
+def str_to_dt(timestr, **kwargs):
     """Get a datetime.datetime object for `timestr`
 
     Parameters
@@ -86,11 +58,11 @@ def str_to_dt(timestr):
     datetime.datetime
         * the datetime object for the timestr
     """
-    result = datetime.datetime.strptime(timestr, TIME_FORMAT)
+    result = datetime.datetime.strptime(timestr, TANIUM_TIME_FORMAT)
     return result
 
 
-def dt_to_str(dt):
+def dt_to_str(dt, **kwargs):
     """Get a timestr for `dt`
 
     Parameters
@@ -103,7 +75,7 @@ def dt_to_str(dt):
     timestr: str
         * the timestr for `dt` in taniums format
     """
-    result = dt.strftime(TIME_FORMAT)
+    result = dt.strftime(TANIUM_TIME_FORMAT)
     return result
 
 
@@ -113,7 +85,6 @@ def read_json_file(f):
     return result
 
 
-# TODO kwargs and constants
 def jsonify(obj, **kwargs):
     """Turns python object `v` into a pretty printed JSON string
 
@@ -139,7 +110,7 @@ def jsonify(obj, **kwargs):
     return result
 
 
-def xml_pretty(x, pretty=True, indent='  ', **kwargs):
+def xml_pretty(x, **kwargs):
     """Uses :mod:`xmltodict` to pretty print an XML str `x`
 
     Parameters
@@ -152,13 +123,15 @@ def xml_pretty(x, pretty=True, indent='  ', **kwargs):
     str :
         * The pretty printed string of `x`
     """
+    pretty = kwargs.get('pretty', True)
+    indent = kwargs.get('indent', '  ')
 
     x_parsed = xmltodict.parse(x)
     x_unparsed = xmltodict.unparse(x_parsed, pretty=pretty, indent=indent)
     return x_unparsed
 
 
-def xml_pretty_resultxml(x):
+def xml_pretty_resultxml(x, **kwargs):
     """Uses :mod:`xmltodict` to pretty print an the ResultXML element in XML str `x`
 
     Parameters
@@ -171,14 +144,13 @@ def xml_pretty_resultxml(x):
     str :
         * The pretty printed string of ResultXML in `x`
     """
-
     x_parsed = xmltodict.parse(x)
     x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]["ResultXML"]
-    x_unparsed = xml_pretty(x_find)
+    x_unparsed = xml_pretty(x_find, **kwargs)
     return x_unparsed
 
 
-def xml_pretty_resultobj(x):
+def xml_pretty_resultobj(x, **kwargs):
     """Uses :mod:`xmltodict` to pretty print an the result-object element in XML str `x`
 
     Parameters
@@ -191,11 +163,9 @@ def xml_pretty_resultobj(x):
     str :
         * The pretty printed string of result-object in `x`
     """
-
     x_parsed = xmltodict.parse(x)
-    x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]
-    x_find = x_parsed["result-object"]
-    x_unparsed = xmltodict.unparse(x_find, pretty=True, indent='  ')
+    x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]["result-object"]
+    x_unparsed = xml_pretty(x_find, **kwargs)
     return x_unparsed
 
 
@@ -290,7 +260,7 @@ def b64encode(val):
     return result
 
 
-def shrink_obj(obj, attrs=None):
+def shrink_obj(obj, **kwargs):
     """Returns a new class of obj with only id/name/hash defined
 
     Parameters
@@ -307,8 +277,7 @@ def shrink_obj(obj, attrs=None):
     new_obj : :class:`tanium_ng.base.BaseType`
         * Shrunken object
     """
-    if attrs is None:
-        attrs = ['name', 'id', 'hash']
+    attrs = kwargs.get('attrs', ['name', 'id', 'hash'])
 
     new_obj = obj.__class__()
     [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, None) is not None]
@@ -329,9 +298,9 @@ def plugin_zip(p):
         * the columns and result_rows of the sql_response in Plugin object zipped up into a
         dictionary
     """
-    return [
-        dict(zip(p.sql_response.columns, x)) for x in p.sql_response.result_row
-    ]
+    result_row = p.sql_response.result_row
+    result = [dict(zip(p.sql_response.columns, x)) for x in result_row]
+    return result
 
 
 def create_cachefilterlist(specs):
@@ -601,3 +570,71 @@ def q_start(q):
     start_time = dt_to_str(start_time_dt)
     result = (start_time, start_time_dt)
     return result
+
+
+def json_pretty(s, **kwargs):
+    result = jsonify(json.loads(s))
+    return result
+
+
+def get_pretty_body(body, **kwargs):
+    pre = kwargs.get('pre', '')
+    body_type = 'unknown'
+    ext = 'txt'
+
+    if not body:
+        body = ''
+        body_type = 'empty'
+        ext = 'txt'
+
+    if body_type == 'unknown':
+        try:
+            body = json_pretty(body)
+            body_type = 'json'
+            ext = 'json'
+        except:
+            pass
+
+    if body_type == 'unknown':
+        try:
+            body = xml_pretty(body)
+            body_type = 'xml'
+            ext = 'xml'
+        except:
+            pass
+
+    result = {pre + 'body': body, pre + 'body_type': body_type, pre + 'ext': ext}
+    return result
+
+
+def get_pretty_bodies(response, **kwargs):
+    """Uses :func:`xml_pretty` to pretty print the request and response bodies from the
+    response object
+    """
+    result = {}
+    result.update(get_pretty_body(response.request.body, pre='request', **kwargs))
+    result.update(get_pretty_body(response.text, pre='response', **kwargs))
+    result['sent'] = human_time(response.pytan_sent)
+    result['received'] = human_time(response.pytan_received)
+    result['obj'] = response
+    return result
+
+
+def get_all_pretty_bodies(all_responses, **kwargs):
+    result = [get_pretty_bodies(x, **kwargs) for x in all_responses]
+    return result
+
+
+def write_all_pretty_bodies(all_responses, **kwargs):
+    output_dir = kwargs.get('output_dir', os.curdir)
+    bodies = get_all_pretty_bodies(all_responses, **kwargs)
+    for x in bodies:
+        request_fn = '{sent}_request_{requestbody_type}.{requestext}'.format(**x)
+        msgs = write_file(os.path.join(output_dir, request_fn), x['requestbody'])
+        for m in msgs:
+            print(m)
+
+        response_fn = '{received}_response_{responsebody_type}.{responseext}'.format(**x)
+        msgs = write_file(os.path.join(output_dir, response_fn), x['responsebody'])
+        for m in msgs:
+            print(m)
