@@ -44,7 +44,6 @@ HANDLER_DEFAULTS['logconsole_name'] = "pytan_console"
 HANDLER_DEFAULTS['logconsole_level'] = "NOTSET"
 HANDLER_DEFAULTS['logconsole_formatter'] = '%(levelname)-8s [%(name)s] %(message)s'
 HANDLER_DEFAULTS['loglevel'] = 0
-HANDLER_DEFAULTS['loggmt'] = True
 HANDLER_DEFAULTS['config_file'] = "~/.pytan_config.json"
 HANDLER_DEFAULTS.update(CRED_DEFAULTS)
 HANDLER_DEFAULTS.update(SESSION_DEFAULTS)
@@ -209,9 +208,6 @@ HANDLER_OPTS['logconsole_level'] = {
 }
 HANDLER_OPTS['logconsole_formatter'] = {
     'help': 'Python logging format to use for console logging',
-}
-HANDLER_OPTS['loggmt'] = {
-    'help': 'Use GMT for logging (true) or local time (false)',
 }
 HANDLER_OPTS['loglevel'] = {
     'help': 'Logging level to use, increase for more verbosity '
