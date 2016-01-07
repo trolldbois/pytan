@@ -3,18 +3,6 @@ from pytan.tickle import ET
 from pytan.tickle.constants import INCLUDE_EMPTY
 
 
-def to_tree(obj, **kwargs):
-    converter = ToTree(obj, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def to_xml(obj, **kwargs):
-    tree = to_tree(obj, **kwargs)
-    result = ET.tostring(tree, encoding=encoding)
-    return result
-
-
 class ToTree(object):
     """Convert a tanium_ng BaseType object into an ElementTree object.
 
@@ -85,3 +73,15 @@ class ToTree(object):
                     if val is None and not self.INCLUDE_EMPTY:
                         continue
                     self.add_simple_el(prop, val)
+
+
+def to_tree(obj, **kwargs):
+    converter = ToTree(obj, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def to_xml(obj, **kwargs):
+    tree = to_tree(obj, **kwargs)
+    result = ET.tostring(tree, encoding=encoding)
+    return result

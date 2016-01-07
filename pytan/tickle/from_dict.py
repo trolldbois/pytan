@@ -4,18 +4,6 @@ from pytan import PytanError, tanium_ng
 from pytan.tickle.constants import TAG_NAME, LIST_NAME, EXPLODE_NAME
 
 
-def from_dict(obj_dict, **kwargs):
-    converter = FromDict(obj_dict=obj_dict, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def from_json(jsonstr, **kwargs):
-    obj_dict = json.loads(jsonstr)
-    result = from_dict(obj_dict, **kwargs)
-    return result
-
-
 class DictDeserializeError(PytanError):
     pass
 
@@ -101,3 +89,15 @@ class FromDict(object):
                 else:
                     new_vals.append(val)
             setattr(self.RESULT, prop, new_vals)
+
+
+def from_dict(obj_dict, **kwargs):
+    converter = FromDict(obj_dict=obj_dict, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def from_json(jsonstr, **kwargs):
+    obj_dict = json.loads(jsonstr)
+    result = from_dict(obj_dict, **kwargs)
+    return result

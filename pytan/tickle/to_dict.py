@@ -8,36 +8,6 @@ from pytan.tickle.constants import (
 )
 
 
-def to_dict(obj, **kwargs):
-    converter = ToDict(obj, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def to_json(obj, **kwargs):
-    obj_dict = to_dict(obj, **kwargs)
-    result = jsonify(obj_dict, **kwargs)
-    return result
-
-
-def to_csv(obj, **kwargs):
-    kwargs['flat'] = kwargs.get('flat', True)  # TODO CONSTANT
-    obj_dict = to_dict(obj, **kwargs)
-
-    if LIST_NAME in obj_dict:
-        kwargs['rows'] = obj_dict[LIST_NAME]
-    else:
-        kwargs['rows'] = [obj_dict]
-
-    kwargs['skips'] = kwargs.get('skips', []) + SKIPS
-    kwargs['firsts'] = kwargs.get('firsts', []) + FIRSTS
-    kwargs['lasts'] = kwargs.get('lasts', []) + LASTS
-
-    writer = ExcelWriter()
-    result = writer.run(**kwargs)
-    return result
-
-
 class ToDict(object):
     """Convert either a single or list of tanium_ng BaseType objects into a python
     dict object
@@ -219,4 +189,34 @@ def flatten_pyobj(pyobj, prefix='', sep='_'):
         if not prefix:
             prefix = type(pyobj).__name__
         result[prefix] = pyobj
+    return result
+
+
+def to_dict(obj, **kwargs):
+    converter = ToDict(obj, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def to_json(obj, **kwargs):
+    obj_dict = to_dict(obj, **kwargs)
+    result = jsonify(obj_dict, **kwargs)
+    return result
+
+
+def to_csv(obj, **kwargs):
+    kwargs['flat'] = kwargs.get('flat', True)  # TODO CONSTANT
+    obj_dict = to_dict(obj, **kwargs)
+
+    if LIST_NAME in obj_dict:
+        kwargs['rows'] = obj_dict[LIST_NAME]
+    else:
+        kwargs['rows'] = [obj_dict]
+
+    kwargs['skips'] = kwargs.get('skips', []) + SKIPS
+    kwargs['firsts'] = kwargs.get('firsts', []) + FIRSTS
+    kwargs['lasts'] = kwargs.get('lasts', []) + LASTS
+
+    writer = ExcelWriter()
+    result = writer.run(**kwargs)
     return result

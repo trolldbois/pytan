@@ -7,25 +7,6 @@ CR = '\r'
 CRLF = CR + LF
 
 
-def to_dict_report(obj, **kwargs):
-    converter = ToDictReport(obj, **kwargs)
-    result = converter.RESULT
-    return result
-
-
-def to_json_report(obj, **kwargs):
-    rows = to_dict_report(obj, **kwargs)
-    result = jsonify(rows, **kwargs)
-    return result
-
-
-def to_csv_report(obj, **kwargs):
-    rows = to_dict_report(obj, **kwargs)
-    writer = ExcelWriter()
-    result = writer.run(rows, **kwargs)
-    return result
-
-
 class ToDictReport(object):
     '''
     normal rows::
@@ -187,3 +168,22 @@ class ToDictReport(object):
         result = [[self._COL_ROW.format(idx + 1), self.join(r)] for idx, r in enumerate(c)]
         return result
     '''
+
+
+def to_dict_report(obj, **kwargs):
+    converter = ToDictReport(obj, **kwargs)
+    result = converter.RESULT
+    return result
+
+
+def to_json_report(obj, **kwargs):
+    rows = to_dict_report(obj, **kwargs)
+    result = jsonify(rows, **kwargs)
+    return result
+
+
+def to_csv_report(obj, **kwargs):
+    rows = to_dict_report(obj, **kwargs)
+    writer = ExcelWriter()
+    result = writer.run(rows, **kwargs)
+    return result

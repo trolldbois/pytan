@@ -1,10 +1,8 @@
 from pytan import PytanError, tanium_ng
 
 
-def from_tree(objtree, objclass, **kwargs):
-    converter = FromTree(objtree, objclass, **kwargs)
-    result = converter.RESULT
-    return result
+class DeserializeError(PytanError):
+    pass
 
 
 class FromTree(object):
@@ -84,5 +82,7 @@ class FromTree(object):
             setattr(self.RESULT, prop, prop_list)
 
 
-class DeserializeError(PytanError):
-    pass
+def from_tree(objtree, objclass, **kwargs):
+    converter = FromTree(objtree, objclass, **kwargs)
+    result = converter.RESULT
+    return result
