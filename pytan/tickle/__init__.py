@@ -77,43 +77,43 @@ __all__ = [
 
 
 def monkey_to_xml(self, **kwargs):
-    """Deserialize self ``obj`` into an XML body, relies on tickle"""
+    """Serialize self into an XML body, relies on tickle"""
     result = to_xml(self, **kwargs)
     return result
 
 
 def monkey_to_dict(self, **kwargs):
-    """Deserialize self ``obj`` into a dict, relies on tickle"""
+    """Serialize self into a dict, relies on tickle"""
     result = to_dict(self, **kwargs)
     return result
 
 
 def monkey_to_json(self, **kwargs):
-    """Deserialize self ``obj`` into a JSON string, relies on tickle"""
+    """Serialize self into a JSON string, relies on tickle"""
     result = to_json(self, **kwargs)
     return result
 
 
 def monkey_to_csv(self, **kwargs):
-    """Deserialize self ``obj`` into a CSV string, relies on tickle"""
+    """Serialize self into a CSV string, relies on tickle"""
     result = to_csv(self, **kwargs)
     return result
 
 
 def monkey_to_csv_report(self, **kwargs):
-    """Deserialize self ``obj`` into a CSV string, relies on tickle"""
+    """Serialize self into a CSV string, relies on tickle"""
     result = to_csv_report(self, **kwargs)
     return result
 
 
 def monkey_to_json_report(self, **kwargs):
-    """Deserialize self ``obj`` into a JSON string, relies on tickle"""
+    """Serialize self into a JSON string, relies on tickle"""
     result = to_json_report(self, **kwargs)
     return result
 
 
 def monkey_to_dict_report(self, **kwargs):
-    """Deserialize self ``obj`` into a list of dicts, relies on tickle"""
+    """Serialize self into a list of dicts, relies on tickle"""
     result = to_dict_report(self, **kwargs)
     return result
 
