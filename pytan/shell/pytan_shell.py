@@ -6,19 +6,43 @@ from pytan.tickle.tools import *
 session = handler.SESSION
 
 
-def dir_print(m):
-    return ', '.join([x for x in sorted(dir(m)) if not x.startswith('_')])
-
-
 def shell_help():
-    print("\\n ** 'handler' == pytan.handler.Handler(): {}".format(dir_print(handler)))
-    print("\\n ** 'session' == handler.SESSION(): {}".format(dir_print(session)))
-    print("\\n ** pytan.utils.*: {}".format(dir_print(pytan.utils)))
-    print("\\n ** pytan.tickle.tools.*: {}".format(dir_print(pytan.tickle.tools)))
+    def dirp(m):
+        return ', '.join([x for x in sorted(dir(m)) if not x.startswith('_')])
+
+    def linep(d, o):
+        print(" ** {}: {}".format(d, dirp(o)))
+
+    print('''
+ ************************************************
+ PyTan Shell Help:
+
+## Classes and functions available ##
+''')
+    linep("'pytan' package", pytan)
+    print("")
+    linep("'pytan.utils' module", pytan.utils)
+    print("")
+    linep("'pytan.tickle.tools' module", pytan.tickle.tools)
+    print("")
+    print('## Objects available ##')
+    print("")
+    print(" ** 'handler' object is the pytan.handler.Handler class instantiated with the parameters passed in via the command line.")
+    print(" ** 'handler' object: {}".format(handler))
+    linep("'handler' object methods", handler)
+    print("")
+    print(" ** 'session' object is the pytan.session.Session class instantiated as handler.SESSION")
+    print(" ** 'session' object: {}".format(session))
+    linep("'session' object methods", session)
+    print('''
+ ** Type 'shell_help()' to see this again
+
+************************************************
+ ''')
 
 
 shell_help()
-"""
+"""  # noqa
 
 
 class Worker(base.Base):
