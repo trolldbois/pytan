@@ -2,7 +2,7 @@ import os
 import re
 import sys
 import glob
-import time
+# import time
 import pprint
 import string
 import shutil
@@ -271,6 +271,7 @@ def remove_log_handler(logger, name, **kwargs):
     return removed
 
 
+'''TODO
 def set_log_tz(**kwargs):
     loggmt = kwargs.get('loggmt', True)
     msgs = []
@@ -281,6 +282,7 @@ def set_log_tz(**kwargs):
         logging.Formatter.converter = time.localtime
         msgs.append("Using local time zone for logging")
     return msgs
+'''
 
 
 def coerce_list(o):
