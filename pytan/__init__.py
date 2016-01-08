@@ -74,14 +74,14 @@ from pytan import pollers
 from pytan import tanium_ng
 from pytan import tickle
 from pytan import session
-from pytan.store import Store
-from pytan.excelwriter import ExcelWriter
+from pytan import handler
+from pytan import store
+from pytan import handler_args
+from pytan import handler_logs
 from pytan.handler import Handler
-
 
 __all__ = [
     'PytanError',
-    'Store',
     'version',
     'utils',
     'parsers',
@@ -89,6 +89,9 @@ __all__ = [
     'tanium_ng',
     'tickle',
     'session',
+    'handler',
+    'store',
+    'handler_args',
+    'handler_logs',
     'Handler',
-    'ExcelWriter',
 ]
