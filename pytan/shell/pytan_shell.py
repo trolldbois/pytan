@@ -14,8 +14,8 @@ def shell_help():
         print(" ** {}: {}".format(d, dirp(o)))
 
     print('''
- ************************************************
- PyTan Shell Help:
+************************************************
+PyTan Shell Help
 
 ## Classes and functions available ##
 ''')
