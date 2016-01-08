@@ -1,35 +1,23 @@
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 
-import os
-import sys  # noqa
-import json
 import logging
 import datetime
 
-from pytan import PytanError, string_types, tanium_ng
-from pytan.store import Store
+from pytan import PytanError, tanium_ng
+from pytan.store import HelpStore, ResultStore
 from pytan.utils import coerce_list
 from pytan.session import Session
 from pytan.pollers import QuestionPoller, SSEPoller
 from pytan.parsers import GetObject
 from pytan.version import __version__
 from pytan.tickle import from_sse_xml
-
-from pytan.tickle.tools import (
-    obfuscate, shrink_obj, check_limits, create_question, create_cachefilterlist
-)
-
-from pytan.utils import (
-    get_all_logs, set_all_logs, create_log_handler, add_log_handler, remove_log_handler
-)
-
-from pytan.constants import (
-    PYTAN_KEY, HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LEVEL, DEBUG_BUMP
-)
+from pytan.handler_args import create_argstore
+from pytan.handler_logs import setup_log
+from pytan.tickle.tools import shrink_obj, check_limits, create_question, create_cachefilterlist
 
 MYLOG = logging.getLogger(__name__)
 
-HELPS = Store()
+HELPS = HelpStore()
 HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question"
 HELPS.sq_ri = (
     "Use GetResultInfo on a saved question in order to issue a new question, "
@@ -149,18 +137,25 @@ class Handler(object):
     """
 
     MYLOG = logging.getLogger(__name__)
-
     SESSION = None
+    HANDLER_ARGS = None
 
     def __init__(self, **kwargs):
         super(Handler, self).__init__()
         self.MYLOG = logging.getLogger(__name__)
-        add_override_log(**kwargs)
-        argstore = parse_args(**kwargs)
-        self.__ARGSTORE = argstore
-        self.HANDLER_ARGS = argstore.handler_args
+
+        parsed_handler_args = kwargs.get('parsed_handler_args', None)
+        if parsed_handler_args:
+            self.HANDLER_ARGS = parsed_handler_args
+            m = "Using handler arguments from 'parsed_handler_args'"
+        else:
+            argstore = create_argstore(**kwargs)
+            self.HANDLER_ARGS = argstore.handler_args
+            m = "Using handler arguments from 'create_argstore()'"
 
         setup_log(**self.HANDLER_ARGS)
+        self.MYLOG.debug(m)
+
         # establish our Session to the Tanium server
         self.SESSION = Session(**self.HANDLER_ARGS)
 
@@ -212,7 +207,7 @@ class Handler(object):
         m = m.format(kwargs['obj'])
         self.MYLOG.info(m)
 
-        result = Store()
+        result = ResultStore()
         result.question_object = kwargs['obj']
         result.poller_object = QuestionPoller(handler=self, **kwargs)
         result.question_results = None
@@ -271,7 +266,7 @@ class Handler(object):
             raise PytanError(err)
 
         # creatStore() object for storing the results
-        result = Store()
+        result = ResultStore()
         result.poller_object = None
         result.poller_success = None
         result.question_results = None
@@ -452,7 +447,7 @@ class Handler(object):
         m = m.format(kwargs['obj'])
         self.MYLOG.info(m)
 
-        result = Store()
+        result = ResultStore()
         result.parse_results = parse_job_results
         result.question_object = kwargs['obj']
         result.question_results = None
@@ -1254,373 +1249,3 @@ class Handler(object):
                 err = "No rows available to perform a server side export with, result info: {}"
                 err = err.format(ri)
                 raise ServerSideExportError(err)
-
-
-def find_arg_source(arg, argstore):
-    args_order = ['class_args', 'osenv_args', 'puc_args']
-    src = 'HANDLER_DEFAULTS'
-    for args_src in args_order:
-        def_val = HANDLER_DEFAULTS[arg]
-        args_src_dict = argstore[args_src]
-        args_src_val = args_src_dict.get(arg, None)
-
-        # checks
-        in_args_src = arg in args_src_dict
-        not_def_val = args_src_val != def_val
-        not_empty = args_src_val not in ['', None]
-
-        if all([in_args_src, not_def_val, not_empty]):
-            src = args_src
-            break
-    return src
-
-
-def get_osenv_args():
-    osenv_args = {
-        k.lower().replace('pytan_', ''): v
-        for k, v in os.environ.items()
-        if k.lower().startswith('pytan_')
-    }
-    return osenv_args
-
-
-def parse_args(**kwargs):
-    """pass."""
-    osenv_args = get_osenv_args()
-    puc_args = read_config_file(**kwargs)
-    argstore = Store()
-    argstore.HANDLER_DEFAULTS = HANDLER_DEFAULTS
-    argstore.orig_class_args = kwargs
-    argstore.orig_osenv_args = osenv_args
-    argstore.orig_puc_args = puc_args
-    argstore.class_args = get_src_args(**kwargs)
-    argstore.osenv_args = get_src_args(**osenv_args)
-    argstore.puc_args = get_src_args(**puc_args)
-    argstore.handler_args_source = {}
-    argstore.handler_args = {}
-
-    for arg, def_val in HANDLER_DEFAULTS.items():
-        arg_src = find_arg_source(arg, argstore)
-        val = argstore[arg_src][arg]
-
-        val_is_str = isinstance(val, string_types)
-        def_val_is_str = isinstance(def_val, string_types)
-
-        if val_is_str and not def_val_is_str:
-            val = handle_string_arg(arg, val)
-
-        val = enforce_arg_type(arg, val, arg_src)
-
-        argstore.handler_args[arg] = val
-        argstore.handler_args_source[arg] = arg_src
-
-        pval = val
-        if arg == 'password':
-            val = obfuscate(key=PYTAN_KEY, string=val)
-            pval = '{}'.format('*' * len(val))
-
-        m = "parse_args(): arg = {!r}, val = {!r}, type = {!r}, src = {!r}"
-        m = m.format(arg, pval, type(val).__name__, arg_src)
-        MYLOG.debug(m)
-
-    return argstore
-
-
-def handle_string_arg(arg, value):
-    """handle string types that actually should be other types."""
-    result = value
-    def_argtype = type(HANDLER_DEFAULTS[arg])
-    if def_argtype == bool:
-        valid = ["True", "False"]  # TODO bring in other trues/falses
-        if value.capitalize() in valid:
-            result = eval(value.capitalize())
-        else:
-            err = "Argument {!r} must be one of {!r}, supplied string containing {!r}"
-            err = err.format(arg, ','.join(valid), value)
-            raise PytanError(err)
-    if def_argtype == dict:
-        try:
-            result = dict(eval(value))
-        except Exception as e:
-            err = "Tried to evaluate a dictionary from string {}, exception: {}"
-            err = err.format(value, e)
-            raise PytanError(err)
-    return result
-
-
-def enforce_arg_type(arg, val, source):
-    pa_type = type(val).__name__
-    def_argtype = type(HANDLER_DEFAULTS[arg])
-    m = "Validated argument {!r} supplied by {!r} is of type {!r}"
-    err = "Argument {!r} value {!r} must be type {!r}, supplied type {!r} via {!r}: {}"
-    try:
-        result = def_argtype(val)
-    except Exception as e:
-        err = err.format(arg, val, def_argtype.__name__, pa_type, source, e)
-        raise PytanError(err)
-    MYLOG.debug(m.format(arg, source, def_argtype.__name__))
-    return result
-
-
-def get_src_args(**kwargs):
-    """pass."""
-    src_args = {k: kwargs[k] for k in HANDLER_DEFAULTS if k in kwargs}
-    return src_args
-
-
-def add_override_log(**kwargs):
-    myargs = {}
-    myargs.update(HANDLER_DEFAULTS)
-    myargs.update(kwargs)
-
-    loglevel = int(myargs.get('loglevel', 0))
-    all_loggers = get_all_logs()
-
-    if loglevel >= OVERRIDE_LEVEL:
-        MYLOG.setLevel(logging.DEBUG)
-        handler = create_log_handler(name='override_console')
-        [v.addHandler(handler) for k, v in all_loggers.items()]
-        set_all_logs(propagate=False)
-        MYLOG.debug("added override log and set all python loggers to debug")
-
-
-def del_override_log(**kwargs):
-    myargs = {}
-    myargs.update(HANDLER_DEFAULTS)
-    myargs.update(kwargs)
-
-    loglevel = int(myargs.get('loglevel', 0))
-    all_loggers = get_all_logs()
-
-    if loglevel >= OVERRIDE_LEVEL:
-        MYLOG.debug("removed override log")
-        [remove_log_handler(v, name='override_console') for k, v in all_loggers.items()]
-
-
-def setup_log(**kwargs):
-    """Setup logging for PyTan."""
-    check_logging_setup()
-    del_override_log(**kwargs)
-
-    myargs = {}
-    myargs.update(HANDLER_DEFAULTS)
-    myargs.update(kwargs)
-
-    loglevel = int(myargs.get('loglevel', 0))
-
-    msgs = []
-    msgs += config_log_handler(argpre='logconsole', **myargs)
-    msgs += config_log_handler(argpre='logfile', **myargs)
-
-    if loglevel >= OVERRIDE_LEVEL:
-        msgs += set_all_logs(propagate=False)
-        m = 'loglevel is over {}, setting all loggers to DEBUG'
-    else:
-        msgs += set_log_levels(**kwargs)
-        m = 'loglevel is not over {}, set all loggers according to constants'
-
-    m = m.format(OVERRIDE_LEVEL)
-    msgs.append(m)
-
-    for i in msgs:
-        MYLOG.debug(i)
-    return msgs
-
-
-def check_logging_setup():
-    all_loggers = get_all_logs()
-
-    errs = []
-    for pytanlog in sorted(LOGMAP):
-        if pytanlog not in all_loggers:
-            err = "pytan logger {!r} does not exist in logging system!!"
-            err = err.format(pytanlog)
-            errs.append(err)
-
-    for name, logger in sorted(all_loggers.items()):
-        if name.startswith('pytan') and name not in LOGMAP:
-            err = "pytan logger {!r} is not defined in constants!"
-            err = err.format(name)
-            errs.append(err)
-
-    if errs:
-        err = '\n'.join(errs)
-        MYLOG.critical(err)
-        raise PytanError(err)
-
-
-def config_log_handler(argpre, **kwargs):
-    args = ['enable', 'formatter', 'output', 'handler', 'level', 'name']
-
-    myargs = {}
-    myargs.update(kwargs)
-    myargs = {k: kwargs.get(argpre + '_' + k) for k in args}
-
-    msgs = []
-
-    all_loggers = get_all_logs()
-
-    modded = []
-    not_modded = []
-
-    handler = create_log_handler(**myargs)
-
-    for l in sorted(LOGMAP):
-        if myargs['enable']:
-            mod = add_log_handler(all_loggers[l], handler)
-        else:
-            mod = remove_log_handler(all_loggers[l], myargs['name'])
-
-        if mod:
-            modded.append(l)
-        else:
-            not_modded.append(l)
-
-    myargs['action'] = 'added' if myargs['enable'] else 'removed'
-    myargs['modded'] = ', '.join(modded)
-    myargs['not_modded'] = ', '.join(modded)
-
-    m = "{action} handler: '{name}' for loggers {modded!r}, but not for loggers {not_modded!r}"
-    m = m.format(**myargs)
-    msgs.append(m)
-    return msgs
-
-
-def set_log_levels(loglevel=0, **kwargs):
-    """Enable loggers based on loglevel and :data:`LOGMAP`.
-
-    Parameters
-    ----------
-    loglevel : int, optional
-        * loglevel to match against each item in :data:`LOGMAP` -
-          each item that is greater than or equal to loglevel will have the
-          according loggers set to their respective levels identified there-in.
-    """
-    msgs = []
-    loggers = get_all_logs()
-    loggers_done = []
-    for pytanlog, pytanlvl in sorted(LOGMAP.items()):
-        if pytanlog in loggers_done:
-            err = "pytan logger {} already processed!!"
-            err = err.format(pytanlog)
-            raise PytanError(err)
-
-        oldlvl = loggers[pytanlog].level
-        dbglvl = pytanlvl + DEBUG_BUMP
-        if pytanlvl == 0 or loglevel >= dbglvl:
-            m = "{} set from {} to {} (DEBUG)"
-            newlvl = logging.DEBUG
-        elif loglevel >= pytanlvl:
-            m = "{} set from {} to {} (INFO)"
-            newlvl = logging.INFO
-        else:
-            m = "{} set from {} to {} ({})"
-            newlvl = getattr(logging, DEFAULT_LEVEL)
-
-        loggers[pytanlog].setLevel(newlvl)
-        loggers[pytanlog].propagate = False
-        loggers_done.append(pytanlog)
-        m = m.format(pytanlog, oldlvl, newlvl, DEFAULT_LEVEL)
-        msgs.append(m)
-
-    loggers_not_done = [x for x in loggers if x not in loggers_done]
-    if loggers_not_done:
-        m = 'loggers not set: {}'
-        m = m.format(', '.join(loggers_not_done))
-        msgs.append(m)
-    return msgs
-
-
-def print_levels(**kwargs):
-    """Utility to print info about each logger."""
-    loggers = get_all_logs()
-    loggers_done = []
-
-    m = "{} logger {!r} {} and above messages shown at pytan loglevel {} and above"
-    t = "pytan"
-    for pytanlog, pytanlvl in sorted(LOGMAP.items()):
-        loggers_done.append(pytanlog)
-        dbglvl = pytanlvl + DEBUG_BUMP
-        if pytanlvl == 0:
-            print(m.format(t, pytanlog, 'DEBUG', 0))
-        else:
-            print(m.format(t, pytanlog, DEFAULT_LEVEL, 0))
-            print(m.format(t, pytanlog, 'INFO', pytanlvl))
-            print(m.format(t, pytanlog, 'DEBUG', dbglvl))
-
-    loggers_not_done = [x for x in loggers if x not in loggers_done]
-    t = "NON-pytan"
-    for logger in loggers_not_done:
-        print(m.format(t, logger, 'DEBUG', OVERRIDE_LEVEL))
-
-
-def write_config_file(puc_dict, **kwargs):
-    """Write a PyTan User Config with the current class variables for use with
-    pytan_user_config in instantiating Handler()
-
-    Parameters
-    ----------
-    config_file : str, optional
-        * default: self.pytan_user_config
-        * JSON file to wite with current class variables
-
-    Returns
-    -------
-    result : str
-        * filename of PyTan User Config that was written to
-    """
-    osenv_args = get_osenv_args()
-    puc_kwarg = kwargs.get('config_file', '')
-    puc_env = osenv_args.get('config_file', '')
-    puc_def = HANDLER_DEFAULTS['config_file']
-
-    puc = puc_kwarg or puc_env or puc_def
-    puc = os.path.expanduser(puc)
-
-    # obfuscate the password
-    if puc_dict.get('password', ''):
-        puc_dict['password'] = obfuscate(key=PYTAN_KEY, string=puc_dict['password'])
-
-    try:
-        with open(puc, 'w+') as fh:
-            json.dump(puc_dict, fh, skipkeys=True, indent=2)
-    except Exception as e:
-        err = "Failed to write PyTan User config: '{}', exception: {}"
-        err = err.format(puc, e)
-        raise PytanError(err)
-    else:
-        m = "PyTan User config file successfully written: {} "
-        m = m.format(puc)
-        MYLOG.info(m)
-    return puc
-
-
-def read_config_file(**kwargs):
-    """Read a PyTan User Config and update the current class variables"""
-    osenv_args = get_osenv_args()
-    puc_kwarg = kwargs.get('config_file', '')
-    puc_env = osenv_args.get('config_file', '')
-    puc_def = HANDLER_DEFAULTS['config_file']
-
-    puc = puc_kwarg or puc_env or puc_def
-    puc = os.path.expanduser(puc)
-    puc_dict = {}
-
-    if os.path.isfile(puc):
-        try:
-            with open(puc) as fh:
-                puc_dict = json.load(fh)
-        except Exception as e:
-            err = "PyTan User config file at: {} is invalid, exception: {}"
-            err = err.format(puc, e)
-            MYLOG.exception(err)
-            raise PytanError(err)
-        else:
-            m = "PyTan User config file successfully loaded: {} "
-            m = m.format(puc)
-            MYLOG.debug(m)
-    else:
-        m = "Unable to find PyTan User config file at: {}".format
-        MYLOG.debug(m(puc))
-        return puc_dict
-    return puc_dict
