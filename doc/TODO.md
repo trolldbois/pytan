@@ -60,6 +60,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## HANDLER/MAIN
 * re-do logging yet again, add support for {0: -1, 11: 20, 12: 30, 14: 50} (pytan level: logging level)
+* also make log printer better (add a generic one that prints log levels in human friendly format, need map)
 * create_parent_group_obj broken, fix it and add debug logging!
 * add logger to tanium_ng and tickle_ng
 * increase loglevel range to 50

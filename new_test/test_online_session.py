@@ -14,15 +14,29 @@ from pytan import threaded_http
 from pytan import session
 from pytan import tanium_ng
 
-pytan.handler.add_override_log(loglevel=50)
 
-# OPTS:
-RUN_SLOW = True
-HOST = '10.0.1.240'
-USERNAME = 'Administrator'
-PASSWORD = 'Tanium2015!'
-PORT = 443
-HTTPS_PROXY = "http://localhost:8080"
+HOST = pytest.config.handler_args.host
+USERNAME = pytest.config.handler_args.username
+PASSWORD = pytest.config.handler_args.password
+DOMAIN = pytest.config.handler_args.domain
+SECONDARY = pytest.config.handler_args.secondary
+PORT = pytest.config.handler_args.port
+HTTPS_PROXY = pytest.config.handler_args.https_proxy
+
+pytestmark = pytest.mark.skipif(
+    pytest.config.skip_online,
+    reason="need --username and --password and --host option to run"
+)
+
+slow_test = pytest.mark.skipif(
+    not pytest.config.getoption("--runslow"),
+    reason="need --runslow option to run"
+)
+
+proxy_test = pytest.mark.skipif(
+    not HTTPS_PROXY,
+    reason="need --https_proxy to run"
+)
 
 # INTERNALS
 BAD = 'INVALID_CREDENTIALS'
@@ -31,9 +45,15 @@ HTTPD_HOST = 'localhost'
 HTTPD_PORT = 4433
 HASH_TEST = '3409330187'
 STRING_TEST = 'Computer Name'
-
-VALID_ARGS = {"username": USERNAME, "password": PASSWORD, "host": HOST, "port": PORT}
 HTTPD_ARGS = {'host': HTTPD_HOST, 'port': HTTPD_PORT, 'verbosity': 2}
+
+VALID_ARGS = {
+    "username": USERNAME,
+    "password": PASSWORD,
+    "host": HOST,
+    "port": PORT,
+}
+
 INVALID_ARGS = [
     {
         "username": USERNAME,
@@ -71,9 +91,6 @@ INVALID_ARGS = [
     },
 ]
 
-
-slow_test = pytest.mark.skipif(not RUN_SLOW, reason="slow tests disabled")
-proxy_test = pytest.mark.skipif(not HTTPS_PROXY, reason="no proxy defined")
 invalid_params = pytest.mark.parametrize("invalid_credentials", INVALID_ARGS)
 
 
