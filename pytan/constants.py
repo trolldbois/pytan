@@ -60,11 +60,15 @@ CRIT = 'CRITICAL'  # python logging int: 50
 LOGGER_LEVELS = [OFF, DEBUG, INFO, WARN, ERR, CRIT]
 
 LOGMAP = {}
-LOGMAP['pytan'] = 0
+LOGMAP['pytan'] = 1
 LOGMAP['pytan.handler'] = 1
-LOGMAP['pytan.tanium_ng'] = 0
-LOGMAP['pytan.tickle'] = 0
-LOGMAP['pytan.tickle.tools'] = 0
+LOGMAP['pytan.handler_args'] = 1
+LOGMAP['pytan.handler_logs'] = 1
+LOGMAP['pytan.store'] = 1
+LOGMAP['pytan.store.credstore'] = 1
+LOGMAP['pytan.tanium_ng'] = 1
+LOGMAP['pytan.tickle'] = 1
+LOGMAP['pytan.tickle.tools'] = 1
 LOGMAP['pytan.pollers.question'] = 3
 LOGMAP['pytan.pollers.sse'] = 4
 LOGMAP['pytan.pollers.question.progress'] = 5
@@ -106,6 +110,8 @@ XMLNS = {
     'typens': 'urn:TaniumSOAP',
 }
 """The namespace mappings for use in SOAP_REQUEST_BODY by Session"""
+
+ARGS_ORDER = ['cmdline_args', 'osenvironment_args', 'configfile_args', 'default_args']
 
 SOAP_REQUEST_BODY = (
     '''<?xml version="1.0" encoding="utf-8"?>
