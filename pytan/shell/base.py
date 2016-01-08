@@ -1,12 +1,11 @@
 import os
 import sys
-import json
 import pprint
-import getpass
 import argparse
 
-from pytan import PytanError, input
+from pytan import PytanError
 from pytan.handler import Handler
+from pytan.handler_args import prompt_for_args
 from pytan.version import __version__
 from pytan.shellparser import ShellParser, add_arg_group
 from pytan.historyconsole import HistoryConsole
@@ -312,57 +311,6 @@ class Base(object):
         self.grp_choice_include_type()
         self.grp_choice_minimal()
 
-    def _input_prompts(self):
-        """Utility function to prompt for username, `, and host if empty"""
-        puc_kwarg = self.args.__dict__.get('config_file', '')
-        puc = puc_kwarg or HANDLER_DEFAULTS['config_file']
-        puc = os.path.expanduser(puc)
-
-        puc_dict = {}
-
-        if os.path.isfile(puc):
-            try:
-                with open(puc) as fh:
-                    puc_dict = json.load(fh)
-            except Exception as e:
-                m = "PyTan User Config file exists at '{}' but is not valid, Exception: {}".format
-                print(m(puc, e))
-
-        username_arg = self.args.__dict__.get('username', '')
-        username_env = os.environ.get('username', '')
-        username_puc = puc_dict.get('username', '')
-        username = username_arg or username_env or username_puc
-
-        session_id_arg = self.args.__dict__.get('session_id', '')
-        session_id_env = os.environ.get('session_id', '')
-        session_id_puc = puc_dict.get('session_id', '')
-        session_id = session_id_arg or session_id_env or session_id_puc
-
-        password_arg = self.args.__dict__.get('password', '')
-        password_env = os.environ.get('password', '')
-        password_puc = puc_dict.get('password', '')
-        password = password_arg or password_env or password_puc
-
-        host_arg = self.args.__dict__.get('host', '')
-        host_env = os.environ.get('host', '')
-        host_puc = puc_dict.get('host', '')
-        host = host_arg or host_env or host_puc
-
-        if not session_id:
-            if not username:
-                username = input('Tanium Username: ')
-                self.args.username = username.strip()
-
-            if not password:
-                password = getpass.getpass('Tanium Password: ')
-                self.args.password = password.strip()
-
-        if not host:
-            host = input('Tanium Host: ')
-            self.args.host = host.strip()
-
-        return self.args
-
     def _get_grp_opts(self, grps):
         action_grps = [a for a in self.parser._action_groups if a.title in grps]
         opts = list(set([a.dest for b in action_grps for a in b._group_actions]))
@@ -423,15 +371,15 @@ class Base(object):
         return self.args
 
     def get_handler(self):
-        self._input_prompts()
         grps = [
             'PyTan Authentication Options',
             'PyTan Connection Options',
             'PyTan Handler Options',
             'PyTan Session Options',
         ]
-        kwargs = self.get_parser_args(grps)
-        self.handler = self.Handler(**kwargs)
+        argparse_args = self.get_parser_args(grps)
+        parsed_handler_args = prompt_for_args(**argparse_args)
+        self.handler = self.Handler(parsed_handler_args=parsed_handler_args)
         return self.handler
 
     def get_result(self):
