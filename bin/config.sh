@@ -9,11 +9,13 @@ fi
 
 spew(){ test -n "${SHELL_DEBUG}" && echo "$@";}
 
-my_path=$0
-my_script=`basename ${my_path}`
-my_dirname=`dirname ${my_path}`
-my_dir=`cd ${my_dirname} ; pwd`
-parent_dir=`cd ${my_dir}/.. ; pwd`
+if [ -z "${my_dir}" ]; then
+    echo "Need 'my_dir' defined to know where config.sh lives"
+    exit 99
+fi
+
+parent_dirname=`dirname ${my_dir}`
+parent_dir=`cd ${parent_dirname} ; pwd`
 pytan_pkg_dir=`cd ${parent_dir}/pytan ; pwd`
 pytan_ext_dir=`cd ${pytan_pkg_dir}/ext ; pwd`
 
@@ -32,7 +34,5 @@ PYTHONPATH="${parent_dir}:${PYTHONPATH}"
 PYTHONDONTWRITEBYTECODE="True"
 PYTHON_VERSION=`"${PYTHON_BINARY}" --version 2>&1`
 spew "Using Python binary '${PYTHON_BINARY}' version: ${PYTHON_VERSION}"
-
-WORKER_PATH="${my_dir}/worker.py"
 
 export PYTHONPATH PYTHONDONTWRITEBYTECODE PYTHON_VERSION

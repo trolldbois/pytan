@@ -11,6 +11,8 @@ PYTHONINSPECT="True"
 
 export PYTHONINSPECT
 
+WORKER_PATH="${my_dir}/worker.py"
+
 spew "Executing: \"${PYTHON_BINARY}\" ${PYTHON_OPTIONS} \"${WORKER_PATH}\" \"shell:${my_script}\" ${PASSED_ARGS}"
 "${PYTHON_BINARY}" ${PYTHON_OPTIONS} "${WORKER_PATH}" "shell:${my_script}" "${@}"
 EXITCODE=$?
