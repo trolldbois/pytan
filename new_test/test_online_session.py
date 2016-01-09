@@ -50,6 +50,8 @@ HTTPD_ARGS = {'host': HTTPD_HOST, 'port': HTTPD_PORT, 'verbosity': 2}
 VALID_ARGS = {
     "username": USERNAME,
     "password": PASSWORD,
+    "domain": DOMAIN,
+    "secondary": SECONDARY,
     "host": HOST,
     "port": PORT,
 }
@@ -58,6 +60,8 @@ INVALID_ARGS = [
     {
         "username": USERNAME,
         "password": BAD,
+        "domain": DOMAIN,
+        "secondary": SECONDARY,
         "host": HOST,
         "port": PORT,
         "err": session.AuthorizationError,
@@ -65,6 +69,8 @@ INVALID_ARGS = [
     {
         "username": BAD,
         "password": PASSWORD,
+        "domain": DOMAIN,
+        "secondary": SECONDARY,
         "host": HOST,
         "port": PORT,
         "err": session.AuthorizationError,
@@ -78,6 +84,8 @@ INVALID_ARGS = [
     {
         "username": USERNAME,
         "password": PASSWORD,
+        "domain": DOMAIN,
+        "secondary": SECONDARY,
         "host": HTTPD_HOST,
         "port": HTTPD_PORT,
         "err": session.HttpError,
@@ -85,6 +93,8 @@ INVALID_ARGS = [
     {
         "username": USERNAME,
         "password": PASSWORD,
+        "domain": DOMAIN,
+        "secondary": SECONDARY,
         "host": HOST,
         "port": BAD_PORT,
         "err": session.NetworkError,
