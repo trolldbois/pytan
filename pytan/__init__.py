@@ -76,6 +76,7 @@ from pytan import tickle
 from pytan import session
 from pytan import handler
 from pytan import store
+from pytan import shellparser
 from pytan import handler_args
 from pytan import handler_logs
 from pytan.handler import Handler
@@ -93,5 +94,6 @@ __all__ = [
     'store',
     'handler_args',
     'handler_logs',
+    'shellparser',
     'Handler',
 ]
