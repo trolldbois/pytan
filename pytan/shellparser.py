@@ -4,8 +4,8 @@ import argparse
 from argparse import ArgumentDefaultsHelpFormatter as ArgFormatter
 from argparse import RawDescriptionHelpFormatter as RawFormatter
 
-TRUE_STR = ("yes", "true", "t", "1")
-FAIL_STR = ("no", "false", "f", "0")
+TRUE_STR = ("yes", "y", "true", "t", "1")
+FAIL_STR = ("no", "n", "false", "f", "0")
 
 
 class CustomArgFormat(ArgFormatter, RawFormatter):
