@@ -8,13 +8,16 @@ import logging
 import datetime
 
 from pytan import PytanError, tanium_ng
+from pytan.tanium_ng import BaseType
 from pytan.ext import requests
 from pytan.store import HelpStore, CredStore
 from pytan.version import VERSION_INFO
 from pytan.xml_clean import xml_cleaner
-from pytan.tickle import to_xml, from_xml
-from pytan.tickle.tools import get_pretty_bodies, get_all_pretty_bodies, write_all_pretty_bodies
+from pytan.tickle.to__tree import to_xml
+from pytan.tickle.from__xml import from_xml
+from pytan.tickle.tools import get_bodies, get_all_bodies, write_all_bodies
 
+from pytan.tickle.constants import FALLBACK_HASH_MAP
 from pytan.constants import SOAP_REQUEST_BODY, SOAP_CONTENT_TYPE, XMLNS, SESSION_DEFAULTS
 
 MYLOG = logging.getLogger(__name__)
@@ -28,6 +31,13 @@ HELPS.servinfo = "Get the server version via /info.json"
 HELPS.auth = "Authenticate to the SOAP API via /auth"
 HELPS.logout = "Logout from the SOAP API via /auth"
 HELPS.getuser = "Get user object from the User ID stored in the Session ID"
+
+HASH_CACHE = {}
+for k, v in FALLBACK_HASH_MAP.items():
+    HASH_CACHE[k] = v
+    HASH_CACHE[v] = k
+
+BaseType._HASH_CACHE = HASH_CACHE
 
 requests.packages.urllib3.disable_warnings()
 
@@ -262,17 +272,33 @@ class Session(object):
         self.AUTHLOG.info(m)
 
     def get_hash(self, from_str, **kwargs):
-        kwargs['url'] = "{}/{}".format(self._HASH_RES, from_str)
-        kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
-        kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
-        result = self.http_request(**kwargs)
+        if not from_str:
+            err = "Must supply a valid string to get hash of!"
+            raise SessionError(err)
+
+        result = HASH_CACHE.get(from_str, '')
+        if not result:
+            kwargs['url'] = "{}/{}".format(self._HASH_RES, from_str)
+            kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
+            kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
+            result = self.http_request(**kwargs)
+            HASH_CACHE[from_str] = result
+            HASH_CACHE[result] = from_str
         return result
 
     def get_string(self, from_hash, **kwargs):
-        self.authenticate(**kwargs)
-        kwargs['url'] = "{}/{}".format(self._STRING_RES, from_hash)
-        result = self.http_request_auth(**kwargs)
-        result = result.splitlines()[0]
+        if not from_hash:
+            err = "Must supply a valid hash to get string of!"
+            raise SessionError(err)
+
+        result = HASH_CACHE.get(from_hash, '')
+        if not result:
+            self.authenticate(**kwargs)
+            kwargs['url'] = "{}/{}".format(self._STRING_RES, from_hash)
+            result = self.http_request_auth(**kwargs)
+            result = result.splitlines()[0]
+            HASH_CACHE[from_hash] = result
+            HASH_CACHE[result] = from_hash
         return result
 
     def authenticate(self, **kwargs):
@@ -570,7 +596,7 @@ class Session(object):
         response_body = self.soap_request(**kwargs)
 
         # if there is an export_id node, return the contents of that
-        regex_args = {'body': response_body, 'element': 'export_id'}
+        regex_args = {'body': response_body, 'element': 'export_id', 'char_end': 0}
         result = self._regex_body_for_element(**regex_args)
         return result
 
@@ -973,16 +999,22 @@ class Session(object):
             * The first value that matches the regex ELEMENT_RE_TXT with element
         """
         fail = kwargs.get('fail', True)
-        char_limit = kwargs.get('char_limit', 500)
+        char_start = kwargs.get('char_start', 0)
+        char_end = kwargs.get('char_end', 500)
+        if char_end:
+            search_body = body[char_start:char_end]
+        else:
+            search_body = body
 
         regex_txt = self._ELEMENT_RE_TXT.format(element)
         regex = re.compile(regex_txt, re.IGNORECASE | re.DOTALL)
 
-        result = regex.search(body[0:char_limit])
+        result = regex.search(search_body)
 
         if not result and fail:
-            err = "Unable to find {} in body: {}"
-            err = err.format(regex.pattern, body)
+
+            err = "Unable to find {} in body: {} in between characters {} - {}"
+            err = err.format(regex.pattern, body, char_start, char_end)
             raise BadResponseError(err)
 
         if result:
@@ -990,8 +1022,8 @@ class Session(object):
         else:
             result = ''
 
-        m = "Value of element '{}': '{}' (using pattern: '{}') in 0:{} of body with {}"
-        m = m.format(element, result, regex.pattern, char_limit, len(body))
+        m = "Value of element '{}': '{}' (using pattern: '{}') in {}:{} of body with {}"
+        m = m.format(element, result, regex.pattern, char_start, char_end, len(body))
         self.MYLOG.debug(m)
         return result
 
@@ -1034,24 +1066,24 @@ class Session(object):
             self._CREDS.user_obj = result
         return result
 
-    def get_last_pretty_bodies(self, **kwargs):
-        result = get_pretty_bodies(self.LAST_RESPONSE, **kwargs)
+    def get_last_bodies(self, **kwargs):
+        result = get_bodies(self.LAST_RESPONSE, **kwargs)
         return result
 
-    def get_all_pretty_bodies(self, **kwargs):
+    def get_all_bodies(self, **kwargs):
         if not self.ALL_RESPONSES:
             err = "No responses found in self.ALL_RESPONSES!"
             raise SessionError(err)
 
-        result = get_all_pretty_bodies(self.ALL_RESPONSES, **kwargs)
+        result = get_all_bodies(self.ALL_RESPONSES, **kwargs)
         return result
 
-    def write_all_pretty_bodies(self, **kwargs):
+    def write_all_bodies(self, **kwargs):
         if not self.ALL_RESPONSES:
             err = "No responses found in self.ALL_RESPONSES!"
             raise SessionError(err)
 
-        write_all_pretty_bodies(self.ALL_RESPONSES, **kwargs)
+        write_all_bodies(self.ALL_RESPONSES, **kwargs)
 
     def _get_full_url(self, **kwargs):
         """Utility method for constructing a full url
