@@ -1,8 +1,10 @@
 import logging
 import datetime
+
 from pytan import PytanError
-from pytan.constants import CRED_DEFAULTS, PYTAN_KEY
 from pytan.tickle.tools import b64encode, obfuscate, deobfuscate
+
+from pytan.constants import CRED_DEFAULTS, PYTAN_KEY
 
 MYLOG = logging.getLogger(__name__)
 CREDLOG = logging.getLogger(__name__ + '.credstore')
