@@ -3,6 +3,7 @@
 - [DOC](#doc)
   - [TANIUMNG](#taniumng)
   - [TICKLE](#tickle)
+  - [TESTS](#tests)
   - [SESSION](#session)
   - [HUMAN PARSING](#human-parsing)
   - [HANDLER/MAIN](#handlermain)
@@ -39,17 +40,13 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## TICKLE
 * move serializers out => tickle NOW
-  * ADD TESTS => NOW (need datafiles)
   * csv 
-    * DONT UPDATE COLUMNS WITH VALUES
     * maybe use string api for what_hash instead of getting sensors?
     * add what_name to session GRD 
-    * from xml / from dict not working on ResultSet
-  * TODO test on py2
-* TODO: this wont work, need to check for _tickled_list ??
-* make tickle use its own exceptions => NEXT
 * add result info to tickle.from_sse_xml (passthrough from handler)
-* write tests!
+
+## TESTS
+* add expected for tickle tests
 
 ## SESSION
 * add permission checking from user_obj
@@ -84,9 +81,10 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * email out (MEDIUM)
 * add caching (HUGE)
 * figure out how to get last N of an obj
+>>> v=handler.get_questions({'value': secs_from_now(secs=-(60 * 2)), 'type': 'Date', 'field': 'expiration', 'operator': 'Greater'})
+
 * test against 6.6 (auth changes??)
-* add reverse log checking for all pytan logs
-* change Exceptions to end with Error
+
 
 ## UTILS
 # TODO figure out pyreadline later
