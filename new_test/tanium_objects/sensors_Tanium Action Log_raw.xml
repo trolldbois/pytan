@@ -1,0 +1,220 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetObject</command>
+<session>1-3382-1d3855347e304f648a67ded30989bada8eb24251c85b2863d46510252f3c87a4bb57e7683ecfd3cb9251832003447ae193b3ea80f3f0cce02ce3b175c36376b0</session>
+<server_version>6.5.314.4328</server_version>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<result_object><sensors><sensor><id>638</id>
+<name>Tanium Action Log</name>
+<hash>969736519</hash>
+<string_count>0</string_count>
+<category>Tanium Diagnostics</category>
+<description>Provided with an action number as a parameter, this sensor returns the log from the action from each client machine that executed the action.
+Example: 2012-11-02 03:30:17 +0000|Command Completed</description>
+<creation_time>2015-11-17T06:01:25</creation_time>
+<modification_time>2015-11-17T06:01:25</modification_time>
+<last_modified_by>Administrator</last_modified_by>
+<queries><query><platform>Windows</platform>
+<script><![CDATA[&#039;========================================
+&#039; Tanium Action Log
+&#039;========================================
+
+Option Explicit
+
+Const MAX_LINES_TO_RETURN = 100
+
+Dim strAction, strTaniumPath, strFilePath
+
+strAction = &quot;||actionNumber||&quot;
+strTaniumPath = GetTaniumDir(&quot;Downloads&quot;)
+
+strFilePath = strTaniumPath &amp; &quot;\Action_&quot;&amp;strAction&amp;&quot;.log&quot;
+
+Dim fso
+Set fso = WScript.CreateObject(&quot;Scripting.Filesystemobject&quot;)
+
+If fso.FileExists(strFilePath) Then
+	Dim objTextFile, strLine, intLineNumber
+	Set objTextFile = fso.OpenTextFile(strFilePath, 1)
+	
+	intLineNumber = 1
+	Do Until objTextFile.AtEndOfStream
+		WScript.Echo zeroPad(intLineNumber,3) &amp; &quot;|&quot; &amp; objTextFile.ReadLine
+		intLineNumber = intLineNumber + 1
+		
+		If(intLineNumber &gt; MAX_LINES_TO_RETURN) Then
+			WScript.Echo zeroPad(intLineNumber,3) &amp; &quot;|Max number of lines reached in Action Log Sensor&quot;
+			WScript.Quit
+		End If
+	Loop 
+	
+Else
+	WScript.Echo &quot;File does not exist&quot;
+End If
+
+Function zeroPad(m, t)
+   zeroPad = String(t-Len(m),&quot;0&quot;)&amp;m
+End Function
+
+Function GetTaniumDir(strSubDir)
+&#039;GetTaniumDir with GeneratePath, works in x64 or x32
+&#039;looks for a valid Path value
+    
+    Dim objShell
+    Dim keyNativePath, keyWoWPath, strPath
+      
+    Set objShell = CreateObject(&quot;WScript.Shell&quot;)
+    
+    keyNativePath = &quot;HKLM\Software\Tanium\Tanium Client&quot;
+    keyWoWPath = &quot;HKLM\Software\Wow6432Node\Tanium\Tanium Client&quot;
+    
+    &#039; first check the Software key (valid for 32-bit machines, or 64-bit machines in 32-bit mode)
+    On Error Resume Next
+    strPath = objShell.RegRead(keyNativePath&amp;&quot;\Path&quot;)
+    On Error Goto 0
+ 
+    If strPath = &quot;&quot; Then
+        &#039; Could not find 32-bit mode path, checking Wow6432Node
+        On Error Resume Next
+        strPath = objShell.RegRead(keyWoWPath&amp;&quot;\Path&quot;)
+        On Error Goto 0
+    End If
+    
+    If Not strPath = &quot;&quot; Then
+        If strSubDir &lt;&gt; &quot;&quot; Then
+            strSubDir = &quot;\&quot; &amp; strSubDir
+        End If  
+    
+        Dim fso
+        Set fso = WScript.CreateObject(&quot;Scripting.Filesystemobject&quot;)
+        If fso.FolderExists(strPath) Then
+            If Not fso.FolderExists(strPath &amp; strSubDir) Then
+                &#039;&#039;Need to loop through strSubDir and create all sub directories
+                GeneratePath strPath &amp; strSubDir, fso
+            End If
+            GetTaniumDir = strPath &amp; strSubDir &amp; &quot;\&quot;
+        Else
+            &#039; Specified Path doesn&#039;t exist on the filesystem
+            WScript.Echo &quot;Error: &quot; &amp; strPath &amp; &quot; does not exist on the filesystem&quot;
+            GetTaniumDir = False
+        End If
+    Else
+        WScript.Echo &quot;Error: Cannot find Tanium Client path in Registry&quot;
+        GetTaniumDir = False
+    End If
+End Function &#039;GetTaniumDir
+
+Function GeneratePath(pFolderPath, fso)
+    GeneratePath = False
+
+    If Not fso.FolderExists(pFolderPath) Then
+        If GeneratePath(fso.GetParentFolderName(pFolderPath), fso) Then
+            GeneratePath = True
+            Call fso.CreateFolder(pFolderPath)
+        End If
+    Else
+        GeneratePath = True
+    End If
+End Function &#039;GeneratePath
+
+Function RegKeyExists(objRegistry, sHive, sRegKey)
+	Dim aValueNames, aValueTypes
+	If objRegistry.EnumValues(sHive, sRegKey, aValueNames, aValueTypes) = 0 Then
+		RegKeyExists = True
+	Else
+		RegKeyExists = False
+	End If
+End Function]]></script>
+<script_type>VBScript</script_type>
+<signature>00530C941B665EB137D7495E80A01EC3706FB95FC52F24232C5350C323C92910FE39C57C76EF86C2FDC3F76AE8C73C97D3623E9C78D99A41195BCA9BE064DD688CD7013D19F4D20840AB9869EECFFD312E3A62D6C1A59792BDCFE795C7E4D01B4F257B98B6258DF4B91C41F6C3291727B2991545D5C607B60D59DBC035B105631515BDA4</signature>
+</query>
+<query><platform>Linux</platform>
+<script><![CDATA[#!/bin/sh
+
+MAXRESULTS=100
+ACTIONID=||actionNumber||
+
+if [ -f /opt/Tanium/TaniumClient/Downloads/Action_$ACTIONID.log ]; then
+   tail -n $MAXRESULTS /opt/Tanium/TaniumClient/Downloads/Action_$ACTIONID.log
+else
+   echo &quot;File does not exist&quot;
+fi
+]]></script>
+<script_type>UnixShell</script_type>
+<signature>016D93F2A6C1A80BC411E959C4AB6FD0412328EF09758A816EA853795A11979842ACE59D163CF129B7CAAADEFADC321BD259E60F033E4C2A6D6651F5DC039DABE26900A43096479A71A43A76B588771E0B65EE75E6B3DFD98CC98049CF8A9711718434CD269605EA31DE42B88C16F80A26B03569FD79B6BC46C4C0C303D4EAB2FCD1D04E</signature>
+</query>
+<query><platform>Mac</platform>
+<script><![CDATA[#!/bin/sh
+
+# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
+# {&quot;parameters&quot;:[{&quot;key&quot;:&quot;actionNumber&quot;,&quot;validationExpressions&quot;:[{&quot;flags&quot;:&quot;&quot;,&quot;expression&quot;:&quot;[0-9]+&quot;,&quot;helpString&quot;:&quot;&quot;,&quot;parameterType&quot;:&quot;com.tanium.models::ValidationExpression&quot;,&quot;model&quot;:&quot;com.tanium.models::ValidationExpression&quot;}],&quot;promptText&quot;:&quot;e.g. 1234&quot;,&quot;helpString&quot;:&quot;Enter a valid Action ID Number from the Action History tab&quot;,&quot;maxChars&quot;:0,&quot;defaultValue&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;label&quot;:&quot;Action ID Number&quot;,&quot;restrict&quot;:null,&quot;parameterType&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;}],&quot;parameterType&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;}
+# ||actionNumber||  
+
+echo &quot;N/A on Mac&quot;
+]]></script>
+<script_type>UnixShell</script_type>
+<signature>016D93F2A6C1A80BC411E959C4AB6FD0412328EF09758A816EA853795A11979842ACE59D163CF129B7CAAADEFADC321BD259E60F033E4C2A6D6651F5DC039DABE26900A43096479A71A43A76B588771E0B65EE75E6B3DFD98CC98049CF8A9711718434CD269605EA31DE42B88C16F80A26B03569FD79B6BC46C4C0C303D4EAB2FCD1D04E</signature>
+</query>
+<query><platform>Solaris</platform>
+<script><![CDATA[#!/bin/sh
+
+# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
+# {&quot;parameters&quot;:[{&quot;key&quot;:&quot;actionNumber&quot;,&quot;validationExpressions&quot;:[{&quot;flags&quot;:&quot;&quot;,&quot;expression&quot;:&quot;[0-9]+&quot;,&quot;helpString&quot;:&quot;&quot;,&quot;parameterType&quot;:&quot;com.tanium.models::ValidationExpression&quot;,&quot;model&quot;:&quot;com.tanium.models::ValidationExpression&quot;}],&quot;promptText&quot;:&quot;e.g. 1234&quot;,&quot;helpString&quot;:&quot;Enter a valid Action ID Number from the Action History tab&quot;,&quot;maxChars&quot;:0,&quot;defaultValue&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;label&quot;:&quot;Action ID Number&quot;,&quot;restrict&quot;:null,&quot;parameterType&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;}],&quot;parameterType&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;}
+# ||actionNumber||  
+
+echo &quot;N/A on Solaris&quot;
+]]></script>
+<script_type>UnixShell</script_type>
+<signature>016D93F2A6C1A80BC411E959C4AB6FD0412328EF09758A816EA853795A11979842ACE59D163CF129B7CAAADEFADC321BD259E60F033E4C2A6D6651F5DC039DABE26900A43096479A71A43A76B588771E0B65EE75E6B3DFD98CC98049CF8A9711718434CD269605EA31DE42B88C16F80A26B03569FD79B6BC46C4C0C303D4EAB2FCD1D04E</signature>
+</query>
+<query><platform>AIX</platform>
+<script><![CDATA[#!/bin/sh
+
+# THIS IS A STUB - NOT INTENDED AS FUNCTIONAL - NA
+# {&quot;parameters&quot;:[{&quot;key&quot;:&quot;actionNumber&quot;,&quot;validationExpressions&quot;:[{&quot;flags&quot;:&quot;&quot;,&quot;expression&quot;:&quot;[0-9]+&quot;,&quot;helpString&quot;:&quot;&quot;,&quot;parameterType&quot;:&quot;com.tanium.models::ValidationExpression&quot;,&quot;model&quot;:&quot;com.tanium.models::ValidationExpression&quot;}],&quot;promptText&quot;:&quot;e.g. 1234&quot;,&quot;helpString&quot;:&quot;Enter a valid Action ID Number from the Action History tab&quot;,&quot;maxChars&quot;:0,&quot;defaultValue&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;label&quot;:&quot;Action ID Number&quot;,&quot;restrict&quot;:null,&quot;parameterType&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;}],&quot;parameterType&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;}
+# ||actionNumber||  
+
+echo &quot;N/A on AIX&quot;
+]]></script>
+<script_type>UnixShell</script_type>
+<signature>016D93F2A6C1A80BC411E959C4AB6FD0412328EF09758A816EA853795A11979842ACE59D163CF129B7CAAADEFADC321BD259E60F033E4C2A6D6651F5DC039DABE26900A43096479A71A43A76B588771E0B65EE75E6B3DFD98CC98049CF8A9711718434CD269605EA31DE42B88C16F80A26B03569FD79B6BC46C4C0C303D4EAB2FCD1D04E</signature>
+</query>
+</queries>
+<source_id>0</source_id>
+<parameter_definition>{&quot;parameters&quot;:[{&quot;label&quot;:&quot;Action ID Number&quot;,&quot;helpString&quot;:&quot;Enter a valid Action ID Number from the Action History tab&quot;,&quot;defaultValue&quot;:&quot;&quot;,&quot;maxChars&quot;:0,&quot;key&quot;:&quot;actionNumber&quot;,&quot;restrict&quot;:null,&quot;value&quot;:&quot;&quot;,&quot;promptText&quot;:&quot;e.g. 1234&quot;,&quot;validationExpressions&quot;:[{&quot;expression&quot;:&quot;[0-9]+&quot;,&quot;flags&quot;:&quot;&quot;,&quot;helpString&quot;:&quot;&quot;,&quot;parameterType&quot;:&quot;com.tanium.models::ValidationExpression&quot;,&quot;model&quot;:&quot;com.tanium.models::ValidationExpression&quot;}],&quot;parameterType&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::TextInputParameter&quot;}],&quot;parameterType&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;,&quot;model&quot;:&quot;com.tanium.components.parameters::ParametersArray&quot;}</parameter_definition>
+<value_type>String</value_type>
+<max_age_seconds>600</max_age_seconds>
+<ignore_case_flag>1</ignore_case_flag>
+<hidden_flag>0</hidden_flag>
+<exclude_from_parse_flag>1</exclude_from_parse_flag>
+<delimiter>,</delimiter>
+<metadata><item><name>defined</name>
+<value>Tanium</value>
+<admin_flag>0</admin_flag>
+</item>
+</metadata>
+<cache_row_id>1</cache_row_id>
+</sensor>
+<cache_info><cache_id>3606602801</cache_id>
+<page_row_count>1</page_row_count>
+<filtered_row_count>1</filtered_row_count>
+<cache_row_count>665</cache_row_count>
+<expiration>2016-01-10T17:46:42</expiration>
+</cache_info>
+</sensors>
+</result_object>
+<ResultXML></ResultXML>
+<options><cache_filters><filter><field>name</field>
+<value>Tanium Action Log</value>
+</filter>
+<filter><field>source_id</field>
+<value>0</value>
+</filter>
+</cache_filters>
+<include_hidden_flag>0</include_hidden_flag>
+</options>
+</t:return></soap:Body>
+</soap:Envelope>

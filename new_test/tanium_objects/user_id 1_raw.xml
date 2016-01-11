@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetObject</command>
+<session>1-3382-1d3855347e304f648a67ded30989bada8eb24251c85b2863d46510252f3c87a4bb57e7683ecfd3cb9251832003447ae193b3ea80f3f0cce02ce3b175c36376b0</session>
+<server_version>6.5.314.4328</server_version>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<result_object><user><id>1</id>
+<name>Administrator</name>
+<domain></domain>
+<group_id>0</group_id>
+<roles><role><id>1</id>
+<name>Administrator</name>
+<description>Administrators can perform all functions in the system, including creating other users, viewing the System Status, changing Global Settings, and creating Computer Groups.</description>
+<permissions><permission>admin</permission>
+<permission>sensor_read</permission>
+<permission>sensor_write</permission>
+<permission>question_read</permission>
+<permission>question_write</permission>
+<permission>action_read</permission>
+<permission>action_write</permission>
+<permission>action_approval</permission>
+<permission>notification_write</permission>
+<permission>clients_read</permission>
+<permission>question_log_read</permission>
+<permission>content_admin</permission>
+</permissions>
+</role>
+</roles>
+<permissions><permission>admin</permission>
+<permission>sensor_read</permission>
+<permission>sensor_write</permission>
+<permission>question_read</permission>
+<permission>question_write</permission>
+<permission>action_read</permission>
+<permission>action_write</permission>
+<permission>action_approval</permission>
+<permission>notification_write</permission>
+<permission>clients_read</permission>
+<permission>question_log_read</permission>
+<permission>content_admin</permission>
+</permissions>
+<local_admin_flag>1</local_admin_flag>
+<last_login>2016-01-10T17:46:42</last_login>
+<deleted_flag>0</deleted_flag>
+</user>
+</result_object>
+<ResultXML></ResultXML>
+<options></options>
+</t:return></soap:Body>
+</soap:Envelope>

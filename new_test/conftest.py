@@ -1,3 +1,5 @@
+import pytest
+
 from pytan.handler_args import create_argstore
 from pytan.handler_logs import setup_log
 from pytan.constants import OVERRIDE_LEVEL
@@ -68,3 +70,27 @@ def pytest_configure(config):
     # print(dir(config))
     # from pytan import historyconsole
     # historyconsole.HistoryConsole()
+
+
+def pytest_unconfigure(config):
+    print('Report directory for this session: "{}"'.format(config.REPORT_TMPDIR))
+    for i in config.REPORT_TMPDIR.listdir():
+        print(' "{}"'.format(i))
+
+# def pytest_report_header(config):
+#     return dir(config)
+
+
+# @pytest.mark.hookwrapper
+# def pytest_pyfunc_call(pyfuncitem):
+#     yield
+#     # print('pyfunc call after')
+#     if 'report_tmpdir' in pyfuncitem.funcargs:
+#         print(pyfuncitem.funcargs['report_tmpdir'])
+
+
+@pytest.fixture(scope='session', autouse=True)
+def report_tmpdir(tmpdir_factory, pytestconfig):
+    d = tmpdir_factory.mktemp('report_tmpdir')
+    pytestconfig.REPORT_TMPDIR = d
+    return d

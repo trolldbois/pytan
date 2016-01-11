@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetResultInfo</command>
+<session>1-3382-1d3855347e304f648a67ded30989bada8eb24251c85b2863d46510252f3c87a4bb57e7683ecfd3cb9251832003447ae193b3ea80f3f0cce02ce3b175c36376b0</session>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<server_version>6.5.314.4328</server_version>
+<object_list><question><id>48653</id>
+</question>
+</object_list>
+
+<options><suppress_object_list>1</suppress_object_list>
+</options>
+
+<ResultXML>
+<![CDATA[<result_infos><now>2016/01/10 17:46:48 GMT-0000</now>
+<max_available_age>0</max_available_age>
+<result_info><age>0</age>
+<id>48653</id>
+<report_count>2</report_count>
+<saved_question_id>0</saved_question_id>
+<question_id>48653</question_id>
+<archived_question_id>0</archived_question_id><seconds_since_issued>0</seconds_since_issued><issue_seconds>0</issue_seconds><expire_seconds>0</expire_seconds><tested>3</tested>
+<passed>3</passed>
+<mr_tested>3</mr_tested>
+<mr_passed>3</mr_passed>
+<estimated_total>3</estimated_total>
+<select_count>2</select_count>
+<row_count>3</row_count>
+<row_count_machines>3</row_count_machines>
+<error_count>0</error_count>
+<no_results_count>0</no_results_count>
+<row_count_flag>0</row_count_flag>
+</result_info>
+</result_infos>
+]]>
+</ResultXML>
+<result_object></result_object>
+</t:return></soap:Body>
+</soap:Envelope>
