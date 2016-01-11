@@ -1,13 +1,27 @@
-from pytan import text_type
+import logging
+
+from pytan import PytanError, text_type
+from pytan.tanium_ng import ResultSetList
 from pytan.excelwriter import ExcelWriter
 from pytan.tickle.tools import jsonify
+
+from pytan.session import HASH_CACHE
+from pytan.tickle.constants import (
+    RESULTSET_ADD_TYPE, RESULTSET_ADD_SENSOR, RESULTSET_FLATTEN, RESULTSET_STRS
+)
+
+MYLOG = logging.getLogger(__name__)
 
 LF = '\n'
 CR = '\r'
 CRLF = CR + LF
 
 
-class ToDictReport(object):
+class DictSerializeError(PytanError):
+    pass
+
+
+class ToDictResultSet(object):
     '''
     normal rows::
     Computer Name || IP Address ||Count
@@ -25,25 +39,35 @@ class ToDictReport(object):
     WIN || 2.2.2.2 || 1
     '''
 
-    # constants
-    _ROW_NAME = '{0.display_name}'
-    _ROW_SHASH = 'From Sensor Hash: {0.what_hash}'
-    # _ROW_SNAME = 'From Sensor Name: {0.sensor_name}'  # NEXTVER
-    _ROW_TYPE = 'Result Type: {0.result_type}'
-
-    _FLAT_ROW_IDX_FAIL = "NO INDEX CORRELATED VALUE FOR COLUMN NAME: {} INDEX: {}"
-    _FLAT_ROW_ENEMY = "UNRELATED TO SENSOR HASH: {}"
-    _FLAT_ROW_ELSE = "UNEXPECTED SCENARIO WITH SENSOR HASH: {}"
-
     def __init__(self, obj, **kwargs):
-        self.ADD_TYPE = kwargs.get('add_type', True)  # TODO constant
-        self.ADD_SENSOR = kwargs.get('add_sensor', True)  # TODO constant
-        self.FLAT = kwargs.get('flat', False)  # TODO constant
+        self.ADD_TYPE = kwargs.get('add_type', RESULTSET_ADD_TYPE)
+        self.ADD_SENSOR = kwargs.get('add_sensor', RESULTSET_ADD_SENSOR)
+        self.FLATTEN = kwargs.get('flatten', RESULTSET_FLATTEN)
 
-        if self.FLAT:
+        if not isinstance(obj, ResultSetList):
+            err = "obj is type {!r}, must be a tanium_ng.ResultSetList object"
+            err = err.format(type(obj).__name__)
+            raise DictSerializeError(err)
+
+        if self.FLATTEN:
             self.RESULT = self.get_flat_rows(obj, **kwargs)
         else:
             self.RESULT = self.get_normal_rows(obj, **kwargs)
+
+        m = (
+            "Converted tanium_ng object {!r} with {} rows and {} columns into "
+            "{} rows using flatten={}, add_type={}, add_sensor={}"
+        )
+        m = m.format(
+            type(obj),
+            len(obj.result_set.rows),
+            len(obj.result_set.columns),
+            len(self.RESULT),
+            self.FLATTEN,
+            self.ADD_TYPE,
+            self.ADD_SENSOR,
+        )
+        MYLOG.info(m)
 
     def get_normal_rows(self, obj, **kwargs):
         rows = obj.result_set.rows
@@ -65,21 +89,49 @@ class ToDictReport(object):
                 if value_max == 1:
                     continue
                 # lets create a new row for each set of values that can exist
-                for val_idx in range(0, value_max):
-                    result.append(dict([self.get_flat_row_val(col, wh, val_idx) for col in row]))
+                for idx in range(0, value_max):
+                    flat_row_vals = [self.get_flat_row_val(c, wh, idx) for c in row]
+                    result.append(dict(flat_row_vals))
         return result
+
+    def get_flat_row_val(self, c, wh, idx):
+        # see if this columns what hash matches our current what hash
+        if c.what_hash == wh:
+            # try to get the index correlated value from this row's column
+            try:
+                val = c[idx]
+            except:
+                val = RESULTSET_STRS['flat_idx_fail'].format(c=c, idx=idx)
+
+        # if this c is not related, and just has one item, use that as the value
+        elif c.what_hash != wh and len(c) == 1:
+            val = c[0]
+
+        # if this c is not related and has more than one value, set as unrelated
+        elif c.what_hash != wh and len(c) > 1:
+            val = RESULTSET_STRS['flat_row_unrelated'].format(c=c)
+
+        # this shouldn't happen
+        else:
+            val = RESULTSET_STRS['flow_row_unexpected'].format(c=c)
+
+        # return a dictionary with the key as the column name and the value as derived val
+        row_val = (self.get_row_colname(c), val)
+        return row_val
 
     def get_row_colname(self, c):
         results = []
-        colname = self._ROW_NAME.format(c)
+        c.name_or_hash = self.get_name_or_hash(c)
+
+        colname = RESULTSET_STRS['row_column_name'].format(c=c)
         results.append(colname)
 
         if self.ADD_TYPE:
-            coltype = self._ROW_TYPE.format(c)
+            coltype = RESULTSET_STRS['sensor_type'].format(c=c)
             results.append(coltype)
 
         if self.ADD_SENSOR:
-            colsensor = self._ROW_SHASH.format(c)
+            colsensor = RESULTSET_STRS['sensor'].format(c=c)
             results.append(colsensor)
 
         result = self.join(results)
@@ -89,37 +141,25 @@ class ToDictReport(object):
         result = CRLF.join([text_type(v) for v in c])
         return result
 
-    def get_flat_row_val(self, col, wh, val_idx):
-        # see if this columns what hash matches our current what hash
-        if col.what_hash == wh:
-            # try to get the index correlated value from this row's column
-            try:
-                colval = col[val_idx]
-            except:
-                colval = self._FLAT_ROW_IDX_FAIL.format(col.display_name, val_idx)
-
-        # if this col is not related, and just has one item, use that as the value
-        elif col.what_hash != wh and len(col) == 1:
-            colval = col[0]
-
-        # if this col is not related and has more than one value, set as unrelated
-        elif col.what_hash != wh and len(col) > 1:
-            colval = self._FLAT_ROW_ENEMY.format(wh)
-
-        # this shouldn't happen
+    def get_name_or_hash(self, c):
+        handler = getattr(self, '_HANDLER', None)
+        wh = getattr(c, 'what_hash', '')
+        sn = getattr(c, 'sensor_name', '')
+        cache_result = HASH_CACHE.get(wh, '')
+        if sn:
+            result = sn
+        elif cache_result:
+            result = cache_result
+        elif handler and wh:
+            result = handler.SESSION.get_string(from_hash=wh)
         else:
-            colval = self._FLAT_ROW_ELSE.format(wh)
-
-        # return a dictionary with the key as the column name and the value as derived colval
-        row_val = (self.get_row_colname(col), colval)
-        return row_val
+            result = 'hash({})'.format(wh)
+        return result
 
     '''
-    NEXTVER: FIGURE OUT SENSOR HASH -> SENSOR NAME
     NEXTVER: RE-DO Y AXIS
     NEXTVER: FIGURE OUT FLAT Y AXIS
     NEXTVER: FIGURE OUT PIVOT COLUMN
-
 
     straight column csv export::
     NAME: 1  || 2 || 3
@@ -170,20 +210,20 @@ class ToDictReport(object):
     '''
 
 
-def to_dict_report(obj, **kwargs):
-    converter = ToDictReport(obj, **kwargs)
+def to_dict_resultset(obj, **kwargs):
+    converter = ToDictResultSet(obj, **kwargs)
     result = converter.RESULT
     return result
 
 
-def to_json_report(obj, **kwargs):
-    rows = to_dict_report(obj, **kwargs)
+def to_json_resultset(obj, **kwargs):
+    rows = to_dict_resultset(obj, **kwargs)
     result = jsonify(rows, **kwargs)
     return result
 
 
-def to_csv_report(obj, **kwargs):
-    rows = to_dict_report(obj, **kwargs)
+def to_csv_resultset(obj, **kwargs):
+    rows = to_dict_resultset(obj, **kwargs)
     writer = ExcelWriter()
     result = writer.run(rows, **kwargs)
     return result

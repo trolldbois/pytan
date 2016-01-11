@@ -1,11 +1,19 @@
 import json
+import logging
 
-from pytan import tanium_ng
+from pytan import PytanError
+from pytan.tanium_ng import BaseType
 from pytan.excelwriter import ExcelWriter
 from pytan.tickle.tools import jsonify
 from pytan.tickle.constants import (
     TAG_NAME, LIST_NAME, EXPLODE_NAME, FLAT_WARN, FLAT_SEP, INCLUDE_EMPTY, SKIPS, FIRSTS, LASTS
 )
+
+MYLOG = logging.getLogger(__name__)
+
+
+class DictSerializeError(PytanError):
+    pass
 
 
 class ToDict(object):
@@ -41,7 +49,6 @@ class ToDict(object):
     """str to prefix property names if FLAT=True"""
 
     def __init__(self, obj, **kwargs):
-        # print("New ToDict for obj: {}".format(obj))
         self.KWARGS = kwargs
         self.OBJ = obj
 
@@ -60,11 +67,15 @@ class ToDict(object):
 
         if isinstance(self.OBJ, list):
             self.do_list()
-        else:
+        elif isinstance(self.OBJ, BaseType):
             if self.OBJ._IS_LIST and self.FLAT and self.PARENT:
                 self.do_list()
             else:
                 self.do_obj()
+        else:
+            err = "obj is type {!r}, must be a tanium_ng.BaseType object or a list"
+            err = err.format(type(obj).__name__)
+            raise DictSerializeError(err)
 
     def do_obj(self):
         if self.FLAT:
@@ -74,6 +85,10 @@ class ToDict(object):
         self.base_complex()
         self.base_list()
         self.RESULT[TAG_NAME] = self.OBJ._SOAP_TAG
+
+        m = "Converted tanium_ng object {!r} into dict with keys:: {}"
+        m = m.format(type(self.OBJ), ', '.join(self.RESULT.keys()))
+        MYLOG.debug(m)
 
     def do_list(self):
         if self.FLAT:
@@ -89,6 +104,10 @@ class ToDict(object):
             child_args = self.get_child_args()
             child_val = to_dict(val, **child_args)
             self.RESULT[LIST_NAME].append(child_val)
+
+        m = "Converted list of {} Tanium NG objects into a dict with keys:: {}"
+        m = m.format(len(self.OBJ), ', '.join(self.RESULT.keys()))
+        MYLOG.debug(m)
 
     def base_simple(self):
         """Process the simple properties from the tanium_ng object"""
@@ -139,7 +158,7 @@ class ToDict(object):
             for idx, val in enumerate(vals):
                 prop_name = '{}{}{}{}'.format(self._PROP_PRE, prop, self.FLAT_SEP, idx)
 
-                if issubclass(prop_type, tanium_ng.BaseType):
+                if issubclass(prop_type, BaseType):
                     child_args = self.get_child_args(flat_pre=prop_name)
                     child_val = to_dict(val, **child_args)
                     new_vals.append(child_val)

@@ -1,5 +1,4 @@
 import os
-# import time
 import json
 import base64
 import logging
@@ -123,12 +122,16 @@ def xml_pretty(x, **kwargs):
     str :
         * The pretty printed string of `x`
     """
-    pretty = kwargs.get('pretty', True)
+    pretty_xml = kwargs.get('pretty_xml', True)
     indent = kwargs.get('indent', '  ')
 
     x_parsed = xmltodict.parse(x)
-    x_unparsed = xmltodict.unparse(x_parsed, pretty=pretty, indent=indent)
-    return x_unparsed
+    x_unparsed = xmltodict.unparse(x_parsed, pretty=pretty_xml, indent=indent)
+    if pretty_xml:
+        result = x_unparsed
+    else:
+        result = x
+    return result
 
 
 def xml_pretty_resultxml(x, **kwargs):
@@ -546,7 +549,6 @@ def check_limits(objects, **kwargs):
             err_pre = p.format(objects, 'FAILED', l['k'], limit_msg)
             err = "{}{}returned items:\n\t{}"
             err = err.format(err_pre, specstxt, objtxt)
-            MYLOG.critical(err)
             raise LimitCheckError(err)
 
 
@@ -577,8 +579,20 @@ def json_pretty(s, **kwargs):
     return result
 
 
-def get_pretty_body(body, **kwargs):
+def simple_xml_check(xml, **kwargs):
+    xml_defs = ['<?xml version', '<soap:Envelope']
+    xml_defs_found = [x for x in xml_defs if x in xml[0:2000]]
+    if not xml_defs_found:
+        err = "Simple XML check failed, no XML strings found matching {}"
+        err = err.format(', '.join(xml_defs))
+        raise PytanError(err)
+    return xml
+
+
+def get_body(body, **kwargs):
+    kwargs['pretty_xml'] = kwargs.get('pretty_xml', False)
     pre = kwargs.get('pre', '')
+
     body_type = 'unknown'
     ext = 'txt'
 
@@ -587,47 +601,54 @@ def get_pretty_body(body, **kwargs):
         body_type = 'empty'
         ext = 'txt'
 
-    if body_type == 'unknown':
+    type_map = [
+        {'body_type': 'xml', 'ext': 'xml', 'method': simple_xml_check},
+        {'body_type': 'json', 'ext': 'json', 'method': json_pretty},
+        {'body_type': 'xml', 'ext': 'xml', 'method': xml_pretty},
+    ]
+
+    for t in type_map:
+        if body_type != 'unknown':
+            continue
         try:
-            body = json_pretty(body)
-            body_type = 'json'
-            ext = 'json'
+            body = t['method'](body, **kwargs)
+            body_type = t['body_type']
+            ext = t['ext']
+            break
         except:
             pass
 
-    if body_type == 'unknown':
+    if body_type == 'xml' and kwargs['pretty_xml']:
         try:
-            body = xml_pretty(body)
-            body_type = 'xml'
-            ext = 'xml'
+            body = xml_pretty(body, **kwargs)
         except:
-            pass
+            body_type = 'unknown_xml'
 
     result = {pre + 'body': body, pre + 'body_type': body_type, pre + 'ext': ext}
     return result
 
 
-def get_pretty_bodies(response, **kwargs):
+def get_bodies(response, **kwargs):
     """Uses :func:`xml_pretty` to pretty print the request and response bodies from the
     response object
     """
     result = {}
-    result.update(get_pretty_body(response.request.body, pre='request', **kwargs))
-    result.update(get_pretty_body(response.text, pre='response', **kwargs))
+    result.update(get_body(response.request.body, pre='request', **kwargs))
+    result.update(get_body(response.text, pre='response', **kwargs))
     result['sent'] = human_time(response.pytan_sent)
     result['received'] = human_time(response.pytan_received)
     result['obj'] = response
     return result
 
 
-def get_all_pretty_bodies(all_responses, **kwargs):
-    result = [get_pretty_bodies(x, **kwargs) for x in all_responses]
+def get_all_bodies(all_responses, **kwargs):
+    result = [get_bodies(x, **kwargs) for x in all_responses]
     return result
 
 
-def write_all_pretty_bodies(all_responses, **kwargs):
+def write_all_bodies(all_responses, **kwargs):
     output_dir = kwargs.get('output_dir', os.curdir)
-    bodies = get_all_pretty_bodies(all_responses, **kwargs)
+    bodies = get_all_bodies(all_responses, **kwargs)
     for x in bodies:
         request_fn = '{sent}_request_{requestbody_type}.{requestext}'.format(**x)
         msgs = write_file(os.path.join(output_dir, request_fn), x['requestbody'])

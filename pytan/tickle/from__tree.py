@@ -1,7 +1,12 @@
-from pytan import PytanError, tanium_ng
+import logging
+
+from pytan import PytanError
+from pytan.tanium_ng import BaseType, BASE_TYPES
+
+MYLOG = logging.getLogger(__name__)
 
 
-class DeserializeError(PytanError):
+class XmlDeserializeError(PytanError):
     pass
 
 
@@ -23,11 +28,13 @@ class FromTree(object):
     OBJCLASS = None
     """Taniumg NG object class to create RESULT as"""
 
-    def __init__(self, objtree, objclass, **kwargs):
-        # print("New FromTree kwargs: {}".format(kwargs))
+    def __init__(self, objtree, **kwargs):
         self.OBJTREE = objtree
-        self.OBJCLASS = objclass
-        self.RESULT = objclass()
+        self.get_objclass(**kwargs)
+        self.get_result()
+
+    def get_result(self):
+        self.RESULT = self.OBJCLASS()
         self.RESULT._OBJTREE = self.OBJTREE
         self.base_simple()
         self.base_complex()
@@ -35,6 +42,23 @@ class FromTree(object):
 
         if hasattr(self.RESULT, '_post_xml_hook'):
             self.RESULT._post_xml_hook()
+
+        m = "Converted tree {!r} into tanium_ng object:: {}"
+        m = m.format(self.OBJTREE.tag, type(self.RESULT))
+        MYLOG.debug(m)
+
+    def get_objclass(self, **kwargs):
+        objclass = kwargs.get('objclass', '')
+        if objclass:
+            self.OBJCLASS = objclass
+        else:
+            if self.OBJTREE.tag in BASE_TYPES:
+                self.OBJCLASS = BASE_TYPES[self.OBJTREE.tag]
+            else:
+                err = "Tag {!r} matches no known tanium_ng object"
+                err = err.format(self.OBJTREE.tag)
+                MYLOG.error(err)
+                raise XmlDeserializeError(err)
 
     def get_xpath(self, prop):
         """pass."""
@@ -62,9 +86,10 @@ class FromTree(object):
             if len(prop_elems) > 1:
                 err = 'Found {} elements for property {}, should only be 1 (xpath: {})'
                 err = err.format(len(prop_elems), prop, xpath)
-                raise DeserializeError(err)
+                MYLOG.error(err)
+                raise XmlDeserializeError(err)
             elif len(prop_elems) == 1:
-                setattr(self.RESULT, prop, from_tree(prop_elems[0], prop_type))
+                setattr(self.RESULT, prop, from_tree(prop_elems[0], objclass=prop_type))
             else:
                 setattr(self.RESULT, prop, None)
 
@@ -75,14 +100,14 @@ class FromTree(object):
             prop_elems = self.OBJTREE.findall(xpath)
             prop_list = []
             for prop_elem in prop_elems:
-                if issubclass(prop_type, tanium_ng.BaseType):
-                    prop_list.append(from_tree(prop_elem, prop_type))
+                if issubclass(prop_type, BaseType):
+                    prop_list.append(from_tree(prop_elem, objclass=prop_type))
                 else:
                     prop_list.append(prop_elem.text)
             setattr(self.RESULT, prop, prop_list)
 
 
-def from_tree(objtree, objclass, **kwargs):
-    converter = FromTree(objtree, objclass, **kwargs)
+def from_tree(objtree, **kwargs):
+    converter = FromTree(objtree, **kwargs)
     result = converter.RESULT
     return result
