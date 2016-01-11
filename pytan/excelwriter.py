@@ -1,4 +1,3 @@
-import io
 import re
 import csv
 import sys
@@ -9,8 +8,14 @@ MYLOG = logging.getLogger(__name__)
 PY3 = sys.version_info[0] == 3
 if PY3:
     string_types = str,  # noqa
+    text_type = str  # noqa
+    import io
+    String_IO = io.StringIO
 else:
+    text_type = unicode  # noqa
     string_types = basestring,  # noqa
+    import StringIO
+    String_IO = StringIO.StringIO
 
 # constants for line feeds
 _LF = '\n'
@@ -20,7 +25,7 @@ _CRLF = _CR + _LF
 
 def fix_cr(v, cr):
     if isinstance(v, string_types):
-        v = cr.join(v.splitlines())
+        v = text_type(cr.join(v.splitlines()))
     return v
 
 
@@ -60,8 +65,7 @@ class ExcelWriter(object):
         self.MSGS.append(m)
         getattr(self.MYLOG, l)(m)
 
-    def process_rows(self, rows, **kwargs):
-
+    def get_cr(self, **kwargs):
         valid = ['win', 'windows', 'nix', 'unix', 'mac', 'osx']
         cell_lines = kwargs.get('cell_lines', valid[0])
 
@@ -82,7 +86,10 @@ class ExcelWriter(object):
             cr = _CR
         else:
             cr = _CRLF
+        return cell_lines, cr
 
+    def process_rows(self, rows, **kwargs):
+        cell_lines, cr = self.get_cr(**kwargs)
         # replace all newlines with cell_cr if cell_cr_win is not None
         if cell_lines:
             rows = [{fix_cr(k, cr): fix_cr(v, cr) for k, v in r.items()} for r in rows]
@@ -191,7 +198,7 @@ class ExcelWriter(object):
         csvargs['extrasaction'] = action
         csvargs['quoting'] = getattr(csv, quoting)
 
-        csv_io = io.StringIO()
+        csv_io = String_IO()
         writer = csv.DictWriter(csv_io, **csvargs)
         writer.writeheader()
         writer.writerows(rows)
