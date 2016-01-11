@@ -69,6 +69,12 @@ LOGMAP['pytan.store.credstore'] = 1
 LOGMAP['pytan.tanium_ng'] = 1
 LOGMAP['pytan.tickle'] = 1
 LOGMAP['pytan.tickle.tools'] = 1
+LOGMAP['pytan.tickle.from__xml'] = 1
+LOGMAP['pytan.tickle.from__tree'] = 1
+LOGMAP['pytan.tickle.from__dict'] = 1
+LOGMAP['pytan.tickle.to__dict'] = 1
+LOGMAP['pytan.tickle.to__dict_resultset'] = 1
+LOGMAP['pytan.tickle.to__tree'] = 1
 LOGMAP['pytan.pollers.question'] = 3
 LOGMAP['pytan.pollers.sse'] = 4
 LOGMAP['pytan.pollers.question.progress'] = 5
@@ -84,7 +90,7 @@ LOGMAP['pytan.session.http'] = 12
 LOGMAP['pytan.session.auth'] = 13
 LOGMAP['pytan.session.body'] = 14
 LOGMAP['pytan.xml_clean'] = 16
-LOGMAP['pytan.excelwriter'] = 0
+LOGMAP['pytan.excelwriter'] = 1
 LOGMAP['pytan.ext.requests'] = 20
 LOGMAP['pytan.ext.requests.packages.urllib3'] = 21
 LOGMAP['pytan.ext.requests.packages.urllib3.connectionpool'] = 22
@@ -104,10 +110,11 @@ PYTAN_KEY = "mT1er@iUa1kP9pelSW"
 """Key used for obfuscation/de-obfsucation of password when writing/reading user config"""
 
 XMLNS = {
-    'soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+    'soap': 'http://schemas.xmlsoap.org/soap/envelope/',
     'xsd': 'http://www.w3.org/2001/XMLSchema',
     'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-    'typens': 'urn:TaniumSOAP',
+    't': 'urn:TaniumSOAP',
+    'encodingStyle': 'http://schemas.xmlsoap.org/soap/encoding/',
 }
 """The namespace mappings for use in SOAP_REQUEST_BODY by Session"""
 
@@ -115,15 +122,15 @@ ARGS_ORDER = ['cmdline_args', 'osenvironment_args', 'configfile_args', 'default_
 
 SOAP_REQUEST_BODY = (
     '''<?xml version="1.0" encoding="utf-8"?>
-<SOAP-ENV:Envelope xmlns:SOAP-ENV="{soapenv}" xmlns:xsd="{xsd}" xmlns:xsi="{xsi}">
-<SOAP-ENV:Body>
-  <typens:tanium_soap_request xmlns:typens="{typens}">
-    <command>$command</command>
-    <object_list>$object_list</object_list>
-    $options
-  </typens:tanium_soap_request>
-</SOAP-ENV:Body>
-</SOAP-ENV:Envelope>
+<soap:Envelope xmlns:soap="{soap}" xmlns:xsd="{xsd}" soap:encodingStyle="{encodingStyle}">
+  <soap:Body xmlns:t="{t}" xmlns:xsi="{xsi}">
+    <t:tanium_soap_request>
+      <command>$command</command>
+      <object_list>$object_list</object_list>
+      $options
+    </t:tanium_soap_request>
+  </soap:Body>
+</soap:Envelope>
 ''')
 """
 The XML template used for all SOAP Requests in string form
