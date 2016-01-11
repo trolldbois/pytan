@@ -10,25 +10,6 @@ from pytan.constants import HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LE
 MYLOG = logging.getLogger(__name__)
 
 
-def add_override_log(**kwargs):
-    myargs = get_myargs(**kwargs)
-    if myargs['loglevel'] >= OVERRIDE_LEVEL:
-        all_loggers = get_all_logs()
-        MYLOG.setLevel(logging.DEBUG)
-        handler = create_log_handler(name='override_console')
-        [add_log_handler(v, handler) for k, v in all_loggers.items()]
-        set_all_logs(propagate=False)
-        MYLOG.debug("added override log and set all python loggers to debug")
-
-
-def del_override_log(**kwargs):
-    myargs = get_myargs(**kwargs)
-    if myargs['loglevel'] >= OVERRIDE_LEVEL:
-        all_loggers = get_all_logs()
-        MYLOG.debug("removed override log")
-        [remove_log_handler(v, name='override_console') for k, v in all_loggers.items()]
-
-
 def get_myargs(**kwargs):
     myargs = {}
     myargs.update(HANDLER_DEFAULTS)
@@ -40,8 +21,6 @@ def get_myargs(**kwargs):
 def setup_log(**kwargs):
     """Setup logging for PyTan."""
     check_logging_setup()
-    del_override_log(**kwargs)
-
     myargs = get_myargs(**kwargs)
 
     msgs = []
@@ -49,10 +28,10 @@ def setup_log(**kwargs):
     msgs += config_log_handler(argpre='logfile', **myargs)
 
     if myargs['loglevel'] >= OVERRIDE_LEVEL:
-        msgs += set_all_logs(propagate=False)
+        set_all_logs(propagate=False)
         m = 'loglevel is over {}, setting all loggers to DEBUG'
     else:
-        msgs += set_log_levels(**kwargs)
+        set_log_levels(**kwargs)
         m = 'loglevel is not over {}, set all loggers according to constants'
 
     m = m.format(OVERRIDE_LEVEL)
@@ -103,6 +82,7 @@ def config_log_handler(argpre, **kwargs):
 
     for l in sorted(LOGMAP):
         if myargs['enable']:
+            mod = remove_log_handler(all_loggers[l], myargs['name'])
             mod = add_log_handler(all_loggers[l], handler)
         else:
             mod = remove_log_handler(all_loggers[l], myargs['name'])
@@ -116,7 +96,8 @@ def config_log_handler(argpre, **kwargs):
     myargs['modded'] = ', '.join(modded)
     myargs['not_modded'] = ', '.join(modded)
 
-    m = "{action} handler: '{name}' for loggers {modded!r}, but not for loggers {not_modded!r}"
+    # m = "{action} handler: '{name}' for loggers {modded!r}, but not for loggers {not_modded!r}"
+    m = "{action} logging handler: '{name}'"
     m = m.format(**myargs)
     msgs.append(m)
     return msgs

@@ -7,7 +7,7 @@ from pytan import PytanError, string_types, input
 from pytan.store import ArgStore
 from pytan.tickle.tools import obfuscate
 from pytan.shellparser import str2bool
-from pytan.handler_logs import add_override_log
+from pytan.handler_logs import setup_log
 
 from pytan.constants import HANDLER_DEFAULTS, PYTAN_KEY, ARGS_ORDER
 
@@ -24,7 +24,7 @@ class UserConfigError(PytanError):
 
 def create_argstore(**kwargs):
     """pass."""
-    add_override_log(**kwargs)
+    setup_log(**kwargs)
     pytan_key = kwargs.get('pytan_key', PYTAN_KEY)
     default_args = kwargs.get('default_args', HANDLER_DEFAULTS)
     args_order = kwargs.get('args_order', ARGS_ORDER)
