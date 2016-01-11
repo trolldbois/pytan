@@ -4,6 +4,7 @@ import logging
 import datetime
 
 from pytan import PytanError, tanium_ng
+from pytan.tanium_ng import BaseType
 from pytan.store import HelpStore, ResultStore
 from pytan.utils import coerce_list
 from pytan.session import Session
@@ -11,6 +12,7 @@ from pytan.pollers import QuestionPoller, SSEPoller
 from pytan.parsers import GetObject
 from pytan.version import __version__
 from pytan.tickle import from_sse_xml
+from pytan.tickle.to__dict_resultset import ToDictResultSet
 from pytan.handler_args import create_argstore
 from pytan.handler_logs import setup_log
 from pytan.tickle.tools import shrink_obj, check_limits, create_question, create_cachefilterlist
@@ -158,6 +160,10 @@ class Handler(object):
 
         # establish our Session to the Tanium server
         self.SESSION = Session(**self.HANDLER_ARGS)
+
+        # monkey patch handler into BaseType and ToDictResultSet
+        BaseType._HANDLER = self
+        ToDictResultSet._HANDLER = self
 
     def __repr__(self):
         return self.__str__()
