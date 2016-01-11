@@ -53,16 +53,6 @@ class BadTypeError(TaniumNGError):
         TaniumNGError.__init__(self, err)
 
 
-def get_obj_type(tag):
-    """Map Tanium XML soap tags to the Tanium NG Python BaseType object."""
-    if tag not in BASE_TYPES:  # noqa
-        err = 'Unknown type {}'
-        err = err.format(tag)
-        raise TaniumNGError(err)
-    result = BASE_TYPES[tag]  # noqa
-    return result
-
-
 class BaseType(object):
 
     """Base Python Type used for all Tanium XML SOAP Objects."""
@@ -360,6 +350,7 @@ class Column(BaseType):
                 'what_hash': int,
                 'display_name': text_type,
                 'result_type_int': int,
+                'sensor_name': text_type,
             },
             complex_properties={},
             list_properties={
@@ -370,6 +361,7 @@ class Column(BaseType):
         self.what_hash = None
         self.display_name = None
         self.result_type_int = None
+        self.sensor_name = None
         self.values = []
         self._set_init_values()
         self._ITEM_ATTRS.append('result_type')
@@ -380,6 +372,24 @@ class Column(BaseType):
         result = getattr(self, 'result_type_int', None)
         if result in self._RESULT_TYPE_MAP:
             result = self._RESULT_TYPE_MAP[result]
+        return result
+
+    def _post_xml_hook(self, **kwargs):
+        run_hooks = kwargs.get('run_hooks', True)
+
+        result = False
+        handler = getattr(self, '_HANDLER', None)
+        hash_cache = getattr(self, '_HASH_CACHE', {})
+        wh = getattr(self, 'what_hash', '')
+        sn = getattr(self, 'sensor_name', '')
+
+        if run_hooks and wh and not sn:
+            if wh in hash_cache:
+                self.sensor_name = hash_cache[wh]
+                result = True
+            elif handler:
+                self.sensor_name = handler.SESSION.get_string(from_hash=wh)
+                result = True
         return result
 
 
@@ -529,21 +539,19 @@ class ResultSet(BaseType):
 
     def _post_xml_hook(self, **kwargs):
         run_hooks = kwargs.get('run_hooks', True)
-
-        # if there are no rows or run_hooks is False, don't do anything
-        if not self.rows or not run_hooks:
-            return False
-
-        # set each rows columns attr to the index correlated column attr
-        for row in self.rows:
-            for idx, row_col in enumerate(row):
-                # for each of the simple properties in this row's column
-                for attr in row_col._SIMPLE_PROPS:
-                    # get the value for this attr from the index correlated column
-                    col_val = getattr(self.columns[idx], attr)
-                    # set the value to this row's column attr
-                    setattr(row_col, attr, col_val)
-        return True
+        result = False
+        if run_hooks and self.rows:
+            # set each rows columns attr to the index correlated column attr
+            for row in self.rows:
+                for idx, row_col in enumerate(row):
+                    # for each of the simple properties in this row's column
+                    for attr in row_col._SIMPLE_PROPS:
+                        # get the value for this attr from the index correlated column
+                        col_val = getattr(self.columns[idx], attr)
+                        # set the value to this row's column attr
+                        setattr(row_col, attr, col_val)
+            result = True
+        return result
 
     def get_column(self, idx):
         """passthrough to ColumnList [idx]."""
