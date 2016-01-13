@@ -1,17 +1,16 @@
 <!-- MarkdownTOC -->
 
 - [DOC](#doc)
-  - [TANIUMNG](#taniumng)
-  - [TESTS](#tests)
-  - [SESSION](#session)
-  - [HUMAN PARSING](#human-parsing)
-  - [HANDLER/MAIN](#handlermain)
-  - [UTILS](#utils)
-- [TODO figure out pyreadline later](#todo-figure-out-pyreadline-later)
-  - [TEST](#test)
-  - [PLATFORM](#platform)
-  - [LOW](#low)
-  - [LIBXML](#libxml)
+- [EVERYWHERE](#everywhere)
+- [TANIUMNG](#taniumng)
+- [TESTS](#tests)
+- [SESSION](#session)
+- [PARSING](#parsing)
+- [HANDLER](#handler)
+- [UTILS](#utils)
+- [PLATFORM](#platform)
+- [BUILD TOOLS](#build-tools)
+- [LIBXML](#libxml)
 
 <!-- /MarkdownTOC -->
 
@@ -26,9 +25,10 @@
 * add documentation note about PyTan only being fully tested with Administrator role 
 * add windows install doc tip re: 2.7 only
 * write history
-* ensure all exceptions are re-raised if not a specific Tanium/PyTan type
 * turn on pep257 in flake8 project settings
-* document static props for things like what_hash and so on??
+
+## EVERYWHERE
+* ensure all exceptions are re-raised if not a specific Tanium/PyTan type
 * clean up prints!!!:
 grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
@@ -36,26 +36,27 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * TODO: ADD parameter_definition_dict TO BUILDER
 * TODO ADD DOCSTR TO BUILDER HEADER
 * rebuild taniumpy with latest wsdl (LAST)
+* document static props for things like what_hash and so on??
 
 ## TESTS
 * add expected for tickle tests
+* test against 6.6 (auth changes??)
+* add approve action to pytan (need doc update and test update)
+* add tests for dashboard stuffs
+* cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
+* test verify checks work against package with verification (unable to do) (UNKNOWN)
+* test against all the different levels of user privs (UNKNOWN)
 
 ## SESSION
 * add permission checking from user_obj
 * move stats threading into it's own class LAST
+* figure out cert based auth/plugin based auth? (HUGE)
  
-## HUMAN PARSING
+## PARSING
 * argparse for specs/left/right/etc
 
-## HANDLER/MAIN
-* re-do logging yet again, add support for {0: -1, 11: 20, 12: 30, 14: 50} (pytan level: logging level) ==> NEXT
-* also make log printer better (add a generic one that prints log levels in human friendly format, need map)
+## HANDLER
 * create_parent_group_obj broken, fix it and add debug logging!
-* add logger to tanium_ng and tickle_ng
-* increase loglevel range to 50
-* keep loglevels 1-10 reserved for shell scripts
-* keep loglevels 10-30 reserved for info logs
-* keep loglevels 30-50 reserved for debug logs
 * 2.1.7: ask_saved: 
   * add log for get_result_info in refresh_data path
   * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
@@ -75,25 +76,14 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * figure out how to get last N of an obj
 >>> v=handler.get_questions({'value': secs_from_now(secs=-(60 * 2)), 'type': 'Date', 'field': 'expiration', 'operator': 'Greater'})
 
-* test against 6.6 (auth changes??)
-
-
 ## UTILS
-# TODO figure out pyreadline later
+* TODO figure out pyreadline later
 * add "advanced" options capability to shellparser (custom action, custom formatter, custom format_help on shellparser)
-
-## TEST
-* add approve action to pytan (need doc update and test update)
-* add tests for dashboard stuffs
-* cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
-* test verify checks work against package with verification (unable to do) (UNKNOWN)
-* test against all the different levels of user privs (UNKNOWN)
 
 ## PLATFORM
 * open enhancement for console.wsdl to contain platform version
 
-## LOW
-* figure out cert based auth/plugin based auth? (HUGE)
+## BUILD TOOLS
 * add RST output support to mdtester?
 
 ## LIBXML
