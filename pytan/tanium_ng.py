@@ -374,6 +374,26 @@ class Column(BaseType):
             result = self._RESULT_TYPE_MAP[result]
         return result
 
+    @property
+    def sensor_nameorhash(self):
+        handler = getattr(self, '_HANDLER', None)
+        wh = getattr(self, 'what_hash', '')
+        sn = getattr(self, 'sensor_name', '')
+        hash_cache = getattr(self, '_HASH_CACHE', {})
+        cache_result = hash_cache.get(wh, '')
+        if sn:
+            result = sn
+        elif cache_result:
+            result = cache_result
+        elif handler and wh:
+            try:
+                result = handler.SESSION.get_string(from_hash=wh)
+            except:
+                result = 'hash({})'.format(wh)
+        else:
+            result = 'hash({})'.format(wh)
+        return result
+
     def _post_xml_hook(self, **kwargs):
         run_hooks = kwargs.get('run_hooks', True)
 
@@ -388,8 +408,11 @@ class Column(BaseType):
                 self.sensor_name = hash_cache[wh]
                 result = True
             elif handler:
-                self.sensor_name = handler.SESSION.get_string(from_hash=wh)
-                result = True
+                try:
+                    self.sensor_name = handler.SESSION.get_string(from_hash=wh)
+                    result = True
+                except:
+                    pass
         return result
 
 
