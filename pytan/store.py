@@ -62,10 +62,18 @@ class Store(dict):
 
     def __setattr__(self, name, value):
         self[name] = value
+        try:
+            super(Store, self).__setattr__(name, value)
+        except:
+            pass
 
     def __delattr__(self, name):
         if name in self:
             del self[name]
+            try:
+                super(Store, self).__delattr__(name)
+            except:
+                pass
         else:
             raise AttributeError("No such attribute: " + name)
 
