@@ -36,17 +36,25 @@ class ToDictResultSet(object):
     WIN || 2.2.2.2 || 1
 
     normal rows yaxis::
-    NAME || row 1 vals || row 2 vals || row 3 vals
+    COLUMN NAME || row 1 vals || row 2 vals || row 3 vals
     Computer Name || TPT1 || auth || WIN
     IP Address || 1.1.1.1\n2.2.2.2 || 1.1.1.1\n2.2.2.2 || 1.1.1.1\n2.2.2.2
     Count || 1 || 1 || 1
 
     flat rows yaxis::
-    NAME || row 1 val 1 || row 1 val 2 || row 2 val 1 || row 2 val 2 || row 3 val 1 || row 3 val 2
-    Computer Name || TPT1 || TPT1 || auth || auth || WIN || WIN
-    IP Address || 1.1.1.1 || 2.2.2.2 || 1.1.1.1 || 2.2.2.2 || 1.1.1.1 || 2.2.2.2
-    Count || 1 || 1 || 1 || 1 || 1 || 1
+    COLUMN NAME || value 001 || value 002 || value 003
 
+    Computer Name || TPT1 || TPT1
+    IP Address || 1.1.1.1 || 2.2.2.2
+    Count || 1 || 1
+
+    Computer Name || auth || auth
+    IP Address || 1.1.1.1 || 2.2.2.2
+    Count || 1 || 1
+
+    Computer Name || WIN || WIN
+    IP Address || 1.1.1.1 || 2.2.2.2
+    Count || 1 || 1
     '''
 
     def __init__(self, obj, **kwargs):
