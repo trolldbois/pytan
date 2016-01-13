@@ -125,6 +125,11 @@ def from_sse_xml(xml, **kwargs):
     rs : :class:`tanium_ng.result_set.ResultSet`
         * x converted into a ResultSet object
     """
+    info_overlay = kwargs.get('info_overlay', None)
     rs_xml = SSE_WRAP.format(SSE_DATA=xml)
     result = from_xml(rs_xml, **kwargs)
+    if info_overlay:
+        result.now = info_overlay.now
+        for k in info_overlay.result_info._SIMPLE_PROPS:
+            setattr(result.result_set, k, getattr(info_overlay.result_info, k))
     return result
