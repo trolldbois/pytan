@@ -42,16 +42,25 @@ SKIPS = [TAG_NAME, LIST_NAME, EXPLODE_NAME]
 SKIPS += list(FLAT_WARN.keys())
 HUMAN_TIME_FORMAT = 'D%Y-%m-%dT%H-%M-%S-%f'
 
-RESULTSET_ADD_TYPE = True
-RESULTSET_ADD_SENSOR = True
-RESULTSET_FLATTEN = False
+RESULTSET_ARGS = {
+    'add_type': True,
+    'add_sensor': True,
+    'flatten': False,
+    'yaxis': False,
+}
+
 RESULTSET_STRS = {
     'row_column_name': '{c.display_name}',
     'sensor_type': 'Result Type: {c.result_type}',
-    'sensor': 'From Sensor: {c.name_or_hash}',
+    'sensor': 'From Sensor: {c.sensor_nameorhash}',
     'flat_idx_fail': "NO INDEX CORRELATED VALUE FOR {c.display_name} INDEX: {idx}",
-    'flat_row_unrelated': "UNRELATED TO SENSOR: {c.name_or_hash}",
-    'flow_row_unexpected': "UNEXPECTED SCENARIO WITH SENSOR: {c.name_or_hash}",
+    'flat_row_unrelated': "UNRELATED TO SENSOR: {s}",
+    'flow_row_unexpected': "UNEXPECTED SCENARIO WITH SENSOR: {s}",
+    'yaxis_row_vals': 'Values in row: {ri}',
+    'yaxis_flat_vals': 'Value {idx:03d}',
+    'finished': "Created {resultlen} rows from {rowlen} rows and {collen} columns "
+    "using flatten={flatten}, yaxis={yaxis}, add_type={add_type}, add_sensor={add_sensor} "
+    "from tanium_ng object:: {obj}",
 }
 
 FALLBACK_HASH_MAP = {

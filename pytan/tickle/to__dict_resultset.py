@@ -1,14 +1,11 @@
 import logging
 
 from pytan import PytanError, text_type
-from pytan.tanium_ng import ResultSetList
+from pytan.tanium_ng import ResultSetList, ResultSet
 from pytan.excelwriter import ExcelWriter
 from pytan.tickle.tools import jsonify
 
-from pytan.session import HASH_CACHE
-from pytan.tickle.constants import (
-    RESULTSET_ADD_TYPE, RESULTSET_ADD_SENSOR, RESULTSET_FLATTEN, RESULTSET_STRS
-)
+from pytan.tickle.constants import RESULTSET_ARGS, RESULTSET_STRS
 
 MYLOG = logging.getLogger(__name__)
 
@@ -23,13 +20,13 @@ class DictSerializeError(PytanError):
 
 class ToDictResultSet(object):
     '''
-    normal rows::
+    normal rows xaxis::
     Computer Name || IP Address ||Count
     TPT1 || 1.1.1.1\n2.2.2.2 || 1
     auth || 1.1.1.1\n2.2.2.2 || 1
     WIN || 1.1.1.1\n2.2.2.2 || 1
 
-    flat rows::
+    flat rows xaxis::
     Computer Name || IP Address ||Count
     TPT1 || 1.1.1.1 || 1
     TPT1 || 2.2.2.2 || 1
@@ -37,177 +34,190 @@ class ToDictResultSet(object):
     auth || 2.2.2.2 || 1
     WIN || 1.1.1.1 || 1
     WIN || 2.2.2.2 || 1
+
+    normal rows yaxis::
+    NAME || row 1 vals || row 2 vals || row 3 vals
+    Computer Name || TPT1 || auth || WIN
+    IP Address || 1.1.1.1\n2.2.2.2 || 1.1.1.1\n2.2.2.2 || 1.1.1.1\n2.2.2.2
+    Count || 1 || 1 || 1
+
+    flat rows yaxis::
+    NAME || row 1 val 1 || row 1 val 2 || row 2 val 1 || row 2 val 2 || row 3 val 1 || row 3 val 2
+    Computer Name || TPT1 || TPT1 || auth || auth || WIN || WIN
+    IP Address || 1.1.1.1 || 2.2.2.2 || 1.1.1.1 || 2.2.2.2 || 1.1.1.1 || 2.2.2.2
+    Count || 1 || 1 || 1 || 1 || 1 || 1
+
     '''
 
     def __init__(self, obj, **kwargs):
-        self.ADD_TYPE = kwargs.get('add_type', RESULTSET_ADD_TYPE)
-        self.ADD_SENSOR = kwargs.get('add_sensor', RESULTSET_ADD_SENSOR)
-        self.FLATTEN = kwargs.get('flatten', RESULTSET_FLATTEN)
+        for k, v in RESULTSET_ARGS.items():
+            kwargs[k] = kwargs.get(k, v)
 
-        if not isinstance(obj, ResultSetList):
-            err = "obj is type {!r}, must be a tanium_ng.ResultSetList object"
-            err = err.format(type(obj).__name__)
+        if isinstance(obj, ResultSet):
+            rows = obj.rows
+            columns = obj.columns
+        elif isinstance(obj, ResultSetList):
+            rows = obj.result_set.rows
+            columns = obj.result_set.columns
+        else:
+            err = "object must be either ResultSetList or ResultSet, supplied type: {} ({})"
+            err = err.format(type(obj), obj)
             raise DictSerializeError(err)
 
-        if self.FLATTEN:
-            self.RESULT = self.get_flat_rows(obj, **kwargs)
+        if not rows:
+            err = "No rows found, can not proccess {}"
+            err = err.format(obj)
+            raise DictSerializeError(err)
+
+        if not columns:
+            err = "No columns found, can not proccess {}"
+            err = err.format(obj)
+            raise DictSerializeError(err)
+
+        if kwargs.get('yaxis', False):
+            if kwargs.get('flatten', False):
+                result = self.do_flat_yaxis(rows, columns, **kwargs)
+            else:
+                result = self.do_normal_yaxis(rows, columns, **kwargs)
         else:
-            self.RESULT = self.get_normal_rows(obj, **kwargs)
+            if kwargs.get('flatten', False):
+                result = self.do_flat_xaxis(rows, columns, **kwargs)
+            else:
+                result = self.do_normal_xaxis(rows, columns, **kwargs)
 
-        m = (
-            "Converted tanium_ng object {!r} with {} rows and {} columns into "
-            "{} rows using flatten={}, add_type={}, add_sensor={}"
-        )
-        m = m.format(
-            type(obj),
-            len(obj.result_set.rows),
-            len(obj.result_set.columns),
-            len(self.RESULT),
-            self.FLATTEN,
-            self.ADD_TYPE,
-            self.ADD_SENSOR,
-        )
+        kwargs['obj'] = obj
+        kwargs['rowlen'] = len(rows)
+        kwargs['collen'] = len(columns)
+        kwargs['resultlen'] = len(result)
+
+        m = RESULTSET_STRS['finished'].format(**kwargs)
         MYLOG.info(m)
+        self.RESULT = result
 
-    def get_normal_rows(self, obj, **kwargs):
-        rows = obj.result_set.rows
-        result = [{self.get_row_colname(c): self.join(c) for c in r} for r in rows]
+    def new_yaxis_row(self, c, **kwargs):
+        result = {}
+        result['Column Name'] = c.display_name
+        if kwargs.get('add_type', False):
+            result['Result Type'] = c.result_type
+        if kwargs.get('add_sensor', False):
+            result['Sensor Name'] = c.sensor_nameorhash
         return result
 
-    def get_flat_rows(self, obj, **kwargs):
-        rows = obj.result_set.rows
-        columns = obj.result_set.columns
-        # get all of the hashes for each column in the current result set
-        what_hashes = list(set([c.what_hash for c in columns]))
-
+    def do_normal_yaxis(self, rows, columns, **kwargs):
         result = []
-        for wh in what_hashes:
-            for row in rows:
+        for ci, c in enumerate(columns):
+            new_row = self.new_yaxis_row(c, **kwargs)
+            for ri, r in enumerate(rows):
+                header = RESULTSET_STRS['yaxis_row_vals'].format(ri=ri + 1)
+                new_row[header] = join(r[ci].values)
+            result.append(new_row)
+        return result
+
+    def do_normal_xaxis(self, rows, columns, **kwargs):
+        result = []
+        for r in rows:
+            new_row = {}
+            for c in r:
+                header = self.colname(c, **kwargs)
+                new_row[header] = join(c)
+            result.append(new_row)
+        return result
+
+    def do_flat_xaxis(self, rows, columns, **kwargs):
+        # get all of the unique names or hashes for each column in the current result set
+        sensors = list(set([c.sensor_nameorhash for c in columns]))
+        result = []
+        # for each name/hash found, loop over all the rows and create a new set of rows
+        # for this name/hash that have index correlated values
+        for s in sensors:
+            for r in rows:
                 # get the highest value length from all of this what hashes friends
-                value_max = max([len(c) for c in row if c.what_hash == wh])
+                value_max = max([len(c) for c in r if c.sensor_nameorhash == s])
                 # if the maximum number of values for this column in this row is 1, skip it
                 if value_max == 1:
                     continue
                 # lets create a new row for each set of values that can exist
                 for idx in range(0, value_max):
-                    flat_row_vals = [self.get_flat_row_val(c, wh, idx) for c in row]
-                    result.append(dict(flat_row_vals))
+                    new_row = {}
+                    for c in r:
+                        header = self.colname(c, **kwargs)
+                        new_row[header] = self.flatx_val(c, s, idx)
+                    result.append(new_row)
+        # if no rows created, then all rows are value_max == 1, so just do a normal xaxis
+        if not result:
+            result = self.do_normal_xaxis(rows, columns, **kwargs)
         return result
 
-    def get_flat_row_val(self, c, wh, idx):
+    def do_flat_yaxis(self, rows, columns, **kwargs):
+        sensors = list(set([c.sensor_nameorhash for c in columns]))
+        result = []
+        for s in sensors:
+            for ri, r in enumerate(rows):
+                value_max = max([len(c) for c in r if c.sensor_nameorhash == s])
+                # if the maximum number of values for this column in this row is 1, skip it
+                if value_max == 1:
+                    continue
+                # lets create a new row for each set of values that can exist
+                result.append({})
+                for ci, c in enumerate(r):
+                    new_row = self.flaty_row(c, s, ri, value_max, **kwargs)
+                    if new_row:
+                        result.append(new_row)
+        if not result:
+            result = self.do_normal_xaxis(rows, columns, **kwargs)
+        return result
+
+    def flaty_row(self, c, s, ri, value_max, **kwargs):
+        result = {}
+        for idx in range(0, value_max):
+            header = RESULTSET_STRS['yaxis_flat_vals'].format(c=c, ri=ri + 1, idx=idx + 1)
+            if c.sensor_nameorhash == s:
+                try:
+                    result[header] = c[idx]
+                except:
+                    result[header] = RESULTSET_STRS['flat_idx_fail'].format(c=c, idx=idx + 1, s=s)
+            elif c.sensor_nameorhash != s and len(c) == 1:
+                result[header] = c[0]
+        if result:
+            result.update(self.new_yaxis_row(c, **kwargs))
+        return result
+
+    def flatx_val(self, c, s, idx):
         # see if this columns what hash matches our current what hash
-        if c.what_hash == wh:
+        if c.sensor_nameorhash == s:
             # try to get the index correlated value from this row's column
             try:
-                val = c[idx]
+                result = c[idx]
             except:
-                val = RESULTSET_STRS['flat_idx_fail'].format(c=c, idx=idx)
-
+                result = RESULTSET_STRS['flat_idx_fail'].format(c=c, idx=idx, s=s)
         # if this c is not related, and just has one item, use that as the value
-        elif c.what_hash != wh and len(c) == 1:
-            val = c[0]
-
+        elif c.sensor_nameorhash != s and len(c) == 1:
+            result = c[0]
         # if this c is not related and has more than one value, set as unrelated
-        elif c.what_hash != wh and len(c) > 1:
-            val = RESULTSET_STRS['flat_row_unrelated'].format(c=c)
-
+        elif c.sensor_nameorhash != s and len(c) > 1:
+            result = RESULTSET_STRS['flat_row_unrelated'].format(c=c, idx=idx, s=s)
         # this shouldn't happen
         else:
-            val = RESULTSET_STRS['flow_row_unexpected'].format(c=c)
+            result = RESULTSET_STRS['flow_row_unexpected'].format(c=c, idx=idx, s=s)
+        return result
 
-        # return a dictionary with the key as the column name and the value as derived val
-        row_val = (self.get_row_colname(c), val)
-        return row_val
-
-    def get_row_colname(self, c):
+    def colname(self, c, **kwargs):
         results = []
-        c.name_or_hash = self.get_name_or_hash(c)
-
         colname = RESULTSET_STRS['row_column_name'].format(c=c)
         results.append(colname)
-
-        if self.ADD_TYPE:
+        if kwargs.get('add_type', False):
             coltype = RESULTSET_STRS['sensor_type'].format(c=c)
             results.append(coltype)
-
-        if self.ADD_SENSOR:
+        if kwargs.get('add_sensor', False):
             colsensor = RESULTSET_STRS['sensor'].format(c=c)
             results.append(colsensor)
-
-        result = self.join(results)
+        result = join(results)
         return result
 
-    def join(self, c):
-        result = CRLF.join([text_type(v) for v in c])
-        return result
 
-    def get_name_or_hash(self, c):
-        handler = getattr(self, '_HANDLER', None)
-        wh = getattr(c, 'what_hash', '')
-        sn = getattr(c, 'sensor_name', '')
-        cache_result = HASH_CACHE.get(wh, '')
-        if sn:
-            result = sn
-        elif cache_result:
-            result = cache_result
-        elif handler and wh:
-            result = handler.SESSION.get_string(from_hash=wh)
-        else:
-            result = 'hash({})'.format(wh)
-        return result
-
-    '''
-    NEXTVER: RE-DO Y AXIS
-    NEXTVER: FIGURE OUT FLAT Y AXIS
-    NEXTVER: FIGURE OUT PIVOT COLUMN
-
-    straight column csv export::
-    NAME: 1  || 2 || 3
-    Computer Name: TPT1 || auth || WIN
-    Count: 1 || 1 || 1
-
-    self:
-    _COL_ROW = 'Values in row: {}'
-    _COL_NAME = 'Column Name'
-    _COL_TYPE = "Result Type"
-    _COL_SHASH = "From Sensor Hash"
-    # _COL_SNAME = "From Sensor Name"  # NEXTVER
-
-    init:
-        # xaxis = kwargs.get('xaxis', True)  # TODO constant
-        # yaxis = kwargs.get('yaxis', False)  # TODO constant
-
-        # if yaxis:
-            # run_method = self.run_yaxis
-        # elif xaxis:
-            # run_method = self.run_xaxis
-        # else:
-
-    def run_yaxis(self, rd, **kwargs):
-        # for idx, col in enumerate(self.columns):
-            # col.values = [row[idx].values for row in self.rows]
-        columns = rd.result_set.columns
-        result = [dict(self.get_col_colname(c) + self.get_col_vals(c)) for c in columns]
-        return result
-
-    def get_col_colname(self, c):
-        result = []
-        colname = [self._COL_NAME, text_type(c.display_name)]
-        result.append(colname)
-
-        if self.ADD_TYPE:
-            coltype = [self._COL_TYPE, text_type(c.result_type)]
-            result.append(coltype)
-
-        if self.ADD_SENSOR:
-            colsensor = [self._COL_SHASH, text_type(c.what_hash)]
-            result.append(colsensor)
-        return result
-
-    def get_col_vals(self, c):
-        result = [[self._COL_ROW.format(idx + 1), self.join(r)] for idx, r in enumerate(c)]
-        return result
-    '''
+def join(c):
+    result = CRLF.join([text_type(v) for v in c])
+    return result
 
 
 def to_dict_resultset(obj, **kwargs):
