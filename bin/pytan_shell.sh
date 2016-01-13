@@ -5,12 +5,9 @@ my_script=`basename ${my_path}`
 my_dirname=`dirname ${my_path}`
 my_dir=`cd ${my_dirname} ; pwd`
 
-PYTHONINSPECT="True"
-
 . ${my_dir}/config.sh
 
-export PYTHONINSPECT
-
+export PYTHONINSPECT="True"
 WORKER_PATH="${my_dir}/worker.py"
 
 spew "Executing: \"${PYTHON_BINARY}\" ${PYTHON_OPTIONS} \"${WORKER_PATH}\" \"shell:${my_script}\" ${PASSED_ARGS}"

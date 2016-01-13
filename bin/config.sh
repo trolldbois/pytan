@@ -26,10 +26,6 @@ fi
 
 for a in "${@}"; do PASSED_ARGS="${PASSED_ARGS}'${a}' "; done
 
-if echo "${PASSED_ARGS}" | grep -- "'--help'\|'--version'" 2>&1 > /dev/null; then
-    PYTHONINSPECT=""
-fi
-
 PYTHONPATH="${parent_dir}:${PYTHONPATH}"
 PYTHONDONTWRITEBYTECODE="True"
 PYTHON_VERSION=`"${PYTHON_BINARY}" --version 2>&1`
