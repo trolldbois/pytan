@@ -6,6 +6,7 @@ import argparse
 from pytan import PytanError
 from pytan.handler import Handler
 from pytan.handler_args import prompt_for_args
+from pytan.handler_logs import print_pytan_loglevels
 from pytan.version import __version__
 from pytan.shellparser import ShellParser, add_arg_group
 from pytan.historyconsole import HistoryConsole
@@ -16,6 +17,25 @@ from pytan.pollers.constants import Q_COMPLETE_PCT, Q_POLLING_SECS
 
 class VersionMismatchError(PytanError):
     pass
+
+
+class LogLevelPrinter(argparse.Action):
+
+    def __init__(self,
+                 option_strings,
+                 dest=argparse.SUPPRESS,
+                 default=argparse.SUPPRESS,
+                 help=None):
+        super(LogLevelPrinter, self).__init__(
+            option_strings=option_strings,
+            dest=dest,
+            default=default,
+            nargs=0,
+            help=help)
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        print_pytan_loglevels()
+        parser.exit()
 
 
 class Base(object):
@@ -62,6 +82,7 @@ class Base(object):
         )
         self.parser.add_argument('--version', action='version', version=__version__)
         self.parser.add_argument('--help', action='help')
+        self.parser.add_argument('--print_loglevels', action=LogLevelPrinter)
 
     def add_help_opts(self):
         name = 'PyTan Help Options'
