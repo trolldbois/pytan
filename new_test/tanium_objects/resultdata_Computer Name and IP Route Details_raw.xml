@@ -2,12 +2,12 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <t:return><command>GetResultData</command>
-<session>1-3382-1d3855347e304f648a67ded30989bada8eb24251c85b2863d46510252f3c87a4bb57e7683ecfd3cb9251832003447ae193b3ea80f3f0cce02ce3b175c36376b0</session>
+<session>1-8555-9b26aee196a000e0fce0b00d85d47bf2d5641d7bcc4157ef10ceb84d672ff09227198b83d3cf325764e4dafc477e6e4081ea480b78db9529a20b8de365e6a52f</session>
 <ID></ID>
 <IDType></IDType>
 <ContextID></ContextID>
 <server_version>6.5.314.4328</server_version>
-<object_list><question><id>48653</id>
+<object_list><question><id>50052</id>
 </question>
 </object_list>
 
@@ -15,11 +15,11 @@
 </options>
 
 <ResultXML>
-<![CDATA[<result_sets><now>2016/01/10 17:46:48 GMT-0000</now>
+<![CDATA[<result_sets><now>2016/01/12 13:25:09 GMT-0000</now>
 <result_set><age>0</age>
 <archived_question_id>0</archived_question_id>
 <saved_question_id>0</saved_question_id>
-<question_id>48653</question_id>
+<question_id>50052</question_id>
 <report_count>2</report_count>
 <seconds_since_issued>0</seconds_since_issued>
 <issue_seconds>0</issue_seconds>

@@ -2,7 +2,7 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 <soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <t:return><command>GetObject</command>
-<session>1-3382-1d3855347e304f648a67ded30989bada8eb24251c85b2863d46510252f3c87a4bb57e7683ecfd3cb9251832003447ae193b3ea80f3f0cce02ce3b175c36376b0</session>
+<session>1-8555-9b26aee196a000e0fce0b00d85d47bf2d5641d7bcc4157ef10ceb84d672ff09227198b83d3cf325764e4dafc477e6e4081ea480b78db9529a20b8de365e6a52f</session>
 <server_version>6.5.314.4328</server_version>
 <ID></ID>
 <IDType></IDType>
@@ -198,11 +198,11 @@ echo &quot;N/A on AIX&quot;
 </metadata>
 <cache_row_id>1</cache_row_id>
 </sensor>
-<cache_info><cache_id>3606602801</cache_id>
+<cache_info><cache_id>554485368</cache_id>
 <page_row_count>1</page_row_count>
 <filtered_row_count>1</filtered_row_count>
 <cache_row_count>665</cache_row_count>
-<expiration>2016-01-10T17:46:42</expiration>
+<expiration>2016-01-12T13:24:33</expiration>
 </cache_info>
 </sensors>
 </result_object>

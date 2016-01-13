@@ -36,12 +36,22 @@ if __name__ == "__main__":
 
 
 from pytan.utils import write_file
+os.chdir(my_dir)
 
 
 def write_last_response(t, n, ext='xml'):
     fn = '{}_{}_raw.{}'.format(t, n.replace('.*', '...'), ext)
-    fp = os.path.join(my_dir, fn)
-    print(write_file(fp, handler.SESSION.LAST_RESPONSE.text))
+    print(write_file(fn, handler.SESSION.LAST_RESPONSE.text))
+
+
+def do_q(q):
+    v = handler.ask_parsed(question_text=q, picker=1)
+    handler.get_result_data(v.question_object)
+    write_last_response('resultdata', q)
+    handler.get_result_info(v.question_object)
+    write_last_response('resultinfo', q)
+    handler.get_result_data(v.question_object, sse=True)
+    write_last_response('resultdata_sse', q)
 
 
 n = 'Action Statuses'
@@ -64,9 +74,9 @@ e = {'value': n, 'operator': 're'}
 v = handler.get_sensors(e)
 write_last_response('sensors', n)
 
-n = 'Last 5 minutes of questions'
+n = 'Last 20 minutes of questions'
 e = {
-    'value': pytan.tickle.tools.secs_from_now(secs=-(60 * 5)),
+    'value': pytan.tickle.tools.secs_from_now(secs=-(60 * 20)),
     'type': 'Date',
     'field': 'expiration',
     'operator': 'Greater',
@@ -84,21 +94,20 @@ e = {'value': n}
 v = handler.get_users(e)
 write_last_response('users', n)
 
-n = 'Last 5 minutes of actions'
+n = 'Last 20 minutes of actions'
 e = {
-    'value': pytan.tickle.tools.secs_from_now(secs=-(60 * 5)),
+    'value': pytan.tickle.tools.secs_from_now(secs=-(60 * 20)),
     'type': 'Date',
     'field': 'expiration_time',
     'operator': 'Greater',
 }
 v = handler.get_actions(e)
+if not v:
+    raise Exception('no actions deployed in last 20 minutes, deploy one!')
 write_last_response('actions', n)
 
-q = 'Computer Name and IP Route Details'
-v = handler.ask_parsed(question_text=q, picker=1)
-rd = handler.get_result_data(v.question_object)
-write_last_response('resultdata', q)
-ri = handler.get_result_info(v.question_object)
-write_last_response('resultinfo', q)
-rd = handler.get_result_data(v.question_object, sse=True)
-write_last_response('resultdata_sse', q)
+do_q('Computer Name')
+do_q('Computer Name and IP Address')
+do_q('Computer Name and IP Route Details')
+do_q('Computer Name and IP Route Details and Installed Applications')
+do_q('IP Route Details and Installed Applications')

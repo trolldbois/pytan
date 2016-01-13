@@ -7,7 +7,7 @@
 <IDType></IDType>
 <ContextID></ContextID>
 <server_version>6.5.314.4328</server_version>
-<object_list><question><id>50052</id>
+<object_list><question><id>50050</id>
 </question>
 </object_list>
 
@@ -15,19 +15,19 @@
 </options>
 
 <ResultXML>
-<![CDATA[<result_infos><now>2016/01/12 13:25:09 GMT-0000</now>
+<![CDATA[<result_infos><now>2016/01/12 13:24:44 GMT-0000</now>
 <max_available_age>0</max_available_age>
 <result_info><age>0</age>
-<id>50052</id>
-<report_count>2</report_count>
+<id>50050</id>
+<report_count>3</report_count>
 <saved_question_id>0</saved_question_id>
-<question_id>50052</question_id>
+<question_id>50050</question_id>
 <archived_question_id>0</archived_question_id><seconds_since_issued>0</seconds_since_issued><issue_seconds>0</issue_seconds><expire_seconds>0</expire_seconds><tested>3</tested>
 <passed>3</passed>
 <mr_tested>3</mr_tested>
 <mr_passed>3</mr_passed>
 <estimated_total>3</estimated_total>
-<select_count>2</select_count>
+<select_count>1</select_count>
 <row_count>3</row_count>
 <row_count_machines>3</row_count_machines>
 <error_count>0</error_count>

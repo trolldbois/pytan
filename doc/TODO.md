@@ -2,7 +2,6 @@
 
 - [DOC](#doc)
   - [TANIUMNG](#taniumng)
-  - [TICKLE](#tickle)
   - [TESTS](#tests)
   - [SESSION](#session)
   - [HUMAN PARSING](#human-parsing)
@@ -38,13 +37,6 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * TODO ADD DOCSTR TO BUILDER HEADER
 * rebuild taniumpy with latest wsdl (LAST)
 
-## TICKLE
-* move serializers out => tickle NOW
-  * csv 
-    * maybe use string api for what_hash instead of getting sensors?
-    * add what_name to session GRD 
-* add result info to tickle.from_sse_xml (passthrough from handler)
-
 ## TESTS
 * add expected for tickle tests
 
@@ -56,7 +48,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * argparse for specs/left/right/etc
 
 ## HANDLER/MAIN
-* re-do logging yet again, add support for {0: -1, 11: 20, 12: 30, 14: 50} (pytan level: logging level)
+* re-do logging yet again, add support for {0: -1, 11: 20, 12: 30, 14: 50} (pytan level: logging level) ==> NEXT
 * also make log printer better (add a generic one that prints log levels in human friendly format, need map)
 * create_parent_group_obj broken, fix it and add debug logging!
 * add logger to tanium_ng and tickle_ng

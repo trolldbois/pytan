@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetObject</command>
+<session>1-8555-9b26aee196a000e0fce0b00d85d47bf2d5641d7bcc4157ef10ceb84d672ff09227198b83d3cf325764e4dafc477e6e4081ea480b78db9529a20b8de365e6a52f</session>
+<server_version>6.5.314.4328</server_version>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<result_object><actions><action><id>14</id>
+<name>Deploy Distribute Tanium Standard Utilities</name>
+<comment></comment>
+<target_group><id>730</id>
+<name>Default</name>
+</target_group>
+<action_group><id>0</id>
+<name>Default</name>
+</action_group>
+<package_spec><id>23</id>
+<name>Distribute Tanium Standard Utilities</name>
+<command>cmd /c cscript install-standard-utils.vbs &quot;Tools\StdUtils&quot;</command>
+</package_spec>
+<skip_lock_flag>0</skip_lock_flag>
+<expire_seconds>3300</expire_seconds>
+<creation_time>2016-01-12T13:06:11</creation_time>
+<start_time>2016-01-12T13:06:13</start_time>
+<expiration_time>2016-01-12T14:01:13</expiration_time>
+<distribute_seconds>0</distribute_seconds>
+<status>Open</status>
+<stopped_flag>0</stopped_flag>
+<user><id>1</id>
+<name>Administrator</name>
+<domain></domain>
+<group_id>0</group_id>
+<last_login>2016-01-12T13:06:10</last_login>
+</user>
+<history_saved_question><id>96</id>
+</history_saved_question>
+<saved_action><id>6</id>
+</saved_action>
+<approver><id>1</id>
+<name>Administrator</name>
+</approver>
+<metadata><item><name>TConsole.SavedAction.TargetEstimateLabel</name>
+<value>{&quot;estimate_percent&quot;:99,&quot;requireEstimateConfirmation&quot;:false,&quot;label&quot;:&quot;An estimated 3 clients will be affected with 99% of them examined as of Tue Jan 12 2016 08:07:38 AM.&quot;,&quot;estimate_total&quot;:3}</value>
+<admin_flag>0</admin_flag>
+</item>
+</metadata>
+<cache_row_id>1</cache_row_id>
+</action>
+<action><id>15</id>
+<name>Deploy Custom Tagging - Add Tags</name>
+<comment></comment>
+<target_group><id>753</id>
+<name>Default</name>
+</target_group>
+<action_group><id>0</id>
+<name>Default</name>
+</action_group>
+<package_spec><id>51</id>
+<name>Custom Tagging - Add Tags</name>
+<command>cmd /c cscript //T:60 add-tags.vbs &quot;Test123&quot;</command>
+<parameters><parameter><key>$1</key>
+<value>Test123</value>
+<type>1</type>
+</parameter>
+</parameters>
+</package_spec>
+<skip_lock_flag>0</skip_lock_flag>
+<expire_seconds>660</expire_seconds>
+<creation_time>2016-01-12T13:23:30</creation_time>
+<start_time>2016-01-12T13:23:32</start_time>
+<expiration_time>2016-01-12T13:34:32</expiration_time>
+<distribute_seconds>0</distribute_seconds>
+<status>Open</status>
+<stopped_flag>0</stopped_flag>
+<user><id>1</id>
+<name>Administrator</name>
+<domain></domain>
+<group_id>0</group_id>
+<last_login>2016-01-12T13:23:30</last_login>
+</user>
+<history_saved_question><id>96</id>
+</history_saved_question>
+<saved_action><id>7</id>
+</saved_action>
+<approver><id>1</id>
+<name>Administrator</name>
+</approver>
+<metadata><item><name>TConsole.SavedAction.TargetEstimateLabel</name>
+<value>{&quot;estimate_percent&quot;:99,&quot;requireEstimateConfirmation&quot;:false,&quot;label&quot;:&quot;An estimated 1 clients will be affected with 99% of them examined as of Tue Jan 12 2016 08:24:35 AM.&quot;,&quot;estimate_total&quot;:1}</value>
+<admin_flag>0</admin_flag>
+</item>
+</metadata>
+<cache_row_id>2</cache_row_id>
+</action>
+<cache_info><cache_id>2002949307</cache_id>
+<page_row_count>2</page_row_count>
+<filtered_row_count>2</filtered_row_count>
+<cache_row_count>11</cache_row_count>
+<expiration>2016-01-12T13:24:34</expiration>
+</cache_info>
+</actions>
+</result_object>
+<ResultXML></ResultXML>
+<options><cache_filters><filter><field>expiration_time</field>
+<not_flag>0</not_flag>
+<operator>Greater</operator>
+<value>2016-01-12T13:06:15</value>
+</filter>
+</cache_filters>
+<include_hidden_flag>0</include_hidden_flag>
+</options>
+</t:return></soap:Body>
+</soap:Envelope>

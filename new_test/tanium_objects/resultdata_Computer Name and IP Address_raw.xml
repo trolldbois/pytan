@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" soap:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+<soap:Body xmlns:t="urn:TaniumSOAP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<t:return><command>GetResultData</command>
+<session>1-8555-9b26aee196a000e0fce0b00d85d47bf2d5641d7bcc4157ef10ceb84d672ff09227198b83d3cf325764e4dafc477e6e4081ea480b78db9529a20b8de365e6a52f</session>
+<ID></ID>
+<IDType></IDType>
+<ContextID></ContextID>
+<server_version>6.5.314.4328</server_version>
+<object_list><question><id>50051</id>
+</question>
+</object_list>
+
+<options><suppress_object_list>1</suppress_object_list>
+</options>
+
+<ResultXML>
+<![CDATA[<result_sets><now>2016/01/12 13:24:54 GMT-0000</now>
+<result_set><age>0</age>
+<archived_question_id>0</archived_question_id>
+<saved_question_id>0</saved_question_id>
+<question_id>50051</question_id>
+<report_count>2</report_count>
+<seconds_since_issued>0</seconds_since_issued>
+<issue_seconds>0</issue_seconds>
+<expire_seconds>0</expire_seconds>
+<tested>3</tested>
+<passed>3</passed>
+<mr_tested>3</mr_tested>
+<mr_passed>3</mr_passed>
+<estimated_total>3</estimated_total>
+<select_count>2</select_count>
+<cs><c><wh>3409330187</wh><dn>Computer Name</dn><rt>1</rt></c><c><wh>3209138996</wh><dn>IP Address</dn><rt>5</rt></c><c><wh>0</wh><dn>Count</dn><rt>3</rt></c></cs><filtered_row_count>3</filtered_row_count><filtered_row_count_machines>3</filtered_row_count_machines><row_count>3</row_count><row_count_machines>3</row_count_machines><item_count>3</item_count><rs><r><id>1076857573</id><cid>2275854501</cid><c><v>TPT1.pytanlab.com</v></c><c><v>10.0.1.240</v></c><c><v>1</v></c></r><r><id>3523987646</id><cid>1111729407</cid><c><v>WIN-6U71ED4M23D</v></c><c><v>2604:2000:1200:4000:11a5:a1d7:87da:d65c</v><v>10.0.1.11</v><v>fe80::11a5:a1d7:87da:d65c</v></c><c><v>1</v></c></r><r><id>2710243522</id><cid>1153835043</cid><c><v>auth-services.pytanlab.com</v></c><c><v>10.0.1.230</v><v>fe80::c968:9004:3983:4aff</v><v>2604:2000:1200:4000:c968:9004:3983:4aff</v></c><c><v>1</v></c></r></rs></result_set>
+</result_sets>
+]]>
+</ResultXML>
+<result_object></result_object>
+</t:return></soap:Body>
+</soap:Envelope>

@@ -1,0 +1,6 @@
+<cs><c><wh>3409330187</wh><dn>Computer Name</dn><rt>1</rt></c><c><wh>3209138996</wh><dn>IP Address</dn><rt>5</rt></c><c><wh>0</wh><dn>Count</dn><rt>3</rt></c></cs>
+<rs>
+<r><id>1076857573</id><cid>2275854501</cid><c><v>TPT1.pytanlab.com</v></c><c><v>10.0.1.240</v></c><c><v>1</v></c></r>
+<r><id>3523987646</id><cid>1111729407</cid><c><v>WIN-6U71ED4M23D</v></c><c><v>2604:2000:1200:4000:11a5:a1d7:87da:d65c</v><v>10.0.1.11</v><v>fe80::11a5:a1d7:87da:d65c</v></c><c><v>1</v></c></r>
+<r><id>2710243522</id><cid>1153835043</cid><c><v>auth-services.pytanlab.com</v></c><c><v>10.0.1.230</v><v>fe80::c968:9004:3983:4aff</v><v>2604:2000:1200:4000:c968:9004:3983:4aff</v></c><c><v>1</v></c></r>
+</rs>
