@@ -1,110 +1,115 @@
 """Constants for :mod:`pytan`."""
 from collections import OrderedDict
 
-CRED_DEFAULTS = {}
-CRED_DEFAULTS['username'] = ''
-CRED_DEFAULTS['password'] = ''
-CRED_DEFAULTS['domain'] = ''
-CRED_DEFAULTS['secondary'] = ''
-CRED_DEFAULTS['session_id'] = ''
-CRED_DEFAULTS['persistent'] = False
+ARGS_ORDER = ['cmdline_args', 'osenvironment_args', 'configfile_args', 'default_args']
 
-SESSION_DEFAULTS = {}
-SESSION_DEFAULTS['host'] = ''
-SESSION_DEFAULTS['port'] = 443
-SESSION_DEFAULTS['protocol'] = 'https'
-SESSION_DEFAULTS['port_fallback'] = 444
-SESSION_DEFAULTS['session_fallback'] = True
-SESSION_DEFAULTS['retry_count'] = 5
-SESSION_DEFAULTS['record_all'] = False
-SESSION_DEFAULTS['force_version'] = ''
-SESSION_DEFAULTS['connect_secs'] = 5
-SESSION_DEFAULTS['connect_secs_soap'] = 15
-SESSION_DEFAULTS['response_secs'] = 15
-SESSION_DEFAULTS['response_secs_soap'] = 540
-SESSION_DEFAULTS['clean_xml_restricted'] = True
-SESSION_DEFAULTS['clean_xml_invalid'] = True
-SESSION_DEFAULTS['https_proxy'] = ''
-SESSION_DEFAULTS['request_headers'] = {
-    'Accept-Encoding': 'gzip',
-    'User-Agent': '{title}/{version}',
+CRED_DEFAULTS = {
+    'username': '',
+    'password': '',
+    'domain': '',
+    'secondary': '',
+    'session_id': '',
+    'persistent': False,
 }
 
-HANDLER_DEFAULTS = {}
-HANDLER_DEFAULTS['logfile_enable'] = False
-HANDLER_DEFAULTS['logfile_output'] = "~/pytan.log"
-HANDLER_DEFAULTS['logfile_name'] = "pytan_file"
-HANDLER_DEFAULTS['logfile_handler'] = "FileHandler"
-HANDLER_DEFAULTS['logfile_level'] = "NOTSET"
-HANDLER_DEFAULTS['logfile_formatter'] = '%(asctime)s %(levelname)-8s [%(name)s] %(message)s'
-HANDLER_DEFAULTS['logconsole_enable'] = True
-HANDLER_DEFAULTS['logconsole_output'] = 'sys.stdout'
-HANDLER_DEFAULTS['logconsole_handler'] = "StreamHandler"
-HANDLER_DEFAULTS['logconsole_name'] = "pytan_console"
-HANDLER_DEFAULTS['logconsole_level'] = "NOTSET"
-HANDLER_DEFAULTS['logconsole_formatter'] = '%(levelname)-8s [%(name)s] %(message)s'
-HANDLER_DEFAULTS['loglevel'] = 0
-HANDLER_DEFAULTS['config_file'] = "~/.pytan_config.json"
+SESSION_DEFAULTS = {
+    'host': '',
+    'port': 443,
+    'protocol': 'https',
+    'port_fallback': 444,
+    'session_fallback': True,
+    'retry_count': 5,
+    'record_all': False,
+    'force_version': '',
+    'connect_secs': 5,
+    'connect_secs_soap': 15,
+    'response_secs': 15,
+    'response_secs_soap': 540,
+    'clean_xml_restricted': True,
+    'clean_xml_invalid': True,
+    'https_proxy': '',
+    'request_headers': {'Accept-Encoding': 'gzip', 'User-Agent': '{title}/{version}'},
+}
+
+HANDLER_DEFAULTS = {
+    'logfile_enable': False,
+    'logfile_output': "~/pytan.log",
+    'logfile_name': "pytan_file",
+    'logfile_handler': "FileHandler",
+    'logfile_level': "NOTSET",
+    'logfile_formatter': '%(asctime)s %(levelname)-8s [%(name)s] %(message)s',
+    'logconsole_enable': True,
+    'logconsole_output': 'sys.stdout',
+    'logconsole_handler': "StreamHandler",
+    'logconsole_name': "pytan_console",
+    'logconsole_level': "NOTSET",
+    'logconsole_formatter': '%(levelname)-8s [%(name)s] %(message)s',
+    'loglevel': 0,
+    'config_file': "~/.pytan_config.json",
+}
 HANDLER_DEFAULTS.update(CRED_DEFAULTS)
 HANDLER_DEFAULTS.update(SESSION_DEFAULTS)
 
-
-# short hand reference to python
-OFF = 'NOTSET'  # python logging int: 0
+# short hand reference to python logging levels
 DEBUG = 'DEBUG'  # python logging int: 10
 INFO = 'INFO'  # python logging int: 20
-WARN = 'WARNING'  # python logging int: 30
-ERR = 'ERROR'  # python logging int: 40
-CRIT = 'CRITICAL'  # python logging int: 50
-# {0: ERR, 1: WARN, 10: INFO, 20: DEBUG}
-LOGGER_LEVELS = [OFF, DEBUG, INFO, WARN, ERR, CRIT]
+WARNING = 'WARNING'  # python logging int: 30
+ERROR = 'ERROR'  # python logging int: 40
+CRITICAL = 'CRITICAL'  # python logging int: 50
+LOGGER_LEVELS = [DEBUG, INFO, WARNING, ERROR, CRITICAL]
 
-LOGMAP = {}
-LOGMAP['pytan'] = 1
-LOGMAP['pytan.handler'] = 1
-LOGMAP['pytan.handler_args'] = 1
-LOGMAP['pytan.handler_logs'] = 1
-LOGMAP['pytan.store'] = 1
-LOGMAP['pytan.store.credstore'] = 1
-LOGMAP['pytan.tanium_ng'] = 1
-LOGMAP['pytan.tickle'] = 1
-LOGMAP['pytan.tickle.tools'] = 1
-LOGMAP['pytan.tickle.from__xml'] = 1
-LOGMAP['pytan.tickle.from__tree'] = 1
-LOGMAP['pytan.tickle.from__dict'] = 1
-LOGMAP['pytan.tickle.to__dict'] = 1
-LOGMAP['pytan.tickle.to__dict_resultset'] = 1
-LOGMAP['pytan.tickle.to__tree'] = 1
-LOGMAP['pytan.pollers.question'] = 3
-LOGMAP['pytan.pollers.sse'] = 4
-LOGMAP['pytan.pollers.question.progress'] = 5
-LOGMAP['pytan.pollers.sse.progress'] = 5
-LOGMAP['pytan.pollers.question.resolver'] = 6
-LOGMAP['pytan.pollers.sse.resolver'] = 6
-LOGMAP['pytan.parsers.filterobject'] = 0
-LOGMAP['pytan.parsers.getobject'] = 0
-LOGMAP['pytan.parsers.spec'] = 0
-LOGMAP['pytan.session.help'] = 10
-LOGMAP['pytan.session'] = 11
-LOGMAP['pytan.session.http'] = 12
-LOGMAP['pytan.session.auth'] = 13
-LOGMAP['pytan.session.body'] = 14
-LOGMAP['pytan.xml_clean'] = 16
-LOGMAP['pytan.excelwriter'] = 1
-LOGMAP['pytan.ext.requests'] = 20
-LOGMAP['pytan.ext.requests.packages.urllib3'] = 21
-LOGMAP['pytan.ext.requests.packages.urllib3.connectionpool'] = 22
-LOGMAP['pytan.ext.requests.packages.urllib3.poolmanager'] = 23
-LOGMAP['pytan.ext.requests.packages.urllib3.util.retry'] = 24
+PYTAN_BASE_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 15: DEBUG}
+AUTH_LOGS = {0: ERROR, 1: WARNING, 6: INFO, 16: DEBUG}
+BODY_LOGS = {0: ERROR, 1: WARNING, 7: INFO, 17: DEBUG}
+CONNECTION_LOGS = {0: ERROR, 1: WARNING, 8: INFO, 20: DEBUG}
+HANDLER_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 6: DEBUG}
+PARSER_LOGS = {0: ERROR, 1: WARNING, 7: INFO, 17: DEBUG}
+PROGRESS_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 16: DEBUG}
+RESOLVER_LOGS = {0: ERROR, 1: WARNING, 10: INFO, 32: DEBUG}
+TICKLE_LOGS = {0: ERROR, 1: WARNING, 20: INFO, 35: DEBUG}
+ERRORS_ONLY = {0: ERROR}
 
-DEFAULT_LEVEL = "WARN"
-"""Set all logs in LOGMAP to this level before setting them to INFO or DEBUG"""
+LOGMAP = {
+    'pytan': PYTAN_BASE_LOGS,
+    'pytan.excelwriter': TICKLE_LOGS,
+    'pytan.ext.requests': CONNECTION_LOGS,
+    'pytan.ext.requests.packages.urllib3': CONNECTION_LOGS,
+    'pytan.ext.requests.packages.urllib3.connectionpool': CONNECTION_LOGS,
+    'pytan.ext.requests.packages.urllib3.poolmanager': CONNECTION_LOGS,
+    'pytan.ext.requests.packages.urllib3.util.retry': CONNECTION_LOGS,
+    'pytan.handler': HANDLER_LOGS,
+    'pytan.handler_args': HANDLER_LOGS,
+    'pytan.handler_logs': HANDLER_LOGS,
+    'pytan.parsers.filterobject': PARSER_LOGS,
+    'pytan.parsers.getobject': PARSER_LOGS,
+    'pytan.parsers.spec': PARSER_LOGS,
+    'pytan.pollers.question': PYTAN_BASE_LOGS,
+    'pytan.pollers.question.progress': PROGRESS_LOGS,
+    'pytan.pollers.question.resolver': RESOLVER_LOGS,
+    'pytan.pollers.sse': PYTAN_BASE_LOGS,
+    'pytan.pollers.sse.progress': PROGRESS_LOGS,
+    'pytan.pollers.sse.resolver': RESOLVER_LOGS,
+    'pytan.session': HANDLER_LOGS,
+    'pytan.session.auth': AUTH_LOGS,
+    'pytan.session.body': BODY_LOGS,
+    'pytan.session.help': PYTAN_BASE_LOGS,
+    'pytan.session.http': CONNECTION_LOGS,
+    'pytan.store': PYTAN_BASE_LOGS,
+    'pytan.store.credstore': AUTH_LOGS,
+    'pytan.tanium_ng': TICKLE_LOGS,
+    'pytan.tickle': TICKLE_LOGS,
+    'pytan.tickle.from__dict': TICKLE_LOGS,
+    'pytan.tickle.from__tree': TICKLE_LOGS,
+    'pytan.tickle.from__xml': TICKLE_LOGS,
+    'pytan.tickle.to__dict': TICKLE_LOGS,
+    'pytan.tickle.to__dict_resultset': TICKLE_LOGS,
+    'pytan.tickle.to__tree': TICKLE_LOGS,
+    'pytan.tickle.tools': TICKLE_LOGS,
+    'pytan.xml_clean': BODY_LOGS,
+}
 
 OVERRIDE_LEVEL = 50
 """If loglevel supplied is >= to this level, then set ALL loggers (pytan or not) to DEBUG"""
-
-DEBUG_BUMP = 20
-"""Loggers in LOGMAP will log at DEBUG if loglevel is >= the loggers level + DEBUG_BUMP"""
 
 PYTAN_KEY = "mT1er@iUa1kP9pelSW"
 """Key used for obfuscation/de-obfsucation of password when writing/reading user config"""
@@ -116,9 +121,7 @@ XMLNS = {
     't': 'urn:TaniumSOAP',
     'encodingStyle': 'http://schemas.xmlsoap.org/soap/encoding/',
 }
-"""The namespace mappings for use in SOAP_REQUEST_BODY by Session"""
-
-ARGS_ORDER = ['cmdline_args', 'osenvironment_args', 'configfile_args', 'default_args']
+"""The XML namespace mappings for all SOAP XML bodies"""
 
 SOAP_REQUEST_BODY = (
     '''<?xml version="1.0" encoding="utf-8"?>
