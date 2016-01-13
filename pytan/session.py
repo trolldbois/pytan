@@ -797,7 +797,7 @@ class Session(object):
             if http_error:
                 err = "HttpError on attempt {} out of {}: {}"
                 err = err.format(current_try, kwargs['retry_count'], http_error)
-                self.MYLOG.info(err)
+                self.HTTPLOG.info(err)
 
                 if current_try > kwargs['retry_count'] or not kwargs['retry_count']:
                     raise HttpError(err)
@@ -1024,7 +1024,7 @@ class Session(object):
 
         m = "Value of element '{}': '{}' (using pattern: '{}') in {}:{} of body with {}"
         m = m.format(element, result, regex.pattern, char_start, char_end, len(body))
-        self.MYLOG.debug(m)
+        self.BODYLOG.info(m)
         return result
 
     def _invalid_server_version(self):
