@@ -281,7 +281,7 @@ class Session(object):
             kwargs['url'] = "{}/{}".format(self._HASH_RES, from_str)
             kwargs['host'] = kwargs.get('host', self._ARGS.get('host'))
             kwargs['port'] = kwargs.get('port', self._ARGS.get('port'))
-            result = self.http_request(**kwargs)
+            result = int(self.http_request(**kwargs))
             HASH_CACHE[from_str] = result
             HASH_CACHE[result] = from_str
         return result
