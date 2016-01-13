@@ -5,7 +5,7 @@ from pytan.utils import (
     get_all_logs, set_all_logs, create_log_handler, add_log_handler, remove_log_handler
 )
 
-from pytan.constants import HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, DEFAULT_LEVEL, DEBUG_BUMP
+from pytan.constants import HANDLER_DEFAULTS, OVERRIDE_LEVEL, LOGMAP, LOGGER_LEVELS
 
 MYLOG = logging.getLogger(__name__)
 
@@ -23,23 +23,18 @@ def setup_log(**kwargs):
     check_logging_setup()
     myargs = get_myargs(**kwargs)
 
-    msgs = []
-    msgs += config_log_handler(argpre='logconsole', **myargs)
-    msgs += config_log_handler(argpre='logfile', **myargs)
+    config_log_handler(argpre='logconsole', **myargs)
+    config_log_handler(argpre='logfile', **myargs)
 
     if myargs['loglevel'] >= OVERRIDE_LEVEL:
         set_all_logs(propagate=False)
         m = 'loglevel is over {}, setting all loggers to DEBUG'
     else:
         set_log_levels(**kwargs)
-        m = 'loglevel is not over {}, set all loggers according to constants'
+        m = 'loglevel is not over {}, set all loggers according to LOGMAP in pytan.constants'
 
     m = m.format(OVERRIDE_LEVEL)
-    msgs.append(m)
-
-    for i in msgs:
-        MYLOG.debug(i)
-    return msgs
+    MYLOG.info(m)
 
 
 def check_logging_setup():
@@ -47,6 +42,7 @@ def check_logging_setup():
 
     errs = []
     for pytanlog in sorted(LOGMAP):
+
         if pytanlog not in all_loggers:
             err = "pytan logger {!r} does not exist in logging system!!"
             err = err.format(pytanlog)
@@ -71,36 +67,28 @@ def config_log_handler(argpre, **kwargs):
     myargs.update(kwargs)
     myargs = {k: kwargs.get(argpre + '_' + k) for k in args}
 
-    msgs = []
-
     all_loggers = get_all_logs()
-
-    modded = []
-    not_modded = []
-
-    handler = create_log_handler(**myargs)
+    log_handler = create_log_handler(**myargs)
 
     for l in sorted(LOGMAP):
         if myargs['enable']:
-            mod = remove_log_handler(all_loggers[l], myargs['name'])
-            mod = add_log_handler(all_loggers[l], handler)
+            remove_log_handler(all_loggers[l], myargs['name'])
+            add_log_handler(all_loggers[l], log_handler)
         else:
-            mod = remove_log_handler(all_loggers[l], myargs['name'])
+            remove_log_handler(all_loggers[l], myargs['name'])
 
-        if mod:
-            modded.append(l)
-        else:
-            not_modded.append(l)
-
-    myargs['action'] = 'added' if myargs['enable'] else 'removed'
-    myargs['modded'] = ', '.join(modded)
-    myargs['not_modded'] = ', '.join(modded)
-
-    # m = "{action} handler: '{name}' for loggers {modded!r}, but not for loggers {not_modded!r}"
-    m = "{action} logging handler: '{name}'"
+    m = "logging handler: '{name}' enabled: {enable}"
     m = m.format(**myargs)
-    msgs.append(m)
-    return msgs
+    MYLOG.info(m)
+
+
+def get_new_level(loglevel, pytan_levels):
+    result = 'NOTSET'
+    for pytan_lvl, logger_lvl in sorted(pytan_levels.items()):
+        if not loglevel >= pytan_lvl:
+            continue
+        result = logger_lvl
+    return result
 
 
 def set_log_levels(loglevel=0, **kwargs):
@@ -113,59 +101,50 @@ def set_log_levels(loglevel=0, **kwargs):
           each item that is greater than or equal to loglevel will have the
           according loggers set to their respective levels identified there-in.
     """
-    msgs = []
     loggers = get_all_logs()
     loggers_done = []
-    for pytanlog, pytanlvl in sorted(LOGMAP.items()):
-        if pytanlog in loggers_done:
+
+    for pytan_logger, pytan_levels in sorted(LOGMAP.items()):
+        if pytan_logger in loggers_done:
             err = "pytan logger {} already processed!!"
-            err = err.format(pytanlog)
+            err = err.format(pytan_logger)
             raise PytanError(err)
 
-        oldlvl = loggers[pytanlog].level
-        dbglvl = pytanlvl + DEBUG_BUMP
-        if pytanlvl == 0 or loglevel >= dbglvl:
-            m = "{} set from {} to {} (DEBUG)"
-            newlvl = logging.DEBUG
-        elif loglevel >= pytanlvl:
-            m = "{} set from {} to {} (INFO)"
-            newlvl = logging.INFO
-        else:
-            m = "{} set from {} to {} ({})"
-            newlvl = getattr(logging, DEFAULT_LEVEL)
+        oldlvl_int = loggers[pytan_logger].level
+        oldlvl_txt = logging.getLevelName(oldlvl_int)
 
-        loggers[pytanlog].setLevel(newlvl)
-        loggers[pytanlog].propagate = False
-        loggers_done.append(pytanlog)
-        m = m.format(pytanlog, oldlvl, newlvl, DEFAULT_LEVEL)
-        msgs.append(m)
+        newlvl_txt = get_new_level(loglevel, pytan_levels)
+        newlvl_int = getattr(logging, newlvl_txt)
+
+        if oldlvl_int != newlvl_int:
+            loggers[pytan_logger].setLevel(newlvl_int)
+            loggers[pytan_logger].propagate = False
+            loggers_done.append(pytan_logger)
+            m = "pytan loglevel=={}, set logger {} from {!r} to {!r}"
+            m = m.format(loglevel, pytan_logger, oldlvl_txt, newlvl_txt)
+            MYLOG.debug(m)
 
     loggers_not_done = [x for x in loggers if x not in loggers_done]
     if loggers_not_done:
-        m = 'loggers not set: {}'
+        m = 'No actions performed against loggers: {}'
         m = m.format(', '.join(loggers_not_done))
-        msgs.append(m)
-    return msgs
+        MYLOG.debug(m)
 
 
-def print_levels(**kwargs):
+def get_enabled_levels(level):
+    result = LOGGER_LEVELS[LOGGER_LEVELS.index(level):]
+    return result
+
+
+def print_pytan_loglevels(**kwargs):
     """Utility to print info about each logger."""
     loggers = get_all_logs()
-    loggers_done = []
-
-    m = "{} logger {!r} {} and above messages shown at pytan loglevel {} and above"
-    t = "pytan"
-    for pytanlog, pytanlvl in sorted(LOGMAP.items()):
-        loggers_done.append(pytanlog)
-        dbglvl = pytanlvl + DEBUG_BUMP
-        if pytanlvl == 0:
-            print(m.format(t, pytanlog, 'DEBUG', 0))
+    m = "{} logger {!r} at pytan loglevel {} and up will show levels: {}"
+    for logger_name, logger_obj in sorted(loggers.items()):
+        if logger_name in LOGMAP:
+            for pytan_lvl, logger_lvl in sorted(LOGMAP[logger_name].items()):
+                levels = ', '.join(get_enabled_levels(logger_lvl))
+                print(m.format("pytan", logger_name, pytan_lvl, levels))
         else:
-            print(m.format(t, pytanlog, DEFAULT_LEVEL, 0))
-            print(m.format(t, pytanlog, 'INFO', pytanlvl))
-            print(m.format(t, pytanlog, 'DEBUG', dbglvl))
-
-    loggers_not_done = [x for x in loggers if x not in loggers_done]
-    t = "NON-pytan"
-    for logger in loggers_not_done:
-        print(m.format(t, logger, 'DEBUG', OVERRIDE_LEVEL))
+            levels = ', '.join(get_enabled_levels('DEBUG'))
+            print(m.format("non-pytan", logger_name, OVERRIDE_LEVEL, levels))
