@@ -271,18 +271,13 @@ def remove_log_handler(logger, name, **kwargs):
     return removed
 
 
-'''TODO
-def set_log_tz(**kwargs):
-    loggmt = kwargs.get('loggmt', True)
-    msgs = []
-    if loggmt:
-        logging.Formatter.converter = time.gmtime
-        msgs.append("Using GMT time zone for logging")
-    else:
-        logging.Formatter.converter = time.localtime
-        msgs.append("Using local time zone for logging")
-    return msgs
-'''
+def print_loglevels(**kwargs):
+    """Utility to print info about each logger."""
+    loggers = get_all_logs()
+    m = "logger {!r} will log {!r} and higher messages"
+    for logger_name, logger_obj in sorted(loggers.items()):
+        logger_lvl = logging.getLevelName(logger_obj.level)
+        print(m.format(logger_name, logger_lvl))
 
 
 def coerce_list(o):
