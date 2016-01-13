@@ -17,7 +17,7 @@ root_logger = logging.getLogger()
 if not root_logger.handlers:
     root_logger.addHandler(NullHandler())
 
-pytan_logger = logging.getLogger(__name__)
+MYLOG = logging.getLogger(__name__)
 
 # Useful for very coarse version differentiation.
 PY3 = sys.version_info[0] == 3
