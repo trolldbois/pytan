@@ -1,4 +1,5 @@
 import sys
+import os
 import argparse
 
 from argparse import ArgumentDefaultsHelpFormatter as ArgFormatter
@@ -32,10 +33,21 @@ class ShellParser(argparse.ArgumentParser):
 
         argparse.ArgumentParser.__init__(self, *args, **kwargs)
 
+    def exit(self, status=0, message=None):
+        if message:
+            self._print_message(message, sys.stdout)
+        os._exit(status)
+
+    def _print_message(self, message, file=None):
+        if message:
+            if file is None:
+                file = sys.stdout
+            file.write(message)
+
     def error(self, message):
         self.print_help()
-        print('\n!! Argument Parsing Error in "{}": {}\n'.format(self.my_file, message))
-        sys.exit(2)
+        message = '\n!! Argument Parsing Error in "{}": {}\n'.format(self.my_file, message)
+        self.exit(2, message)
 
     def print_help(self, **kwargs):
         super(ShellParser, self).print_help(**kwargs)
