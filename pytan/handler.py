@@ -576,6 +576,43 @@ class Handler(object):
         rd : :class:`tanium_ng.result_set.ResultSet`
             The return of GetResultData for `obj`
         """
+
+        """ note #1 from jwk:
+        For Action GetResultData: You have to make a ResultInfo request at least once every 2
+        minutes. The server gathers the result data by asking a saved question. It won't re-issue
+        the saved question unless you make a GetResultInfo request. When you make a GetResultInfo
+        request, if there is no question that is less than 2 minutes old, the server will
+        automatically reissue a new question instance to make sure fresh data is available.
+
+        note #2 from jwk:
+        To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get
+        the computer names, use row_counts_only_flag = 0 (default).
+        """
+        shrink = kwargs.get('shrink', True)
+        aggregate = kwargs.get('aggregate', False)
+        sse = kwargs.get('sse', False)
+        export_flag = kwargs.get('export_flag', 0)
+
+        kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
+
+        if shrink:
+            kwargs['obj'] = shrink_obj(obj=obj)
+        else:
+            kwargs['obj'] = obj
+
+        if aggregate:
+            kwargs['row_counts_only_flag'] = 1
+
+        if sse or export_flag:
+            result = self.get_result_data_sse(**kwargs)
+        else:
+            # do a normal getresultdata
+            kwargs['pytan_help'] = HELPS.grd.format(obj.__class__.__name__)
+            result = self.SESSION.get_result_data(**kwargs)
+
+        return result
+
+    def get_result_data_sse(self, obj, **kwargs):
         """Get the result data for a python API object using a server side export (sse)
 
         This method issues a GetResultData command to the SOAP api for `obj` with the option
@@ -625,84 +662,62 @@ class Handler(object):
             * If sse_format is xml_obj, export_data will be a :class:`tanium_ng.
             result_set.ResultSet`
         """
-        """ note #1 from jwk:
-        For Action GetResultData: You have to make a ResultInfo request at least once every 2
-        minutes. The server gathers the result data by asking a saved question. It won't re-issue
-        the saved question unless you make a GetResultInfo request. When you make a GetResultInfo
-        request, if there is no question that is less than 2 minutes old, the server will
-        automatically reissue a new question instance to make sure fresh data is available.
-
-        note #2 from jwk:
-        To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get
-        the computer names, use row_counts_only_flag = 0 (default).
-        """
-        shrink = kwargs.get('shrink', True)
-        aggregate = kwargs.get('aggregate', False)
-        sse = kwargs.get('sse', False)
-        export_flag = kwargs.get('export_flag', 0)
         sse_format = kwargs.get('sse_format', 'xml_obj')
         sse_leading = kwargs.get('sse_leading', '')
         sse_trailing = kwargs.get('trailing', '')
+        shrink = kwargs.get('shrink', True)
 
-        kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
+        self._check_sse_version()
+        self._check_sse_crash_prevention(obj=obj)
 
         if shrink:
             kwargs['obj'] = shrink_obj(obj=obj)
-
-        if aggregate:
-            kwargs['row_counts_only_flag'] = 1
-
-        if sse or export_flag:
-            self._check_sse_version()
-            self._check_sse_crash_prevention(obj=obj)
-
-            grd_args = {}
-            grd_args.update(kwargs)
-            grd_args['pytan_help'] = HELPS.grd_sse.format(obj.__class__.__name__)
-            # add the export_flag = 1 to the kwargs for inclusion in options node
-            grd_args['export_flag'] = 1
-            # add the export_format to the kwargs for inclusion in options node
-            grd_args['export_format'] = self._resolve_sse_format(sse_format)
-            # add the export_leading_text to the kwargs for inclusion in options node
-            if sse_leading:
-                grd_args['export_leading_text'] = sse_leading
-            # add the export_trailing_text to the kwargs for inclusion in options node
-            if sse_trailing:
-                grd_args['export_trailing_text'] = sse_trailing
-
-            # do a getresultdata to start the SSE and get
-            export_id = self.SESSION.get_result_data_sse(**grd_args)
-
-            m = "Server Side Export Started, id: '{}'"
-            m = m.format(export_id)
-            self.MYLOG.debug(m)
-
-            poll_args = {}
-            poll_args.update(kwargs)
-            poll_args['export_id'] = export_id
-            poll_args['handler'] = self
-
-            poller = SSEPoller(**poll_args)
-            poller_success = poller.run(**kwargs)
-            sse_status = getattr(poller, 'STATUS', 'Unknown')
-
-            if not poller_success:
-                m = "SSE Poller failed while waiting for completion, last status: {}"
-                m = m.format()
-                raise ServerSideExportError(m)
-
-            result = poller.get_sse_data(**kwargs)
-
-            if sse_format.lower() == 'xml_obj':
-                if not result:
-                    result = sse_status
-                else:
-                    result = from_sse_xml(result)
         else:
-            # do a normal getresultdata
-            kwargs['pytan_help'] = HELPS.grd.format(obj.__class__.__name__)
-            result = self.SESSION.get_result_data(**kwargs)
+            kwargs['obj'] = obj
 
+        grd_args = {}
+        grd_args.update(kwargs)
+        grd_args['pytan_help'] = HELPS.grd_sse.format(obj.__class__.__name__)
+        # add the export_flag = 1 to the kwargs for inclusion in options node
+        grd_args['export_flag'] = 1
+        # add the export_format to the kwargs for inclusion in options node
+        grd_args['export_format'] = self._resolve_sse_format(sse_format)
+        # add the export_leading_text to the kwargs for inclusion in options node
+        if sse_leading:
+            grd_args['export_leading_text'] = sse_leading
+        # add the export_trailing_text to the kwargs for inclusion in options node
+        if sse_trailing:
+            grd_args['export_trailing_text'] = sse_trailing
+
+        # do a getresultdata to start the SSE and get
+        export_id = self.SESSION.get_result_data_sse(**grd_args)
+
+        m = "Server Side Export Started, id: '{}'"
+        m = m.format(export_id)
+        self.MYLOG.debug(m)
+
+        poll_args = {}
+        poll_args.update(kwargs)
+        poll_args['export_id'] = export_id
+        poll_args['handler'] = self
+
+        poller = SSEPoller(**poll_args)
+        poller_success = poller.run(**kwargs)
+        sse_status = getattr(poller, 'STATUS', 'Unknown')
+
+        if not poller_success:
+            m = "SSE Poller failed while waiting for completion, last status: {}"
+            m = m.format(sse_status)
+            raise ServerSideExportError(m)
+
+        result = poller.get_sse_data(**kwargs)
+
+        if sse_format.lower() == 'xml_obj':
+            if not result:
+                result = sse_status
+            else:
+                info_overlay = self.get_result_info(**kwargs)
+                result = from_sse_xml(result, info_overlay=info_overlay)
         return result
 
     def get_result_info(self, obj, **kwargs):
@@ -731,6 +746,8 @@ class Handler(object):
         kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.gri)
         if shrink:
             kwargs['obj'] = shrink_obj(obj=obj)
+        else:
+            kwargs['obj'] = obj
         ri = self.SESSION.get_result_info(**kwargs)
         return ri
 
