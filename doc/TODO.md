@@ -56,7 +56,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * argparse for specs/left/right/etc
 
 ## HANDLER
-* create_parent_group_obj broken, fix it and add debug logging!
+* create_parent_group_obj broken, fix it and add debug logging!=> NEXT
 * 2.1.7: ask_saved: 
   * add log for get_result_info in refresh_data path
   * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 

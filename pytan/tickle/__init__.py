@@ -58,6 +58,7 @@ from pytan.tickle.to__dict_resultset import to_dict_resultset, to_json_resultset
 from pytan.tickle.from__xml import from_xml, from_sse_xml
 from pytan.tickle.from__tree import from_tree
 from pytan.tickle.from__dict import from_dict, from_json
+from pytan.tickle.create__question import create_question
 from pytan.tanium_ng import BaseType, ResultSetList, ResultSet
 from pytan.tickle import tools
 
@@ -84,6 +85,7 @@ __all__ = [
     'from_tree',
     'from_dict',
     'from_json',
+    'create_question',
 ]
 
 

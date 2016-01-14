@@ -68,6 +68,7 @@ PROGRESS_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 16: DEBUG}
 RESOLVER_LOGS = {0: ERROR, 1: WARNING, 10: INFO, 32: DEBUG}
 TICKLE_LOGS = {0: ERROR, 1: WARNING, 20: INFO, 35: DEBUG}
 ERRORS_ONLY = {0: ERROR}
+EVERYTHING = {0: DEBUG}
 
 LOGMAP = {
     'pytan': PYTAN_BASE_LOGS,
@@ -104,7 +105,8 @@ LOGMAP = {
     'pytan.tickle.to__dict': TICKLE_LOGS,
     'pytan.tickle.to__dict_resultset': TICKLE_LOGS,
     'pytan.tickle.to__tree': TICKLE_LOGS,
-    'pytan.tickle.tools': TICKLE_LOGS,
+    'pytan.tickle.tools': EVERYTHING,  # TICKLE_LOGS,
+    'pytan.tickle.create__question': EVERYTHING,  # TICKLE_LOGS,
     'pytan.xml_clean': BODY_LOGS,
 }
 

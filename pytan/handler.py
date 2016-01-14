@@ -15,7 +15,8 @@ from pytan.tickle import from_sse_xml
 from pytan.tickle.to__dict_resultset import ToDictResultSet
 from pytan.handler_args import create_argstore
 from pytan.handler_logs import setup_log
-from pytan.tickle.tools import shrink_obj, check_limits, create_question, create_cachefilterlist
+from pytan.tickle.tools import shrink_obj, check_limits, create_cachefilterlist
+from pytan.tickle.create__question import create_question
 
 MYLOG = logging.getLogger(__name__)
 
@@ -186,27 +187,15 @@ class Handler(object):
 
     def ask_manual(self, **kwargs):
         """pass."""
-        left = kwargs.get('left', [])
-        right = kwargs.get('right', [])
-        max_age_seconds = kwargs.get('max_age_seconds', 0)
-        get_results = kwargs.get('get_results', True)
         # helpers.check_for_help(kwargs)
-
         # parser = parsers.LeftSide(left)
         # print parser.parsed_specs
 
-        left = self._get_spec_objects(left)
-        right = self._get_spec_objects(right)
+        get_results = kwargs.get('get_results', True)
+        kwargs = self._get_spec_objects('left', **kwargs)
+        kwargs = self._get_spec_objects('right', **kwargs)
 
-        kwargs['obj'] = create_question(left=left, right=right)
-
-        if max_age_seconds:
-            kwargs['obj'].max_age_seconds = int(max_age_seconds)
-
-        m = "Question Built: {}"
-        m = m.format(kwargs['obj'].to_json())
-        self.MYLOG.debug(m)
-
+        kwargs['obj'] = create_question(**kwargs)
         kwargs['obj'] = self._add(**kwargs)
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
@@ -222,7 +211,6 @@ class Handler(object):
         if get_results:
             # poll the Question ID returned above to wait for results
             result.poller_success = result.poller_object.run(**kwargs)
-
             # get the answers for this question
             result.question_results = self.get_result_data(**kwargs)
         return result
@@ -921,8 +909,9 @@ class Handler(object):
         self.MYLOG.info(m)
         return result
 
-    def _get_spec_objects(self, specs):
+    def _get_spec_objects(self, side, **kwargs):
         """pass."""
+        specs = kwargs.get(side, [])
         for spec in specs:
             if 'sensor' in spec:
                 spec['sensor_object'] = self.get_sensors(limit_exact=1, specs=spec['sensor'])
@@ -930,7 +919,8 @@ class Handler(object):
                 spec['group_object'] = self.get_groups(limit_exact=1, specs=spec['group'])
             if 'package' in spec:
                 spec['package_object'] = self.get_packages(limit_exact=1, specs=spec['package'])
-        return specs
+        kwargs[side] = specs
+        return kwargs
 
     def _fixit_single(self, **kwargs):
         """pass."""
