@@ -164,7 +164,7 @@ def test_invalid_type(soap_tag, ng_class):
 
 
 def test_sensor_init_values():
-    obj = tanium_ng.Sensor(values={'id': 1, 'name': 'test123'})
+    obj = tanium_ng.Sensor(id=1, name='test123')
     assert len(obj) == 2
     assert obj.id == 1
     assert obj.name == 'test123'

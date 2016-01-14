@@ -94,7 +94,7 @@ class BaseType(object):
         """pass."""
         self._INITIALIZED = False
 
-        self._INIT_VALUES = kwargs.get('values', {}) or {}
+        self._INIT_VALUES = kwargs
 
         self._SIMPLE_PROPS = simple_properties
         self._COMPLEX_PROPS = complex_properties

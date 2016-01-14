@@ -707,7 +707,7 @@ class Session(object):
         extract_version = kwargs.get('extract_version', False)
 
         # build the options XML for the XML request body
-        options_obj = tanium_ng.Options(values=kwargs)
+        options_obj = tanium_ng.Options(**kwargs)
         options = to_xml(options_obj)
 
         # turn obj into XML for the XML request body
@@ -1056,7 +1056,7 @@ class Session(object):
     def get_userinfo(self, **kwargs):
         result = self._CREDS.user_obj
         if not result:
-            user_obj = tanium_ng.User(values={'id': self.session_user_id})
+            user_obj = tanium_ng.User(id=self.session_user_id)
             kwargs['extract_version'] = True
             kwargs['pytan_help'] = HELPS.getuser
             result = self.find(user_obj, **kwargs)
