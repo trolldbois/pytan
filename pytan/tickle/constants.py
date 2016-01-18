@@ -49,6 +49,31 @@ RESULTSET_ARGS = {
     'yaxis': False,
 }
 
+PARAMETER_DEFAULTS = {
+    'sensor_delimiter': '||',
+    'action_delimiter': '',
+    'auto_default': True,
+    'extras_allowed': True,
+    'missing_prompt': True,  # TODO!!!
+}
+FILTER_DEFAULTS = {
+    'not_flag': None,
+    'ignore_case_flag': None,
+    'operator': 'RegexMatch',
+    'value_type': 'String',
+    'max_age_seconds': None,
+    'all_values_flag': None,
+    'value': None,
+}
+QUESTION_DEFAULTS = {
+    'expire_seconds': None,
+    'skip_lock_flag': None,
+}
+GROUP_DEFAULTS = {
+    'and_flag': None,
+    'not_flag': None,
+}
+
 RESULTSET_STRS = {
     'row_column_name': '{c.display_name}',
     'sensor_type': 'Result Type: {c.result_type}',

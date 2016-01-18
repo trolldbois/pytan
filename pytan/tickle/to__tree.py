@@ -33,8 +33,8 @@ class ToTree(object):
         self.OBJ = obj
 
         if not isinstance(obj, BaseType):
-            err = "obj is type {!r}, must be a tanium_ng.BaseType object"
-            err = err.format(type(obj).__name__)
+            err = "obj must be a tanium_ng.BaseType object, supplied type: {!r}, obj: {}"
+            err = err.format(type(obj).__name__, obj)
             raise XmlSerializeError(err)
 
         self.RESULT = ET.Element(obj._SOAP_TAG)

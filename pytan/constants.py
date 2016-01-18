@@ -106,7 +106,7 @@ LOGMAP = {
     'pytan.tickle.to__dict_resultset': TICKLE_LOGS,
     'pytan.tickle.to__tree': TICKLE_LOGS,
     'pytan.tickle.tools': EVERYTHING,  # TICKLE_LOGS,
-    'pytan.tickle.create__question': EVERYTHING,  # TICKLE_LOGS,
+    'pytan.tickle.builders': EVERYTHING,  # TICKLE_LOGS,
     'pytan.xml_clean': BODY_LOGS,
 }
 

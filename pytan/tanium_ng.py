@@ -90,6 +90,9 @@ class BaseType(object):
     _ITEM_ATTRS = []
     """list that stores a preferentially sorted list of non-list attributes for this object"""
 
+    _MAX_STR_LEN = 20
+    """Trim values longer than this in __str__ / __repr__"""
+
     def __init__(self, simple_properties, complex_properties, list_properties, **kwargs):
         """pass."""
         self._INITIALIZED = False
@@ -195,14 +198,19 @@ class BaseType(object):
             val = getattr(self, k, None)
             if isinstance(val, list):
                 val = "{} items".format(len(val))
+            elif isinstance(val, BaseType):
+                if not val._IS_LIST:
+                    val = "{}()".format(val.__class__.__name__)
             else:
                 val = str(val).replace('\n', '')
+                if len(val) > self._MAX_STR_LEN:
+                    val = val[0:self._MAX_STR_LEN] + '...'
             vals.append([name, val])
 
         if vals:
-            result = ', '.join(["{}.{}={}".format(class_name, *p) for p in vals])
+            result = ', '.join(["{}.{}=[{}]".format(class_name, *p) for p in vals])
         else:
-            result = "No attributes assigned yet!"
+            result = "{}: No attributes assigned yet!".format(class_name)
         return result
 
     def __setattr__(self, name, value):
@@ -241,12 +249,12 @@ class BaseType(object):
     def _check_list(self, name, value):
         if not isinstance(value, list):
             raise BadTypeError(self, name, value, self._LIST_PROPS[name])
-        '''
-        # too strict / not performant
         for i in value:
-            if not isinstance(i, self._LIST_PROPS[name]):
-                raise BadTypeError(self, name, i, self._LIST_PROPS[name])
-        '''
+            type_check = self._LIST_PROPS[name]
+            if type_check == text_type:
+                type_check = string_types
+            if not isinstance(i, type_check):
+                raise BadTypeError(self, name, i, type_check)
         return value
 
 
@@ -3674,20 +3682,6 @@ class Sensor(BaseType):
         # no list properties defined in console.wsdl
         self._set_init_values()
 
-    @property
-    def parameter_definition_dict(self):
-        """Wrapper around parameter_definition to get the JSON string loaded."""
-        # TODO: ADD parameter_definition_dict TO BUILDER, and add for all other objs that have pd
-        try:
-            result = json.loads(self.parameter_definition)
-        except Exception as e:
-            result = {
-                "msg": "Unable to parse parameter_definition as JSON!",
-                "parameter_definition": self.parameter_definition,
-                "exception": e,
-            }
-        return result
-
 
 class SensorList(BaseType):
 
@@ -4697,3 +4691,123 @@ BASE_TYPES['white_listed_urls'] = WhiteListedUrlList
 BASE_TYPES['error'] = XmlError
 
 # END DYNAMIC CODE
+# TODO: FOOTER
+
+
+def get_params(self):
+    result = []
+
+    if not hasattr(self, 'parameter_definition'):
+        err = "{} has no 'parameter_definition"
+        err = err.format(type(self).__name__)
+        raise TaniumNGError(err)
+
+    if self.parameter_definition:
+        try:
+            param_dict = json.loads(self.parameter_definition)
+        except Exception as e:
+            err = "{} has an invalid 'parameter_definition', JSON exception: {}"
+            err = err.format(type(self).__name__, e)
+            raise TaniumNGError(err)
+
+        if 'parameters' not in param_dict:
+            err = "{} has no 'parameters' key in JSON dictionary 'parameter_definition': {}"
+            err = err.format(type(self).__name__, param_dict)
+            raise TaniumNGError(err)
+
+        if not param_dict['parameters']:
+            err = "{} has an empty 'parameters' key in JSON dictionary 'parameter_definition': {}"
+            err = err.format(type(self).__name__, param_dict)
+            raise TaniumNGError(err)
+
+        result = param_dict['parameters']
+    return result
+
+
+def get_parsed_params(self):
+    params = self.get_params()
+    total = len(params)
+    result = [parse_parameter_def(p, self, idx, total) for idx, p in enumerate(params)]
+    return result
+
+
+def parse_parameter_def(param_def, obj, idx=0, total=1):
+    pmap = {
+        'key': 'key',
+        'value': 'value',
+        'label': 'label',
+        'defaultValue': 'default_value',
+        'maxChars': 'max_characters',
+        'minimum': 'min_value',
+        'maxium': 'max_value',
+        # 'promptText': 'prompt_text',
+        'helpString': 'help_text',
+        'values': 'valid_values',
+        'parameterType': 'parameter_type',
+    }
+
+    parsed = {v: param_def[k] for k, v in pmap.items() if k in param_def}
+    parsed['idx'] = idx
+    parsed['pidx'] = idx + 1
+    parsed['total'] = total
+    parsed['orig'] = param_def
+    parsed['cname'] = obj.__class__.__name__
+    parsed['oname'] = getattr(obj, 'name', '') or getattr(obj, 'id', '')
+    parsed['auto_default_value'] = get_auto_default(param_def)
+    parsed['others'] = {k: v for k, v in param_def.items() if k not in pmap}
+
+    if 'valid_values' in parsed:
+        parsed['valid_values_txt'] = ', '.join(parsed['valid_values'])
+
+    if 'parameter_type' in parsed:
+        try:
+            parsed['parameter_type'] = parsed['parameter_type'].split('::')[1]
+        except:
+            pass
+
+    items = [
+        'key', 'auto_default_value', 'label', 'parameter_type', 'max_characters',
+        'min_value', 'max_value', 'valid_values_txt',
+    ]
+    desc_items = ['{}="{}"'.format(k, parsed[k]) for k in items if k in parsed]
+    parsed['desc_items'] = ', '.join(desc_items)
+    desc = '"{oname}" {cname} parameter [{pidx} of {total}]: {desc_items}'
+    parsed['desc'] = desc.format(**parsed)
+    return parsed
+
+
+def get_auto_default(param_def):
+    """Derive a parameter default
+
+    Parameters
+    ----------
+    param_def : dict
+        * parameter dict from Tanium NG object
+
+    Returns
+    -------
+    result : str
+        * default value derived from param_def
+    """
+    # get the default value for this param if it exists
+    result = param_def.get('defaultValue', '')
+
+    # get 'value' for this param if it exists if not result
+    if not result:
+        result = param_def.get('value', '')
+    # if this param requires a selection and it has a list of values
+    # and there is no default value, use the first value as the
+    # default value
+    if not result:
+        # get values for this param if it exists (pulldown menus)
+        values = param_def.get('values', [])
+        if param_def.get('requireSelection', False) and values:
+            if values[0]:
+                result = values[0]
+    return result
+
+
+Sensor.get_params = get_params
+Sensor.get_parsed_params = get_parsed_params
+PackageSpec.get_params = get_params
+PackageSpec.get_parsed_params = get_parsed_params

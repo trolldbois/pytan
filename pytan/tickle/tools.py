@@ -5,6 +5,7 @@ import logging
 import datetime
 
 from pytan import PytanError, tanium_ng, integer_types, range, b, text_type
+from pytan.tanium_ng import GroupList, Group, BaseType
 from pytan.ext import xmltodict
 from pytan.utils import read_file, write_file
 from pytan.tickle.constants import TANIUM_TIME_FORMAT, HUMAN_TIME_FORMAT
@@ -22,10 +23,10 @@ class LimitCheckError(PytanError):
 
 def clean_group(obj):
     """Sets ID to null on a group object and all of it's sub_groups, needed for 6.5"""
-    if isinstance(obj, tanium_ng.GroupList):
+    if isinstance(obj, GroupList):
         for sub_obj in obj:
             clean_group(sub_obj)
-    elif isinstance(obj, tanium_ng.Group):
+    elif isinstance(obj, Group):
         obj.id = None
         # obj.text = None
         if obj.sub_groups:
@@ -310,41 +311,8 @@ def plugin_zip(p):
     return result
 
 
-def create_cachefilterlist(specs):
-    """pass."""
-    result = tanium_ng.CacheFilterList()
-    if not isinstance(specs, (list, tuple)):
-        specs = [specs]
-    for spec in specs:
-        result.append(create_cachefilter(**spec))
-    log_result('create_cachefilterlist', result, locals())
-    return result
-
-
-def create_cachefilter(field, value, operator=None, field_type=None, not_flag=None, **kwargs):
-    """pass."""
-    result = tanium_ng.CacheFilter()
-    result.field = field
-    result.value = value
-    if operator is not None:
-        result.operator = operator
-    if field_type is not None:
-        result.type = field_type
-    if not_flag is not None:
-        result.not_flag = not_flag
-    log_result('create_cachefilter', result, locals())
-    return result
-
-
-def log_result(caller, result, caller_locals):
-    m = "{}() result:: {}".format(caller, result)
-    MYLOG.info(m)
-    # m = "caller_locals for {}():: {}".format(caller, caller_locals)
-    # MYLOG.debug(m)
-
-
 def is_ng(obj):
-    if not isinstance(obj, tanium_ng.BaseType):
+    if not isinstance(obj, BaseType):
         err = "{} must be a tanium_ng object, type: {}"
         err = err.format(obj, type(obj))
         MYLOG.error(err)

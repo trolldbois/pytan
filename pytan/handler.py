@@ -15,8 +15,8 @@ from pytan.tickle import from_sse_xml
 from pytan.tickle.to__dict_resultset import ToDictResultSet
 from pytan.handler_args import create_argstore
 from pytan.handler_logs import setup_log
-from pytan.tickle.tools import shrink_obj, check_limits, create_cachefilterlist
-from pytan.tickle.create__question import create_question
+from pytan.tickle.tools import shrink_obj, check_limits
+from pytan.tickle.builders import create_question, create_cachefilterlist
 
 MYLOG = logging.getLogger(__name__)
 
@@ -186,19 +186,19 @@ class Handler(object):
         return result
 
     def ask_manual(self, **kwargs):
-        """pass."""
-        # helpers.check_for_help(kwargs)
-        # parser = parsers.LeftSide(left)
-        # print parser.parsed_specs
+        """pass.
+        left: list of str or list of dict
+        right: list of str or list of dict
+        right_groups: list of str or dict
+        question: expire_seconds, skip_lock_flag
 
+        """
         get_results = kwargs.get('get_results', True)
-        kwargs = self._get_spec_objects('left', **kwargs)
-        kwargs = self._get_spec_objects('right', **kwargs)
-
-        kwargs['obj'] = create_question(**kwargs)
+        kwargs['obj'] = create_question(self, **kwargs)
         kwargs['obj'] = self._add(**kwargs)
 
-        m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
+        # TODO: ADD 'print_attrs: ['id', 'query_text', 'expiration'] to _add
+        m = 'Question Added, id:"{0.id}", query_text:"{0.query_text}", expires:"{0.expiration}"'
         m = m.format(kwargs['obj'])
         self.MYLOG.info(m)
 
@@ -259,7 +259,7 @@ class Handler(object):
             err = "Must supply arg 'specs' for identifying the saved question to ask"
             raise PytanError(err)
 
-        # creatStore() object for storing the results
+        # create ResultStore() object for storing the results
         result = ResultStore()
         result.poller_object = None
         result.poller_success = None
@@ -909,28 +909,15 @@ class Handler(object):
         self.MYLOG.info(m)
         return result
 
-    def _get_spec_objects(self, side, **kwargs):
-        """pass."""
-        specs = kwargs.get(side, [])
-        for spec in specs:
-            if 'sensor' in spec:
-                spec['sensor_object'] = self.get_sensors(limit_exact=1, specs=spec['sensor'])
-            if 'group' in spec:
-                spec['group_object'] = self.get_groups(limit_exact=1, specs=spec['group'])
-            if 'package' in spec:
-                spec['package_object'] = self.get_packages(limit_exact=1, specs=spec['package'])
-        kwargs[side] = specs
-        return kwargs
-
     def _fixit_single(self, **kwargs):
         """pass."""
         # FIXIT_SINGLE: GetObject in list form fails, so we need to use the singular form
         fixit = kwargs.get('FIXIT_SINGLE', False)
         result = kwargs['all_class']()
         if fixit:
-            result = kwargs['all_class']._LIST_TYPE()
+            result = result._LIST_TYPE()
             m = "FIXIT_SINGLE: changed class from {} to {}"
-            m = m.format(kwargs['all_class'].__name__, result.__name__)
+            m = m.format(kwargs['all_class'].__name__, result.__class__.__name__)
             self.MYLOG.debug(m)
         return result
 

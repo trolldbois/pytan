@@ -56,6 +56,9 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * argparse for specs/left/right/etc
 
 ## HANDLER
+* parser doesnt work with params! catch [] in parser and throw exception? or do what console does and strip them out and re-add them back in (pull them out index correlated and add them back in index correlated, use CreateParams)
+* change parser to v3 with no failback
+* add gmt log back in
 * create_parent_group_obj broken, fix it and add debug logging!=> NEXT
 * 2.1.7: ask_saved: 
   * add log for get_result_info in refresh_data path
