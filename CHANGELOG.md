@@ -1,31 +1,33 @@
 <!-- MarkdownTOC -->
 
+- [2.1.9](#219)
 - [2.1.8](#218)
-- [2.1.7](#217)
   - [enhancements](#enhancements)
+- [2.1.7](#217)
+  - [enhancements](#enhancements-1)
   - [doc updates](#doc-updates)
   - [bug fixes](#bug-fixes)
   - [work in progress](#work-in-progress)
   - [notes](#notes)
 - [2.1.6](#216)
-  - [enhancements](#enhancements-1)
+  - [enhancements](#enhancements-2)
 - [2.1.5](#215)
   - [bug fixes](#bug-fixes-1)
-  - [enhancements](#enhancements-2)
+  - [enhancements](#enhancements-3)
 - [2.1.4](#214)
   - [bug fixes](#bug-fixes-2)
-  - [enhancements](#enhancements-3)
+  - [enhancements](#enhancements-4)
   - [doc updates](#doc-updates-1)
   - [test updates](#test-updates)
 - [2.1.3](#213)
-  - [enhancements](#enhancements-4)
+  - [enhancements](#enhancements-5)
 - [2.1.2](#212)
   - [bug fixes](#bug-fixes-3)
 - [2.1.1](#211)
-  - [enhancements](#enhancements-5)
+  - [enhancements](#enhancements-6)
 - [2.1.0](#210)
   - [bug fixes](#bug-fixes-4)
-  - [enhancements](#enhancements-6)
+  - [enhancements](#enhancements-7)
   - [doc updates](#doc-updates-2)
 - [2.0.3](#203)
 - [2.0.2](#202)
@@ -43,9 +45,17 @@
 
 <!-- /MarkdownTOC -->
 
-# 2.1.8
+# 2.1.9
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+# 2.1.8
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.1.8) on Jan 19 2016
+
+## enhancements
+* TSAT logging improvement: add file log handler to ALL loggers, not just TSAT log
+* added complete_pct arg for ask_manual to binsupport.py
 
 # 2.1.7
 

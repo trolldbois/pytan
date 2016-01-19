@@ -165,7 +165,7 @@ scripts[sname]['bat_template'] = '${bat_script}'
 
 sname = 'tsat'
 scripts[sname] = {}
-scripts[sname]['docstring'] = 'Tanium Sensor Analysis Tool: asks a question for every sensor and saves theresults as CSV reports'
+scripts[sname]['docstring'] = 'Tanium Sensor Analysis Tool: asks a question for every sensor and saves the results as report files'
 scripts[sname]['script_name'] = sname
 scripts[sname]['pyopts'] = ''
 scripts[sname]['py_template'] = '${py_script}'
