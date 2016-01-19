@@ -2363,31 +2363,28 @@ class TsatWorker(object):
 
     def remove_file_log(self, logfile):
         """Utility to remove a log file from python's logging module"""
+        self.mylog.debug('Removing file logging to: {}'.format(logfile))
         basename = os.path.basename(logfile)
         root_logger = logging.getLogger()
-        try:
-            for x in root_logger.handlers:
+        all_loggers = pytan.utils.get_all_loggers()
+        for k, v in all_loggers.items():
+            for x in v.handlers:
                 if x.name == basename:
                     root_logger.removeHandler(x)
-                    self.mylog.debug('Stopped file logging to: {}'.format(logfile))
-        except:
-            pass
 
     def add_file_log(self, logfile):
         """Utility to add a log file from python's logging module"""
         self.remove_file_log(logfile)
-        root_logger = logging.getLogger()
+        self.mylog.debug('Adding file logging to: {}'.format(logfile))
+        all_loggers = pytan.utils.get_all_loggers()
         basename = os.path.basename(logfile)
-        try:
-            self.mylog.debug('Adding file logging to: {}'.format(logfile))
-            file_handler = logging.FileHandler(logfile)
-            file_handler.set_name(basename)
-            file_handler.setLevel(logging.DEBUG)
-            file_handler.setFormatter(logging.Formatter(self.FILE_INFO_FORMAT))
-            root_logger.addHandler(file_handler)
-        except Exception as e:
-            self.mylog.error('Problem setting up file logging to {}: {}'.format(logfile, e))
-            raise
+        file_handler = logging.FileHandler(logfile)
+        file_handler.set_name(basename)
+        file_handler.setLevel(logging.DEBUG)
+        file_handler.setFormatter(logging.Formatter(self.FILE_INFO_FORMAT))
+        for k, v in all_loggers.items():
+            v.addHandler(file_handler)
+            v.propagate = False
 
     def set_mylog(self):
         logging.Formatter.converter = time.gmtime
