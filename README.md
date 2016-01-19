@@ -19,11 +19,15 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 ## Versions
 
 * Current Stable Version: 
-  * **2.1.7 (Dec 08 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.7)
+  * **2.1.8 (Jan 19 2016)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.8)
 * Current Development Version:
-  * **2.1.8** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
+  * **2.1.9** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
+* Next major version:
+  * **4.0.0** [Turtle branch](https://github.com/tanium/pytan/tree/turtle)
 
 ## Documentation Links
+
+Documentation is only generated for major releases!
 
 * Online documentation for PyTan 2.1.6:
   * [HTML: Main Index](http://tanium.github.io/pytan)
@@ -51,7 +55,7 @@ mkdir ~/tanium
 * Extract the PyTan ZIP file you downloaded to ~/tanium:
 ```
 cd ~/tanium
-unzip pytan-2.1.7.zip
+unzip pytan-2.1.8.zip
 ```
 * Verify that your OSX install has Python 2.7.x installed and that your PYTHONPATH points to 2.7.x:
 ```
@@ -68,7 +72,7 @@ mkdir ~/tanium
 * Extract the PyTan ZIP file you downloaded to ~/tanium:
 ```
 cd ~/tanium
-unzip pytan-2.1.7.zip
+unzip pytan-2.1.8.zip
 ```
 * Verify that your linux distribution has Python 2.7.x installed and that your PYTHONPATH points to 2.7.x:
 ```
