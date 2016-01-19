@@ -144,14 +144,14 @@ def test_get_string(validsession):
 
 def test_invalid_find(validsession):
     s = validsession
-    obj = tanium_ng.User(values={'id': 99999})
+    obj = tanium_ng.User(id=99999)
     with pytest.raises(session.BadResponseError):
         s.find(obj)
 
 
 def test_valid_find(validsession):
     s = validsession
-    obj = tanium_ng.User(values={'id': s.session_user_id})
+    obj = tanium_ng.User(id=s.session_user_id)
     result = s.find(obj)
     assert isinstance(result, tanium_ng.User)
     assert isinstance(result.name, pytan.string_types)
@@ -164,8 +164,8 @@ def test_valid_add_find_modify(validsession):
     if test_user_found:
         s.delete(test_user_found[0])
 
-    admin_role = tanium_ng.UserRole(values={'name': 'Administrator'})
-    sensor_role = tanium_ng.UserRole(values={'name': 'Sensor Author'})
+    admin_role = tanium_ng.UserRole(name='Administrator')
+    sensor_role = tanium_ng.UserRole(name='Sensor Author')
 
     obj = tanium_ng.User()
     obj.name = 'pytest user'

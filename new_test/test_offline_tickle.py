@@ -155,7 +155,7 @@ def test_from_xml(xml_info):
             assert isinstance(child_obj, xml_info['child_type'])
             if getattr(child_obj, 'parameter_definition', ''):
                 assert isinstance(child_obj.parameter_definition, text_type)
-                assert isinstance(child_obj.parameter_definition_dict, dict)
+                assert isinstance(child_obj.get_params(), list)
     if xml_info.get('complex_type'):
         complex_attr = getattr(obj, xml_info.get('complex_attr'))
         assert complex_attr._SOAP_TAG == xml_info['complex_tag']

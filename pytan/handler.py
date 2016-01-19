@@ -990,7 +990,7 @@ class Handler(object):
             # validate & parse a string into a spec
             # if not isinstance(spec, (dict,)):
             #     spec = parsers.get_str(spec)
-
+            # TODO CREATE WRAPPER FUNCTION get_object()
             # validate & parse the specs
             parsed_specs = [GetObject(all_class=all_class, spec=x).parsed_spec for x in spec]
 

@@ -48,7 +48,7 @@ class Store(dict):
             if isinstance(v, Store):
                 a = "** {} attribute '{}' sub store with {} items".format(me, k, len(v.items()))
             else:
-                a = "** {} attribute '{}': '{!r}'".format(me, k, v)
+                a = "** {} attribute '{}': {!r}".format(me, k, v)
             ret.append(a)
 
         ret = '\n'.join(ret)
@@ -87,6 +87,10 @@ class HelpStore(Store):
 
 
 class ResultStore(Store):
+    pass
+
+
+class TokenStore(Store):
     pass
 
 

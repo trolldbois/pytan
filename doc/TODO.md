@@ -33,10 +33,9 @@
 grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 
 ## TANIUMNG
-* TODO: ADD parameter_definition_dict TO BUILDER
 * TODO ADD DOCSTR TO BUILDER HEADER
 * rebuild taniumpy with latest wsdl (LAST)
-* document static props for things like what_hash and so on??
+* document static props for things like what_hash and so on?? (LATER)
 
 ## TESTS
 * add expected for tickle tests
@@ -53,35 +52,45 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * figure out cert based auth/plugin based auth? (HUGE)
  
 ## PARSING
-* argparse for specs/left/right/etc
+* argparse for specs/left/right/etc => NEXT
 
 ## HANDLER
-* parser doesnt work with params! catch [] in parser and throw exception? or do what console does and strip them out and re-add them back in (pull them out index correlated and add them back in index correlated, use CreateParams)
-* change parser to v3 with no failback
-* add gmt log back in
-* create_parent_group_obj broken, fix it and add debug logging!=> NEXT
-* 2.1.7: ask_saved: 
+* ask_manual:
+  * add prompting to createparams?
+* _add:
+  * ADD 'print_attrs: ['id', 'query_text', 'expiration'] to _add
+* ask_parsed:
+  * parser doesnt work with params! catch [] in parser and throw exception? or do what console does and strip them out and re-add them back in (pull them out index correlated and add them back in index correlated, use CreateParams)
+  * change parser to v3 with no failback
+* handler_logs:
+  * add gmt log back in
+* ask_saved: 
   * add log for get_result_info in refresh_data path
   * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
-* fix sse
-* add auto paging/caching to normal GRD
-* add secondary loop for if any data == current result unavail/etc (MEDIUM)
-* Add method to get question progress (MEDIUM)
-* add print_user bin script (SMALL)
-* question filters get params too?? (UNKNOWN)
-* add export_obj option for csv to split columns longer than 32k
-* work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
-* ~~ Will store value as global in TSAT
-* bundle workflow capture into handler?
-* look into update object methods (UNKNOWN)
-* email out (MEDIUM)
-* add caching (HUGE)
-* figure out how to get last N of an obj
->>> v=handler.get_questions({'value': secs_from_now(secs=-(60 * 2)), 'type': 'Date', 'field': 'expiration', 'operator': 'Greater'})
+* GRD:
+  * add auto paging/caching to normal GRD
+  * add secondary loop for if any data == current result unavail/etc (MEDIUM)
+* OTHER:
+  * Add method to get question progress (MEDIUM)
+  * add print_user bin script (SMALL)
+  * ~~ Will store value as global in TSAT
+  * bundle workflow capture into handler?
+  * look into update object methods (UNKNOWN)
+  * add caching (HUGE)
+  * figure out how to get last N of an obj
+  >>> v=handler.get_questions({'value': secs_from_now(secs=-(60 * 2)), 'type': 'Date', 'field': 'expiration', 'operator': 'Greater'})
+  * add other operator types (last 5 seconds/minutes/days)
+* EXPORT:
+  * add export_obj option for csv to split columns longer than 32k
+  * email out (MEDIUM)
+* deploy_action:
+  * work on deploy action & start_seconds_from_now (a new action gets created at actual start time)
+  * automatically handle approved action workflow
 
 ## UTILS
 * TODO figure out pyreadline later
 * add "advanced" options capability to shellparser (custom action, custom formatter, custom format_help on shellparser)
+* Add pytan log output to TSAT
 
 ## PLATFORM
 * open enhancement for console.wsdl to contain platform version
