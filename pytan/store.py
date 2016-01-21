@@ -29,6 +29,8 @@ class Store(dict):
             ret.append('** {} with no items'.format(me))
 
         for k, v in self.items():
+            if k.startswith('_'):
+                continue
             if isinstance(v, Store):
                 a = "** {} attribute '{}' sub store with {} items".format(me, k, len(v.items()))
             else:
@@ -45,6 +47,8 @@ class Store(dict):
             ret.append('** {} with no items')
 
         for k, v in self.items():
+            if k.startswith('_'):
+                continue
             if isinstance(v, Store):
                 a = "** {} attribute '{}' sub store with {} items".format(me, k, len(v.items()))
             else:
