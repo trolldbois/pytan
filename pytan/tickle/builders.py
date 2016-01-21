@@ -8,7 +8,7 @@ from pytan.tanium_ng import (
 )
 
 from pytan.tickle.constants import (
-    PARAMETER_DEFAULTS, FILTER_DEFAULTS, QUESTION_DEFAULTS, GROUP_DEFAULTS
+    PARAMETER_DEFAULTS, FILTER_DEFAULTS, QUESTION_DEFAULTS, GROUP_DEFAULTS, CACHE_FILTER_DEFAULTS
 )
 
 
@@ -282,8 +282,8 @@ class CreateSelect(object):
             err = err.format(type(spec).__name__, spec)
             raise ObjectCreateError(err)
 
-        if 'sensor_spec' not in spec:
-            err = 'spec dict must have a "sensor_spec" key, you supplied: {}'
+        if 'get_spec' not in spec:
+            err = 'spec dict must have a "get_spec" key, you supplied: {}'
             err = err.format(spec)
             raise ObjectCreateError(err)
 
@@ -313,7 +313,7 @@ class CreateSelect(object):
         return result
 
     def get_sensor_obj(self):
-        result = self.HANDLER.get_sensors(limit_exact=1, specs=self.SPEC['sensor_spec'])
+        result = self.HANDLER.get_sensors(limit_exact=1, specs=self.SPEC['get_spec'])
         return result
 
     def create_select_sensor(self):
@@ -347,14 +347,14 @@ class CreateFilterGroup(object):
 
         if 'group_spec' in spec:
             self.get_group_obj()
-        elif 'sensor_spec' in spec:
+        elif 'get_spec' in spec:
             if 'filter_spec' not in spec:
                 err = 'spec dict must have a "filter_spec" key, you supplied: {}'
                 err = err.format(spec)
                 raise ObjectCreateError(err)
             self.build_group_obj()
         else:
-            err = 'spec dict must have a "sensor_spec" or "group_spec" key, you supplied: {}'
+            err = 'spec dict must have a "get_spec" or "group_spec" key, you supplied: {}'
             err = err.format(spec)
             raise ObjectCreateError(err)
 
@@ -381,7 +381,7 @@ class CreateFilterGroup(object):
         return result
 
     def get_sensor_obj(self):
-        result = self.HANDLER.get_sensors(limit_exact=1, specs=self.SPEC['sensor_spec'])
+        result = self.HANDLER.get_sensors(limit_exact=1, specs=self.SPEC['get_spec'])
         return result
 
     def create_filter_sensor(self):
@@ -561,27 +561,29 @@ def create_question_selectlist(handler, **kwargs):
     return result
 
 
-def create_cachefilterlist(specs):
+def create_cachefilterlist(find_specs):
     """pass."""
-    result = CacheFilterList()
-    if not isinstance(specs, (list, tuple)):
-        specs = [specs]
-    for spec in specs:
-        result.append(create_cachefilter(**spec))
+    if not isinstance(find_specs, (list, tuple)):
+        find_specs = [find_specs]
+    filters = [create_cachefilter(s) for s in find_specs]
+    result = CacheFilterList(filter=filters)
     log_result('create_cachefilterlist', result, locals())
     return result
 
 
-def create_cachefilter(field, value, operator=None, field_type=None, not_flag=None, **kwargs):
+def create_cachefilter(find_spec):
     """pass."""
-    result = CacheFilter()
-    result.field = field
-    result.value = value
-    if operator is not None:
-        result.operator = operator
-    if field_type is not None:
-        result.type = field_type
-    if not_flag is not None:
-        result.not_flag = not_flag
+    if not isinstance(find_spec, dict):
+        err = 'find_spec must be a dict, you supplied type {}: {}'
+        err = err.format(type(find_spec).__name__, find_spec)
+        raise ObjectCreateError(err)
+
+    if 'value' not in find_spec:
+        err = 'find_spec dict must have a "value" key, you supplied: {}'
+        err = err.format(find_spec)
+        raise ObjectCreateError(err)
+
+    oargs = {k: find_spec.get(k, v) for k, v in CACHE_FILTER_DEFAULTS.items()}
+    result = CacheFilter(**oargs)
     log_result('create_cachefilter', result, locals())
     return result
