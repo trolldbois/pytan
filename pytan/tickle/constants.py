@@ -1,3 +1,5 @@
+SUPER_VERBOSE = False
+
 # TODO currently, cElementTree is showing the fastest times. more testing needed
 XML_ENGINE = "cet"
 """str of XML engine to use for XML de/serialization, must be one of XML_ENGINES"""
@@ -64,6 +66,13 @@ FILTER_DEFAULTS = {
     'max_age_seconds': None,
     'all_values_flag': None,
     'value': None,
+}
+CACHE_FILTER_DEFAULTS = {
+    'field': None,
+    'value': None,
+    'operator': None,
+    'type': None,
+    'not_flag': None,
 }
 QUESTION_DEFAULTS = {
     'expire_seconds': None,
