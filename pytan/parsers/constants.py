@@ -172,10 +172,11 @@ OPERATORS_PYTAN = {
 
 OPERATORS_TANIUM = ['Equal', 'Greater', 'GreaterEqual', 'Less', 'LessEqual', 'RegexMatch']
 
-SPEC_FIELD_FALLBACKS = ['name', 'url_regx', 'id']
+SPEC_FIELD_FALLBACKS = ['name', 'url_regex']
 
-TRUE_TYPES = [1, True, "1", "True"]
-FALSE_TYPES = [0, False, "0", "False"]
+TRUE_TYPES = (1, True, "yes", "y", "true", "t", "1")
+FALSE_TYPES = (0, False, "no", "n", "false", "f", "0")
+
 
 FIELD_TYPES_MAP = {
     'S': {'t': 'String', 'h': 'standard lexicographical comparison (the default)'},
@@ -195,4 +196,27 @@ FIELD_TYPES = {
     'date': FIELD_TYPES_MAP['D'],
     'datasize': FIELD_TYPES_MAP['DS'],
     'numericinteger': FIELD_TYPES_MAP['NI'],
+}
+
+ESCAPED_COMMAS = r'(?<!\\),'
+
+SHORT_TOKENS = {
+    # get
+    'f': 'field',
+    't': 'type',
+    'n': 'not_flag',
+    'not': 'not_flag',
+    'o': 'operator',
+    'op': 'operator',
+    'v': 'value',
+    'val': 'value',  # unnamed on left, right, and get
+    # left/right
+    'p': 'param',
+    'fa': 'filter_any_value',
+    'fi': 'filter_ignore_case',
+    'fm': 'filter_max_age',
+    'fn': 'filter_not',
+    'fo': 'filter_operator',
+    'fv': 'filter_value',
+    'fvt': 'filter_value_type',
 }

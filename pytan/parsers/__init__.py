@@ -1,13 +1,11 @@
 """Parsers package for :mod:`pytan`"""
 
 from pytan.parsers import constants
-from pytan.parsers.spec import Spec
-from pytan.parsers.getobject import GetObject
-from pytan.parsers.filterobject import FilterObject
+from pytan.parsers import spec_parsers
+from pytan.parsers import token_parsers
 
 __all__ = [
     'constants',
-    'Spec',
-    'GetObject',
-    'FilterObject',
+    'spec_parsers',
+    'token_parsers',
 ]

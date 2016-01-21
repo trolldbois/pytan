@@ -81,9 +81,10 @@ LOGMAP = {
     'pytan.handler': HANDLER_LOGS,
     'pytan.handler_args': HANDLER_LOGS,
     'pytan.handler_logs': HANDLER_LOGS,
-    'pytan.parsers.filterobject': PARSER_LOGS,
-    'pytan.parsers.getobject': PARSER_LOGS,
-    'pytan.parsers.spec': PARSER_LOGS,
+    # 'pytan.parsers.filterobject': EVERYTHING,
+    # 'pytan.parsers.getobject': EVERYTHING,
+    'pytan.parsers.spec_parsers': EVERYTHING,  # PARSER_LOGS
+    'pytan.parsers.token_parsers': EVERYTHING,  # PARSER_LOGS
     'pytan.pollers.question': PYTAN_BASE_LOGS,
     'pytan.pollers.question.progress': PROGRESS_LOGS,
     'pytan.pollers.question.resolver': RESOLVER_LOGS,
