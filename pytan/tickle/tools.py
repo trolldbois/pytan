@@ -4,7 +4,7 @@ import base64
 import logging
 import datetime
 
-from pytan import PytanError, tanium_ng, integer_types, range, b, text_type
+from pytan import PytanError, integer_types, range, b, text_type
 from pytan.tanium_ng import GroupList, Group, BaseType
 from pytan.ext import xmltodict
 from pytan.utils import read_file, write_file
@@ -14,10 +14,6 @@ MYLOG = logging.getLogger(__name__)
 
 
 class ObjectTypeError(PytanError):
-    pass
-
-
-class LimitCheckError(PytanError):
     pass
 
 
@@ -317,61 +313,6 @@ def is_ng(obj):
         err = err.format(obj, type(obj))
         MYLOG.error(err)
         raise ObjectTypeError(err)
-
-
-def check_limits(objects, **kwargs):
-    """pass."""
-    specs = kwargs.get('specs', [])
-
-    is_ng(objects)
-
-    # coerce single items into a list
-    objects_class = objects.__class__.__name__
-    if not objects_class.endswith('List'):
-        new_class = objects_class + 'List'
-        new_objects = getattr(tanium_ng, new_class)()
-        new_objects.append(objects)
-        objects = new_objects
-
-    limit_map = [
-        {'k': 'limit_min', 'm': "{} items or more", 'e': '>='},
-        {'k': 'limit_max', 'm': "{} items or less", 'e': '<='},
-        {'k': 'limit_exact', 'm': "{} items exactly", 'e': '=='},
-    ]
-
-    for l in limit_map:
-        limit_val = kwargs.get(l['k'], None)
-
-        if limit_val is None:
-            m = "check_limits(): found {}, skipped {} (not supplied)"
-            m = m.format(objects, l['k'], )
-            MYLOG.debug(m)
-            continue
-
-        limit_val = int(limit_val)
-        e = "len(objects) {} limit_val".format(l['e'])
-        limit_pass = eval(e)
-
-        p = "check_limits(): found {}, {} {} (must be {})"
-        limit_msg = l['m'].format(limit_val)
-
-        if limit_pass:
-            m = p.format(objects, 'PASSED', l['k'], limit_msg)
-            MYLOG.info(m)
-        else:
-            # get the str of each objects for printing in exception
-            objtxt = '\n\t'.join([str(x) for x in objects])
-
-            # get the specs txt if any specs
-            specstxt = "\n"
-            if specs:
-                specstxt = "\nspecs:\n\t" + "\n\t".join([str(x) for x in specs]) + "\n"
-
-            err_pre = p.format(objects, 'FAILED', l['k'], limit_msg)
-            err = "{}{}returned items:\n\t{}"
-            err = err.format(err_pre, specstxt, objtxt)
-            MYLOG.error(err)
-            raise LimitCheckError(err)
 
 
 def q_start(q):
