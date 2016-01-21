@@ -38,6 +38,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * document static props for things like what_hash and so on?? (LATER)
 
 ## TESTS
+* ADD TESTS FOR HANDLER.get_* **NOW**
 * add expected for tickle tests
 * test against 6.6 (auth changes??)
 * add approve action to pytan (need doc update and test update)
@@ -52,7 +53,7 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * figure out cert based auth/plugin based auth? (HUGE)
  
 ## PARSING
-* argparse for specs/left/right/etc => NEXT
+* argparse for specs/left/right/etc **ONGOING**
 
 ## HANDLER
 * ask_manual:

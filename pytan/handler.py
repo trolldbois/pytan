@@ -6,16 +6,15 @@ import datetime
 from pytan import PytanError, tanium_ng
 from pytan.tanium_ng import BaseType
 from pytan.store import HelpStore, ResultStore
-from pytan.utils import coerce_list
 from pytan.session import Session
 from pytan.pollers import QuestionPoller, SSEPoller
-from pytan.parsers import GetObject
+from pytan.parsers.spec_parsers import coerce_find_specs
 from pytan.version import __version__
 from pytan.tickle import from_sse_xml
 from pytan.tickle.to__dict_resultset import ToDictResultSet
 from pytan.handler_args import create_argstore
 from pytan.handler_logs import setup_log
-from pytan.tickle.tools import shrink_obj, check_limits
+from pytan.tickle.tools import shrink_obj
 from pytan.tickle.builders import create_question, create_cachefilterlist
 
 MYLOG = logging.getLogger(__name__)
@@ -37,8 +36,10 @@ HELPS.gri = "Issue a GetResultInfo for a {} to check the current progress of ans
 HELPS.saa = "Issue an AddObject to add a SavedActionApproval"
 HELPS.stopa = "Issue an AddObject to add a StopAction"
 HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
-HELPS.getf = "Use GetObject to find {} objects with cache filters to limit the results"
-HELPS.geta = "Use GetObject to find all {} objects"
+HELPS.getf = (
+    "Use GetObject to find {class_list.__name__} objects with cache filters to limit the results"
+)
+HELPS.geta = "Use GetObject to find all {class_list.__name__} objects"
 HELPS.addobj = "Issue an AddObject to add a {} object"
 HELPS.addget = "Issue a GetObject on the recently added {} object in order to get the full object"
 HELPS.delobj = "Issue a DeleteObject to delete an object"
@@ -81,6 +82,10 @@ class PickerError(PytanError):
 
 
 class ParseJobError(PytanError):
+    pass
+
+
+class CheckLimitError(PytanError):
     pass
 
 
@@ -776,254 +781,268 @@ class Handler(object):
         result = self._delete_objects(result, **kwargs)
         return result
 
-    def get_sensors(self, *args, **kwargs):
+    def get_sensors(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SensorList
-        kwargs['specs_from_args'] = args
-        kwargs['hide_sourced_sensors'] = kwargs.get('hide_sourced_sensors', True)
+        kwargs['class_list'] = tanium_ng.SensorList
+        kwargs['specs'] = specs
+
+        # add a spec to each spec that will filter out any sensors that do not have
+        # a source_id of 0
+        hide_spec = {'value': '0', 'field': 'source_id'}
+        kwargs['add_specs'] = kwargs.get('add_specs', hide_spec)
+
         result = self._get_objects(**kwargs)
         return result
 
-    def get_packages(self, *args, **kwargs):
+    def get_packages(self, *specs, **kwargs):
         """pass. cache_filters need single fix"""
-        kwargs['all_class'] = tanium_ng.PackageSpecList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.PackageSpecList
+        kwargs['specs'] = specs
         kwargs['FIXIT_SINGLE'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_actions(self, *args, **kwargs):
+    def get_actions(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.ActionList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.ActionList
+        kwargs['specs'] = specs
         result = self._get_objects(**kwargs)
         return result
 
-    def get_clients(self, *args, **kwargs):
+    def get_clients(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SystemStatusList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.SystemStatusList
+        kwargs['specs'] = specs
         result = self._get_objects(**kwargs)
         return result
 
-    def get_groups(self, *args, **kwargs):
+    def get_groups(self, *specs, **kwargs):
         """pass. cant find unnamed groups by id using cache filters"""
-        kwargs['all_class'] = tanium_ng.GroupList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.GroupList
+        kwargs['specs'] = specs
         kwargs['FIXIT_GROUP_ID'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_questions(self, *args, **kwargs):
+    def get_questions(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.QuestionList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.QuestionList
+        kwargs['specs'] = specs
         result = self._get_objects(**kwargs)
         return result
 
-    def get_saved_actions(self, *args, **kwargs):
+    def get_saved_actions(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SavedActionList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.SavedActionList
+        kwargs['specs'] = specs
         result = self._get_objects(**kwargs)
         return result
 
-    def get_saved_questions(self, *args, **kwargs):
+    def get_saved_questions(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SavedQuestionList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.SavedQuestionList
+        kwargs['specs'] = specs
         result = self._get_objects(**kwargs)
         return result
 
-    def get_settings(self, *args, **kwargs):
+    def get_settings(self, *specs, **kwargs):
         """pass."""
-        kwargs['all_class'] = tanium_ng.SystemSettingList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.SystemSettingList
+        kwargs['specs'] = specs
         result = self._get_objects(**kwargs)
         return result
 
-    def get_users(self, *args, **kwargs):
+    def get_users(self, *specs, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = tanium_ng.UserList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.UserList
+        kwargs['specs'] = specs
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_user_roles(self, *args, **kwargs):
+    def get_user_roles(self, *specs, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = tanium_ng.UserRoleList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.UserRoleList
+        kwargs['specs'] = specs
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_whitelisted_urls(self, *args, **kwargs):
+    def get_whitelisted_urls(self, *specs, **kwargs):
         """pass. cache_filters fail"""
-        kwargs['all_class'] = tanium_ng.WhiteListedUrlList
-        kwargs['specs_from_args'] = args
+        kwargs['class_list'] = tanium_ng.WhiteListedUrlList
+        kwargs['specs'] = specs
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
 
     # BEGIN PRIVATE METHODS
-    def _get_objects(self, all_class, **kwargs):
+    def _get_objects(self, **kwargs):
         """pass."""
-        limit_exact = kwargs.get('limit_exact', None)
-        hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
-        # get specs from kwargs or from args (assuming calling method put them in specs_from_args)
-        kwargs['specs'] = kwargs.get('specs', []) or kwargs.get('specs_from_args', [])
+        # add an instantiated object of the list class to kwargs
+        kwargs['obj_list'] = kwargs['class_list']()
+
+        # add the class that stores a single item to kwargs
+        kwargs['class_single'] = kwargs['obj_list']._LIST_TYPE
+
+        # add an instantiated object that stores a single item to kwargs
+        kwargs['obj_single'] = kwargs['class_single']()
+
         # don't include hidden objects by default
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
-        kwargs['all_class'] = all_class
-        kwargs['obj'] = self._fixit_single(**kwargs)
 
-        use_filters = False
-
-        # if specs or hide_sourced_sensors, build cache filters and find results
-        if kwargs['specs'] or hide_sourced_sensors:
-            use_filters = True
-
-        if use_filters:
-            # get objects using cache filter
-            kwargs['pytan_help'] = HELPS.getf.format(all_class.__name__)
-            result = self._find_filter(**kwargs)
+        # if specs, build cache filters and find results
+        kwargs['specs'] = coerce_find_specs(**kwargs)
+        if kwargs['specs']:
+            kwargs['pytan_help'] = HELPS.getf.format(**kwargs)
+            kwargs['result'] = self._find_filter(**kwargs)
+        # if not specs, get all objects
         else:
-            # get all objects
-            kwargs['pytan_help'] = HELPS.geta.format(all_class.__name__)
-            result = self.SESSION.find(**kwargs)
-            kwargs['objects'] = result
-            check_limits(**kwargs)
+            kwargs['pytan_help'] = HELPS.geta.format(**kwargs)
+            kwargs['result'] = self._find(**kwargs)
 
-        if limit_exact is not None:
-            # if just one item returned and limit_exact == 1, return result as a single item
-            # if result is a list
-            if len(result) == 1 and limit_exact == 1:
-                try:
-                    result = result[0]
-                except:
-                    pass
+        # check limits
+        result = self._check_limits(**kwargs)
 
-        m = "get_objects found '{}' (using filters: {})"
-        m = m.format(result, use_filters)
+        m = "get_objects found '{}' (using {} specs)"
+        m = m.format(result, len(kwargs['specs']))
         self.MYLOG.info(m)
+        return result
+
+    def _find(self, **kwargs):
+        kwargs['obj'] = kwargs.get('obj') or self._fixit_single(**kwargs)
+        if kwargs.get('cache_filters'):
+            kwargs = self._fixit_group_id(**kwargs)
+        result = self.SESSION.find(**kwargs)
+        return result
+
+    def _find_filter(self, **kwargs):
+        """pass."""
+        obj_list = kwargs['class_list']()
+        specs = kwargs['specs']
+
+        # create a base instance of class_list which all results will be added to
+        result = obj_list
+        result._SPECS = specs
+
+        for subspecs in specs:
+            # create a cache filter list object using the subspecs
+            kwargs['cache_filters'] = create_cachefilterlist(subspecs)
+
+            # find the results using the cache_filters to limit the returns
+            cf_result = self._find(**kwargs)
+
+            m = "Found {} using subspecs and cache_filters: "
+            m = m.format(cf_result)
+            self.MYLOG.debug(m)
+            for idx, subspec in enumerate(subspecs):
+                self.MYLOG.debug("\tsubspec #{}: {}".format(idx + 1, subspec))
+            for idx, cf in enumerate(kwargs['cache_filters']):
+                self.MYLOG.debug("\tcache_filter #{}: {}".format(idx + 1, cf))
+
+            # if cf_result is a list, append each item to result
+            if cf_result._IS_LIST:
+                [result.append(r) for r in cf_result if r not in result]
+            # otherwise just append cf_result directly to result
+            else:
+                if cf_result not in result:
+                    result.append(cf_result)
+
+        result = self._fixit_broken_filter(result, **kwargs)
         return result
 
     def _fixit_single(self, **kwargs):
         """pass."""
         # FIXIT_SINGLE: GetObject in list form fails, so we need to use the singular form
         fixit = kwargs.get('FIXIT_SINGLE', False)
-        result = kwargs['all_class']()
+        result = kwargs['obj_list']
         if fixit:
-            result = result._LIST_TYPE()
-            m = "FIXIT_SINGLE: changed class from {} to {}"
-            m = m.format(kwargs['all_class'].__name__, result.__class__.__name__)
+            result = kwargs['obj_single']
+            m = "FIXIT_SINGLE: changed class from {!r} to {!r}"
+            m = m.format(kwargs['class_list'].__name__, kwargs['class_single'].__name__)
             self.MYLOG.debug(m)
         return result
 
-    def _fixit_group_id(self, specs, **kwargs):
+    def _fixit_group_id(self, **kwargs):
         """pass."""
         # FIXIT_GROUP_ID: unnamed groups have to be searched for manually, cache filters dont work
         fixit = kwargs.get('FIXIT_GROUP_ID', False)
-        result = kwargs['obj']
+        cfs = kwargs.get('cache_filters', [])
+        kwargs['obj'] = kwargs['class_list']()
         if fixit:
-            for spec in specs:
-                if spec['field'] == 'id':
-                    result = tanium_ng.Group()
-                    setattr(result, spec['field'], spec['value'])
-                    m = "FIXIT_GROUP_ID: changed class to 'Group' and set {field!r} to {value!r}"
-                    m = m.format(**spec)
+            remove_cfs = False
+            for cf in cfs:
+                if cf.field == 'id' and cf.value is not None:
+                    remove_cfs = True
+                    subgroup = kwargs['class_single'](id=cf.value)
+                    m = "FIXIT_GROUP_ID: using old style GetObject for group {}"
+                    m = m.format(subgroup)
                     self.MYLOG.debug(m)
-        return result
+                    kwargs['obj'].append(subgroup)
+            if remove_cfs:
+                del(kwargs['cache_filters'])
+        return kwargs
 
-    def _fixit_broken_filter(self, objects, specs, **kwargs):
+    def _fixit_broken_filter(self, result, specs, **kwargs):
         """pass."""
         fixit = kwargs.get('FIXIT_BROKEN_FILTER', False)
-        result = objects
         # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
         if fixit:
-            # create a new objects of the same class to store matching objects in
             m = "FIXIT_BROKEN_FILTER: Match {}: '{}' using specs: {}".format
-            new_objects = objects.__class__()
-            for spec in specs:
-                for r in objects:
+            new_result = kwargs['class_list']()
+            for subspecs in specs:
+                for r in result:
                     match_found = True
-                    for subspec in spec:
+                    for subspec in subspecs:
                         if getattr(r, subspec['field']) != subspec['value']:
                             match_found = False
 
                     if match_found:
-                        if r not in new_objects:
-                            self.MYLOG.debug(m('found', r, spec))
-                            new_objects.append(r)
+                        if r not in new_result:
+                            self.MYLOG.debug(m('found', r, subspec))
+                            new_result.append(r)
                     else:
-                        self.MYLOG.debug(m('not found', r, spec))
+                        self.MYLOG.debug(m('not found', r, subspec))
 
             m = "FIXIT_BROKEN_FILTER: original objects '{}', new objects '{}'"
-            m = m.format(objects, new_objects)
+            m = m.format(result, new_result)
             self.MYLOG.debug(m)
-            result = new_objects
+            result = new_result
         return result
 
-    def _find_filter(self, all_class, specs, **kwargs):
+    def _check_limits(self, result, **kwargs):
         """pass."""
-        hide_sourced_sensors = kwargs.get('hide_sourced_sensors', False)
+        limit_maps = [
+            {'key': 'limit_min', 'msg': "{} items or more", 'expr': '>='},
+            {'key': 'limit_max', 'msg': "{} items or less", 'expr': '<='},
+            {'key': 'limit_exact', 'msg': "{} items exactly", 'expr': '=='},
+        ]
 
-        # ensure specs is a list of lists
-        specs = [coerce_list(s) for s in coerce_list(specs)]
+        msgs = []
+        for limit_map in limit_maps:
+            if limit_map['key'] not in kwargs:
+                msgs.append("{key!r} SKIPPED".format(**limit_map))
+                continue
 
-        # create a base instance of all_class which all results will be added to
-        result = all_class()
+            limit_value = int(kwargs[limit_map['key']])
+            limit_check = eval("len(result) {expr} limit_value".format(**limit_map))
+            limit_map['msg'] = limit_map['msg'].format(limit_value)
 
-        # if we want to hide sourced sensors, add hide_spec
-        hide_spec = {'value': '0', 'field': 'source_id'}
-        if hide_sourced_sensors and not specs:
-            specs = [[hide_spec]]
+            if limit_check:
+                msgs.append("{key!r} PASSED (must be {msg})".format(**limit_map))
+            else:
+                msgs.append("{key!r} FAILED (must be {msg})".format(**limit_map))
+                result_text = '\n\t'.join([str(x) for x in result])
+                err = "check_limits(): {} returned items:\n\t{}"
+                err = err.format(', '.join(msgs), result_text)
+                MYLOG.error(err)
+                raise CheckLimitError(err)
 
-        all_parsed_specs = []
+            if limit_map['key'] == 'limit_exact' and len(result) == 1 and limit_value == 1:
+                msgs.append("'limit_exact' == 1, returning single result")
+                result = result[0]
 
-        for spec in specs:
-            if hide_sourced_sensors and hide_spec not in spec:
-                spec.append(hide_spec)
-
-            # TODO: AWAITING MANUAL PARSER
-            # validate & parse a string into a spec
-            # if not isinstance(spec, (dict,)):
-            #     spec = parsers.get_str(spec)
-            # TODO CREATE WRAPPER FUNCTION get_object()
-            # validate & parse the specs
-            parsed_specs = [GetObject(all_class=all_class, spec=x).parsed_spec for x in spec]
-
-            kwargs['specs'] = parsed_specs
-            kwargs['obj'] = self._fixit_group_id(**kwargs)
-
-            # create a cache filter list object using the parsed_specs
-            kwargs['cache_filters'] = create_cachefilterlist(parsed_specs)
-
-            # use getobject to find the results using the cache_filters to limit the returns
-            cf_result = self.SESSION.find(**kwargs)
-
-            m = "{} found using parsed specs: {!r}"
-            m = m.format(cf_result, parsed_specs)
-            self.MYLOG.debug(m)
-
-            # if cf_result is a list, append each item to result
-            try:
-                cf_result[0]
-                [result.append(r) for r in cf_result if r]
-            # otherwise just append cf_result directly to result
-            except:
-                if cf_result:
-                    result.append(cf_result)
-
-            all_parsed_specs.append(parsed_specs)
-
-        kwargs['specs'] = all_parsed_specs
-        kwargs['objects'] = result
-        result = self._fixit_broken_filter(**kwargs)
-
-        kwargs['objects'] = result
-        check_limits(**kwargs)
+        MYLOG.info('check_limits(): {}'.format(', '.join(msgs)))
         return result
 
     def _add(self, obj, **kwargs):
