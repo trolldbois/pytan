@@ -3,7 +3,8 @@ import logging
 from pytan import PytanError, text_type, encoding
 from pytan.tickle import ET
 from pytan.tanium_ng import BaseType
-from pytan.tickle.constants import INCLUDE_EMPTY
+
+from pytan.tickle.constants import INCLUDE_EMPTY, SUPER_VERBOSE
 
 MYLOG = logging.getLogger(__name__)
 
@@ -35,6 +36,7 @@ class ToTree(object):
         if not isinstance(obj, BaseType):
             err = "obj must be a tanium_ng.BaseType object, supplied type: {!r}, obj: {}"
             err = err.format(type(obj).__name__, obj)
+            MYLOG.error(err)
             raise XmlSerializeError(err)
 
         self.RESULT = ET.Element(obj._SOAP_TAG)
@@ -42,9 +44,10 @@ class ToTree(object):
         self.base_complex()
         self.base_list()
 
-        m = "Converted tanium_ng object {!r} into tree:: {}"
-        m = m.format(type(self.OBJ), self.RESULT)
-        MYLOG.debug(m)
+        if SUPER_VERBOSE:
+            m = "Converted tanium_ng object {!r} into tree:: {}"
+            m = m.format(type(self.OBJ), self.RESULT)
+            MYLOG.debug(m)
 
     def base_simple(self):
         """Process the simple properties from the tanium_ng object"""

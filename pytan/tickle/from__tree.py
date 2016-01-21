@@ -3,6 +3,8 @@ import logging
 from pytan import PytanError
 from pytan.tanium_ng import BaseType, BASE_TYPES
 
+from pytan.tickle.constants import SUPER_VERBOSE
+
 MYLOG = logging.getLogger(__name__)
 
 
@@ -43,9 +45,10 @@ class FromTree(object):
         if hasattr(self.RESULT, '_post_xml_hook'):
             self.RESULT._post_xml_hook()
 
-        m = "Converted tree {!r} into tanium_ng object:: {}"
-        m = m.format(self.OBJTREE.tag, type(self.RESULT))
-        MYLOG.debug(m)
+        if SUPER_VERBOSE:
+            m = "Converted tree {!r} into tanium_ng object:: {}"
+            m = m.format(self.OBJTREE.tag, type(self.RESULT))
+            MYLOG.debug(m)
 
     def get_objclass(self, **kwargs):
         objclass = kwargs.get('objclass', '')

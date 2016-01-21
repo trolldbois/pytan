@@ -4,7 +4,7 @@ import json
 from pytan import PytanError
 from pytan.tanium_ng import BaseType, BASE_TYPES
 
-from pytan.tickle.constants import TAG_NAME, LIST_NAME, EXPLODE_NAME, FLAT_WARN
+from pytan.tickle.constants import TAG_NAME, LIST_NAME, EXPLODE_NAME, FLAT_WARN, SUPER_VERBOSE
 
 MYLOG = logging.getLogger(__name__)
 
@@ -93,9 +93,10 @@ class FromDict(object):
         self.base_complex()
         self.base_list()
 
-        m = "Converted dict with keys '{}' into tanium_ng object:: {}"
-        m = m.format(', '.join(self.OBJ.keys()), type(self.RESULT))
-        MYLOG.debug(m)
+        if SUPER_VERBOSE:
+            m = "Converted dict with keys '{}' into tanium_ng object:: {}"
+            m = m.format(', '.join(self.OBJ.keys()), type(self.RESULT))
+            MYLOG.debug(m)
 
     def base_simple(self):
         """Process the simple properties from the tanium_ng object"""
