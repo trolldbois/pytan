@@ -139,6 +139,22 @@ class BaseType(object):
             raise BadTypeError(self, self._LIST_ATTR, value, self._LIST_TYPE)
         getattr(self, self._LIST_ATTR).append(value)
 
+    def __eq__(self, other):
+        result = False
+        if isinstance(other, BaseType):
+            result = self.to_xml() == other.to_xml()
+        return result
+
+    def __ne__(self, other):
+        result = not self == other
+        return result
+
+    def __cmp__(self, other):
+        result = False
+        if isinstance(other, BaseType):
+            result = self.to_xml() == other.to_xml()
+        return result
+
     def __add__(self, value):
         """Support + operand for single list types.
 
@@ -249,11 +265,17 @@ class BaseType(object):
     def _check_list(self, name, value):
         if not isinstance(value, list):
             raise BadTypeError(self, name, value, self._LIST_PROPS[name])
-        for i in value:
+        for idx, i in enumerate(value):
             type_check = self._LIST_PROPS[name]
-            if type_check == text_type:
-                type_check = string_types
-            if not isinstance(i, type_check):
+            if type_check == int:
+                try:
+                    value[idx] = int(i)
+                except:
+                    raise BadTypeError(self, name, i, type_check)
+            elif type_check == text_type:
+                if not isinstance(i, string_types):
+                    raise BadTypeError(self, name, i, type_check)
+            elif not isinstance(i, type_check):
                 raise BadTypeError(self, name, i, type_check)
         return value
 
