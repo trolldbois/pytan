@@ -1,5 +1,6 @@
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 
+import time
 import logging
 import datetime
 
@@ -220,100 +221,109 @@ class Handler(object):
             result.question_results = self.get_result_data(**kwargs)
         return result
 
-    def ask_saved(self, *args, **kwargs):
-        """Ask a saved question and get the results back
-
-        Parameters
-        ----------
-        id : int, list of int, optional
-            * id of saved question to ask
-        name : str, list of str
-            * name of saved question
-        refresh: bool, optional
-            * default False
-            * False: Get the answers that are currently available for this saved question
-            * True: Ask a new question to gather new answers for this saved question
-        get_results : bool, optional
-            * default: True
-            * True: wait for result completion after asking question
-            * False: just ask the question and return it in `ret`
-
-        Returns
-        -------
-        result : dict, containing
-            * `question_object` :
-            :class:`tanium_ng.saved_question.SavedQuestion`
-            the saved question object
-            * `question_object` :
-            :class:`tanium_ng.question.Question`
-            the question asked by `saved_question_object`
-            * ``question_results`` :
-            :class:`tanium_ng.result_set.ResultSet`
-            the results for `question_object`
-            * ``poller_object`` :
-            None if `refresh` == False
-            elsewise :class:`QuestionPoller`,
-            poller object used to wait until all results are in before getting `question_results`
-            * ``poller_success`` : None if ``refresh`` == False, elsewise True or False
-        """
-        kwargs['specs'] = kwargs.get('specs', []) or list(args)
-        refresh = kwargs.get('refresh', False)
-        get_results = kwargs.get('get_results', True)
-
-        if not kwargs['specs']:
-            err = "Must supply arg 'specs' for identifying the saved question to ask"
+    def ask_saved(self, *specs, **kwargs):
+        if not specs:
+            err = "Must supply 'specs' for identifying the saved question to ask"
             raise PytanError(err)
 
-        # create ResultStore() object for storing the results
-        result = ResultStore()
-        result.poller_object = None
-        result.poller_success = None
-        result.question_results = None
+        q_txt = "Question id={0.id}, query='{0.query_text}', expires={0.expiration}".format
+        sq_txt = "Saved Question id={0.id}, name={0.name}".format
+
+        refresh = kwargs.get('refresh', False)
+        get_results = kwargs.get('get_results', True)
+        refresh_timer = kwargs.get('refresh_timer', 30)
 
         # get the saved_question object the user passed in
-        result.saved_question_object = self.get_saved_questions(limit_exact=1, **kwargs)
+        kwargs['limit_exact'] = 1
+        sq = self.get_saved_questions(*specs, **kwargs)
+        q = sq.question
 
         # get the last asked question for this saved question
-        kwargs['pytan_help'] = HELPS.sq_getq
-        kwargs['obj'] = result['saved_question_object'].question
-        result.question_object = self.SESSION.find(**kwargs)
+        kwargs.update({'pytan_help': HELPS.sq_getq, 'obj': q})
+        q = self.SESSION.find(**kwargs)
+
+        m = "refresh={}, {} for {}"
+        m = m.format(refresh, q_txt(q), sq_txt(sq))
+        self.MYLOG.info(m)
+
+        kwargs.update({'obj': q})
+        gri = self.get_result_info(**kwargs)
+
+        if gri.result_info.row_count == 0:
+            m = "forcing a refresh, current rows is 0 for {}"
+            m = m.format(q_txt(q))
+            self.MYLOG.info(m)
+            refresh = True
 
         if refresh:
-            # if GetResultInfo is issued on a saved question, Tanium will issue a new question
-            # to fetch new/updated results
-            kwargs['pytan_help'] = HELPS.sq_ri
-            kwargs['obj'] = result.saved_question_object
-            self.get_result_info(**kwargs)
+            while True:
+                # GetResultInfo on the saved question to have Tanium issue a new question
+                # to fetch new results
+                kwargs.update({'pytan_help': HELPS.sq_ri, 'obj': sq})
+                self.get_result_info(**kwargs)
 
-            # re-fetch the saved question object to get the newly asked question info
-            kwargs['pytan_help'] = HELPS.sq_resq
-            kwargs['obj'] = shrink_obj(obj=result.saved_question_object)
-            result.saved_question_object = self.SESSION.find(**kwargs)
+                # re-fetch the saved question object to get the newly asked question info
+                kwargs.update({'pytan_help': HELPS.sq_resq, 'obj': sq})
+                sq = self.SESSION.find(**kwargs)
+                nq = sq.question
 
-            # get the last asked question for this saved question
-            kwargs['pytan_help'] = HELPS.sq_getq
-            kwargs['obj'] = result.saved_question_object.question
-            result.question_object = self.SESSION.find(**kwargs)
+                # get the last asked question for this saved question
+                kwargs.update({'pytan_help': HELPS.sq_getq, 'obj': nq})
+                nq = self.SESSION.find(**kwargs)
 
-            m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
-            m = m.format(kwargs['obj'])
-            self.MYLOG.info(m)
+                # ensure the new question ID is greater than the previous one,
+                # and ensure the query text is the same
+                if nq.id > q.id and nq.query_text == q.query_text:
+                    m = "NEW {} for {}"
+                    m = m.format(q_txt(nq), sq_txt(sq))
+                    self.MYLOG.info(m)
+                    q = nq
+                    break
+                else:
+                    m = "NO NEW {} for {}, sleeping for {} seconds"
+                    m = m.format(q_txt(nq), sq_txt(sq), refresh_timer)
+                    self.MYLOG.info(m)
+                    time.sleep(refresh_timer)
 
             # setup a poller for the last question for this saved question
             poll_args = {}
             poll_args.update(kwargs)
-            poll_args['obj'] = result.question_object
-            poll_args['handler'] = self
-            result.poller_object = QuestionPoller(**poll_args)
+            poll_args.update({'obj': q, 'handler': self})
+            p = QuestionPoller(**poll_args)
+        else:
+            p = None
+
+        m = "get_results={}, {} for {}"
+        m = m.format(get_results, q_txt(q), sq_txt(sq))
+        self.MYLOG.info(m)
 
         if get_results:
             # run the poller if one exists to wait for answers to complete
-            if result.poller_object is not None:
-                result.poller_success = result.poller_object.run(**kwargs)
-
+            if refresh:
+                p_result = p.run(**kwargs)
+            else:
+                p_result = None
             # get the answers for the last asked question for this saved question
-            kwargs['obj'] = result.question_object
-            result.question_results = self.get_result_data(**kwargs)
+            kwargs.update({'obj': q})
+            grd = self.get_result_data(**kwargs)
+
+            m = "{} rows returned for {}"
+            m = m.format(len(grd.result_set.rows), q_txt(q))
+            self.MYLOG.info(m)
+        else:
+            p_result = None
+            grd = None
+
+        kwargs.update({'obj': q})
+        gri = self.get_result_info(**kwargs)
+
+        result = ResultStore()
+        result.saved_question = sq
+        result.question = q
+        result.poller = p
+        result.poller_result = p_result
+        result.result_info = gri
+        result.result_data = grd
         return result
 
     def parse_query(self, question_text, **kwargs):
@@ -736,7 +746,7 @@ class Handler(object):
         """
         shrink = kwargs.get('shrink', True)
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
-        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.gri)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.gri.format(obj))
         if shrink:
             kwargs['obj'] = shrink_obj(obj=obj)
         else:
@@ -897,8 +907,14 @@ class Handler(object):
         # check limits
         result = self._check_limits(**kwargs)
 
-        m = "get_objects found '{}' (using {} specs)"
-        m = m.format(result, len(kwargs['specs']))
+        if result._IS_LIST:
+            result_len = len(result)
+            result_type = result[0].__class__.__name__
+        else:
+            result_len = 1
+            result_type = result.__class__.__name__
+        m = "get_objects found '{}' items of type '{}' (using {} specs)"
+        m = m.format(result_len, result_type, len(kwargs['specs']))
         self.MYLOG.info(m)
         return result
 
@@ -1048,7 +1064,7 @@ class Handler(object):
                 msgs.append("'limit_exact' == 1, returning single result")
                 result = result[0]
 
-        MYLOG.info('check_limits(): {}'.format(', '.join(msgs)))
+        MYLOG.debug('check_limits(): {}'.format(', '.join(msgs)))
         return result
 
     def _add(self, obj, **kwargs):

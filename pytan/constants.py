@@ -83,8 +83,8 @@ LOGMAP = {
     'pytan.handler_logs': HANDLER_LOGS,
     # 'pytan.parsers.filterobject': EVERYTHING,
     # 'pytan.parsers.getobject': EVERYTHING,
-    'pytan.parsers.spec_parsers': EVERYTHING,  # PARSER_LOGS
-    'pytan.parsers.token_parsers': EVERYTHING,  # PARSER_LOGS
+    'pytan.parsers.spec_parsers': PARSER_LOGS,  # PARSER_LOGS
+    'pytan.parsers.token_parsers': PARSER_LOGS,  # PARSER_LOGS
     'pytan.pollers.question': PYTAN_BASE_LOGS,
     'pytan.pollers.question.progress': PROGRESS_LOGS,
     'pytan.pollers.question.resolver': RESOLVER_LOGS,
@@ -94,7 +94,7 @@ LOGMAP = {
     'pytan.session': HANDLER_LOGS,
     'pytan.session.auth': AUTH_LOGS,
     'pytan.session.body': BODY_LOGS,
-    'pytan.session.help': PYTAN_BASE_LOGS,
+    'pytan.session.help': CONNECTION_LOGS,
     'pytan.session.http': CONNECTION_LOGS,
     'pytan.store': PYTAN_BASE_LOGS,
     'pytan.store.credstore': AUTH_LOGS,
@@ -106,8 +106,8 @@ LOGMAP = {
     'pytan.tickle.to__dict': TICKLE_LOGS,
     'pytan.tickle.to__dict_resultset': TICKLE_LOGS,
     'pytan.tickle.to__tree': TICKLE_LOGS,
-    'pytan.tickle.tools': EVERYTHING,  # TICKLE_LOGS,
-    'pytan.tickle.builders': EVERYTHING,  # TICKLE_LOGS,
+    'pytan.tickle.tools': TICKLE_LOGS,  # TICKLE_LOGS,
+    'pytan.tickle.builders': TICKLE_LOGS,  # TICKLE_LOGS,
     'pytan.xml_clean': BODY_LOGS,
 }
 
