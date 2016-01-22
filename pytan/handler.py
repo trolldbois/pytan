@@ -273,7 +273,11 @@ class Handler(object):
 
                 # ensure the new question ID is greater than the previous one,
                 # and ensure the query text is the same
-                if nq.id > q.id and nq.query_text == q.query_text:
+                if nq.query_text != q.query_text:
+                    m = "WRONG QUERY TEXT BUT NEW {} for {}, sleeping for {} seconds"
+                    m = m.format(q_txt(nq), sq_txt(sq), refresh_timer)
+                    self.MYLOG.info(m)
+                elif nq.id > q.id:
                     m = "NEW {} for {}"
                     m = m.format(q_txt(nq), sq_txt(sq))
                     self.MYLOG.info(m)
@@ -283,7 +287,8 @@ class Handler(object):
                     m = "NO NEW {} for {}, sleeping for {} seconds"
                     m = m.format(q_txt(nq), sq_txt(sq), refresh_timer)
                     self.MYLOG.info(m)
-                    time.sleep(refresh_timer)
+
+                time.sleep(refresh_timer)
 
             # setup a poller for the last question for this saved question
             poll_args = {}
