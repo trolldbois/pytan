@@ -141,18 +141,22 @@ class BaseType(object):
 
     def __eq__(self, other):
         result = False
-        if isinstance(other, BaseType):
-            result = self.to_xml() == other.to_xml()
+        if isinstance(other, self.__class__):
+            if self._IS_LIST:
+                myself = self.to_xml()
+                otherself = other.to_xml()
+            else:
+                myself = {k: getattr(self, k, None) for k in self._SIMPLE_PROPS}
+                otherself = {k: getattr(other, k, None) for k in other._SIMPLE_PROPS}
+            result = myself == otherself
         return result
 
     def __ne__(self, other):
-        result = not self == other
+        result = not self.__eq__(other)
         return result
 
     def __cmp__(self, other):
-        result = False
-        if isinstance(other, BaseType):
-            result = self.to_xml() == other.to_xml()
+        result = self.__eq__(other)
         return result
 
     def __add__(self, value):
