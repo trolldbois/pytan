@@ -39,7 +39,7 @@ HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
 HELPS.getf = (
     "Use GetObject to find {class_list.__name__} objects with cache filters to limit the results"
 )
-HELPS.geta = "Use GetObject to find all {class_list.__name__} objects"
+HELPS.geta = "Use GetObject to find all {obj.__class__.__name__} objects"
 HELPS.addobj = "Issue an AddObject to add a {} object"
 HELPS.addget = "Issue a GetObject on the recently added {} object in order to get the full object"
 HELPS.delobj = "Issue a DeleteObject to delete an object"
@@ -786,10 +786,10 @@ class Handler(object):
         kwargs['class_list'] = tanium_ng.SensorList
         kwargs['specs'] = specs
 
-        # add a spec to each spec that will filter out any sensors that do not have
+        # add a subspec to each spec that will filter out any sensors that do not have
         # a source_id of 0
         hide_spec = {'value': '0', 'field': 'source_id'}
-        kwargs['add_specs'] = kwargs.get('add_specs', hide_spec)
+        kwargs['add_subspecs'] = kwargs.get('add_subspecs', hide_spec)
 
         result = self._get_objects(**kwargs)
         return result
@@ -879,27 +879,20 @@ class Handler(object):
     # BEGIN PRIVATE METHODS
     def _get_objects(self, **kwargs):
         """pass."""
-        # add an instantiated object of the list class to kwargs
-        kwargs['obj_list'] = kwargs['class_list']()
-
         # add the class that stores a single item to kwargs
-        kwargs['class_single'] = kwargs['obj_list']._LIST_TYPE
-
-        # add an instantiated object that stores a single item to kwargs
-        kwargs['obj_single'] = kwargs['class_single']()
+        kwargs['class_single'] = kwargs['class_list']()._LIST_TYPE
 
         # don't include hidden objects by default
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
 
-        # if specs, build cache filters and find results
         kwargs['specs'] = coerce_find_specs(**kwargs)
-        if kwargs['specs']:
+        if kwargs['specs'] and not kwargs.get('FIXIT_BROKEN_FILTER', False):
             kwargs['pytan_help'] = HELPS.getf.format(**kwargs)
             kwargs['result'] = self._find_filter(**kwargs)
-        # if not specs, get all objects
         else:
-            kwargs['pytan_help'] = HELPS.geta.format(**kwargs)
             kwargs['result'] = self._find(**kwargs)
+            if kwargs['specs']:
+                kwargs['result'] = self._fixit_broken_filter(**kwargs)
 
         # check limits
         result = self._check_limits(**kwargs)
@@ -911,6 +904,7 @@ class Handler(object):
 
     def _find(self, **kwargs):
         kwargs['obj'] = kwargs.get('obj') or self._fixit_single(**kwargs)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', '') or HELPS.geta.format(**kwargs)
         if kwargs.get('cache_filters'):
             kwargs = self._fixit_group_id(**kwargs)
         result = self.SESSION.find(**kwargs)
@@ -940,36 +934,38 @@ class Handler(object):
             for idx, cf in enumerate(kwargs['cache_filters']):
                 self.MYLOG.debug("\tcache_filter #{}: {}".format(idx + 1, cf))
 
-            # if cf_result is a list, append each item to result
-            if cf_result._IS_LIST:
-                [result.append(r) for r in cf_result if r not in result]
-            # otherwise just append cf_result directly to result
-            else:
-                if cf_result not in result:
-                    result.append(cf_result)
+            if not cf_result._IS_LIST:
+                cf_result = [cf_result]
 
-        result = self._fixit_broken_filter(result, **kwargs)
+            for r in cf_result:
+                if r in result:
+                    m = "Already found by previous search, not adding to result: {}"
+                    m = m.format(str(r)[0:20] + '...')
+                    MYLOG.debug(m)
+                    continue
+                result.append(r)
         return result
 
     def _fixit_single(self, **kwargs):
         """pass."""
         # FIXIT_SINGLE: GetObject in list form fails, so we need to use the singular form
         fixit = kwargs.get('FIXIT_SINGLE', False)
-        result = kwargs['obj_list']
         if fixit:
-            result = kwargs['obj_single']
+            result = kwargs['class_single']()
             m = "FIXIT_SINGLE: changed class from {!r} to {!r}"
             m = m.format(kwargs['class_list'].__name__, kwargs['class_single'].__name__)
             self.MYLOG.debug(m)
+        else:
+            result = kwargs['class_list']()
         return result
 
     def _fixit_group_id(self, **kwargs):
         """pass."""
         # FIXIT_GROUP_ID: unnamed groups have to be searched for manually, cache filters dont work
         fixit = kwargs.get('FIXIT_GROUP_ID', False)
-        cfs = kwargs.get('cache_filters', [])
-        kwargs['obj'] = kwargs['class_list']()
         if fixit:
+            cfs = kwargs.get('cache_filters', [])
+            kwargs['obj'] = kwargs['class_list']()
             remove_cfs = False
             for cf in cfs:
                 if cf.field == 'id' and cf.value is not None:
@@ -988,21 +984,31 @@ class Handler(object):
         fixit = kwargs.get('FIXIT_BROKEN_FILTER', False)
         # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
         if fixit:
-            m = "FIXIT_BROKEN_FILTER: Match {}: '{}' using specs: {}".format
+            m = "FIXIT_BROKEN_FILTER: Match {}: '{}' using subspec: {}".format
             new_result = kwargs['class_list']()
+            ''' specs:
+            [
+                [{'field': 'id', 'value': '1'}],
+                [{'field': 'id', 'value': '2'}],
+                [{'field': 'id', 'value': '2'}],
+            ]
+            '''
             for subspecs in specs:
-                for r in result:
-                    match_found = True
-                    for subspec in subspecs:
-                        if getattr(r, subspec['field']) != subspec['value']:
-                            match_found = False
+                # subspecs: [{'field': 'id', 'value': '1'}]
+                for subspec in subspecs:
+                    # subspec: {'field': 'id', 'value': '1'}
+                    matches = [
+                        r for r in result
+                        if str(getattr(r, subspec['field'])) == str(subspec['value'])
+                    ]
 
-                    if match_found:
-                        if r not in new_result:
-                            self.MYLOG.debug(m('found', r, subspec))
-                            new_result.append(r)
+                    if matches:
+                        for match in matches:
+                            self.MYLOG.debug(m('found', match, subspec))
+                            if match not in new_result:
+                                new_result.append(match)
                     else:
-                        self.MYLOG.debug(m('not found', r, subspec))
+                        self.MYLOG.debug(m('not found', None, subspec))
 
             m = "FIXIT_BROKEN_FILTER: original objects '{}', new objects '{}'"
             m = m.format(result, new_result)

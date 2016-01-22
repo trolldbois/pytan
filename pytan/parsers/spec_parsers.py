@@ -2,7 +2,6 @@ import copy
 import logging
 
 from pytan import PytanError, string_types, integer_types, text_type
-from pytan.utils import coerce_list
 from pytan.parsers.token_parsers import find_token_parser
 
 from pytan.parsers.constants import (
@@ -27,7 +26,9 @@ class SpecParser(object):
             raise SpecInvalidError(err)
 
         self.SPEC = spec
-        self.OBJ_SINGLE = kwargs.get('obj_single', None)
+        self.OBJ_SINGLE = kwargs.get('class_single', None)
+        if self.OBJ_SINGLE:
+            self.OBJ_SINGLE = self.OBJ_SINGLE()
         self.RESULT = copy.deepcopy(self.SPEC)
         self.post_init()
         self.log_change()
@@ -208,45 +209,89 @@ class FindSpecParser(SpecParser):
         self.validate_key_type()
 
 
+class CoerceFindSpecs(object):
+
+    def __init__(self, specs=[], add_subspecs=[], **kwargs):
+        """specs should be one of the following:
+
+        a string that should be parsed into a list of a list of dicts
+        a list of strings that should each be parsed into a list of dicts then grouped in a list
+        a dict that should be turned into a list of a list of dicts
+        a list of dicts that should be turned into a list of a list of dicts
+        """
+        self.SPECS = copy.deepcopy(specs)
+        self.ADD_SUBSPECS = add_subspecs
+        self.ADD_SUBSPECS = append_subspecs = self.coerce_subspecs(add_subspecs, **kwargs)
+
+        if self.SPECS:
+            if isinstance(self.SPECS, string_types):
+                self.SPECS = [self.SPECS]
+            elif isinstance(self.SPECS, dict):
+                self.SPECS = [self.SPECS]
+            elif isinstance(self.SPECS, (list, tuple)):
+                self.SPECS = list(self.SPECS)
+            else:
+                err = "specs must be a string, dict, or list, you supplied type {!r}, {!r}"
+                err = err.format(type(self.SPECS).__name__, self.SPECS)
+                raise SpecInvalidError(err)
+
+        self.RESULT = [self.coerce_subspecs(s, append_subspecs, **kwargs) for s in self.SPECS]
+        if not self.RESULT and self.ADD_SUBSPECS:
+            self.RESULT = [self.ADD_SUBSPECS]
+
+        m = "{}: Coerced specs {!r} into specs {!r}"
+        m = m.format(self.me, specs, self.RESULT)
+        MYLOG.debug(m)
+
+    def coerce_subspecs(self, subspecs=[], append_subspecs=[], **kwargs):
+        """subspecs should be one of the following:
+
+        a string that should be parsed into a list of dicts (subspecs) by find_token_parser()
+        a list of dicts (subspecs)
+        a dict (subspec)
+        """
+        if isinstance(subspecs, string_types):
+            subspecs = find_token_parser(subspecs, **kwargs)
+
+        if isinstance(subspecs, dict):
+            subspecs = [subspecs]
+        elif isinstance(subspecs, (list, tuple)):
+            subspecs = list(subspecs)
+        else:
+            err = "subspecs must be a string, dict, or list, you supplied type {!r}, {!r}"
+            err = err.format(type(subspecs).__name__, subspecs)
+            raise SpecInvalidError(err)
+
+        result = [self.coerce_subspec(s, **kwargs) for s in subspecs]
+        if append_subspecs:
+            [result.append(s) for s in append_subspecs if s not in result]
+        return result
+
+    def coerce_subspec(self, subspec, **kwargs):
+        if isinstance(subspec, dict):
+            result = find_spec_parser(subspec, **kwargs)
+        else:
+            err = "subspec {} must be a dict! all specs: {}"
+            err = err.format(subspec, self.SPECS)
+            MYLOG.error(err)
+            raise SpecInvalidError(err)
+        return result
+
+    @property
+    def me(self):
+        me = self.__class__.__name__
+        result = "{}()"
+        result = result.format(me)
+        return result
+
+
 def find_spec_parser(spec, **kwargs):
     parser = FindSpecParser(spec, **kwargs)
     result = parser.RESULT
     return result
 
 
-def coerce_find_subspec(subspec, **kwargs):
-    if isinstance(subspec, dict):
-        result = find_spec_parser(subspec, **kwargs)
-    else:
-        err = "sub spec {} must be a dict!"
-        err = err.format(subspec)
-        raise Exception(err)
-    return result
-
-
-def coerce_find_subspecs(spec, **kwargs):
-    add_specs = kwargs.get('add_specs', [])
-
-    if isinstance(spec, string_types):
-        spec = find_token_parser(spec, **kwargs)
-
-    spec = coerce_list(spec)
-
-    if add_specs:
-        [spec.append(s) for s in add_specs if s not in spec]
-
-    result = [coerce_find_subspec(s, **kwargs) for s in spec]
-    return result
-
-
 def coerce_find_specs(**kwargs):
-    specs = kwargs.get('specs', ())
-    if 'add_specs' in kwargs:
-        kwargs['add_specs'] = coerce_find_subspecs(spec=kwargs.get('add_specs', []))
-    specs = coerce_list(specs)
-
-    if not specs and kwargs.get('add_specs'):
-        specs = kwargs['add_specs']
-
-    result = [coerce_find_subspecs(s, **kwargs) for s in specs]
+    coercer = CoerceFindSpecs(**kwargs)
+    result = coercer.RESULT
     return result
