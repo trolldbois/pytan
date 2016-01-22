@@ -31,9 +31,9 @@ HELPS.sq_resq = (
 )
 HELPS.pj = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
 HELPS.pj_add = "Use AddObject to add the Question object from the chosen ParseResultGroup"
-HELPS.grd = "Use GetResultData to get answers for {} object"
-HELPS.grd_sse = "Issue a GetResultData on {} to start a Server Side Export and get an export_id"
-HELPS.gri = "Issue a GetResultInfo for a {} to check the current progress of answers"
+HELPS.grd = "Use GetResultData to get answers for object: {}"
+HELPS.grd_sse = "Issue to start a Server Side Export for object {}"
+HELPS.gri = "Issue a GetResultInfo to check the current progress of answers for object {}"
 HELPS.saa = "Issue an AddObject to add a SavedActionApproval"
 HELPS.stopa = "Issue an AddObject to add a StopAction"
 HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
@@ -615,7 +615,7 @@ class Handler(object):
             result = self.get_result_data_sse(**kwargs)
         else:
             # do a normal getresultdata
-            kwargs['pytan_help'] = HELPS.grd.format(obj.__class__.__name__)
+            kwargs['pytan_help'] = HELPS.grd.format(obj)
             result = self.SESSION.get_result_data(**kwargs)
 
         return result
@@ -685,7 +685,7 @@ class Handler(object):
 
         grd_args = {}
         grd_args.update(kwargs)
-        grd_args['pytan_help'] = HELPS.grd_sse.format(obj.__class__.__name__)
+        grd_args['pytan_help'] = HELPS.grd_sse.format(obj)
         # add the export_flag = 1 to the kwargs for inclusion in options node
         grd_args['export_flag'] = 1
         # add the export_format to the kwargs for inclusion in options node
