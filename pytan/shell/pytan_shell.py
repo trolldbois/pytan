@@ -3,6 +3,10 @@ from . import base
 EXEC_STR = """
 from pytan.utils import *
 from pytan.tickle.tools import *
+from pytan.parsers.tokens import *
+from pytan.parsers.specs import *
+from pytan.parsers.coerce import *
+
 session = handler.SESSION
 
 
@@ -21,10 +25,22 @@ PyTan Shell Help
 ''')
     linep("'pytan' package", pytan)
     print("")
-    linep("'pytan.utils' module", pytan.utils)
-    print("")
-    linep("'pytan.tickle.tools' module", pytan.tickle.tools)
-    print("")
+
+    mods = [
+        "pytan.utils",
+        "pytan.tickle.tools",
+        "pytan.parsers.tokens",
+        "pytan.parsers.specs",
+        "pytan.parsers.coerce",
+    ]
+
+    for m in mods:
+        imp_str = "from {} import *".format(m)
+        m_str = "'{}' module".format(m)
+        exec(imp_str) in globals(), locals()
+        linep(m_str, eval(m))
+        print("")
+
     print('## Objects available ##')
     print("")
     print(" ** 'handler' object is the pytan.handler.Handler class instantiated with the parameters passed in via the command line.")
@@ -40,8 +56,7 @@ PyTan Shell Help
 ************************************************
  ''')
 
-
-shell_help()
+print("\\n ** Type 'shell_help()' to see methods and functions available")
 """  # noqa
 
 

@@ -52,16 +52,6 @@ if ET is None:
 ElementType = type(ET.Element(None))
 """Established for type checking since cElementTree does not have an ElementType class"""
 
-from pytan.tickle.to__tree import to_xml, to_tree
-from pytan.tickle.to__dict import to_dict, to_json, to_csv
-from pytan.tickle.to__dict_resultset import to_dict_resultset, to_json_resultset, to_csv_resultset
-from pytan.tickle.from__xml import from_xml, from_sse_xml
-from pytan.tickle.from__tree import from_tree
-from pytan.tickle.from__dict import from_dict, from_json
-from pytan.tanium_ng import BaseType, ResultSetList, ResultSet
-from pytan.tickle import tools
-from pytan.tickle import builders
-
 from pytan.constants import XMLNS
 
 # register our XML namespaces so ET can properly parse/unparse our XML documents
@@ -69,10 +59,20 @@ for k, v in XMLNS.items():
     ET.register_namespace(k, v)
 
 
+from pytan.tickle.serialize import (
+    to_xml, to_tree, to_dict, to_json, to_csv, to_dict_resultset, to_json_resultset,
+    to_csv_resultset
+)
+
+from pytan.tickle.deserialize import from_xml, from_sse_xml, from_tree, from_dict, from_json
+
+from pytan.tanium_ng import BaseType, ResultSetList, ResultSet
+from pytan.tickle import tools
+
+
 __all__ = [
     'ET',
     'tools',
-    'builders',
     'to_xml',
     'to_tree',
     'to_dict',

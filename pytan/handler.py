@@ -4,47 +4,59 @@ import time
 import logging
 import datetime
 
-from pytan import PytanError, tanium_ng
-from pytan.tanium_ng import BaseType
+from pytan import PytanError
 from pytan.store import HelpStore, ResultStore
-from pytan.session import Session
-from pytan.pollers import QuestionPoller, SSEPoller
-from pytan.parsers.spec_parsers import coerce_find_specs
-from pytan.version import __version__
-from pytan.tickle import from_sse_xml
-from pytan.tickle.to__dict_resultset import ToDictResultSet
-from pytan.handler_args import create_argstore
+from pytan.handler_args import build_argstore
 from pytan.handler_logs import setup_log
-from pytan.tickle.tools import shrink_obj
-from pytan.tickle.builders import create_question, create_cachefilterlist
+from pytan.version import __version__
+from pytan.session import Session
+from pytan.pollers.question import QuestionPoller
+from pytan.pollers.sse import SSEPoller
+from pytan.parsers.coerce import coerce_search, coerce_left, coerce_right, coerce_lot
+from pytan.builders.filters import build_cachefilterlist
+from pytan.builders.questions import build_question
+from pytan.tickle.tools import shrink_obj, str_obj
+from pytan.tickle.deserialize import from_sse_xml
+from pytan.tickle.serialize import ToDictResultSet
+from pytan.utils import get_group_hierarchy
+
+from pytan.tanium_ng import (
+    BaseType, PackageSpecList, ActionList, SystemStatusList, GroupList, QuestionList,
+    SavedActionList, SavedQuestionList, SystemSettingList, UserList, UserRoleList,
+    WhiteListedUrlList, ParseJob, SavedActionApproval, ActionStop, SensorList
+)
 
 MYLOG = logging.getLogger(__name__)
 
 HELPS = HelpStore()
-HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question"
+HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question".format
 HELPS.sq_ri = (
     "Use GetResultInfo on a saved question in order to issue a new question, "
     "which refreshes the data for that saved question"
-)
+).format
 HELPS.sq_resq = (
     "Use GetObject to re-fetch the saved question in order get the ID of the newly asked question"
-)
-HELPS.pj = "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
-HELPS.pj_add = "Use AddObject to add the Question object from the chosen ParseResultGroup"
-HELPS.grd = "Use GetResultData to get answers for object: {}"
-HELPS.grd_sse = "Issue to start a Server Side Export for object {}"
-HELPS.gri = "Issue a GetResultInfo to check the current progress of answers for object {}"
-HELPS.saa = "Issue an AddObject to add a SavedActionApproval"
-HELPS.stopa = "Issue an AddObject to add a StopAction"
-HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1"
+).format
+HELPS.pj = (
+    "Use AddObject to add a ParseJob for question_text and get back ParseResultGroups"
+).format
+HELPS.pj_add = "Use AddObject to add the Question object from the chosen ParseResultGroup".format
+HELPS.grd = "Use GetResultData to get answers for object: {}".format
+HELPS.grd_sse = "Issue to start a Server Side Export for object {}".format
+HELPS.gri = "Issue a GetResultInfo to check the current progress of answers for object {}".format
+HELPS.saa = "Issue an AddObject to add a SavedActionApproval".format
+HELPS.stopa = "Issue an AddObject to add a StopAction".format
+HELPS.stopar = "Re-issue a GetObject to ensure the actions stopped_flag is 1".format
 HELPS.getf = (
     "Use GetObject to find {class_list.__name__} objects with cache filters to limit the results"
-)
-HELPS.geta = "Use GetObject to find all {obj.__class__.__name__} objects"
-HELPS.addobj = "Issue an AddObject to add a {} object"
-HELPS.addget = "Issue a GetObject on the recently added {} object in order to get the full object"
-HELPS.delobj = "Issue a DeleteObject to delete an object"
-
+).format
+HELPS.geta = "Use GetObject to find all {obj.__class__.__name__} objects".format
+HELPS.addobj = "Issue an AddObject to add a {0.__class__.__name__} object".format
+HELPS.addget = (
+    "Issue a GetObject on the recently added {0.__class__.__name__} object"
+    " object in order to get the full object"
+).format
+HELPS.delobj = "Issue a DeleteObject to delete an object".format
 
 SSE_FORMAT_MAP = [
     ('csv', '0', 0),
@@ -158,9 +170,9 @@ class Handler(object):
             self.HANDLER_ARGS = parsed_handler_args
             m = "Using handler arguments from 'parsed_handler_args'"
         else:
-            argstore = create_argstore(**kwargs)
+            argstore = build_argstore(**kwargs)
             self.HANDLER_ARGS = argstore.handler_args
-            m = "Using handler arguments from 'create_argstore()'"
+            m = "Using handler arguments from 'build_argstore()'"
 
         setup_log(**self.HANDLER_ARGS)
         self.MYLOG.debug(m)
@@ -191,43 +203,74 @@ class Handler(object):
         result = self.SESSION.get_server_version(**kwargs)
         return result
 
-    def ask_manual(self, **kwargs):
+    def ask_manual(self, left=[], right=[], lot=[], **kwargs):
         """pass.
         left: list of str or list of dict
         right: list of str or list of dict
-        right_groups: list of str or dict
+        lot: list of str or dict
         question: expire_seconds, skip_lock_flag
 
         """
         get_results = kwargs.get('get_results', True)
-        kwargs['obj'] = create_question(self, **kwargs)
-        kwargs['obj'] = self._add(**kwargs)
 
-        # TODO: ADD 'print_attrs: ['id', 'query_text', 'expiration'] to _add
-        m = 'Question Added, id:"{0.id}", query_text:"{0.query_text}", expires:"{0.expiration}"'
-        m = m.format(kwargs['obj'])
+        # coerce left/right/lot into specs
+        kwargs['left_specs'] = coerce_left(left, **kwargs)
+        kwargs['right_specs'] = coerce_right(right, **kwargs)
+        kwargs['lot_specs'] = coerce_lot(lot, **kwargs)
+        kwargs['handler'] = self
+
+        # build the question object
+        nq = build_question(**kwargs)
+
+        if nq.group:
+            m = 'built question group hierarchy:\n{}'
+            m = m.format(get_group_hierarchy(nq.group))
+            MYLOG.debug(m)
+
+        kwargs.update({'obj': nq})
+        q = self._add(**kwargs)
+
+        if q.group:
+            m = 'added question group hierarchy:\n{}'
+            m = m.format(get_group_hierarchy(q.group))
+            MYLOG.debug(m)
+
+        kwargs.update({'obj': q, 'handler': self})
+        p = QuestionPoller(**kwargs)
+
+        m = "get_results={}, {}"
+        m = m.format(get_results, str_obj(q))
         self.MYLOG.info(m)
 
-        result = ResultStore()
-        result.question_object = kwargs['obj']
-        result.poller_object = QuestionPoller(handler=self, **kwargs)
-        result.question_results = None
-        result.poller_success = None
-
         if get_results:
-            # poll the Question ID returned above to wait for results
-            result.poller_success = result.poller_object.run(**kwargs)
+            # run the poller to wait for answers to complete
+            p_result = p.run(**kwargs)
             # get the answers for this question
-            result.question_results = self.get_result_data(**kwargs)
+            kwargs.update({'obj': q})
+            grd = self.get_result_data(**kwargs)
+
+            m = "{} rows returned for {}"
+            m = m.format(len(grd.result_set.rows), str_obj(q))
+            self.MYLOG.info(m)
+        else:
+            p_result = None
+            grd = None
+
+        kwargs.update({'obj': q})
+        gri = self.get_result_info(**kwargs)
+
+        result = ResultStore()
+        result.question = q
+        result.poller = p
+        result.poller_result = p_result
+        result.result_info = gri
+        result.result_data = grd
         return result
 
-    def ask_saved(self, *specs, **kwargs):
-        if not specs:
-            err = "Must supply 'specs' for identifying the saved question to ask"
+    def ask_saved(self, search=[], **kwargs):
+        if not search:
+            err = "Must supply 'search' for identifying the saved question to ask"
             raise PytanError(err)
-
-        q_txt = "Question id={0.id}, query='{0.query_text}', expires={0.expiration}".format
-        sq_txt = "Saved Question id={0.id}, name={0.name}".format
 
         refresh = kwargs.get('refresh', False)
         get_results = kwargs.get('get_results', True)
@@ -235,15 +278,15 @@ class Handler(object):
 
         # get the saved_question object the user passed in
         kwargs['limit_exact'] = 1
-        sq = self.get_saved_questions(*specs, **kwargs)
+        sq = self.get_saved_questions(search, **kwargs)
         q = sq.question
 
         # get the last asked question for this saved question
-        kwargs.update({'pytan_help': HELPS.sq_getq, 'obj': q})
+        kwargs.update({'pytan_help': HELPS.sq_getq(), 'obj': q})
         q = self.SESSION.find(**kwargs)
 
         m = "refresh={}, {} for {}"
-        m = m.format(refresh, q_txt(q), sq_txt(sq))
+        m = m.format(refresh, str_obj(q), str_obj(sq))
         self.MYLOG.info(m)
 
         kwargs.update({'obj': q})
@@ -251,7 +294,7 @@ class Handler(object):
 
         if gri.result_info.row_count == 0:
             m = "forcing a refresh, current rows is 0 for {}"
-            m = m.format(q_txt(q))
+            m = m.format(str_obj(q))
             self.MYLOG.info(m)
             refresh = True
 
@@ -259,51 +302,47 @@ class Handler(object):
             while True:
                 # GetResultInfo on the saved question to have Tanium issue a new question
                 # to fetch new results
-                kwargs.update({'pytan_help': HELPS.sq_ri, 'obj': sq})
+                kwargs.update({'pytan_help': HELPS.sq_ri(), 'obj': sq})
                 self.get_result_info(**kwargs)
 
                 # re-fetch the saved question object to get the newly asked question info
-                kwargs.update({'pytan_help': HELPS.sq_resq, 'obj': sq})
+                kwargs.update({'pytan_help': HELPS.sq_resq(), 'obj': sq})
                 sq = self.SESSION.find(**kwargs)
                 nq = sq.question
 
                 # get the last asked question for this saved question
-                kwargs.update({'pytan_help': HELPS.sq_getq, 'obj': nq})
+                kwargs.update({'pytan_help': HELPS.sq_getq(), 'obj': nq})
                 nq = self.SESSION.find(**kwargs)
 
                 # ensure the new question ID is greater than the previous one,
                 # and ensure the query text is the same
                 if nq.query_text != q.query_text:
                     m = "WRONG QUERY TEXT BUT NEW {} for {}, sleeping for {} seconds"
-                    m = m.format(q_txt(nq), sq_txt(sq), refresh_timer)
+                    m = m.format(str_obj(nq), str_obj(sq), refresh_timer)
                     self.MYLOG.info(m)
                 elif nq.id > q.id:
                     m = "NEW {} for {}"
-                    m = m.format(q_txt(nq), sq_txt(sq))
+                    m = m.format(str_obj(nq), str_obj(sq))
                     self.MYLOG.info(m)
                     q = nq
                     break
                 else:
                     m = "NO NEW {} for {}, sleeping for {} seconds"
-                    m = m.format(q_txt(nq), sq_txt(sq), refresh_timer)
+                    m = m.format(str_obj(nq), str_obj(sq), refresh_timer)
                     self.MYLOG.info(m)
 
                 time.sleep(refresh_timer)
 
-            # setup a poller for the last question for this saved question
-            poll_args = {}
-            poll_args.update(kwargs)
-            poll_args.update({'obj': q, 'handler': self})
-            p = QuestionPoller(**poll_args)
-        else:
-            p = None
+        # setup a poller for the last question for this saved question
+        kwargs.update({'obj': q, 'handler': self})
+        p = QuestionPoller(**kwargs)
 
         m = "get_results={}, {} for {}"
-        m = m.format(get_results, q_txt(q), sq_txt(sq))
+        m = m.format(get_results, str_obj(q), str_obj(sq))
         self.MYLOG.info(m)
 
         if get_results:
-            # run the poller if one exists to wait for answers to complete
+            # run the poller to wait for answers to complete
             if refresh:
                 p_result = p.run(**kwargs)
             else:
@@ -313,7 +352,7 @@ class Handler(object):
             grd = self.get_result_data(**kwargs)
 
             m = "{} rows returned for {}"
-            m = m.format(len(grd.result_set.rows), q_txt(q))
+            m = m.format(len(grd.result_set.rows), str_obj(q))
             self.MYLOG.info(m)
         else:
             p_result = None
@@ -348,7 +387,7 @@ class Handler(object):
             m = m.format(self.get_server_version(**kwargs))
             raise UnsupportedVersionError(m)
 
-        obj = tanium_ng.ParseJob()
+        obj = ParseJob()
         obj.question_text = question_text
         obj.parser_version = 2
 
@@ -383,17 +422,17 @@ class Handler(object):
         -------
         result : dict, containing:
             * `question_object` :
-            :class:`tanium_ng.question.Question`
+            :class:`question.Question`
             the actual question added by PyTan
             * `question_results` :
-            :class:`tanium_ng.result_set.ResultSet`
+            :class:`result_set.ResultSet`
             the Result Set for `question_object` if `get_results` == True
             * `poller_object` :
             :class:`QuestionPoller`
             poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
             * `parse_results` :
-            :class:`tanium_ng.parse_result_group_list.ParseResultGroupList`
+            :class:`parse_result_group_list.ParseResultGroupList`
             the parse result group returned from Tanium after parsing `question_text`
 
         Examples
@@ -417,7 +456,7 @@ class Handler(object):
         pq_args = {}
         pq_args.update(kwargs)
         pq_args['question_text'] = question_text
-        pq_args['pytan_help'] = HELPS.pj
+        pq_args['pytan_help'] = HELPS.pj()()
         parse_job_results = self.parse_query(**pq_args)
 
         if not parse_job_results:
@@ -454,7 +493,7 @@ class Handler(object):
         m = m.format(kwargs['obj'].to_json())
         self.MYLOG.debug(m)
 
-        kwargs['pytan_help'] = HELPS.pj_add
+        kwargs['pytan_help'] = HELPS.pj_add()
         kwargs['obj'] = self._add(**kwargs)
 
         m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
@@ -478,7 +517,7 @@ class Handler(object):
             result.question_results = self.get_result_data(**kwargs)
         return result
 
-    def approve_saved_action(self, *args, **kwargs):
+    def approve_saved_action(self, search=[], **kwargs):
         """Approve a saved action
 
         Parameters
@@ -488,24 +527,24 @@ class Handler(object):
 
         Returns
         -------
-        result : :class:`tanium_ng.saved_action_approval.SavedActionApproval`
+        result : :class:`saved_action_approval.SavedActionApproval`
             * The object containing the return from SavedActionApproval
         """
-        kwargs['specs'] = kwargs.get('specs', []) or list(args)
-
-        if not kwargs['specs']:
-            err = "Must supply arg 'specs' for identifying the saved action to approve"
+        if not search:
+            err = "Must supply search for identifying the saved action to approve"
             raise PytanError(err)
 
-        # get the saved_question object the user passed in
-        sa_obj = self.get_saved_actions(limit_exact=1, **kwargs)
+        kwargs['limit_exact'] = 1
 
-        result = tanium_ng.SavedActionApproval()
+        # get the saved_question object the user passed in
+        sa_obj = self.get_saved_actions(search, **kwargs)
+
+        result = SavedActionApproval()
         result.id = sa_obj.id
         result.approved_flag = 1
 
         # we dont want to re-fetch the object, so use sessions add instead of handlers add
-        kwargs['pytan_help'] = HELPS.saa
+        kwargs['pytan_help'] = HELPS.saa()
         kwargs['obj'] = result
         result = self.SESSION.add(**kwargs)
 
@@ -514,7 +553,7 @@ class Handler(object):
         self.MYLOG.debug(m)
         return result
 
-    def stop_action(self, *args, **kwargs):
+    def stop_action(self, search=[], **kwargs):
         """Stop an action
 
         Parameters
@@ -524,26 +563,26 @@ class Handler(object):
 
         Returns
         -------
-        action_stop_obj : :class:`tanium_ng.action_stop.ActionStop`
+        action_stop_obj : :class:`action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
-        kwargs['specs'] = kwargs.get('specs', []) or list(args)
-
-        if not kwargs['specs']:
-            err = "Must supply arg 'specs' for identifying the saved action to approve"
+        if not search:
+            err = "Must supply search for identifying the saved action to approve"
             raise PytanError(err)
 
-        # get the action object the user passed in
-        a_obj_before = self.get_actions(limit_exact=1, **kwargs)
+        kwargs['limit_exact'] = 1
 
-        result = tanium_ng.ActionStop()
+        # get the action object the user passed in
+        a_obj_before = self.get_actions(search, **kwargs)
+
+        result = ActionStop()
         result.action = a_obj_before
 
-        kwargs['pytan_help'] = HELPS.stopa
+        kwargs['pytan_help'] = HELPS.stopa()
         kwargs['obj'] = result
         result = self.SESSION.add(**kwargs)
 
-        kwargs['pytan_help'] = HELPS.stopar
+        kwargs['pytan_help'] = HELPS.stopar()
         kwargs['obj'] = a_obj_before
         a_obj_after = self.SESSION.find(**kwargs)
 
@@ -615,7 +654,7 @@ class Handler(object):
             result = self.get_result_data_sse(**kwargs)
         else:
             # do a normal getresultdata
-            kwargs['pytan_help'] = HELPS.grd.format(obj)
+            kwargs['pytan_help'] = HELPS.grd(obj)
             result = self.SESSION.get_result_data(**kwargs)
 
         return result
@@ -685,7 +724,7 @@ class Handler(object):
 
         grd_args = {}
         grd_args.update(kwargs)
-        grd_args['pytan_help'] = HELPS.grd_sse.format(obj)
+        grd_args['pytan_help'] = HELPS.grd_sse(obj)
         # add the export_flag = 1 to the kwargs for inclusion in options node
         grd_args['export_flag'] = 1
         # add the export_format to the kwargs for inclusion in options node
@@ -751,7 +790,7 @@ class Handler(object):
         """
         shrink = kwargs.get('shrink', True)
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
-        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.gri.format(obj))
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.gri(obj))
         if shrink:
             kwargs['obj'] = shrink_obj(obj=obj)
         else:
@@ -760,133 +799,130 @@ class Handler(object):
         return ri
 
     # get objects
-    def delete_groups(self, *args, **kwargs):
+    def delete_groups(self, search=[], **kwargs):
         """pass."""
-        result = self.get_groups(*args, **kwargs)
+        result = self.get_groups(search, **kwargs)
         result = self._delete_objects(result)
         return result
 
-    def delete_packages(self, *args, **kwargs):
+    def delete_packages(self, search=[], **kwargs):
         """pass."""
-        result = self.get_packages(*args, **kwargs)
+        result = self.get_packages(search, **kwargs)
         result = self._delete_objects(result, **kwargs)
         return result
 
-    def delete_saved_questions(self, *args, **kwargs):
+    def delete_saved_questions(self, search=[], **kwargs):
         """pass."""
-        result = self.get_saved_questions(*args, **kwargs)
+        result = self.get_saved_questions(search, **kwargs)
         result = self._delete_objects(result, **kwargs)
         return result
 
-    def delete_sensors(self, *args, **kwargs):
+    def delete_sensors(self, search=[], **kwargs):
         """pass."""
-        result = self.get_sensors(*args, **kwargs)
+        result = self.get_sensors(search, **kwargs)
         result = self._delete_objects(result, **kwargs)
         return result
 
-    def delete_users(self, *args, **kwargs):
+    def delete_users(self, search=[], **kwargs):
         """pass."""
-        result = self.get_users(*args, **kwargs)
+        result = self.get_users(search, **kwargs)
         result = self._delete_objects(result, **kwargs)
         return result
 
-    def delete_whitelisted_urls(self, *args, **kwargs):
+    def delete_whitelisted_urls(self, search=[], **kwargs):
         """pass."""
-        result = self.get_whitelisted_urls(*args, **kwargs)
+        result = self.get_whitelisted_urls(search, **kwargs)
         result = self._delete_objects(result, **kwargs)
         return result
 
-    def get_sensors(self, *specs, **kwargs):
+    def get_sensors(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.SensorList
-        kwargs['specs'] = specs
-
-        # add a subspec to each spec that will filter out any sensors that do not have
-        # a source_id of 0
+        kwargs['class_list'] = SensorList
+        # filter out any sensors that do not have a source_id of 0
         hide_spec = {'value': '0', 'field': 'source_id'}
         kwargs['add_subspecs'] = kwargs.get('add_subspecs', hide_spec)
-
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_packages(self, *specs, **kwargs):
+    def get_packages(self, search=[], **kwargs):
         """pass. cache_filters need single fix"""
-        kwargs['class_list'] = tanium_ng.PackageSpecList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = PackageSpecList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_SINGLE'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_actions(self, *specs, **kwargs):
+    def get_actions(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.ActionList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = ActionList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_clients(self, *specs, **kwargs):
+    def get_clients(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.SystemStatusList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = SystemStatusList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_groups(self, *specs, **kwargs):
+    def get_groups(self, search=[], **kwargs):
         """pass. cant find unnamed groups by id using cache filters"""
-        kwargs['class_list'] = tanium_ng.GroupList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = GroupList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_GROUP_ID'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_questions(self, *specs, **kwargs):
+    def get_questions(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.QuestionList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = QuestionList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_saved_actions(self, *specs, **kwargs):
+    def get_saved_actions(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.SavedActionList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = SavedActionList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_saved_questions(self, *specs, **kwargs):
+    def get_saved_questions(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.SavedQuestionList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = SavedQuestionList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_settings(self, *specs, **kwargs):
+    def get_settings(self, search=[], **kwargs):
         """pass."""
-        kwargs['class_list'] = tanium_ng.SystemSettingList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = SystemSettingList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         result = self._get_objects(**kwargs)
         return result
 
-    def get_users(self, *specs, **kwargs):
+    def get_users(self, search=[], **kwargs):
         """pass. cache_filters fail"""
-        kwargs['class_list'] = tanium_ng.UserList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = UserList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_user_roles(self, *specs, **kwargs):
+    def get_user_roles(self, search=[], **kwargs):
         """pass. cache_filters fail"""
-        kwargs['class_list'] = tanium_ng.UserRoleList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = UserRoleList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_whitelisted_urls(self, *specs, **kwargs):
+    def get_whitelisted_urls(self, search=[], **kwargs):
         """pass. cache_filters fail"""
-        kwargs['class_list'] = tanium_ng.WhiteListedUrlList
-        kwargs['specs'] = specs
+        kwargs['class_list'] = WhiteListedUrlList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
@@ -894,19 +930,19 @@ class Handler(object):
     # BEGIN PRIVATE METHODS
     def _get_objects(self, **kwargs):
         """pass."""
-        # add the class that stores a single item to kwargs
-        kwargs['class_single'] = kwargs['class_list']()._LIST_TYPE
-
         # don't include hidden objects by default
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
+        kwargs['search_specs'] = kwargs.get('search_specs', [])
 
-        kwargs['specs'] = coerce_find_specs(**kwargs)
-        if kwargs['specs'] and not kwargs.get('FIXIT_BROKEN_FILTER', False):
-            kwargs['pytan_help'] = HELPS.getf.format(**kwargs)
+        # use _find_filter() if specs supplied and cache filters are not marked as broken
+        if kwargs['search_specs'] and not kwargs.get('FIXIT_BROKEN_FILTER', False):
+            kwargs['pytan_help'] = HELPS.getf(**kwargs)
             kwargs['result'] = self._find_filter(**kwargs)
+        # use _find() to get all objects
         else:
             kwargs['result'] = self._find(**kwargs)
-            if kwargs['specs']:
+            # if specs then cache filters must be broken for this objtype
+            if kwargs['search_specs']:
                 kwargs['result'] = self._fixit_broken_filter(**kwargs)
 
         # check limits
@@ -914,18 +950,18 @@ class Handler(object):
 
         if result._IS_LIST:
             result_len = len(result)
-            result_type = result[0].__class__.__name__
+            result_type = result._LIST_TYPE.__name__
         else:
             result_len = 1
             result_type = result.__class__.__name__
-        m = "get_objects found '{}' items of type '{}' (using {} specs)"
-        m = m.format(result_len, result_type, len(kwargs['specs']))
+        m = "get_objects found '{}' items of type '{}' (using {} search specs)"
+        m = m.format(result_len, result_type, len(kwargs['search_specs']))
         self.MYLOG.info(m)
         return result
 
     def _find(self, **kwargs):
         kwargs['obj'] = kwargs.get('obj') or self._fixit_single(**kwargs)
-        kwargs['pytan_help'] = kwargs.get('pytan_help', '') or HELPS.geta.format(**kwargs)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', '') or HELPS.geta(**kwargs)
         if kwargs.get('cache_filters'):
             kwargs = self._fixit_group_id(**kwargs)
         result = self.SESSION.find(**kwargs)
@@ -934,15 +970,15 @@ class Handler(object):
     def _find_filter(self, **kwargs):
         """pass."""
         obj_list = kwargs['class_list']()
-        specs = kwargs['specs']
+        search_specs = kwargs['search_specs']
 
         # create a base instance of class_list which all results will be added to
         result = obj_list
-        result._SPECS = specs
+        result._SEARCH_SPECS = search_specs
 
-        for subspecs in specs:
+        for subspecs in search_specs:
             # create a cache filter list object using the subspecs
-            kwargs['cache_filters'] = create_cachefilterlist(subspecs)
+            kwargs['cache_filters'] = build_cachefilterlist(subspecs)
 
             # find the results using the cache_filters to limit the returns
             cf_result = self._find(**kwargs)
@@ -971,13 +1007,17 @@ class Handler(object):
         """pass."""
         # FIXIT_SINGLE: GetObject in list form fails, so we need to use the singular form
         fixit = kwargs.get('FIXIT_SINGLE', False)
+        list_class = kwargs['class_list']
+        list_obj = list_class()
+        single_class = list_obj._LIST_TYPE
+        single_obj = single_class()
         if fixit:
-            result = kwargs['class_single']()
+            result = single_obj
             m = "FIXIT_SINGLE: changed class from {!r} to {!r}"
-            m = m.format(kwargs['class_list'].__name__, kwargs['class_single'].__name__)
+            m = m.format(list_class.__name__, single_class.__name__)
             self.MYLOG.debug(m)
         else:
-            result = kwargs['class_list']()
+            result = list_obj
         return result
 
     def _fixit_group_id(self, **kwargs):
@@ -986,21 +1026,24 @@ class Handler(object):
         fixit = kwargs.get('FIXIT_GROUP_ID', False)
         if fixit:
             cfs = kwargs.get('cache_filters', [])
-            kwargs['obj'] = kwargs['class_list']()
+            list_class = kwargs['class_list']
+            list_obj = list_class()
+            single_class = list_obj._LIST_TYPE
             remove_cfs = False
             for cf in cfs:
                 if cf.field == 'id' and cf.value is not None:
                     remove_cfs = True
-                    subgroup = kwargs['class_single'](id=cf.value)
+                    subgroup = single_class(id=cf.value)
                     m = "FIXIT_GROUP_ID: using old style GetObject for group {}"
                     m = m.format(subgroup)
                     self.MYLOG.debug(m)
-                    kwargs['obj'].append(subgroup)
+                    list_obj.append(subgroup)
             if remove_cfs:
                 del(kwargs['cache_filters'])
+            kwargs['obj'] = list_obj
         return kwargs
 
-    def _fixit_broken_filter(self, result, specs, **kwargs):
+    def _fixit_broken_filter(self, result, search_specs, **kwargs):
         """pass."""
         fixit = kwargs.get('FIXIT_BROKEN_FILTER', False)
         # FIXIT_BROKEN_FILTER: the API returns all objects even if using a cache filter
@@ -1014,7 +1057,7 @@ class Handler(object):
                 [{'field': 'id', 'value': '2'}],
             ]
             '''
-            for subspecs in specs:
+            for subspecs in search_specs:
                 # subspecs: [{'field': 'id', 'value': '1'}]
                 for subspec in subspecs:
                     # subspec: {'field': 'id', 'value': '1'}
@@ -1087,44 +1130,38 @@ class Handler(object):
         """
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
-        try:
-            search_str = '; '.join([str(x) for x in obj])
-        except:
-            search_str = obj
-
         m = "Adding object {}"
-        m = m.format(search_str)
+        m = m.format(str_obj(obj))
         self.MYLOG.debug(m)
 
-        kwargs['pytan_help'] = HELPS.addobj.format(obj.__class__.__name__)
-        kwargs['obj'] = obj
+        kwargs.update({'obj': obj, 'pytan_help': HELPS.addobj(obj)})
 
         try:
             added_obj = self.SESSION.add(**kwargs)
         except:
             err = "Error while trying to add object: '{}'!!"
-            err = err.format(search_str)
-            self.MYLOG.critical(err)
+            err = err.format(str_obj(obj))
+            self.MYLOG.error(err)
             raise
 
         m = "Added Object: {}"
-        m = m.format(added_obj)
+        m = m.format(str_obj(added_obj))
         self.MYLOG.debug(m)
 
-        kwargs['pytan_help'] = HELPS.addget.format(obj.__class__.__name__)
+        kwargs['pytan_help'] = HELPS.addget(obj)
         kwargs['obj'] = added_obj
 
         try:
             result = self.SESSION.find(**kwargs)
         except:
             err = "Error while trying to find recently added object {}!!"
-            err = err.format(search_str)
-            self.MYLOG.critical(err)
+            err = err.format(str_obj(obj))
+            self.MYLOG.error(err)
             raise
 
-        m = "Successfully added and fetched full object: {}"
-        m = m.format(result)
-        self.MYLOG.debug(m)
+        m = "Successfully added: {}"
+        m = m.format(str_obj(result))
+        self.MYLOG.info(m)
         return result
 
     def _delete_objects(self, objs, **kwargs):
@@ -1138,7 +1175,7 @@ class Handler(object):
     def _delete(self, obj, **kwargs):
         """pass."""
         kwargs['obj'] = obj
-        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.delobj)
+        kwargs['pytan_help'] = kwargs.get('pytan_help', HELPS.delobj())
         result = self.SESSION.delete(**kwargs)
         m = "Deleted '{}'"
         m = m.format(result)

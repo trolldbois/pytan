@@ -13,8 +13,8 @@ from pytan.ext import requests
 from pytan.store import HelpStore, CredStore
 from pytan.version import VERSION_INFO
 from pytan.xml_clean import xml_cleaner
-from pytan.tickle.to__tree import to_xml
-from pytan.tickle.from__xml import from_xml
+from pytan.tickle.serialize import to_xml
+from pytan.tickle.deserialize import from_xml
 from pytan.tickle.tools import get_bodies, get_all_bodies, write_all_bodies
 
 from pytan.tickle.constants import FALLBACK_HASH_MAP
@@ -1024,7 +1024,7 @@ class Session(object):
 
         m = "Value of element '{}': '{}' (using pattern: '{}') in {}:{} of body with {}"
         m = m.format(element, result, regex.pattern, char_start, char_end, len(body))
-        self.BODYLOG.info(m)
+        self.BODYLOG.debug(m)
         return result
 
     def _invalid_server_version(self):
@@ -1127,7 +1127,7 @@ class Session(object):
         exceptions.HandlerError : :exc:`exceptions.HandlerError`
             * if `host`:`port` can not be reached
         """
-        m = "{state} Port test to {host}:{port} with timeout: {connect_secs}{err}"
+        m = "{state} Port test to {host}:{port} with timeout: {connect_secs} {err}"
 
         host = self._ARGS['host']
         port = self._ARGS['port']

@@ -286,3 +286,48 @@ def coerce_list(o):
     else:
         result = [o]
     return result
+
+
+def _get_group_hierarchy(g, level=1):
+    def get_map(t, m):
+        return m[t] if t in m else m['*']
+
+    def mn(not_flag):
+        m = {None: ' ---- ', 1: ' isnt ', 0: ' is   ', '*': ' ???? '}
+        return get_map(not_flag, m)
+
+    def ma(and_flag):
+        m = {None: ' --- ', 1: ' and ', 0: ' or  ', '*': ' ??? '}
+        return get_map(and_flag, m)
+
+    grp_m = (
+        "  lvl{:<2} lot:{:<4} subgroups={:<3} filters={:<3} and_flag:{:<6} not_flag:{:<5} "
+        "id: {:<15} name:{} query:{}"
+    ).format
+    filt_m = (
+        "    [filter] hash:{:<13} source_hash:{:<13} operator:{:<13} value_type:{:<9} "
+        "not_flag:{:<5} value:'{}'"
+    ).format
+    result = []
+    lot = getattr(g, 'lot', None)
+    sglen = len(g.sub_groups or [])
+    flen = len(g.filters or [])
+    result.append(
+        grp_m(level, lot, sglen, flen, ma(g.and_flag), mn(g.not_flag), g.id, g.name, g.text)
+    )
+    if g.filters:
+        result += [filt_m(
+            f.sensor.hash, f.sensor.source_hash, f.operator, f.value_type, mn(f.not_flag), f.value
+        ) for f in g.filters]
+    if g.sub_groups:
+        for i in g.sub_groups:
+            result += _get_group_hierarchy(i, level + 1)
+    return result
+
+
+def get_group_hierarchy(group):
+    if group is None:
+        result = 'No group object to parse!'
+    else:
+        result = '\n'.join(_get_group_hierarchy(group))
+    return result

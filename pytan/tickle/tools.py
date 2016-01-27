@@ -17,18 +17,86 @@ class ObjectTypeError(PytanError):
     pass
 
 
+# TANIUM_NG
+
 def clean_group(obj):
     """Sets ID to null on a group object and all of it's sub_groups, needed for 6.5"""
     if isinstance(obj, GroupList):
-        for sub_obj in obj:
-            clean_group(sub_obj)
+        obj.group = [clean_group(g) for g in obj.group]
     elif isinstance(obj, Group):
         obj.id = None
-        # obj.text = None
         if obj.sub_groups:
-            for sub_obj in obj.sub_groups:
-                clean_group(sub_obj)
+            obj.sub_groups = clean_group(obj.sub_groups)
+    return obj
 
+
+def str_obj(obj, **kwargs):
+    def_attrs = ['id', 'name', 'query_text', 'expiration']
+    attrs = kwargs.get('attrs', def_attrs)
+    attr_str = kwargs.get('attr_str', '{}:"{}"').format
+    if attrs:
+        result = [attr_str(a, getattr(obj, a)) for a in attrs if getattr(obj, a, None) is not None]
+        if result:
+            result = ', '.join(result)
+            result = '{}: {}'.format(result.__class__.__name__, result)
+        else:
+            result = str(obj)
+    else:
+        result = str(obj)
+    return result
+
+
+def shrink_obj(obj, **kwargs):
+    """Returns a new class of obj with only id/name/hash defined
+
+    Parameters
+    ----------
+    obj : :class:`tanium_ng.base.BaseType`
+        * Object to shrink
+    attrs : list of str
+        * default: None
+        * list of attribute str's to copy over to new object, will default to
+        ['name', 'id', 'hash'] if None
+
+    Returns
+    -------
+    new_obj : :class:`tanium_ng.base.BaseType`
+        * Shrunken object
+    """
+    attrs = kwargs.get('attrs', ['name', 'id', 'hash'])
+    new_obj = obj.__class__()
+    [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, None) is not None]
+    return new_obj
+
+
+def plugin_zip(p):
+    """Maps columns to values for each row in a plugins sql_response and returns a list of dicts
+
+    Parameters
+    ----------
+    p : :class:`tanium_ng.plugin.Plugin`
+        * plugin object
+
+    Returns
+    -------
+    dict
+        * the columns and result_rows of the sql_response in Plugin object zipped up into a
+        dictionary
+    """
+    result_row = p.sql_response.result_row
+    result = [dict(zip(p.sql_response.columns, x)) for x in result_row]
+    return result
+
+
+def is_ng(obj):
+    if not isinstance(obj, BaseType):
+        err = "{} must be a tanium_ng object, type: {}"
+        err = err.format(obj, type(obj))
+        MYLOG.error(err)
+        raise ObjectTypeError(err)
+
+
+# TIME
 
 def get_now(**kwargs):
     """Get current time in human friendly format """
@@ -84,6 +152,31 @@ def dt_to_str(dt, **kwargs):
     """
     result = dt.strftime(TANIUM_TIME_FORMAT)
     return result
+
+
+def q_start(q):
+    """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
+
+    Parameters
+    ----------
+    q : :class:`tanium_ng.Question`
+        * Question object to calculate start time for
+
+    Returns
+    -------
+    tuple : str, datetime
+        * a tuple containing the start time first in str format for Tanium Server API, second in
+        datetime object format
+    """
+    expire_dt = str_to_dt(q.expiration)
+    expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
+    start_time_dt = expire_dt - expire_seconds_delta
+    start_time = dt_to_str(start_time_dt)
+    result = (start_time, start_time_dt)
+    return result
+
+
+# SERIALIZE/DESERIALIZE
 
 
 def read_json_file(f):
@@ -262,78 +355,6 @@ def deobfuscate(key, string):
 def b64encode(val):
     """pass."""
     result = base64.b64encode(b(val))
-    return result
-
-
-def shrink_obj(obj, **kwargs):
-    """Returns a new class of obj with only id/name/hash defined
-
-    Parameters
-    ----------
-    obj : :class:`tanium_ng.base.BaseType`
-        * Object to shrink
-    attrs : list of str
-        * default: None
-        * list of attribute str's to copy over to new object, will default to
-        ['name', 'id', 'hash'] if None
-
-    Returns
-    -------
-    new_obj : :class:`tanium_ng.base.BaseType`
-        * Shrunken object
-    """
-    attrs = kwargs.get('attrs', ['name', 'id', 'hash'])
-    new_obj = obj.__class__()
-    [setattr(new_obj, a, getattr(obj, a)) for a in attrs if getattr(obj, a, None) is not None]
-    return new_obj
-
-
-def plugin_zip(p):
-    """Maps columns to values for each row in a plugins sql_response and returns a list of dicts
-
-    Parameters
-    ----------
-    p : :class:`tanium_ng.plugin.Plugin`
-        * plugin object
-
-    Returns
-    -------
-    dict
-        * the columns and result_rows of the sql_response in Plugin object zipped up into a
-        dictionary
-    """
-    result_row = p.sql_response.result_row
-    result = [dict(zip(p.sql_response.columns, x)) for x in result_row]
-    return result
-
-
-def is_ng(obj):
-    if not isinstance(obj, BaseType):
-        err = "{} must be a tanium_ng object, type: {}"
-        err = err.format(obj, type(obj))
-        MYLOG.error(err)
-        raise ObjectTypeError(err)
-
-
-def q_start(q):
-    """Caclulates the start time of a question by doing q.expiration - q.expire_seconds
-
-    Parameters
-    ----------
-    q : :class:`tanium_ng.Question`
-        * Question object to calculate start time for
-
-    Returns
-    -------
-    tuple : str, datetime
-        * a tuple containing the start time first in str format for Tanium Server API, second in
-        datetime object format
-    """
-    expire_dt = str_to_dt(q.expiration)
-    expire_seconds_delta = datetime.timedelta(seconds=q.expire_seconds)
-    start_time_dt = expire_dt - expire_seconds_delta
-    start_time = dt_to_str(start_time_dt)
-    result = (start_time, start_time_dt)
     return result
 
 

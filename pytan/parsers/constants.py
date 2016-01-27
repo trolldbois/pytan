@@ -198,8 +198,6 @@ FIELD_TYPES = {
     'numericinteger': FIELD_TYPES_MAP['NI'],
 }
 
-ESCAPED_COMMAS = r'(?<!\\),'
-
 SHORT_TOKENS = {
     # get
     'f': 'field',
@@ -219,4 +217,24 @@ SHORT_TOKENS = {
     'fo': 'filter_operator',
     'fv': 'filter_value',
     'fvt': 'filter_value_type',
+    # right
+    'k': 'kind',
+    'l': 'lot',
+    # lot
+    'a': 'and_flag',
+    'and': 'and_flag',
+}
+
+SEARCH_SPEC_TOKENS = ['value', 'field', 'type', 'not_flag', 'operator']
+GROUP_SPEC_TOKENS = ['kind', 'lot']
+LOT_SPEC_TOKENS = ['lot', 'and_flag', 'not_flag']
+
+FILTER_SPEC_TOKENS = {
+    'filter_value': 'value',
+    'filter_not': 'not_flag',
+    'filter_ignore_case': 'ignore_case_flag',
+    'filter_max_age': 'max_age_seconds',
+    'filter_all_values': 'all_values_flag',
+    'filter_operator': 'operator',
+    'filter_type': 'value_type',
 }

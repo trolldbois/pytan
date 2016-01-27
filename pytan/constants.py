@@ -47,6 +47,7 @@ HANDLER_DEFAULTS = {
     'loglevel': 0,
     'config_file': "~/.pytan_config.json",
 }
+
 HANDLER_DEFAULTS.update(CRED_DEFAULTS)
 HANDLER_DEFAULTS.update(SESSION_DEFAULTS)
 
@@ -56,6 +57,7 @@ INFO = 'INFO'  # python logging int: 20
 WARNING = 'WARNING'  # python logging int: 30
 ERROR = 'ERROR'  # python logging int: 40
 CRITICAL = 'CRITICAL'  # python logging int: 50
+
 LOGGER_LEVELS = [DEBUG, INFO, WARNING, ERROR, CRITICAL]
 
 PYTAN_BASE_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 15: DEBUG}
@@ -65,8 +67,9 @@ CONNECTION_LOGS = {0: ERROR, 1: WARNING, 8: INFO, 25: DEBUG}
 HANDLER_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 6: DEBUG}
 PARSER_LOGS = {0: ERROR, 1: WARNING, 7: INFO, 17: DEBUG}
 PROGRESS_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 16: DEBUG}
-RESOLVER_LOGS = {0: ERROR, 1: WARNING, 10: INFO, 35: DEBUG}
-TICKLE_LOGS = {0: ERROR, 1: WARNING, 20: INFO, 40: DEBUG}
+RESOLVER_LOGS = {0: ERROR, 1: WARNING, 10: INFO, 30: DEBUG}
+TICKLE_LOGS = {0: ERROR, 1: WARNING, 25: INFO, 40: DEBUG}
+BUILDER_LOGS = {0: ERROR, 1: WARNING, 20: INFO, 35: DEBUG}
 ERRORS_ONLY = {0: ERROR}
 EVERYTHING = {0: DEBUG}
 
@@ -81,8 +84,9 @@ LOGMAP = {
     'pytan.handler': HANDLER_LOGS,
     'pytan.handler_args': HANDLER_LOGS,
     'pytan.handler_logs': HANDLER_LOGS,
-    'pytan.parsers.spec_parsers': PARSER_LOGS,  # PARSER_LOGS
-    'pytan.parsers.token_parsers': PARSER_LOGS,  # PARSER_LOGS
+    'pytan.parsers.coerce': PARSER_LOGS,  # PARSER_LOGS
+    'pytan.parsers.specs': PARSER_LOGS,  # PARSER_LOGS
+    'pytan.parsers.tokens': PARSER_LOGS,  # PARSER_LOGS
     'pytan.pollers.question': PYTAN_BASE_LOGS,
     'pytan.pollers.question.progress': PROGRESS_LOGS,
     'pytan.pollers.question.resolver': RESOLVER_LOGS,
@@ -98,14 +102,15 @@ LOGMAP = {
     'pytan.store.credstore': AUTH_LOGS,
     'pytan.tanium_ng': TICKLE_LOGS,
     'pytan.tickle': TICKLE_LOGS,
-    'pytan.tickle.from__dict': TICKLE_LOGS,
-    'pytan.tickle.from__tree': TICKLE_LOGS,
-    'pytan.tickle.from__xml': TICKLE_LOGS,
-    'pytan.tickle.to__dict': TICKLE_LOGS,
-    'pytan.tickle.to__dict_resultset': TICKLE_LOGS,
-    'pytan.tickle.to__tree': TICKLE_LOGS,
+    'pytan.tickle.deserialize': TICKLE_LOGS,
+    'pytan.tickle.serialize': TICKLE_LOGS,
     'pytan.tickle.tools': TICKLE_LOGS,  # TICKLE_LOGS,
-    'pytan.tickle.builders': TICKLE_LOGS,  # TICKLE_LOGS,
+    'pytan.builders': BUILDER_LOGS,
+    'pytan.builders.filters': BUILDER_LOGS,
+    'pytan.builders.groups': BUILDER_LOGS,
+    'pytan.builders.params': BUILDER_LOGS,
+    'pytan.builders.questions': BUILDER_LOGS,
+    'pytan.builders.selects': BUILDER_LOGS,
     'pytan.xml_clean': BODY_LOGS,
 }
 
@@ -239,3 +244,5 @@ SHELL_OPTS = OrderedDict()
 SHELL_OPTS['PyTan Authentication Options'] = AUTH_OPTS
 SHELL_OPTS['PyTan Session Options'] = SESSION_OPTS
 SHELL_OPTS['PyTan Handler Options'] = HANDLER_OPTS
+
+SUPER_VERBOSE = False

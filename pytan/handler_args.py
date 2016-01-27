@@ -22,7 +22,7 @@ class UserConfigError(PytanError):
     pass
 
 
-def create_argstore(**kwargs):
+def build_argstore(**kwargs):
     """pass."""
     setup_log(**kwargs)
     pytan_key = kwargs.get('pytan_key', PYTAN_KEY)
@@ -90,7 +90,7 @@ def prompter(name, prompt_txt='Provide Tanium "{name}": '):
 
 def prompt_for_args(**kwargs):
     """Utility function to prompt for username, `, and host if empty"""
-    argstore = create_argstore(**kwargs)
+    argstore = build_argstore(**kwargs)
     handler_args = argstore.handler_args
 
     missing_session_prompts = ['username', 'password']
