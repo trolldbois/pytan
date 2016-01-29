@@ -2,9 +2,11 @@ import copy
 import logging
 
 from pytan import PytanError, string_types, integer_types, text_type
+from pytan.tickle.tools import secs_from_now
 
 from pytan.parsers.constants import (
-    SPEC_FIELD_FALLBACKS, OPERATORS_PYTAN, OPERATORS_TANIUM, TRUE_TYPES, FALSE_TYPES, FIELD_TYPES
+    SPEC_FIELD_FALLBACKS, OPERATORS_PYTAN, OPERATORS_TANIUM, TRUE_TYPES, FALSE_TYPES, CF_TYPES,
+    FILTER_VALUE_TYPES, KIND_VALUES
 )
 
 MYLOG = logging.getLogger(__name__)
@@ -17,6 +19,16 @@ class SpecInvalidError(PytanError):
 class Specify(object):
     """pass."""
 
+    VALUE_KEY = 'value'
+    OPERATOR_KEY = 'operator'
+    FIELD_KEY = 'field'
+    TYPE_KEY = 'type'
+    NOT_KEY = 'not_flag'
+    KIND_KEY = 'kind'
+    VALID_TYPES = CF_TYPES
+    OBJ = None
+    ME_ADD = ''
+
     def __init__(self, spec, **kwargs):
         if not isinstance(spec, dict):
             err = "spec must be a dict; supplied type {!r} spec {!r}"
@@ -27,8 +39,23 @@ class Specify(object):
         self.SPEC = spec
         self.KWARGS = kwargs
         self.RESULT = copy.deepcopy(self.SPEC)
+        self.determine_obj()
         self.post_init()
         self.log_change()
+
+    def determine_obj(self):
+        class_list = self.KWARGS.get('class_list', None)
+        obj = self.KWARGS.get('obj', None)
+        if class_list:
+            obj_list = class_list()
+            class_single = obj_list._LIST_TYPE
+            objtype = class_single.__name__
+            obj_single = class_single()
+            self.OBJ = obj_single
+            self.ME_ADD = ' for object type {!r}'.format(objtype)
+        elif obj:
+            self.OBJ = obj
+            self.ME_ADD = ' for object type {!r}'.format(type(obj).__name__)
 
     def post_init(self):
         pass
@@ -132,90 +159,152 @@ class Specify(object):
         if key in self.RESULT:
             self.check_key_bool(key)
 
-    def validate_value(self, key='value'):
+    def validate_value(self):
         # check that value key in self.RESULT exists
-        self.check_key_exists(key)
+        self.check_key_exists(self.VALUE_KEY)
 
         # check that value key in self.RESULT is a string or int
-        self.check_key_type(key, string_types + integer_types)
+        self.check_key_type(self.VALUE_KEY, string_types + integer_types)
 
         # force value key in self.RESULT into a string
-        if not isinstance(self.RESULT[key], string_types):
-            self.RESULT[key] = text_type(self.RESULT[key])
+        if not isinstance(self.RESULT[self.VALUE_KEY], string_types):
+            self.RESULT[self.VALUE_KEY] = text_type(self.RESULT[self.VALUE_KEY])
 
-    def validate_field(self, key='field', value_key='value'):
+    def validate_field(self):
         # if field key in self.RESULT does not exist and is an int, assume field is id
-        if key not in self.RESULT:
+        if self.FIELD_KEY not in self.RESULT:
             try:
-                int(self.RESULT.get(value_key, ''))
-                self.RESULT[key] = 'id'
+                int(self.RESULT.get(self.VALUE_KEY, ''))
+                self.RESULT[self.FIELD_KEY] = 'id'
             except:
                 pass
 
         # if field key in self.RESULT does not exist, derive from fallbacks
-        if key not in self.RESULT and self.OBJ_SINGLE is not None:
+        if self.FIELD_KEY not in self.RESULT and self.OBJ is not None:
             for x in SPEC_FIELD_FALLBACKS:
-                if x not in dir(self.OBJ_SINGLE):
-                    continue
-                self.RESULT[key] = x
-                break
+                if x in dir(self.OBJ):
+                    self.RESULT[self.FIELD_KEY] = x
+                    break
 
         # check that field key in self.RESULT exists
-        self.check_key_exists(key)
+        self.check_key_exists(self.FIELD_KEY)
 
         # check that field key in self.RESULT is a string
-        self.check_key_type(key, string_types)
+        self.check_key_type(self.FIELD_KEY, string_types)
 
-    def validate_operator(self, key='operator', value_key='value', not_key='not_flag'):
+    def seconds_to_date(self, value):
+        try:
+            value = int(value)
+        except:
+            err = "Unable to convert value {!r} to integer!"
+            err = err.format(value)
+            MYLOG.error(err)
+            raise SpecInvalidError(err)
+
+        result = secs_from_now(secs=value)
+        return result
+
+    def emap_value_helper(self, emap):
+        if 'value_helper' in emap:
+            helper_method = getattr(self, emap['value_helper'])
+            self.RESULT[self.VALUE_KEY] = helper_method(self.RESULT[self.VALUE_KEY])
+
+    def emap_not_flag(self, emap):
+        if self.NOT_KEY not in self.RESULT and self.NOT_KEY in emap:
+            self.RESULT[self.NOT_KEY] = emap[self.NOT_KEY]
+
+    def emap_type_fallbacks(self, emap):
+        if 'type_fallbacks' in emap and not self.RESULT.get(self.TYPE_KEY):
+            for k, v in emap['type_fallbacks'].items():
+                if self.TYPE_KEY == k:
+                    self.RESULT[self.TYPE_KEY] = v
+                    break
+
+    def emap_pre_value(self, emap):
+        if 'pre_value' in emap and 'value' in self.RESULT:
+            value = '{}{}'.format(emap['pre_value'], self.RESULT[self.VALUE_KEY])
+            self.RESULT[self.VALUE_KEY] = value
+
+    def emap_post_value(self, emap):
+        if 'post_value' in emap and 'value' in self.RESULT:
+            value = '{}{}'.format(self.RESULT[self.VALUE_KEY], emap['post_value'])
+            self.RESULT[self.VALUE_KEY] = value
+
+    def emap_field_fallbacks(self, emap):
+        if self.FIELD_KEY:
+            field = self.RESULT.get(self.FIELD_KEY)
+            if 'field_fallbacks' in emap and not field and self.OBJ is not None:
+                for x in emap['field_fallbacks']:
+                    if x in dir(self.OBJ):
+                        self.RESULT[self.FIELD_KEY] = x
+                        break
+
+    def check_pytan_operator(self):
+        operator = self.RESULT[self.OPERATOR_KEY].lower()
+        if operator in OPERATORS_PYTAN:
+            emap = OPERATORS_PYTAN[operator]
+            self.RESULT[self.OPERATOR_KEY] = emap['operator']
+            self.emap_value_helper(emap)
+            self.emap_pre_value(emap)
+            self.emap_post_value(emap)
+            self.emap_not_flag(emap)
+            self.emap_type_fallbacks(emap)
+            self.emap_field_fallbacks(emap)
+
+    def check_tanium_operator(self):
+        operator = self.RESULT[self.OPERATOR_KEY].lower()
+
+        # validate operator is a valid Tanium Operator
+        op_valid = [x for x in OPERATORS_TANIUM if x.lower() == operator.lower()]
+
+        if op_valid:
+            # operator matches a Tanium operator
+            self.RESULT[self.OPERATOR_KEY] = op_valid[0]
+        else:
+            # operator did not match a Tanium operator
+            valid_types = OPERATORS_TANIUM + OPERATORS_PYTAN.keys()
+            self.invalid_key(self.OPERATOR_KEY, valid_types, self.OPERATOR_KEY)
+
+    def validate_operator(self):
         """pass."""
-        if key in self.RESULT:
+        if self.OPERATOR_KEY in self.RESULT:
             # check that operator key in self.RESULT is a string
-            self.check_key_type(key, string_types)
-            operator = self.RESULT[key].lower()
+            self.check_key_type(self.OPERATOR_KEY, string_types)
+            self.check_pytan_operator()
+            self.check_tanium_operator()
 
-            # if operator is a pytan extended operator, map it back to a Tanium operator
-            if operator in OPERATORS_PYTAN:
-                emap = OPERATORS_PYTAN[operator]
-                pre_value = emap.get('pre_value', '')
-                post_value = emap.get('post_value', '')
-                operator = emap.get('operator')
-                if not_key not in self.RESULT and not_key in emap:
-                    self.RESULT[not_key] = emap.get(not_key)
-                if pre_value:
-                    self.RESULT[value_key] = '{}{}'.format(pre_value, self.RESULT[value_key])
-                if post_value:
-                    self.RESULT[value_key] = '{}{}'.format(self.RESULT[value_key], post_value)
+    def validate_type(self):
+        # valid_types = FILTER_VALUE_TYPES
 
-            # validate operator is a valid Tanium Operator
-            op_valid = [x for x in OPERATORS_TANIUM if x.lower() == operator.lower()]
-
-            if op_valid:
-                # operator matches a Tanium operator
-                operator == op_valid[0]
-            else:
-                # operator did not match a Tanium operator
-                valid_types = OPERATORS_TANIUM + OPERATORS_PYTAN.keys()
-                self.invalid_key(key, valid_types, key)
-
-            self.RESULT[key] = operator
-
-    def validate_type(self, key='type'):
-        if key in self.RESULT:
+        if self.TYPE_KEY in self.RESULT:
             # validate type is a string
-            self.check_key_type(key, string_types)
-            type_key = self.RESULT[key].lower()
+            self.check_key_type(self.TYPE_KEY, string_types)
+            value = self.RESULT[self.TYPE_KEY].lower()
 
             # validate type is a valid field type
-            type_valid = [FIELD_TYPES[x] for x in FIELD_TYPES if x.lower() == type_key]
+            value_valid = [self.VALID_TYPES[x] for x in self.VALID_TYPES if x.lower() == value]
 
-            if type_valid:
-                type_key == type_valid[0]['t']
+            if value_valid:
+                self.RESULT[self.TYPE_KEY] = value_valid[0]['t']
             else:
                 # type did not match a valid field type
-                valid_types = FIELD_TYPES
-                self.invalid_key(key, valid_types, key)
+                self.invalid_key(self.TYPE_KEY, self.VALID_TYPES, self.TYPE_KEY)
 
-            self.RESULT[key] = type_key
+    def validate_kind(self):
+        if self.KIND_KEY in self.RESULT:
+            # validate type is a string
+            self.check_key_type(self.KIND_KEY, string_types)
+            value = self.RESULT[self.KIND_KEY].lower()
+
+            # validate type is a valid field type
+            value_valid = value in KIND_VALUES
+
+            if value_valid:
+                self.RESULT[self.KIND_KEY] = value
+            else:
+                # type did not match a valid field type
+                valid_types = KIND_VALUES
+                self.invalid_key(self.KIND_KEY, valid_types, self.KIND_KEY)
 
 
 class SearchSpecify(Specify):
@@ -229,22 +318,10 @@ class SearchSpecify(Specify):
         type: optional
         not_flag: optional
         """
-
-        class_list = self.KWARGS.get('class_list', None)
-        objtype = 'unknown'
-        if class_list:
-            obj_list = class_list()
-            class_single = obj_list._LIST_TYPE
-            objtype = class_single.__name__
-            obj_single = class_single()
-            self.OBJ_SINGLE = obj_single
-
-        self.ME_ADD = ' for object type {!r}'.format(objtype)
-
-        self.validate_value('value')
-        self.validate_field('field')
-        self.validate_operator('operator')
-        self.validate_type('type')
+        self.validate_value()
+        self.validate_operator()
+        self.validate_field()
+        self.validate_type()
         self.validate_opt_bool('not_flag')
 
 
@@ -276,12 +353,17 @@ class RightSpecify(Specify):
         """
         self.check_key_exists('search_spec')
         self.check_key_exists('filter_spec')
+        self.check_opt_subparser(key='group_spec', subparser=group_specify)
         self.check_opt_subparser(key='filter_spec', subparser=filter_specify)
         self.check_opt_subparser(key='named_param_spec', subparser=named_param_specify)
         self.check_opt_subparser(key='unnamed_param_spec', subparser=unnamed_param_specify)
 
 
 class FilterSpecify(Specify):
+
+    TYPE_KEY = 'value_type'
+    VALID_TYPES = FILTER_VALUE_TYPES
+    FIELD_KEY = None
 
     def post_init(self):
         """filter spec can be empty. if not empty, must be a dict with keys:
@@ -295,12 +377,12 @@ class FilterSpecify(Specify):
         max_age_seconds: optional
         """
         if self.RESULT:
-            self.validate_value('value')
-            self.validate_operator('operator')
+            self.validate_value()
+            self.validate_operator()
             self.validate_opt_bool('not_flag')
             self.validate_opt_bool('ignore_case_flag')
             self.validate_opt_bool('all_values_flag')
-            self.validate_type('value_type')
+            self.validate_type()
 
             key = 'max_age_seconds'
             if key in self.RESULT:
@@ -321,6 +403,20 @@ class LotSpecify(Specify):
             self.check_key_type('lot', string_types + integer_types)
             self.validate_opt_bool('not_flag')
             self.validate_opt_bool('and_flag')
+
+
+class GroupSpecify(Specify):
+
+    def post_init(self):
+        """group spec can be empty. if not empty, must be a dict with keys:
+
+        kind: optional
+        lot: optional
+        """
+        if self.RESULT:
+            self.validate_kind()
+            if 'lot' in self.RESULT:
+                self.check_key_type('lot', string_types + integer_types)
 
 
 class NamedParamSpecify(Specify):
@@ -358,6 +454,12 @@ def left_specify(left_spec, **kwargs):
 
 def right_specify(right_spec, **kwargs):
     parser = RightSpecify(right_spec, **kwargs)
+    result = parser.RESULT
+    return result
+
+
+def group_specify(group_spec, **kwargs):
+    parser = GroupSpecify(group_spec, **kwargs)
     result = parser.RESULT
     return result
 

@@ -28,7 +28,11 @@ SESSION_DEFAULTS = {
     'clean_xml_restricted': True,
     'clean_xml_invalid': True,
     'https_proxy': '',
-    'request_headers': {'Accept-Encoding': 'gzip', 'User-Agent': '{title}/{version}'},
+    'request_headers': {
+        'Accept-Encoding': 'gzip, deflate',
+        # 'Accept-Language': 'en-US,en;q=0.8',
+        'User-Agent': '{title}/{version}',
+    },
 }
 
 HANDLER_DEFAULTS = {
@@ -65,6 +69,7 @@ AUTH_LOGS = {0: ERROR, 1: WARNING, 6: INFO, 16: DEBUG}
 BODY_LOGS = {0: ERROR, 1: WARNING, 7: INFO, 30: DEBUG}
 CONNECTION_LOGS = {0: ERROR, 1: WARNING, 8: INFO, 25: DEBUG}
 HANDLER_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 6: DEBUG}
+HANDLER_SUB_LOGS = {0: ERROR, 1: WARNING, 6: INFO, 8: DEBUG}
 PARSER_LOGS = {0: ERROR, 1: WARNING, 7: INFO, 17: DEBUG}
 PROGRESS_LOGS = {0: ERROR, 1: WARNING, 5: INFO, 16: DEBUG}
 RESOLVER_LOGS = {0: ERROR, 1: WARNING, 10: INFO, 30: DEBUG}
@@ -82,8 +87,8 @@ LOGMAP = {
     'pytan.ext.requests.packages.urllib3.poolmanager': CONNECTION_LOGS,
     'pytan.ext.requests.packages.urllib3.util.retry': CONNECTION_LOGS,
     'pytan.handler': HANDLER_LOGS,
-    'pytan.handler_args': HANDLER_LOGS,
-    'pytan.handler_logs': HANDLER_LOGS,
+    'pytan.handler_args': HANDLER_SUB_LOGS,
+    'pytan.handler_logs': HANDLER_SUB_LOGS,
     'pytan.parsers.coerce': PARSER_LOGS,  # PARSER_LOGS
     'pytan.parsers.specs': PARSER_LOGS,  # PARSER_LOGS
     'pytan.parsers.tokens': PARSER_LOGS,  # PARSER_LOGS

@@ -216,23 +216,24 @@ def write_config_file(puc_dict, **kwargs):
 def read_config_file(**kwargs):
     """Read a PyTan User Config and update the current class variables"""
     config_file = determine_config_file(**kwargs)
+    ignore_config_file = kwargs.get('ignore_config_file', False)
 
     puc_dict = {}
 
-    if os.path.isfile(config_file):
-        try:
-            with open(config_file) as fh:
-                puc_dict = json.load(fh)
-        except Exception as e:
-            err = "PyTan User config file at: {} is invalid, exception: {}"
-            err = err.format(config_file, e)
-            raise UserConfigError(err)
+    if not ignore_config_file:
+        if os.path.isfile(config_file):
+            try:
+                with open(config_file) as fh:
+                    puc_dict = json.load(fh)
+            except Exception as e:
+                err = "PyTan User config file at: {} is invalid, exception: {}"
+                err = err.format(config_file, e)
+                raise UserConfigError(err)
+            else:
+                m = "PyTan User config file successfully loaded: {} "
+                m = m.format(config_file)
+                MYLOG.info(m)
         else:
-            m = "PyTan User config file successfully loaded: {} "
-            m = m.format(config_file)
-            MYLOG.info(m)
-    else:
-        m = "Unable to find PyTan User config file at: {}".format
-        MYLOG.info(m(config_file))
-        return puc_dict
+            m = "Unable to find PyTan User config file at: {}".format
+            MYLOG.info(m(config_file))
     return puc_dict

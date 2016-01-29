@@ -5,10 +5,9 @@
 - [TANIUMNG](#taniumng)
 - [TESTS](#tests)
 - [SESSION](#session)
-- [PARSING](#parsing)
 - [HANDLER](#handler)
 - [UTILS](#utils)
-- [PLATFORM](#platform)
+- [PLATFORM BUGS](#platform-bugs)
 - [BUILD TOOLS](#build-tools)
 - [LIBXML](#libxml)
 
@@ -52,22 +51,14 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * move stats threading into it's own class LAST
 * figure out cert based auth/plugin based auth? (HUGE)
  
-## PARSING
-* argparse for specs/left/right/etc **ONGOING**
-
 ## HANDLER
 * ask_manual:
   * add prompting to createparams?
-* _add:
-  * ADD 'print_attrs: ['id', 'query_text', 'expiration'] to _add
 * ask_parsed:
   * parser doesnt work with params! catch [] in parser and throw exception? or do what console does and strip them out and re-add them back in (pull them out index correlated and add them back in index correlated, use CreateParams)
   * change parser to v3 with no failback
 * handler_logs:
   * add gmt log back in
-* ask_saved: 
-  * add log for get_result_info in refresh_data path
-  * add check to see if question for re-fetched sq is not different from old sq, if so throw warning. 
 * GRD:
   * add auto paging/caching to normal GRD
   * add secondary loop for if any data == current result unavail/etc (MEDIUM)
@@ -93,8 +84,17 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * add "advanced" options capability to shellparser (custom action, custom formatter, custom format_help on shellparser)
 * Add pytan log output to TSAT
 
-## PLATFORM
+## PLATFORM BUGS
 * open enhancement for console.wsdl to contain platform version
+* open enhancement for more fields at login
+* open enhancement for better/split up logging
+* SOAP Parse XML not printing out XML bodies from requests via pytan
+* headers['SOAPAction'] = '"urn:TaniumSOAPAction"' NEEDED IN session.soap_request?
+* Does timediff work for cachefilters?
+* groups don't show not in front of query text for all sub groups when not_flag is 1 for parent group
+* getobject for package_specs does not work, must do it via package_spec (should allow singular or multi form for all objects)
+* cache filters do not work for: groups (by id), users, user_roles, whitelisted_urls
+* cache filter Date not working against modification_time/creation_time?
 
 ## BUILD TOOLS
 * add RST output support to mdtester?

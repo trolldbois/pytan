@@ -162,6 +162,7 @@ def group_spec_from_tokens(tokens):
         if key not in GROUP_SPEC_TOKENS:
             continue
         result[key] = value
+
     m = "group_spec_from_tokens(): Created spec {!r} from parsed tokens {!r}"
     m = m.format(result, tokens)
     MYLOG.debug(m)
@@ -202,7 +203,6 @@ def left_tokenize(orig_str):
 
 
 def right_tokenize(orig_str):
-    # if group in tokens, turn into group_spec, otherwise turn into left spec
     tokens = tokenize(orig_str)
     search_spec = search_spec_from_tokens(tokens)
     filter_spec = filter_spec_from_tokens(tokens)

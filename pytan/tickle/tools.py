@@ -111,9 +111,8 @@ def human_time(dt, **kwargs):
     return result
 
 
-def secs_from_now(**kwargs):
+def secs_from_now(secs=0, **kwargs):
     """Get time in Tanium SOAP API format `secs` from now"""
-    secs = kwargs.get('secs', 0) or 0
     dtformat = kwargs.get('dtformat', TANIUM_TIME_FORMAT)
     from_now = datetime.datetime.utcnow() + datetime.timedelta(seconds=secs)
     result = from_now.strftime(dtformat)

@@ -192,6 +192,7 @@ class Handler(object):
         ret = str_tpl(__version__, self.SESSION)
         return ret
 
+    # SESSION PASSTHRU METHODS
     def get_server_version(self, **kwargs):
         """Uses :func:`session.Session.get_server_version` to get the version of the Tanium Server
 
@@ -203,6 +204,30 @@ class Handler(object):
         result = self.SESSION.get_server_version(**kwargs)
         return result
 
+    def get_string(self, from_hash, **kwargs):
+        result = self.SESSION.get_string(from_hash, **kwargs)
+        return result
+
+    def get_hash(self, from_str, **kwargs):
+        result = self.SESSION.get_hash(from_str, **kwargs)
+        return result
+
+    @property
+    def session_id(self):
+        result = self.SESSION.session_id
+        return result
+
+    @property
+    def session_user_id(self):
+        result = self.SESSION.session_user_id
+        return result
+
+    @property
+    def user_obj(self):
+        result = self.SESSION.user_obj
+        return result
+
+    # QUESTIONS
     def ask_manual(self, left=[], right=[], lot=[], **kwargs):
         """pass.
         left: list of str or list of dict
@@ -221,6 +246,14 @@ class Handler(object):
 
         # build the question object
         nq = build_question(**kwargs)
+
+        if not nq.selects:
+            m = "No left side supplied for build_question, question will be 'Get Online from...'"
+            MYLOG.info(m)
+
+        if not nq.group:
+            m = "No right side supplied for build_question, question will be '... from all machines'"
+            MYLOG.info(m)
 
         if nq.group:
             m = 'built question group hierarchy:\n{}'
@@ -517,6 +550,7 @@ class Handler(object):
             result.question_results = self.get_result_data(**kwargs)
         return result
 
+    # ACTIONS
     def approve_saved_action(self, search=[], **kwargs):
         """Approve a saved action
 

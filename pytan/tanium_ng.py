@@ -228,7 +228,7 @@ class BaseType(object):
             vals.append([name, val])
 
         if vals:
-            result = ', '.join(["{}.{}=[{}]".format(class_name, *p) for p in vals])
+            result = ', '.join(["{}.{}=<{}>".format(class_name, *p) for p in vals])
         else:
             result = "{}: No attributes assigned yet!".format(class_name)
         return result
