@@ -34,11 +34,12 @@ def str_obj(obj, **kwargs):
     def_attrs = ['id', 'name', 'query_text', 'expiration']
     attrs = kwargs.get('attrs', def_attrs)
     attr_str = kwargs.get('attr_str', '{}:"{}"').format
+    class_name = obj.__class__.__name__
     if attrs:
         result = [attr_str(a, getattr(obj, a)) for a in attrs if getattr(obj, a, None) is not None]
         if result:
             result = ', '.join(result)
-            result = '{}: {}'.format(result.__class__.__name__, result)
+            result = '{}: {}'.format(class_name, result)
         else:
             result = str(obj)
     else:

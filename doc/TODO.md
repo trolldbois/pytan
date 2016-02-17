@@ -4,6 +4,7 @@
 - [EVERYWHERE](#everywhere)
 - [TANIUMNG](#taniumng)
 - [TESTS](#tests)
+- [TICKLE](#tickle)
 - [SESSION](#session)
 - [HANDLER](#handler)
 - [UTILS](#utils)
@@ -30,6 +31,7 @@
 * ensure all exceptions are re-raised if not a specific Tanium/PyTan type
 * clean up prints!!!:
 grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
+* redo logging to use MYLOG.pytan_levels
 
 ## TANIUMNG
 * TODO ADD DOCSTR TO BUILDER HEADER
@@ -45,6 +47,9 @@ grep 'print(' * -r|grep -v pyreadline|grep -v 'requests/'
 * cache_results test: If you are adding tests for that mechanism you could make tests that verify it returns an error if you specify a cache that has expired and make sure that the results that come back don’t change.
 * test verify checks work against package with verification (unable to do) (UNKNOWN)
 * test against all the different levels of user privs (UNKNOWN)
+
+## TICKLE
+* add delimiter opt
 
 ## SESSION
 * add permission checking from user_obj

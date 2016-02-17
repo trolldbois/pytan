@@ -80,7 +80,8 @@ def pytest_configure(config):
 
 
 def pytest_unconfigure(config):
-    print('Report directory for this session:\n"{}"'.format(config.REPORT_TMPDIR))
+    if hasattr(config, 'REPORT_TMPDIR'):
+        print('Report directory for this session:\n"{}"'.format(config.REPORT_TMPDIR))
     # for i in config.REPORT_TMPDIR.listdir():
     #     print(' "{}"'.format(i))
     # print('Report directory for this session:\n"{}"'.format(config.REPORT_TMPDIR))

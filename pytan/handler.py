@@ -27,6 +27,7 @@ from pytan.tanium_ng import (
 )
 
 MYLOG = logging.getLogger(__name__)
+MYLOG.pytan_levels = {0: 'ERROR', 1: 'WARNING', 5: 'INFO', 6: 'DEBUG'}
 
 HELPS = HelpStore()
 HELPS.sq_getq = "Use GetObject to get the last question asked by a saved question".format
@@ -282,8 +283,8 @@ class Handler(object):
             kwargs.update({'obj': q})
             grd = self.get_result_data(**kwargs)
 
-            m = "{} rows returned for {}"
-            m = m.format(len(grd.result_set.rows), str_obj(q))
+            m = "{} returned for {}"
+            m = m.format(grd.result_set, str_obj(q))
             self.MYLOG.info(m)
         else:
             p_result = None
@@ -384,8 +385,8 @@ class Handler(object):
             kwargs.update({'obj': q})
             grd = self.get_result_data(**kwargs)
 
-            m = "{} rows returned for {}"
-            m = m.format(len(grd.result_set.rows), str_obj(q))
+            m = "{} returned for {}"
+            m = m.format(grd.result_set, str_obj(q))
             self.MYLOG.info(m)
         else:
             p_result = None

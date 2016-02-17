@@ -117,12 +117,22 @@ GET_METHODS = [
 ]
 
 
-@pytest.mark.parametrize("get_method", GET_METHODS)
-def get_method_all(valid_handler, get_method):
-    m = getattr(valid_handler, get_method)
+@pytest.fixture(params=GET_METHODS, scope="module")
+def all_objects(valid_handler, request):
+    m = getattr(valid_handler, request.param)
     result = m()
-    assert isinstance(result, tanium_ng.BaseType)
-    assert len(result) >= 1
+    return result
+
+
+def test_all_objects(all_objects):
+    assert isinstance(all_objects, tanium_ng.BaseType)
+    print(all_objects)
+
+
+def test_single_object(all_objects):
+    if not all_objects:
+        pytest.skip("no objects of type {} available to test single get on!")
+    print(all_objects[0])
 
 
 '''
