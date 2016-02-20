@@ -1,7 +1,10 @@
 import os
 import code
 import atexit
-import readline
+try:
+    import readline
+except ImportError:
+    import pyreadline as readline
 import rlcompleter  # noqa
 
 
