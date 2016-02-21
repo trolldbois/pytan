@@ -245,9 +245,26 @@ HANDLER_OPTS['config_file'] = {
     'help': "PyTan User Config file to use for PyTan arguments",
 }
 
+SENSOR_OPTS = OrderedDict()
+SENSOR_OPTS['sensor'] = {
+    'short': 's',
+    'help': 'Sensor, optionally describe parameters, options, and a filter'
+}
+SENSOR_OPTS['left'] = {
+    'short': 'L',
+    'help': 'Left side filter for question being asked.'
+}
+SENSOR_OPTS['right'] = {
+    'right': 'R',
+    'help': 'Right side filter for question being asked.'
+}
+
 SHELL_OPTS = OrderedDict()
 SHELL_OPTS['PyTan Authentication Options'] = AUTH_OPTS
 SHELL_OPTS['PyTan Session Options'] = SESSION_OPTS
 SHELL_OPTS['PyTan Handler Options'] = HANDLER_OPTS
+
+MANUAL_OPTS = OrderedDict()
+MANUAL_OPTS['Manual Question Options'] = SENSOR_OPTS
 
 SUPER_VERBOSE = False
