@@ -12,7 +12,7 @@ class Worker(base.Base):
 
         self.grp.add_argument(
             '-sl', '--sensor_left',
-            required=False, action='append', default=[], dest='sensor_left',
+            required=False, action='append', default=[], dest='sensors_left',
             help='Left side sensors, optionally describe parameters, options, and a filter'
         )
         self.grp.add_argument(
@@ -36,11 +36,11 @@ class Worker(base.Base):
         m = "++ Asking {} question with arguments:\n{}"
         print(m.format(self.QTYPE, self.pf(kwargs)))
         response = self.handler.ask_manual(qtype=self.QTYPE, **kwargs)
-        m = "++ Asked Question {question_object.query_text!r} ID: {question_results.id!r}"
-        print(m.format(**response))
+        m = "++ Asked Question {} ID: {}"
+        print(m.format(response.question.query_text, response.question.id))
         return response
 
     def get_result(self):
         response = self.get_question_response()
-        report_file, result = self.export_results(response['question_results'])
-        return response, report_file, result
+        #report_file, result = self.export_results(response['question_results'])
+        #return response, report_file, result

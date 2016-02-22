@@ -3,6 +3,7 @@ $my_dir=(split-path -parent $myinvocation.mycommand.definition)
 
 . $my_dir/config.ps1 $args
 
+$env:PYTHONINSPECT="False"
 $WORKER_PATH="$my_dir\worker.py"
 $PYTHON_OPTIONS='-B'
 
