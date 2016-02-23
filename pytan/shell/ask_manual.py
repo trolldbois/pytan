@@ -36,14 +36,13 @@ class Worker(base.Base):
         m = "++ Asking {} question with arguments:\n{}"
         print(m.format(self.QTYPE, self.pf(kwargs)))
         response = self.handler.ask_manual(qtype=self.QTYPE, **kwargs)
-        print(kwargs)
         m = "++ Asked Question {} ID: {}"
         print(m.format(response.question.query_text, response.question.id))
         return response
 
     def get_result(self):
         response = self.get_question_response()
-        print(response.result_data.result_set.to_csv())
+        print(response.result_data.result_set.to_csv_resultset())
         # Needs handler.export_file method
         # report_file, result = self.export_results(response.result_data.result_set)
         # return response, report_file, result
