@@ -248,13 +248,13 @@ class Handler(object):
         # build the question object
         nq = build_question(**kwargs)
 
-        if not nq.selects:
-            m = "No left side supplied for build_question, question will be 'Get Online from...'"
-            MYLOG.info(m)
-
-        if not nq.group:
-            m = "No right side supplied for build_question, question will be '... from all machines'"
-            MYLOG.info(m)
+        if not nq.selects and not nq.group:
+            m = "No left or right sensors supplied, question wil be 'Get Online from all machines'"
+        elif not nq.selects:
+            m = "No left sensors supplied, question will be 'Get Online from...'"
+        elif not nq.group:
+            m = "No right sensors supplied, question will be '... from all machines'"
+        MYLOG.info(m)
 
         if nq.group:
             m = 'built question group hierarchy:\n{}'
