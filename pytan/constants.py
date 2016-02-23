@@ -238,8 +238,7 @@ HANDLER_OPTS['logconsole_formatter'] = {
 }
 HANDLER_OPTS['loglevel'] = {
     'help': 'Logging level to use, increase for more verbosity '
-    '(0 = no logging, {} and up turns on all logging)'.format(OVERRIDE_LEVEL),
-    'short': 'l',
+    '(0 = no logging, {} and up turns on all logging)'.format(OVERRIDE_LEVEL)
 }
 HANDLER_OPTS['config_file'] = {
     'help': "PyTan User Config file to use for PyTan arguments",

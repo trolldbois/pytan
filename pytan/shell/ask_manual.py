@@ -11,17 +11,17 @@ class Worker(base.Base):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
 
         self.grp.add_argument(
-            '-sl', '--sensor_left',
+            '-l', '--left-sensor',
             required=False, action='append', default=[], dest='left',
             help='Left side sensors, optionally describe parameters, options, and a filter'
         )
         self.grp.add_argument(
-            '-sr', '--sensor_right',
+            '-r', '--right-sensor',
             required=False, action='append', default=[], dest='right',
             help='Right side sensors, optionally describe parameters, options, and a filter'
         )
         self.grp.add_argument(
-            '-o', '--option',
+            '-lt', '--lot',
             required=False, action='append', default=[], dest='lot',
             help='Whole question options, controls question filters',
         )
