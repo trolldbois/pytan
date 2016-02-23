@@ -1,11 +1,9 @@
-import pytest
-
-from pytan import threaded_http
-from pytan import handler
-from pytan import session
+from pytan import handler, session, threaded_http
+from pytan.constants import OVERRIDE_LEVEL
 from pytan.handler_args import build_argstore
 from pytan.handler_logs import setup_log
-from pytan.constants import OVERRIDE_LEVEL
+
+import pytest
 
 
 def pytest_addoption(parser):
@@ -152,11 +150,17 @@ def hash_string_args():
 
 @pytest.fixture(scope="session")
 def valid_session(request, valid_args):
-    result = session.Session(**valid_args)
+    if request.config.skip_online:
+        pytest.skip("need --username and --password and --host option to run")
+    else:
+        result = session.Session(**valid_args)
     return result
 
 
 @pytest.fixture(scope="session")
 def valid_handler(request):
-    result = handler.Handler(parsed_handler_args=request.config.handler_args)
+    if request.config.skip_online:
+        pytest.skip("need --username and --password and --host option to run")
+    else:
+        result = handler.Handler(parsed_handler_args=request.config.handler_args)
     return result
