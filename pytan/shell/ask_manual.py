@@ -1,5 +1,6 @@
 from . import base
 
+
 class Worker(base.Base):
     DESCRIPTION = 'Ask a manual question and export the results to a file'
     GROUP_NAME = 'Manual Question Options'
@@ -12,12 +13,12 @@ class Worker(base.Base):
 
         self.grp.add_argument(
             '-l', '--left-sensor',
-            required=False, action='append', default=[], dest='left',
+            required=False, action='append', default=[], dest='left_sensors',
             help='Left side sensors, optionally describe parameters, options, and a filter'
         )
         self.grp.add_argument(
             '-r', '--right-sensor',
-            required=False, action='append', default=[], dest='right',
+            required=False, action='append', default=[], dest='right_sensors',
             help='Right side sensors, optionally describe parameters, options, and a filter'
         )
         self.grp.add_argument(

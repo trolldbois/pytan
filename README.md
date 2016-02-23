@@ -10,7 +10,7 @@
 
 <!-- /MarkdownTOC -->
 
-# PyTan 
+# PyTan
 
 ## What is it?
 
@@ -18,7 +18,7 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 
 ## Versions
 
-* Current Stable Version: 
+* Current Stable Version:
   * **2.1.7 (Dec 08 2015)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.7)
 * Current Development Version:
   * **2.1.8** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
@@ -37,7 +37,7 @@ This is a set of packages and scripts that provide a simple way for interfacing 
   * [Change Log for PyTan](CHANGELOG.md)
   * [To Do List for PyTan](TODO.md)
 
-## Quick Install Instructions 
+## Quick Install Instructions
 
 * First, download PyTan using your browser by browsing to: https://github.com/tanium/pytan/releases/latest and choosing one of the Downloads (zip or tar.gz)
 * Then refer to the OS specific instructions below to proceed.
@@ -86,13 +86,13 @@ mkdir c:\tanium
 * Install Python 2.7.10:
   * Using your browser, download Python 2.7.10 from: https://www.python.org/downloads/release/python-2710/
   * Run the Python 2.7.10 installer
-  * On the __Customize Python__ section of the installer select, 
+  * On the __Customize Python__ section of the installer select,
 'Add Python.exe to Path' to allow you to run Python from cmd shell without absolute path
   * Accept all other defaults for the installer
-   
+
 ## Release strategy
 
-* The current stable version will always be maintained in the master branch. 
+* The current stable version will always be maintained in the master branch.
 * Unstable and development versions can be accessed via the develop branch.
 * Full regression tests will be performed every major (x.0.0) or minor (0.x.0) release of PyTan
 * All documentation and API examples will be rebuilt every major (x.0.0) or minor (0.x.0) release of PyTan

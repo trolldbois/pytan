@@ -1,30 +1,30 @@
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 
-import time
-import logging
 import datetime
+import logging
+import time
 
 from pytan import PytanError
-from pytan.store import HelpStore, ResultStore
-from pytan.handler_args import build_argstore
-from pytan.handler_logs import setup_log
-from pytan.version import __version__
-from pytan.session import Session
-from pytan.pollers.question import QuestionPoller
-from pytan.pollers.sse import SSEPoller
-from pytan.parsers.coerce import coerce_search, coerce_left, coerce_right, coerce_lot
 from pytan.builders.filters import build_cachefilterlist
 from pytan.builders.questions import build_question
-from pytan.tickle.tools import shrink_obj, str_obj
+from pytan.handler_args import build_argstore
+from pytan.handler_logs import setup_log
+from pytan.parsers.coerce import coerce_left, coerce_lot, coerce_right, coerce_search
+from pytan.pollers.question import QuestionPoller
+from pytan.pollers.sse import SSEPoller
+from pytan.session import Session
+from pytan.store import HelpStore, ResultStore
+from pytan.tanium_ng import (
+    ActionList, ActionStop, BaseType, GroupList, PackageSpecList, ParseJob, QuestionList,
+    SavedActionApproval, SavedActionList, SavedQuestionList, SensorList, SystemSettingList,
+    SystemStatusList, UserList, UserRoleList, WhiteListedUrlList,
+)
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
+from pytan.tickle.tools import shrink_obj, str_obj
 from pytan.utils import get_group_hierarchy
+from pytan.version import __version__
 
-from pytan.tanium_ng import (
-    BaseType, PackageSpecList, ActionList, SystemStatusList, GroupList, QuestionList,
-    SavedActionList, SavedQuestionList, SystemSettingList, UserList, UserRoleList,
-    WhiteListedUrlList, ParseJob, SavedActionApproval, ActionStop, SensorList
-)
 
 MYLOG = logging.getLogger(__name__)
 MYLOG.pytan_levels = {0: 'ERROR', 1: 'WARNING', 5: 'INFO', 6: 'DEBUG'}
@@ -229,7 +229,7 @@ class Handler(object):
         return result
 
     # QUESTIONS
-    def ask_manual(self, left=[], right=[], lot=[], **kwargs):
+    def ask_manual(self, left_sensors=[], right_sensors=[], lot=[], **kwargs):
         """pass.
         left: list of str or list of dict
         right: list of str or list of dict
@@ -240,8 +240,8 @@ class Handler(object):
         get_results = kwargs.get('get_results', True)
 
         # coerce left/right/lot into specs
-        kwargs['left_specs'] = coerce_left(left, **kwargs)
-        kwargs['right_specs'] = coerce_right(right, **kwargs)
+        kwargs['left_specs'] = coerce_left(left_sensors, **kwargs)
+        kwargs['right_specs'] = coerce_right(right_sensors, **kwargs)
         kwargs['lot_specs'] = coerce_lot(lot, **kwargs)
         kwargs['handler'] = self
 
