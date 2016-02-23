@@ -7,15 +7,10 @@ class Worker(base.Base):
 
     def setup(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
-        self.grp.add_argument(
-            '--persistent',
-            required=False, action='store_true', dest='persistent', default=False,
-            help='Request a session ID that expires 1 week after last use instead of 5 minutes',
-        )
 
     def get_response(self, kwargs):
-        response = self.handler.session._session_id
-        print "++ Session ID returned: {}".format(response)
+        response = self.handler.session_id
+        print "{}".format(response)
         return response
 
     def get_result(self):
