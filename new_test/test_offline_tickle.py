@@ -1,6 +1,6 @@
 import os
-import sys
 import pprint
+import sys
 
 try:
     import pytan  # noqa
@@ -9,11 +9,9 @@ except Exception as e:
     print("Full PYTHONPATH: {}".format(', '.join(sys.path)))
     sys.exit(99)
 
+from pytan import string_types, tanium_ng, text_type, tickle, utils
+
 import pytest
-from pytan import text_type, string_types
-from pytan import tickle
-from pytan import tanium_ng
-from pytan import utils
 
 my_dir = sys.path[0]
 xml_dir = os.path.join(my_dir, 'tanium_objects')
