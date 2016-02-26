@@ -1,10 +1,12 @@
 import os
+import sys
+import logging
 from . import base
-from .. import calc
+from ..tickle import tools
 
 
 class Worker(base.Base):
-    OUTPUT_DIR = os.path.join(os.getcwd(), 'TSAT_OUTPUT', calc.get_now())
+    OUTPUT_DIR = os.path.join(os.getcwd(), 'TSAT_OUTPUT', tools.get_now())
     DESCRIPTION = 'Tanium Sensor Analysis Tool: asks a question for every sensor and exports the results'
 
     def setup(self):
@@ -846,5 +848,3 @@ def process_tsat_args(parser, handler, args):
         traceback.print_exc()
         print "\nError occurred: {}".format(e)
         sys.exit(100)
-
-"""
