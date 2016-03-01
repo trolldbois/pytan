@@ -2,6 +2,7 @@
 
 import datetime
 import logging
+import os
 import time
 
 from pytan import PytanError
@@ -21,7 +22,7 @@ from pytan.tanium_ng import (
 )
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
-from pytan.tickle.tools import shrink_obj, str_obj
+from pytan.tickle.tools import get_now, shrink_obj, str_obj
 from pytan.utils import get_group_hierarchy
 from pytan.version import __version__
 
@@ -1008,6 +1009,66 @@ class Handler(object):
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
+
+    def write_file(self, contents, report_file=None, **kwargs):
+        """Write contents to a file.
+
+        Parameters
+        ----------
+        contents : str
+            * contents to write to `report_file`
+        report_file : str, optional
+            * filename to save report as
+        report_dir : str, optional
+            * default: None
+            * directory to save report in, will use current working directory if not supplied
+        prefix : str, optional
+            * default: ''
+            * prefix to add to `report_file`
+        postfix : str, optional
+            * default: ''
+            * postfix to add to `report_file`
+
+        Returns
+        -------
+        report_path : str
+            * the full path to the file created with `contents`
+        """
+        prefix = kwargs.get('prefix', '')
+        postfix = kwargs.get('postfix', '')
+        report_dir = kwargs.get('report_dir', None)
+
+        if report_file is None:
+            report_file = 'pytan_report_{}.txt'.format(get_now())
+
+        if not report_dir:
+            # try to get report_dir from the report_file
+            report_dir = os.path.dirname(report_file)
+
+        if not report_dir:
+            # just use current working dir
+            report_dir = os.getcwd()
+
+        # make report_dir if it doesnt exist
+        if not os.path.isdir(report_dir):
+            os.makedirs(report_dir)
+
+        # remove any path from report_file
+        report_file = os.path.basename(report_file)
+
+        # if prefix/postfix, add to report_file
+        report_file, report_ext = os.path.splitext(report_file)
+        report_file = '{}{}{}{}'.format(prefix, report_file, postfix, report_ext)
+
+        # join the report_dir and report_file to come up with report_path
+        report_path = os.path.join(report_dir, report_file)
+
+        with open(report_path, 'wb') as fd:
+            fd.write(contents)
+
+        m = "Report file {!r} written with {} bytes".format
+        self.mylog.info(m(report_path, len(contents)))
+        return report_path
 
     # BEGIN PRIVATE METHODS
     def _get_objects(self, **kwargs):
