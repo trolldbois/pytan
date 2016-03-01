@@ -118,6 +118,7 @@ def named_param_spec_from_tokens(tokens):
     result = {}
     for token in tokens:
         key, value = token
+        # TODO: change to regex to look for only unescape :'s
         if key != 'param' or ':' not in value:
             continue
         param_key, param_value = value.split(':', 1)
@@ -132,6 +133,7 @@ def unnamed_param_spec_from_tokens(tokens):
     values = []
     for token in tokens:
         key, value = token
+        # TODO: change to regex to look for only unescape :'s
         if key != 'param' or ':' in value:
             continue
         values.append(value)
