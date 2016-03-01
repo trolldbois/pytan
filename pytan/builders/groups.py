@@ -39,7 +39,7 @@ class BuildRightGroup(object):
             self.build_group_obj()
 
     def get_group_obj(self):
-        self.RESULT = self.HANDLER.get_groups(limit_exact=1, specs=self.SPEC['search_spec'])
+        self.RESULT = self.HANDLER.get_groups(limit_exact=1, search=self.SPEC['search_spec'])
         self.RESULT.lot = self.LOT
 
     def build_group_obj(self):
