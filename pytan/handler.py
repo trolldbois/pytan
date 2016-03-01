@@ -213,6 +213,9 @@ class Handler(object):
         result = self.SESSION.get_hash(from_str, **kwargs)
         return result
 
+    def logout(self, **kwargs):
+        self.SESSION.logout(**kwargs)
+
     @property
     def session_id(self):
         result = self.SESSION.session_id
@@ -835,61 +838,85 @@ class Handler(object):
         ri = self.SESSION.get_result_info(**kwargs)
         return ri
 
-    # get objects
+    # DELETE OBJECTS
+    def delete_actions(self, search=[], **kwargs):
+        """pass."""
+        kwargs['NO_DELETE'] = True
+        kwargs['GET_TYPE'] = 'actions'
+        result = self._delete_objects(search, **kwargs)
+        return result
+
+    def delete_clients(self, search=[], **kwargs):
+        """pass."""
+        kwargs['NO_DELETE'] = True
+        kwargs['GET_TYPE'] = 'clients'
+        result = self._delete_objects(search, **kwargs)
+        return result
+
     def delete_groups(self, search=[], **kwargs):
         """pass."""
-        result = self.get_groups(search, **kwargs)
-        result = self._delete_objects(result)
+        kwargs['GET_TYPE'] = 'groups'
+        result = self._delete_objects(search, **kwargs)
         return result
 
     def delete_packages(self, search=[], **kwargs):
         """pass."""
-        result = self.get_packages(search, **kwargs)
-        result = self._delete_objects(result, **kwargs)
+        kwargs['GET_TYPE'] = 'packages'
+        result = self._delete_objects(search, **kwargs)
+        return result
+
+    def delete_questions(self, search=[], **kwargs):
+        """pass."""
+        kwargs['NO_DELETE'] = True
+        kwargs['GET_TYPE'] = 'questions'
+        result = self._delete_objects(search, **kwargs)
+        return result
+
+    def delete_saved_actions(self, search=[], **kwargs):
+        """pass."""
+        kwargs['GET_TYPE'] = 'saved_actions'
+        result = self._delete_objects(search, **kwargs)
         return result
 
     def delete_saved_questions(self, search=[], **kwargs):
         """pass."""
-        result = self.get_saved_questions(search, **kwargs)
-        result = self._delete_objects(result, **kwargs)
+        kwargs['GET_TYPE'] = 'saved_questions'
+        result = self._delete_objects(search, **kwargs)
         return result
 
     def delete_sensors(self, search=[], **kwargs):
         """pass."""
-        result = self.get_sensors(search, **kwargs)
-        result = self._delete_objects(result, **kwargs)
+        kwargs['GET_TYPE'] = 'sensors'
+        result = self._delete_objects(search, **kwargs)
+        return result
+
+    def delete_settings(self, search=[], **kwargs):
+        """pass."""
+        kwargs['NO_DELETE'] = True
+        kwargs['GET_TYPE'] = 'settings'
+        result = self._delete_objects(search, **kwargs)
+        return result
+
+    def delete_user_roles(self, search=[], **kwargs):
+        """pass."""
+        kwargs['NO_DELETE'] = True
+        kwargs['GET_TYPE'] = 'user_roles'
+        result = self._delete_objects(search, **kwargs)
         return result
 
     def delete_users(self, search=[], **kwargs):
         """pass."""
-        result = self.get_users(search, **kwargs)
-        result = self._delete_objects(result, **kwargs)
+        kwargs['GET_TYPE'] = 'users'
+        result = self._delete_objects(search, **kwargs)
         return result
 
     def delete_whitelisted_urls(self, search=[], **kwargs):
         """pass."""
-        result = self.get_whitelisted_urls(search, **kwargs)
-        result = self._delete_objects(result, **kwargs)
+        kwargs['GET_TYPE'] = 'whitelisted_urls'
+        result = self._delete_objects(search, **kwargs)
         return result
 
-    def get_sensors(self, search=[], **kwargs):
-        """pass."""
-        kwargs['class_list'] = SensorList
-        # filter out any sensors that do not have a source_id of 0
-        hide_spec = {'value': '0', 'field': 'source_id'}
-        kwargs['add_subspecs'] = kwargs.get('add_subspecs', hide_spec)
-        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
-        result = self._get_objects(**kwargs)
-        return result
-
-    def get_packages(self, search=[], **kwargs):
-        """pass. cache_filters need single fix"""
-        kwargs['class_list'] = PackageSpecList
-        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
-        kwargs['FIXIT_SINGLE'] = True
-        result = self._get_objects(**kwargs)
-        return result
-
+    # GET OBJECTS
     def get_actions(self, search=[], **kwargs):
         """pass."""
         kwargs['class_list'] = ActionList
@@ -909,6 +936,14 @@ class Handler(object):
         kwargs['class_list'] = GroupList
         kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_GROUP_ID'] = True
+        result = self._get_objects(**kwargs)
+        return result
+
+    def get_packages(self, search=[], **kwargs):
+        """pass. cache_filters need single fix"""
+        kwargs['class_list'] = PackageSpecList
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
+        kwargs['FIXIT_SINGLE'] = True
         result = self._get_objects(**kwargs)
         return result
 
@@ -933,6 +968,16 @@ class Handler(object):
         result = self._get_objects(**kwargs)
         return result
 
+    def get_sensors(self, search=[], **kwargs):
+        """pass."""
+        kwargs['class_list'] = SensorList
+        # filter out any sensors that do not have a source_id of 0
+        hide_spec = {'value': '0', 'field': 'source_id'}
+        kwargs['add_subspecs'] = kwargs.get('add_subspecs', hide_spec)
+        kwargs['search_specs'] = coerce_search(search=search, **kwargs)
+        result = self._get_objects(**kwargs)
+        return result
+
     def get_settings(self, search=[], **kwargs):
         """pass."""
         kwargs['class_list'] = SystemSettingList
@@ -940,17 +985,17 @@ class Handler(object):
         result = self._get_objects(**kwargs)
         return result
 
-    def get_users(self, search=[], **kwargs):
+    def get_user_roles(self, search=[], **kwargs):
         """pass. cache_filters fail"""
-        kwargs['class_list'] = UserList
+        kwargs['class_list'] = UserRoleList
         kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
         return result
 
-    def get_user_roles(self, search=[], **kwargs):
+    def get_users(self, search=[], **kwargs):
         """pass. cache_filters fail"""
-        kwargs['class_list'] = UserRoleList
+        kwargs['class_list'] = UserList
         kwargs['search_specs'] = coerce_search(search=search, **kwargs)
         kwargs['FIXIT_BROKEN_FILTER'] = True
         result = self._get_objects(**kwargs)
@@ -1201,11 +1246,43 @@ class Handler(object):
         self.MYLOG.info(m)
         return result
 
-    def _delete_objects(self, objs, **kwargs):
+    def _delete_objects(self, search=[], **kwargs):
         """pass."""
-        # TODO
-        # really_delete = kwargs.get('really_delete', False)
-        # export_before_delete = kwargs.get('export_before_delete', True)
+        get_type = kwargs['GET_TYPE']
+        no_delete = kwargs.get('NO_DELETE', False)
+        really_delete = kwargs.get('really_delete', False)
+        export_before_delete = kwargs.get('export_before_delete', False)
+
+        if no_delete:
+            err = "Deleting objects of type {!r} not supported by Tanium's SOAP API!"
+            err = err.format(get_type)
+            raise PytanError(err)
+
+        if not search:
+            err = "Must supply `search` to define what items of type {!r} to delete!"
+            err = err.format(get_type)
+            raise PytanError(err)
+
+        get_method = 'get_{}'.format(get_type)
+        get_method = getattr(self, get_method)
+        objs = get_method(search, **kwargs)
+
+        if not objs:
+            err = 'No objects of type {!r} found using search of {!r}, unable to delete!'
+            err = err.format(get_type, search)
+            raise PytanError(err)
+
+        if export_before_delete:
+            # TODO
+            err = 'Export before deletion not yet supported!'
+            raise PytanError(err)
+
+        if not really_delete:
+            olist = '\t* '.join([str_obj(o) for o in objs])
+            err = "really_delete must be set to True! List of objects to be deleted:\n{}"
+            err = err.format(olist)
+            raise PytanError(err)
+
         result = [self._delete(o) for o in objs]
         return result
 

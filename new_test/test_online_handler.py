@@ -1,24 +1,7 @@
-import sys
+import pytan
+from pytan import handler, session, store, tanium_ng
 
-try:
-    import pytan  # noqa
-except Exception as e:
-    print("ERROR: Unable to import pytan package, error: '{}'".format(e))
-    print("Full PYTHONPATH: {}".format(', '.join(sys.path)))
-    sys.exit(99)
-
-# import time
 import pytest
-
-from pytan import session
-from pytan import store
-from pytan import handler
-from pytan import tanium_ng
-
-# pytestmark = pytest.mark.skipif(
-#     pytest.config.skip_online,
-#     reason="need --username and --password and --host option to run"
-# )
 
 
 def test_valid_creds(valid_handler):
@@ -119,20 +102,39 @@ GET_METHODS = [
 
 @pytest.fixture(params=GET_METHODS, scope="module")
 def all_objects(valid_handler, request):
-    m = getattr(valid_handler, request.param)
-    result = m()
+    handler_method = getattr(valid_handler, request.param)
+    result = handler_method()
+    result.handler_method = handler_method
     return result
 
 
-def test_all_objects(all_objects):
-    assert isinstance(all_objects, tanium_ng.BaseType)
-    print(all_objects)
-
-
-def test_single_object(all_objects):
+@pytest.fixture(scope="module")
+def single_object(all_objects):
     if not all_objects:
-        pytest.skip("no objects of type {} available to test single get on!")
-    print(all_objects[0])
+        t = all_objects._LIST_TYPE.__name__
+        m = "single_object(): no objects of type {} available to test single object get on!"
+        m = m.format(t)
+        pytest.skip(m)
+
+    result = all_objects[0]
+    result.handler_method = all_objects.handler_method
+    return result
+
+
+def test_get_all_objects(all_objects):
+    assert isinstance(all_objects, tanium_ng.BaseType)
+
+
+def test_get_single_object_by_name_str(single_object):
+    if not hasattr(single_object, 'name') or not single_object.name:
+        t = single_object.__class__.__name__
+        m = "test_get_single_object_by_name_str() object type {} does not have a name attribute"
+        m = m.format(t)
+        pytest.skip(m)
+
+    spec = "{}".format(single_object.name)
+    result = single_object.handler_method(spec)
+    assert isinstance(result, tanium_ng.BaseType)
 
 
 '''
