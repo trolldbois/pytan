@@ -10,9 +10,9 @@ class Worker(base.Base):
     DESCRIPTION = 'Tanium Sensor Analysis Tool: asks a question for every sensor and exports the results'
 
     def setup(self):
-        self.add_help_opts()
-        self.add_export_results_opts()
-        self.add_polling_opts()
+        # self.add_help_opts()
+        # self.add_export_results_opts()
+        # self.add_polling_opts()
 
         self.grp = self.parser.add_argument_group('Question Asking Options')
         self.grp.add_argument(
@@ -87,8 +87,8 @@ class Worker(base.Base):
             help='Build a configuration file by finding all sensors that have parameters and prompting for the values, then saving the key/value pairs as a JSON file that can be used by --config_file',
         )
         self.grp.add_argument(
-            '--config_file',
-            required=False, action='store', default=None, dest='config_file',
+            '--tsat_config_file',
+            required=False, action='store', default=None, dest='tsat_config_file',
             help='Use a parameter configuration file built by --build_config_file for sensor parameters'
         )
         self.grp.add_argument(

@@ -250,11 +250,13 @@ class Handler(object):
 
         if not nq.selects and not nq.group:
             m = "No left or right sensors supplied, question wil be 'Get Online from all machines'"
+            MYLOG.info(m)
         elif not nq.selects:
             m = "No left sensors supplied, question will be 'Get Online from...'"
+            MYLOG.info(m)
         elif not nq.group:
             m = "No right sensors supplied, question will be '... from all machines'"
-        MYLOG.info(m)
+            MYLOG.info(m)
 
         if nq.group:
             m = 'built question group hierarchy:\n{}'
