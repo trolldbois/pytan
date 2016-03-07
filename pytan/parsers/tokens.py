@@ -12,6 +12,8 @@ MYLOG = logging.getLogger(__name__)
 
 ESCAPED_COMMAS = r'(?<!\\),'
 ESCAPED_COMMAS_RE = re.compile(ESCAPED_COMMAS)
+ESCAPED_COLONS = r'(?:[\w]\:\\)'
+ESCAPED_COLONS_RE = re.compile(ESCAPED_COLONS)
 
 
 class TokenizeError(PytanError):
@@ -118,8 +120,8 @@ def named_param_spec_from_tokens(tokens):
     result = {}
     for token in tokens:
         key, value = token
-        # TODO: change to regex to look for only unescape :'s
-        if key != 'param' or ':' not in value:
+        match = ESCAPED_COLONS_RE.match(value)
+        if key != 'param' or match or ':' not in value:
             continue
         param_key, param_value = value.split(':', 1)
         result[param_key] = param_value
@@ -133,8 +135,8 @@ def unnamed_param_spec_from_tokens(tokens):
     values = []
     for token in tokens:
         key, value = token
-        # TODO: change to regex to look for only unescape :'s
-        if key != 'param' or ':' in value:
+        match = ESCAPED_COLONS_RE.match(value)
+        if key != 'param' or match or ':' in value:
             continue
         values.append(value)
     result = {'values': values}
