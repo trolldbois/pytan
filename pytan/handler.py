@@ -4,6 +4,7 @@ import datetime
 import logging
 import os
 import time
+import pprint
 
 from pytan import PytanError
 from pytan.builders.filters import build_cachefilterlist
@@ -185,6 +186,7 @@ class Handler(object):
         # monkey patch handler into BaseType and ToDictResultSet
         BaseType._HANDLER = self
         ToDictResultSet._HANDLER = self
+        self.pf = pprint.pformat
 
     def __repr__(self):
         return self.__str__()
@@ -1010,19 +1012,27 @@ class Handler(object):
         result = self._get_objects(**kwargs)
         return result
 
-    def export(self, results):
+    def export(self, results, **kwargs):
         if results:
-            grps = ['Export Results Options', 'Export Object Options']
-            kwargs = self.get_parser_args(grps)
-            kwargs['obj'] = results
-
             if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
                 kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
 
+            export_format = kwargs.get('export_format')
+            if export_format:
+                export_methods = [x for x in dir(results) if x.startswith('to_')]
+                export_type = [x.replace('to_', '') for x in export_methods]
+                export_format = export_methods[(export_type.index(export_format))]
+                contents = getattr(results, export_format)()
+            if export_format not in export_format:
+                m = "!! export method {} not supported"
+                print(m.format(kwargs.get('export_format')))
+            m = "-- Export method to be used {}"
+            print(m.format(export_format))
+
             m = "-- Exporting {} with arguments:\n{}"
             print(m.format(results, self.pf(kwargs)))
-            # report_file, report_result = self.handler.export_to_report_file(**kwargs)
-            report_file, report_result = self.handler.write_file(**kwargs)
+
+            report_file, report_result = self.write_file(contents, **kwargs)
 
             m = "++ Report file {!r} written with {} bytes"
             print(m.format(report_file, len(report_result)))
