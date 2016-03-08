@@ -44,6 +44,6 @@ class Worker(base.Base):
     def get_result(self):
         response = self.get_question_response()
         print(response.result_data.result_set.to_csv_resultset())
-        # Needs handler.export_file method
-        # report_file, result = self.export_results(response.result_data.result_set)
-        # return response, report_file, result
+        # Needs handler.write_file method
+        report_file, result = self.export_results(response.result_data.result_set)
+        return response, report_file, result

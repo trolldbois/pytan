@@ -1010,6 +1010,28 @@ class Handler(object):
         result = self._get_objects(**kwargs)
         return result
 
+    def export(self, results):
+        if results:
+            grps = ['Export Results Options', 'Export Object Options']
+            kwargs = self.get_parser_args(grps)
+            kwargs['obj'] = results
+
+            if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
+                kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
+
+            m = "-- Exporting {} with arguments:\n{}"
+            print(m.format(results, self.pf(kwargs)))
+            # report_file, report_result = self.handler.export_to_report_file(**kwargs)
+            report_file, report_result = self.handler.write_file(**kwargs)
+
+            m = "++ Report file {!r} written with {} bytes"
+            print(m.format(report_file, len(report_result)))
+        else:
+            report_file, report_result = None, None
+            m = "!! No results returned, run get_results_{}.py to get the results"
+            print(m.format(self.ACTION))
+        return report_file, report_result
+
     def write_file(self, contents, report_file=None, **kwargs):
         """Write contents to a file.
 

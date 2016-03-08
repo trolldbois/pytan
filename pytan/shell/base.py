@@ -337,26 +337,27 @@ class Base(object):
         opts = list(set([a.dest for b in action_grps for a in b._group_actions]))
         return opts
 
-    def export_results(self, results):
-        if results:
-            grps = ['Export Results Options', 'Export Object Options']
-            kwargs = self.get_parser_args(grps)
-            kwargs['obj'] = results
+# !!! REMAINS AS REFERENCE ONLY - TO BE DELETED WHEN HANDLER.EXPORT COMPLETED !!!
+#    def export_results(self, results):
+#        if results:
+#            grps = ['Export Results Options', 'Export Object Options']
+#            kwargs = self.get_parser_args(grps)
+#            kwargs['obj'] = results
 
-            if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
-                kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
+#            if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
+#                kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
 
-            m = "-- Exporting {} with arguments:\n{}"
-            print(m.format(results, self.pf(kwargs)))
-            report_file, report_result = self.handler.export_to_report_file(**kwargs)
+#            m = "-- Exporting {} with arguments:\n{}"
+#            print(m.format(results, self.pf(kwargs)))
+#            report_file, report_result = self.handler.write_file(**kwargs)
 
-            m = "++ Report file {!r} written with {} bytes"
-            print(m.format(report_file, len(report_result)))
-        else:
-            report_file, report_result = None, None
-            m = "!! No results returned, run get_results_{}.py to get the results"
-            print(m.format(self.ACTION))
-        return report_file, report_result
+#            m = "++ Report file {!r} written with {} bytes"
+#            print(m.format(report_file, len(report_result)))
+#        else:
+#            report_file, report_result = None, None
+#            m = "!! No results returned, run get_results_{}.py to get the results"
+#            print(m.format(self.ACTION))
+#        return report_file, report_result
 
     def version_check(self, version):
         if not __version__ >= version:
