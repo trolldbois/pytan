@@ -1022,6 +1022,9 @@ class Handler(object):
                 export_methods = [x for x in dir(results) if x.startswith('to_')]
                 export_type = [x.replace('to_', '') for x in export_methods]
                 export_format = export_methods[(export_type.index(export_format))]
+# TODO: .to_xml_resultset needs to be written, until then exception condition below
+                if 'xml' not in export_format:
+                    export_format = export_format + '_resultset'
                 contents = getattr(results, export_format)()
             if export_format not in export_format:
                 m = "!! export method {} not supported"
@@ -1031,7 +1034,7 @@ class Handler(object):
 
             m = "-- Exporting {} with arguments:\n{}"
             print(m.format(results, self.pf(kwargs)))
-
+# TODO: ValueError: too many values to unpack (determine what is causing this)
             report_file, report_result = self.write_file(contents, **kwargs)
 
             m = "++ Report file {!r} written with {} bytes"
@@ -1071,7 +1074,7 @@ class Handler(object):
         report_dir = kwargs.get('report_dir', None)
 
         if report_file is None:
-            report_file = 'pytan_report_{}.txt'.format(get_now())
+            report_file = 'pytan_report_{}.{}'.format(get_now(), kwargs.get('export_format'))
 
         if not report_dir:
             # try to get report_dir from the report_file
@@ -1099,7 +1102,7 @@ class Handler(object):
             fd.write(contents)
 
         m = "Report file {!r} written with {} bytes".format
-        self.mylog.info(m(report_path, len(contents)))
+        self.MYLOG.info(m(report_path, len(contents)))
         return report_path
 
     # BEGIN PRIVATE METHODS
