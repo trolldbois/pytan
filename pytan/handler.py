@@ -1037,11 +1037,14 @@ class Handler(object):
                 print(m.format(kwargs.get('export_format')))
 
             m = "-- Export method to be used {}"
-            print(m.format(export_format))
+            self.MYLOG.info(m.format(export_format))
 
             m = "-- Exporting {} with arguments:\n{}"
-            print(m.format(results, self.pf(kwargs)))
+            self.MYLOG.info(m.format(results, self.pf(kwargs)))
             report_result = self.write_file(contents, **kwargs)
+
+            m = "Report file {!r} written with {} bytes".format
+            print(m(report_result, len(contents)))
         else:
             report_file, report_result = None, None
             m = "!! No results returned, run get_results_{}.py to get the results"
@@ -1104,8 +1107,6 @@ class Handler(object):
         with open(report_path, 'wb') as fd:
             fd.write(contents)
 
-        m = "Report file {!r} written with {} bytes".format
-        self.MYLOG.info(m(report_path, len(contents)))
         return report_path
 
     # BEGIN PRIVATE METHODS

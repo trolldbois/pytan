@@ -8,7 +8,7 @@ class Worker(base.Base):
     def setup(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
 
-    def get_response(self, kwargs):
+    def get_response(self, **kwargs):
         response = self.handler.session_id
         print "{}".format(response)
         return response

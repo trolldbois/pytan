@@ -31,7 +31,7 @@ class Worker(base.Base):
         self.add_report_opts()
         self.grp_choice_results()
 
-    def get_question_response(self):
+    def get_question_response(self, **kwargs):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
         m = "++ Asking {} question with arguments:\n{}"
@@ -45,6 +45,5 @@ class Worker(base.Base):
         grps = ['Export Results Options', 'Export Object Options', 'Report File Options']
         kwargs = self.get_parser_args(grps)
         response = self.get_question_response()
-        print(response.result_data.result_set.to_csv_resultset())
         report_file, result = self.handler.export(response.result_data.result_set, **kwargs)
         return response, report_file, result
