@@ -1017,7 +1017,12 @@ class Handler(object):
             if 'report_file' not in kwargs and getattr(self, 'FILE_PREFIX', ''):
                 kwargs['prefix'] = '{}'.format(self.FILE_PREFIX)
 
+            if 'report_file' not in kwargs:
+                report_file = None
+            else:
+                report_file = kwargs.get('report_file')
             export_format = kwargs.get('export_format')
+
             if export_format:
                 export_methods = [x for x in dir(results) if x.startswith('to_')]
                 export_type = [x.replace('to_', '') for x in export_methods]
@@ -1026,19 +1031,17 @@ class Handler(object):
                 if 'xml' not in export_format:
                     export_format = export_format + '_resultset'
                 contents = getattr(results, export_format)()
+
             if export_format not in export_format:
                 m = "!! export method {} not supported"
                 print(m.format(kwargs.get('export_format')))
+
             m = "-- Export method to be used {}"
             print(m.format(export_format))
 
             m = "-- Exporting {} with arguments:\n{}"
             print(m.format(results, self.pf(kwargs)))
-# TODO: ValueError: too many values to unpack (determine what is causing this)
-            report_file, report_result = self.write_file(contents, **kwargs)
-
-            m = "++ Report file {!r} written with {} bytes"
-            print(m.format(report_file, len(report_result)))
+            report_result = self.write_file(contents, **kwargs)
         else:
             report_file, report_result = None, None
             m = "!! No results returned, run get_results_{}.py to get the results"

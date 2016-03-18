@@ -46,7 +46,5 @@ class Worker(base.Base):
         kwargs = self.get_parser_args(grps)
         response = self.get_question_response()
         print(response.result_data.result_set.to_csv_resultset())
-        # Needs handler.write_file method
-        # report_file, result = self.export_results(response.result_data.result_set)
         report_file, result = self.handler.export(response.result_data.result_set, **kwargs)
         return response, report_file, result
