@@ -1,8 +1,8 @@
 from . import base
 
 
-class Worker(base.GetBase):
-    DESCRIPTION = 'Get actions and export to a report file'
+class Worker(base.Base):
+    DESCRIPTION = 'Get action information and export to a report file'
     GROUP_NAME = 'Get Action Options'
     ACTION = 'action'
     PREFIX = 'get_action'

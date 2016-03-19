@@ -1,9 +1,9 @@
 from . import base
 
 
-class Worker(base.GetBase):
-    DESCRIPTION = 'Get clients and export to a report file'
-    GROUP_NAME = 'Get Clients'
+class Worker(base.Base):
+    DESCRIPTION = 'Get client information and export to a report file'
+    GROUP_NAME = 'Client Search Options'
     ACTION = 'client'
     PREFIX = 'get_client'
 
