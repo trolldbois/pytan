@@ -4,11 +4,12 @@ from . import base
 class Worker(base.Base):
     DESCRIPTION = 'Get a new session ID'
     GROUP_NAME = 'Get Session Optipons'
+    PREFIX = 'get_session'
 
     def setup(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
 
-    def get_response(self, **kwargs):
+    def get_response(self, kwargs):
         response = self.handler.session_id
         print "{}".format(response)
         return response

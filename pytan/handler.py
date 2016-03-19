@@ -1027,8 +1027,8 @@ class Handler(object):
                 export_methods = [x for x in dir(results) if x.startswith('to_')]
                 export_type = [x.replace('to_', '') for x in export_methods]
                 export_format = export_methods[(export_type.index(export_format))]
-# TODO: .to_xml_resultset needs to be written, until then exception condition below
-                if 'xml' not in export_format:
+# TODO: _resultset needs to be written for all out obs, until then exception condition below
+                if 'xml' not in export_format and any("_resultset" in x for x in export_methods):
                     export_format = export_format + '_resultset'
                 contents = getattr(results, export_format)()
 
