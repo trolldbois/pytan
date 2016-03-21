@@ -6,6 +6,7 @@ class Worker(base.Base):
     GROUP_NAME = 'Client Search Options'
     ACTION = 'client'
     PREFIX = 'get_client'
+    NAME = 'clients'
 
     def setup(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
@@ -13,7 +14,7 @@ class Worker(base.Base):
         self.grp.add_argument(
             '-s', '--search',
             required=False, action='append', default=[], dest='search',
-            help='Searchable text string for finding clients'
+            help='Searchable text string for finding {}'.format(self.NAME)
         )
         self.add_help_opts()
         self.add_export_results_opts()
@@ -23,8 +24,8 @@ class Worker(base.Base):
     def get_response(self, kwargs):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
-        m = "++ Getting clients with search items:\n{}"
-        print(m.format(self.pf(kwargs)))
+        m = "++ Getting {} with search items:\n{}"
+        print(m.format(self.NAME, self.pf(kwargs)))
         response = self.handler.get_clients(**kwargs)
         self.handler.MYLOG.debug("{}".format(response))
         return response
