@@ -1,12 +1,12 @@
 from . import base
 
 
-class Worker(base.GetBase):
+class Worker(base.Base):
     DESCRIPTION = 'Gets the Result Info for all the questions asked for a given saved question, or for all questions asked ever, and exports the question information to a CSV file'
-    OBJECT_TYPE = 'saved_question'
-    ACTION = 'get'
-    SECOND_GROUP_NAME = 'Saved Question History Options'
     GROUP_NAME = 'Get Saved Question Options'
+    ACTION = 'get'
+    PREFIX = 'get_history_saved_question'
+    NAME = 'get history of saved questions'
 
     def pre_init(self):
         self.OBJECT_STR = self.OBJECT_TYPE.replace('_', ' ').capitalize()

@@ -498,7 +498,7 @@ class Handler(object):
         pq_args = {}
         pq_args.update(kwargs)
         pq_args['question_text'] = question_text
-        pq_args['pytan_help'] = HELPS.pj()()
+        pq_args['pytan_help'] = HELPS.pj()
         parse_job_results = self.parse_query(**pq_args)
 
         if not parse_job_results:

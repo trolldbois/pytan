@@ -20,8 +20,8 @@ FILTER_DEFAULTS = {
 CACHE_FILTER_DEFAULTS = {
     'field': None,
     'value': None,
-    'operator': None,
-    'type': None,
+    'operator': 'RegexMatch',
+    'type': 'String',
     'not_flag': None,
 }
 
