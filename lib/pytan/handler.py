@@ -806,7 +806,7 @@ class Handler(object):
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
         # Stripping param values out of parsed question
-        params = [k.split("[") for k in question_text.split("]")]
+        params = [k.lower().split("[") for k in question_text.lower().split("]")]
         question_text = ''.join(params[i][0] for i in range(len(params) - 1))
         h = "Issue an AddObject to add a ParseJob for question_text and get back ParseResultGroups"
         parse_job_results = self.parse_query(
@@ -819,7 +819,7 @@ class Handler(object):
             ).format
             raise pytan.exceptions.ServerParseError(m())
 
-        pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}".format
+        pi = "Index {0}, Score: {1}, Query: {2}".format
         pw = (
             "You must supply an index as picker=$index to choose one of the parse "
             "responses -- re-run ask_parsed with picker set to one of these indexes!!"
@@ -828,7 +828,10 @@ class Handler(object):
         if picker is None:
             self.mylog.critical(pw())
             for idx, x in enumerate(parse_job_results):
-                self.mylog.critical(pi(idx + 1, x))
+                text = x.question_text.lower()
+                for i in range(len(params) - 1):
+                    text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
+                self.mylog.critical(pi(idx + 1, x.score, text))
             raise pytan.exceptions.PickerError(pw())
 
         try:
