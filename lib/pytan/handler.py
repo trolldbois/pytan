@@ -805,6 +805,9 @@ class Handler(object):
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
+        # Stripping param values out of parsed question
+        params = [k.split("[") for k in question_text.split("]")]
+        question_text = ''.join(params[i][0] for i in range(len(params) - 1))
         h = "Issue an AddObject to add a ParseJob for question_text and get back ParseResultGroups"
         parse_job_results = self.parse_query(
             question_text=question_text, pytan_help=h, **clean_kwargs
@@ -1717,170 +1720,6 @@ class Handler(object):
         self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
         return package_obj
 
-    def get_user_groups(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetUserGroups plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of user group to get, if empty will return all user groups
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetUserGroups'
-        plugin.bundle = 'UserGroups'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetUserGroups plugin to get all user groups"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No user groups found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def get_action_groups(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetActionGroups plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of action group to get, if empty will return all action groups
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetActionGroups'
-        plugin.bundle = 'GroupFilter'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetActionGroups plugin to get all action groups"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No action groups found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def create_action_group(self, name, targeting=[], visibility='all', combine='and',
-                            usergroups=[], **kwargs):
-        """Document me later.
-        name
-        targeting=group names
-        visibility=admin, all, usergroups
-        combine=and, or
-        usergroups=user group names for visibility=usergroups
-
-        v=handler.create_action_group('test 1')
-        v=handler.create_action_group('test 2', visibility='all')
-        v=handler.create_action_group('test 3', visibility='admin')
-        v=handler.create_action_group('test 4', targeting=['T machines'])
-        v=handler.create_action_group('test 5', targeting=['T machines'], visibility='usergroups', usergroups=['test1'])
-
-        """
-        user_group_xml = ''
-        id_tmp = "<user_group>\n<id>{}</id>\n</user_group>".format
-        wrap_tmp = "<user_groups>\n{}\n</user_groups>".format
-
-        if visibility == 'admin':
-            public_flag = 0
-        elif visibility == 'all':
-            public_flag = 1
-        elif visibility == 'usergroups':
-            public_flag = 0
-            user_group_ids = [self.get_user_groups(x)[1][0]['id'] for x in usergroups]
-            user_group_xml = '\n'.join([id_tmp(x) for x in user_group_ids])
-            user_group_xml = wrap_tmp(user_group_xml)
-        else:
-            err = "{} is not a valid visibilty option! Must be one of: admin, all, usergroups".format
-            raise pytan.exceptions.HandlerError(err(visibility))
-
-        if combine == 'and':
-            and_flag = 1
-        elif combine == 'or':
-            and_flag = 0
-        else:
-            err = "{} is not a valid combine option! Must be one of: and, or".format
-            raise pytan.exceptions.HandlerError(err(combine))
-
-        add_group_obj = taniumpy.Group()
-        add_group_obj.name = name
-        add_group_obj.type = 1
-        add_group_obj.and_flag = and_flag
-
-        if targeting:
-            sub_groups = taniumpy.GroupList()
-            for x in targeting:
-                n = self.get('group', name=x)
-                sub_groups.append(n[0])
-            add_group_obj.sub_groups = sub_groups
-
-        kwargs['pytan_help'] = "Issue an AddObject to add a Group object"
-        kwargs['obj'] = add_group_obj
-        group_obj = self._add(**kwargs)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'AddActionGroup'
-        plugin.bundle = 'GroupFilter'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'group_id'
-        arg1.type = 'Number'
-        arg1.value = group_obj.id
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'public_flag'
-        arg2.type = 'Number'
-        arg2.value = public_flag
-        plugin.arguments.append(arg2)
-
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'user_group_xml'
-        arg3.type = 'String'
-        arg3.value = user_group_xml
-        plugin.arguments.append(arg3)
-
-        # run the plugin
-        kwargs['pytan_help'] = "Issue a RunPlugin for the AddActionGroup plugin to create an Action Group"
-        kwargs['obj'] = plugin
-        plugin_result, sql_zipped = self.run_plugin(**kwargs)
-
-        return group_obj
-
     def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
         """Create a group object
 
@@ -1931,14 +1770,12 @@ class Handler(object):
             q_filter_defs=filter_defs, q_option_defs=option_defs,
         )
         add_group_obj.name = groupname
-        add_group_obj.type = grouptype
 
         h = "Issue an AddObject to add a Group object"
         group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
 
         m = "New group {!r} created with ID {!r}, filter text: {!r}".format
         self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
-
         return group_obj
 
     def create_user(self, name, rolename=[], roleid=[], properties=[], group='', **kwargs):
