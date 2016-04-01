@@ -855,6 +855,12 @@ class Handler(object):
             raise pytan.exceptions.PickerError(pw())
 
         add_obj = picked_parse_job.question
+        # TODO: BUILD PARAMETER KEY AND VALUE.  BELOW CONDITIONAL SERVES AS A REMINDER
+        # if params:
+        #    text = picked_parse_job.question_text.lower()
+        #    for i in range(len(params) - 1):
+        #        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
+        #    picked_parse_job.question.query_text = text
 
         # add our Question and get a Question ID back
         h = "Issue an AddObject to add the Question object from the chosen ParseResultGroup"
