@@ -805,9 +805,11 @@ class Handler(object):
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
+        params = None
         # Stripping param values out of parsed question
-        params = [k.lower().split("[") for k in question_text.lower().split("]")]
-        question_text = ''.join(params[i][0] for i in range(len(params) - 1))
+        if '[' in question_text:
+            params = [k.lower().split("[") for k in question_text.lower().split("]")]
+            question_text = ''.join(params[i][0] for i in range(len(params) - 1))
         h = "Issue an AddObject to add a ParseJob for question_text and get back ParseResultGroups"
         parse_job_results = self.parse_query(
             question_text=question_text, pytan_help=h, **clean_kwargs
@@ -829,8 +831,9 @@ class Handler(object):
             self.mylog.critical(pw())
             for idx, x in enumerate(parse_job_results):
                 text = x.question_text.lower()
-                for i in range(len(params) - 1):
-                    text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
+                if params:
+                    for i in range(len(params) - 1):
+                        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
                 self.mylog.critical(pi(idx + 1, x.score, text))
             raise pytan.exceptions.PickerError(pw())
 
@@ -842,9 +845,13 @@ class Handler(object):
             ).format
             self.mylog.critical(invalid_pw(picker, pw))
 
-            pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}"
+            pi = "Index {0}, Score: {1}, Query: {2}"
             for idx, x in enumerate(parse_job_results):
-                self.mylog.critical(pi(idx + 1, x))
+                text = x.question_text.lower()
+                if params:
+                    for i in range(len(params) - 1):
+                        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
+                self.mylog.critical(pi(idx + 1, x.score, text))
             raise pytan.exceptions.PickerError(pw())
 
         add_obj = picked_parse_job.question
