@@ -497,6 +497,9 @@ class Handler(object):
 
         pq_args = {}
         pq_args.update(kwargs)
+        if '[' in question_text:
+            params = [k.lower().split("[") for k in question_text.lower().split("]")]
+            question_text = ''.join(params[i][0] for i in range(len(params) - 1))
         pq_args['question_text'] = question_text
         pq_args['pytan_help'] = HELPS.pj()
         parse_job_results = self.parse_query(**pq_args)
@@ -505,7 +508,7 @@ class Handler(object):
             m = "Question Text '{}' was unable to be parsed into a valid query text by the server"
             raise ParseJobError(m)
 
-        pi = "Index {0}, Score: {1.score}, Query: {1.question_text!r}"
+        pi = "Index {0}, Score: {1}, Query: {2}"
         pw = (
             "You must supply an index as picker=$index to choose one of the parse "
             "responses -- re-run ask_parsed with picker set to one of these indexes!!"
@@ -514,7 +517,11 @@ class Handler(object):
         if picker is 0:
             self.MYLOG.critical(pw)
             for idx, x in enumerate(parse_job_results):
-                self.MYLOG.critical(pi.format(idx + 1, x))
+                text = x.question_text.lower()
+                if params:
+                    for i in range(len(params) - 1):
+                        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
+                self.MYLOG.critical(pi.format(idx + 1, x.score, text))
             raise PickerError(pw)
 
         try:
@@ -525,7 +532,11 @@ class Handler(object):
             self.MYLOG.critical(m)
 
             for idx, x in enumerate(parse_job_results):
-                self.MYLOG.critical(pi.format(idx + 1, x))
+                text = x.question_text.lower()
+                if params:
+                    for i in range(len(params) - 1):
+                        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
+                self.MYLOG.critical(pi.format(idx + 1, x.score, text))
             raise PickerError(pw)
 
         # add our Question and get a Question ID back
