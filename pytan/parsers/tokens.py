@@ -51,6 +51,7 @@ class Tokenize(object):
         return result
 
     def parse_token(self, token):
+# TODO: Needs regex to avoid splitting file paths, some variant of: r'(?:[\w]\:\\)'
         if ':' in token:
             key, value = token.split(':', 1)
         else:
@@ -135,8 +136,7 @@ def unnamed_param_spec_from_tokens(tokens):
     values = []
     for token in tokens:
         key, value = token
-        match = ESCAPED_COLONS_RE.match(value)
-        if key != 'param' or match or ':' in value:
+        if key != 'param':
             continue
         values.append(value)
     result = {'values': values}

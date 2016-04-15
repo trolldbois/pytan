@@ -9,6 +9,7 @@ import pprint
 from pytan import PytanError
 from pytan.builders.filters import build_cachefilterlist
 from pytan.builders.questions import build_question
+from pytan.builders.params import build_params
 from pytan.handler_args import build_argstore
 from pytan.handler_logs import setup_log
 from pytan.parsers.coerce import coerce_left, coerce_lot, coerce_right, coerce_search
@@ -237,8 +238,8 @@ class Handler(object):
     # QUESTIONS
     def ask_manual(self, left_sensors=[], right_sensors=[], lot=[], **kwargs):
         """pass.
-        left: list of str or list of dict
-        right: list of str or list of dict
+        left_sensors: list of str or list of dict
+        right_sensors: list of str or list of dict
         lot: list of str or dict
         question: expire_seconds, skip_lock_flag
 
