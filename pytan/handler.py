@@ -9,7 +9,6 @@ import pprint
 from pytan import PytanError
 from pytan.builders.filters import build_cachefilterlist
 from pytan.builders.questions import build_question
-from pytan.builders.params import build_params
 from pytan.handler_args import build_argstore
 from pytan.handler_logs import setup_log
 from pytan.parsers.coerce import coerce_left, coerce_lot, coerce_right, coerce_search
@@ -499,8 +498,10 @@ class Handler(object):
         pq_args = {}
         pq_args.update(kwargs)
         if '[' in question_text:
-            params = [k.lower().split("[") for k in question_text.lower().split("]")]
-            question_text = ''.join(params[i][0] for i in range(len(params) - 1))
+            params = [k.split("[")[1] if len(k.split("[")) > 1 else None for k in question_text.split("]")]
+            params.pop(len(params) - 1)
+            question_text = [k.lower().split("[") for k in question_text.split("]")]
+            question_text = ''.join(question_text[i][0] for i in range(len(question_text) - 1))
         pq_args['question_text'] = question_text
         pq_args['pytan_help'] = HELPS.pj()
         parse_job_results = self.parse_query(**pq_args)
@@ -509,7 +510,7 @@ class Handler(object):
             m = "Question Text '{}' was unable to be parsed into a valid query text by the server"
             raise ParseJobError(m)
 
-        pi = "Index {0}, Score: {1}, Query: {2}"
+        pi = "Index {0}, Score: {1.score}, Query: {1.question_text}"
         pw = (
             "You must supply an index as picker=$index to choose one of the parse "
             "responses -- re-run ask_parsed with picker set to one of these indexes!!"
@@ -518,11 +519,7 @@ class Handler(object):
         if picker is 0:
             self.MYLOG.critical(pw)
             for idx, x in enumerate(parse_job_results):
-                text = x.question_text.lower()
-                if params:
-                    for i in range(len(params) - 1):
-                        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
-                self.MYLOG.critical(pi.format(idx + 1, x.score, text))
+                self.MYLOG.critical(pi.format(idx + 1, x))
             raise PickerError(pw)
 
         try:
@@ -533,11 +530,7 @@ class Handler(object):
             self.MYLOG.critical(m)
 
             for idx, x in enumerate(parse_job_results):
-                text = x.question_text.lower()
-                if params:
-                    for i in range(len(params) - 1):
-                        text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
-                self.MYLOG.critical(pi.format(idx + 1, x.score, text))
+                self.MYLOG.critical(pi.format(idx + 1, x))
             raise PickerError(pw)
 
         # add our Question and get a Question ID back
@@ -550,7 +543,7 @@ class Handler(object):
         kwargs['pytan_help'] = HELPS.pj_add()
         kwargs['obj'] = self._add(**kwargs)
 
-        m = "Question Added, ID: {0.id}, query text: {0.query_text!r}, expires: {0.expiration}"
+        m = "Question Added, ID: {0.id}, query text: {0.query_text}, expires: {0.expiration}"
         m = m.format(kwargs['obj'])
         self.MYLOG.info(m)
 
