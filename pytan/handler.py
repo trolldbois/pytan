@@ -497,6 +497,7 @@ class Handler(object):
 
         pq_args = {}
         pq_args.update(kwargs)
+        qt_parm = None
         if '[' in question_text:
             qt_parm = [k.split("[") if len(k.split("[")) > 1 else None for k in question_text.split("]")]
             qt_parm.pop(len(qt_parm) - 1)
