@@ -19,7 +19,7 @@ from pytan.store import HelpStore, ResultStore
 from pytan.tanium_ng import (
     ActionList, ActionStop, BaseType, GroupList, PackageSpecList, ParseJob, QuestionList,
     SavedActionApproval, SavedActionList, SavedQuestionList, SensorList, SystemSettingList,
-    SystemStatusList, UserList, UserRoleList, WhiteListedUrlList,
+    SystemStatusList, UserList, UserRoleList, WhiteListedUrlList, Parameter, ParameterList
 )
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
@@ -498,19 +498,19 @@ class Handler(object):
         pq_args = {}
         pq_args.update(kwargs)
         if '[' in question_text:
-            params = [k.split("[")[1] if len(k.split("[")) > 1 else None for k in question_text.split("]")]
-            params.pop(len(params) - 1)
+            qt_parm = [k.split("[") if len(k.split("[")) > 1 else None for k in question_text.split("]")]
+            qt_parm.pop(len(qt_parm) - 1)
+            params = [k[1] for k in qt_parm]
             question_text = [k.lower().split("[") for k in question_text.split("]")]
             question_text = ''.join(question_text[i][0] for i in range(len(question_text) - 1))
         pq_args['question_text'] = question_text
         pq_args['pytan_help'] = HELPS.pj()
         parse_job_results = self.parse_query(**pq_args)
-
         if not parse_job_results:
             m = "Question Text '{}' was unable to be parsed into a valid query text by the server"
             raise ParseJobError(m)
 
-        pi = "Index {0}, Score: {1.score}, Query: {1.question_text}"
+        pi = "Index {0}, Score: {1}, Query: {2}"
         pw = (
             "You must supply an index as picker=$index to choose one of the parse "
             "responses -- re-run ask_parsed with picker set to one of these indexes!!"
@@ -519,7 +519,11 @@ class Handler(object):
         if picker is 0:
             self.MYLOG.critical(pw)
             for idx, x in enumerate(parse_job_results):
-                self.MYLOG.critical(pi.format(idx + 1, x))
+                text = x.question_text.lower()
+                if qt_parm:
+                    for i in range(len(qt_parm)):
+                        text = text.replace(qt_parm[i][0], qt_parm[i][0] + '[' + qt_parm[i][1] + ']')
+                self.MYLOG.critical(pi.format(idx + 1, x.score, text))
             raise PickerError(pw)
 
         try:
@@ -532,6 +536,8 @@ class Handler(object):
             for idx, x in enumerate(parse_job_results):
                 self.MYLOG.critical(pi.format(idx + 1, x))
             raise PickerError(pw)
+        # add our Parameters to the selected question
+
 
         # add our Question and get a Question ID back
         kwargs['obj'] = picked_parse_job.question
