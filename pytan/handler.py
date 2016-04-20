@@ -19,7 +19,8 @@ from pytan.store import HelpStore, ResultStore
 from pytan.tanium_ng import (
     ActionList, ActionStop, BaseType, GroupList, PackageSpecList, ParseJob, QuestionList,
     SavedActionApproval, SavedActionList, SavedQuestionList, SensorList, SystemSettingList,
-    SystemStatusList, UserList, UserRoleList, WhiteListedUrlList, Parameter, ParameterList
+    SystemStatusList, UserList, UserRoleList, WhiteListedUrlList, Parameter, ParameterList,
+    get_params
 )
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
@@ -498,10 +499,20 @@ class Handler(object):
         pq_args = {}
         pq_args.update(kwargs)
         qt_parm = None
+        # Getting Parameters contained within [ ] of question and building lists
+        params = None
         if '[' in question_text:
-            qt_parm = [k.split("[") if len(k.split("[")) > 1 else None for k in question_text.split("]")]
-            qt_parm.pop(len(qt_parm) - 1)
-            params = [k[1] for k in qt_parm]
+            if 'and' in question_text:
+                text_match = [k.split("[") for k in question_text.split("]")]
+                text = [question_text.split('and')]
+                qt_parm = [k.split("]")[0].split("[")[1] if "[" in k else '' for k in text[0]]
+                params = [(idx, k.split(",")) for idx, k in enumerate(qt_parm)]
+            else:
+                text_match = [question_text.split("]")[0].split("[")]
+                text = question_text
+                qt_parm = text.split("]")[0].split("[")[1]
+                params = [0, qt_parm.split(",")]
+            text_match.pop(len(text_match) - 1)
             question_text = [k.lower().split("[") for k in question_text.split("]")]
             question_text = ''.join(question_text[i][0] for i in range(len(question_text) - 1))
         pq_args['question_text'] = question_text
@@ -521,9 +532,9 @@ class Handler(object):
             self.MYLOG.critical(pw)
             for idx, x in enumerate(parse_job_results):
                 text = x.question_text.lower()
-                if qt_parm:
-                    for i in range(len(qt_parm)):
-                        text = text.replace(qt_parm[i][0], qt_parm[i][0] + '[' + qt_parm[i][1] + ']')
+                if text_match:
+                    for i in range(len(text_match)):
+                        text = text.replace(text_match[i][0], text_match[i][0] + '[' + text_match[i][1] + ']')
                 self.MYLOG.critical(pi.format(idx + 1, x.score, text))
             raise PickerError(pw)
 
@@ -538,7 +549,18 @@ class Handler(object):
                 self.MYLOG.critical(pi.format(idx + 1, x))
             raise PickerError(pw)
         # add our Parameters to the selected question
-
+        # if params:
+        #    text = picked_parse_job.question_text.lower()
+        #    for i in range(len(qt_parm)):
+        #        text = text.replace(qt_parm[i][0], qt_parm[i][0] + '[' + qt_parm[i][1] + ']')
+        #    picked_parse_job.question.question_text = text
+        #    selects = picked_parse_job.question.selects
+        #    for idx in range(len(selects)):
+        #        if selects[idx].sensor.parameter_definition:
+        #            selects[idx].sensor.parameter = ParameterList()
+        #            append_params = Parameter()
+        #            append_params.key = get_params(selects[idx].sensor)[0]['key']
+        #            append_params.value = params[idx]
 
         # add our Question and get a Question ID back
         kwargs['obj'] = picked_parse_job.question
