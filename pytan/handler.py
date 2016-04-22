@@ -498,21 +498,21 @@ class Handler(object):
 
         pq_args = {}
         pq_args.update(kwargs)
-        qt_parm = None
+        match = None
         # Getting Parameters contained within [ ] of question and building lists
         params = None
         if '[' in question_text:
             if 'and' in question_text:
-                text_match = [k.split("[") for k in question_text.split("]")]
+                match = [k.split("[") for k in question_text.split("]")]
                 text = [question_text.split('and')]
                 qt_parm = [k.split("]")[0].split("[")[1] if "[" in k else '' for k in text[0]]
-                params = [(idx, k.split(",")) for idx, k in enumerate(qt_parm)]
+                params = {idx:k.split(",") for idx, k in enumerate(qt_parm)}
+                match.pop(len(match)-1)
             else:
-                text_match = [question_text.split("]")[0].split("[")]
+                match = [question_text.split("]")[0].split("[")]
                 text = question_text
                 qt_parm = text.split("]")[0].split("[")[1]
-                params = [0, qt_parm.split(",")]
-            text_match.pop(len(text_match) - 1)
+                params = {0:qt_parm.split(",")}
             question_text = [k.lower().split("[") for k in question_text.split("]")]
             question_text = ''.join(question_text[i][0] for i in range(len(question_text) - 1))
         pq_args['question_text'] = question_text
@@ -532,9 +532,11 @@ class Handler(object):
             self.MYLOG.critical(pw)
             for idx, x in enumerate(parse_job_results):
                 text = x.question_text.lower()
-                if text_match:
-                    for i in range(len(text_match)):
-                        text = text.replace(text_match[i][0], text_match[i][0] + '[' + text_match[i][1] + ']')
+                if match:
+                    for i in range(len(match)):
+                        y = len(match[i]) - 1
+                        m = '{} [{}]'.format(match[i][0], match[i][y])
+                        text = text.replace(match[i][0], m)
                 self.MYLOG.critical(pi.format(idx + 1, x.score, text))
             raise PickerError(pw)
 
@@ -549,21 +551,21 @@ class Handler(object):
                 self.MYLOG.critical(pi.format(idx + 1, x))
             raise PickerError(pw)
         # add our Parameters to the selected question
-        # if params:
-        #    text = picked_parse_job.question_text.lower()
-        #    for i in range(len(qt_parm)):
-        #        text = text.replace(qt_parm[i][0], qt_parm[i][0] + '[' + qt_parm[i][1] + ']')
-        #    picked_parse_job.question.question_text = text
-        #    selects = picked_parse_job.question.selects
-        #    for idx in range(len(selects)):
-        #        if selects[idx].sensor.parameter_definition:
-        #            selects[idx].sensor.parameter = ParameterList()
-        #            append_params = Parameter()
-        #            append_params.key = get_params(selects[idx].sensor)[0]['key']
-        #            append_params.value = params[idx]
-
+        question = picked_parse_job.question
+        if params:
+            text = question_text.lower()
+            for i in range(len(match) - 1):
+                text = text.replace(match[i][0], match[i][0] + '[' + match[i][1] + ']')
+            question.question_text = text
+            for idx, x in enumerate(question.selects):
+                if x.sensor.parameter_definition:
+                    pq_args['paramdef'] = get_params(x.sensor)
+                    keys = ['||{}||'.format(k['key']) for k in pq_args['paramdef']]
+                    pairs = tuple(zip(keys, [p for p in params[idx]]))
+                    new_params = [Parameter(key=k, value=v) for k, v in pairs]
+                    x.sensor.parameters = ParameterList(parameter=new_params)
         # add our Question and get a Question ID back
-        kwargs['obj'] = picked_parse_job.question
+        kwargs['obj'] = question
 
         m = "Question Picked: {}"
         m = m.format(kwargs['obj'].to_json())
