@@ -546,9 +546,14 @@ class Handler(object):
             m = "You supplied an invalid picker index {} - {}"
             m = m.format(picker, pw)
             self.MYLOG.critical(m)
-
             for idx, x in enumerate(parse_job_results):
-                self.MYLOG.critical(pi.format(idx + 1, x))
+                text = x.question_text.lower()
+                if match:
+                    for i in range(len(match)):
+                        y = len(match[i]) - 1
+                        m = '{} [{}]'.format(match[i][0], match[i][y])
+                        text = text.replace(match[i][0], m)
+                self.MYLOG.critical(pi.format(idx + 1, x.score, text))
             raise PickerError(pw)
         # add our Parameters to the selected question
         question = picked_parse_job.question

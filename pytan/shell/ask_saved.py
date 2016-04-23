@@ -1,8 +1,7 @@
-import copy
-from . import ask_manual
+from . import base
 
 
-class Worker(ask_manual.Worker):
+class Worker(base.Base):
     DESCRIPTION = 'Ask a saved question and export the results to a file'
     GROUP_NAME = 'Saved Question Options'
     ACTION = 'question'
@@ -10,30 +9,34 @@ class Worker(ask_manual.Worker):
     PREFIX = 'ask_saved'
 
     def setup(self):
-        self.add_export_results_opts()
-        self.add_report_opts()
-
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
 
-        obj_map = self.tanium_obj.get_obj_map("{}_question".format(self.QTYPE))
-        search_keys = copy.copy(obj_map['search'])
-
-        choice = self.grp.add_mutually_exclusive_group()
-        for k in search_keys:
-            choice.add_argument(
-                '--{}'.format(k),
-                required=False, action='store', dest=k, default=self.SUPPRESS,
-                help='{} of {} question to ask'.format(k, self.QTYPE),
-            )
-
-        choice = self.grp.add_mutually_exclusive_group()
-        choice.add_argument(
-            '--no-refresh_data',
-            action='store_false', dest='refresh_data', default=False, required=False,
-            help='Do not refresh the data available for a saved question'
+        self.grp.add_argument(
+            '--search',
+            required=True, action='store', default='', dest='search',
+            help='The question text you want to search for saved questions.'
         )
-        choice.add_argument(
-            '--refresh_data',
-            action='store_true', dest='refresh_data', default=self.SUPPRESS, required=False,
-            help='Refresh the data available for a saved question',
-        )
+        self.add_help_opts()
+        self.add_export_results_opts()
+        self.add_report_opts()
+        self.grp_choice_results()
+
+    def get_question_response(self, **kwargs):
+        grps = [self.GROUP_NAME]
+        kwargs = self.get_parser_args(grps)
+        m = "++ Asking {} question with arguments:\n{}"
+        print(m.format(self.QTYPE, self.pf(kwargs)))
+        try:
+            response = self.handler.ask_saved(qtype=self.QTYPE, **kwargs)
+        except:
+            raise
+        m = "++ Asked Question {} ID: {}"
+        print(m.format(response.question.query_text, response.question.id))
+        return response
+
+    def get_result(self):
+        grps = ['Export Results Options', 'Export Object Options', 'Report File Options']
+        kwargs = self.get_parser_args(grps)
+        response = self.get_question_response()
+        report_file, result = self.handler.export(response.result_data.result_set, **kwargs)
+        return response, report_file, result

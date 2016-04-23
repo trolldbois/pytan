@@ -1,9 +1,7 @@
-from . import ask_manual
 from . import base
 
 
-class Worker(ask_manual.Worker):
-# class Worker(base.Base):
+class Worker(base.Base):
     DESCRIPTION = 'Ask a parsed question and export the results to a file'
     GROUP_NAME = 'Parsed Question Options'
     ACTION = 'question'
