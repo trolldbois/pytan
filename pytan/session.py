@@ -925,7 +925,7 @@ class Session(object):
         response_body = response.text
 
         # run the xml_cleaner against the response
-        kwargs['text'] = response_body
+        kwargs['text'] = response_body.replace(u"\u2018", "'").replace(u"\u2019", "'")
         response_body = xml_cleaner(**kwargs)
 
         # print a bunch of messages to a bunch of different logs & levels
