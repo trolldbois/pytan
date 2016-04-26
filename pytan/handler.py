@@ -5,10 +5,12 @@ import logging
 import os
 import time
 import pprint
+import json
 
 from pytan import PytanError
 from pytan.builders.filters import build_cachefilterlist
 from pytan.builders.questions import build_question
+from pytan.constants import PYTAN_KEY
 from pytan.handler_args import build_argstore
 from pytan.handler_logs import setup_log
 from pytan.parsers.coerce import coerce_left, coerce_lot, coerce_right, coerce_search
@@ -25,7 +27,7 @@ from pytan.tanium_ng import (
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
 from pytan.tickle.tools import get_now, shrink_obj, str_obj
-from pytan.utils import get_group_hierarchy
+from pytan.utils import get_group_hierarchy, vig_encode
 from pytan.version import __version__
 
 
@@ -1149,6 +1151,50 @@ class Handler(object):
             fd.write(contents)
 
         return report_path
+
+    def write_pytan_user_config(self, **kwargs):
+        """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
+
+        Parameters
+        ----------
+        pytan_user_config : str, optional
+            * default: self.puc
+            * JSON file to wite with current class variables
+
+        Returns
+        -------
+        puc : str
+            * filename of PyTan User Config that was written to
+        """
+        puc_kwarg = kwargs.get('pytan_user_config', '')
+        puc = puc_kwarg # or self.puc
+        puc = os.path.expanduser(puc)
+
+        puc_dict = {}
+
+        for k, v in vars(self).iteritems():
+            if k in ['mylog', 'methodlog', 'session', 'puc']:
+                m = "Skipping class variable {} from inclusion in: {}".format
+                self.mylog.debug(m(k, puc))
+                continue
+
+            m = "Including class variable {} in: {}".format
+            self.MYLOG.debug(m(k, puc))
+            puc_dict[k] = v
+
+        # obfuscate the password
+        puc_dict['password'] = vig_encode(PYTAN_KEY, self.SESSION.password)
+
+        try:
+            with open(puc, 'w+') as fh:
+                json.dump(puc_dict, fh, skipkeys=True, indent=2)
+        except Exception as e:
+            m = "Failed to write PyTan User config: '{}', exception: {}".format
+            raise self.MYLOG.error(m(puc, e))
+        else:
+            m = "PyTan User config file successfully written: {} ".format
+            self.MYLOG.info(m(puc))
+        return puc
 
     # BEGIN PRIVATE METHODS
     def _get_objects(self, **kwargs):

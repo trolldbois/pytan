@@ -244,6 +244,10 @@ HANDLER_OPTS['config_file'] = {
     'help': "PyTan User Config file to use for PyTan arguments",
 }
 
+PYTAN_USER_CONFIG = "~/.pytan_config.json"
+"""
+Default path to file to use for Handler parameter overrides
+"""
 SHELL_OPTS = OrderedDict()
 SHELL_OPTS['PyTan Authentication Options'] = AUTH_OPTS
 SHELL_OPTS['PyTan Session Options'] = SESSION_OPTS

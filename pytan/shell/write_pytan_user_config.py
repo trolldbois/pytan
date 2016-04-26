@@ -1,5 +1,5 @@
 from . import base
-
+from pytan.constants import PYTAN_USER_CONFIG
 
 class Worker(base.Base):
     DESCRIPTION = 'Creates a PyTan User Config file based on the current parameters'
@@ -8,10 +8,10 @@ class Worker(base.Base):
     def setup(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
         puc_h = "PyTan User Config file to write for PyTan arguments (defaults to: {})"
-        puc_h = puc_h.format(self.constants.PYTAN_USER_CONFIG)
+        puc_h = puc_h.format(PYTAN_USER_CONFIG)
         self.grp.add_argument(
             '--new_config',
-            required=False, default=self.SUPPRESS, action='store', dest='new_config', help=puc_h
+            required=False, default=self.SUPPRESS, action='store', dest='new_config'
         )
 
     def get_response(self, kwargs):
