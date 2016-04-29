@@ -10,7 +10,7 @@ import json
 from pytan import PytanError
 from pytan.builders.filters import build_cachefilterlist
 from pytan.builders.questions import build_question
-from pytan.constants import PYTAN_KEY
+from pytan.constants import PYTAN_USER_CONFIG
 from pytan.handler_args import build_argstore
 from pytan.handler_logs import setup_log
 from pytan.parsers.coerce import coerce_left, coerce_lot, coerce_right, coerce_search
@@ -27,7 +27,7 @@ from pytan.tanium_ng import (
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
 from pytan.tickle.tools import get_now, shrink_obj, str_obj
-from pytan.utils import get_group_hierarchy, vig_encode
+from pytan.utils import get_group_hierarchy
 from pytan.version import __version__
 
 
@@ -1167,24 +1167,25 @@ class Handler(object):
             * filename of PyTan User Config that was written to
         """
         puc_kwarg = kwargs.get('pytan_user_config', '')
-        puc = puc_kwarg # or self.puc
+        puc = puc_kwarg or PYTAN_USER_CONFIG
         puc = os.path.expanduser(puc)
-
         puc_dict = {}
 
-        for k, v in vars(self).iteritems():
-            if k in ['mylog', 'methodlog', 'session', 'puc']:
-                m = "Skipping class variable {} from inclusion in: {}".format
-                self.mylog.debug(m(k, puc))
+        for k in self.HANDLER_ARGS:
+            if k in ['username', 'loglevel', 'debugformat', 'puc',
+            'session_id', 'host', 'gmt_log', 'debug_method_locals', 'port']:
+                m = "Including class variable {} in: {}".format
+                self.MYLOG.debug(m(k, puc))
+                puc_dict[k] = self.HANDLER_ARGS[k]
                 continue
 
-            m = "Including class variable {} in: {}".format
+            m = "Skipping class variable {} from inclusion in: {}".format
             self.MYLOG.debug(m(k, puc))
-            puc_dict[k] = v
 
         # obfuscate the password
-        puc_dict['password'] = vig_encode(PYTAN_KEY, self.SESSION.password)
+        puc_dict['password'] = self.SESSION._CREDS['password']
 
+        print("This is puc: " + puc)
         try:
             with open(puc, 'w+') as fh:
                 json.dump(puc_dict, fh, skipkeys=True, indent=2)
