@@ -12,7 +12,7 @@ class Worker(base.Base):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
 
         self.grp.add_argument(
-            '-pkg', '--package',
+            '-q', '--question',
             required=False, action='append', default=[], dest='search',
             help='Searchable text string for finding {}'.format(self.NAME)
         )
@@ -33,6 +33,7 @@ class Worker(base.Base):
     def get_result(self):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
+        response = None
         try:
             response = self.get_response(kwargs)
             print("Deleted {}".format(response))

@@ -33,6 +33,7 @@ class Worker(base.Base):
     def get_result(self):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
+        response = None
         try:
             response = self.get_response(kwargs)
             print("Deleted {}".format(response))
