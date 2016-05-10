@@ -12,7 +12,7 @@ class Worker(base.Base):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
 
         self.grp.add_argument(
-            '-g', '--group',
+            '-s', '--search',
             required=False, action='append', default=[], dest='search',
             help='Searchable text string for finding {}'.format(self.NAME)
         )
