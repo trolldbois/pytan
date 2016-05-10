@@ -7,12 +7,12 @@ import sys
 # disable python from creating .pyc files everywhere
 sys.dont_write_bytecode = True
 
-import os
-import logging
-import io
-import datetime
-import pprint
-import json
+import os  # noqa
+import logging  # noqa
+import io  # noqa
+import datetime  # noqa
+import pprint  # noqa
+import json  # noqa
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -20,8 +20,8 @@ parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import taniumpy
-import pytan
+import taniumpy  # noqa
+import pytan  # noqa
 
 
 class Handler(object):
@@ -155,8 +155,8 @@ class Handler(object):
         >>> handler = pytan.Handler('username', 'password', 'host')
     """
 
-    def __init__(self, username=None, password=None, host=None, port=443,
-                 loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):
+    def __init__(self, username=None, password=None, host=None, port=443,  # noqa
+                 loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):  # noqa
         super(Handler, self).__init__()
         self.mylog = logging.getLogger("pytan.handler")
         self.methodlog = logging.getLogger("method_debug")
@@ -237,7 +237,7 @@ class Handler(object):
         ret = str_tpl(pytan.__version__, self.session)
         return ret
 
-    def read_pytan_user_config(self, kwargs):
+    def read_pytan_user_config(self, kwargs):  # noqa
         """Read a PyTan User Config and update the current class variables
 
         Returns
@@ -540,6 +540,86 @@ class Handler(object):
 
         return ret
 
+    def create_saved_question(self, name, **kwargs):
+        """Ask a manual question using human strings and get the results back
+
+        This method takes a string or list of strings and parses them into
+        their corresponding definitions needed by :func:`_ask_manual`
+
+        Parameters
+        ----------
+        sensors : str, list of str
+            * default: []
+            * sensors (columns) to include in question
+        question_filters : str, list of str, optional
+            * default: []
+            * filters that apply to the whole question
+        question_options : str, list of str, optional
+            * default: []
+            * options that apply to the whole question
+        get_results : bool, optional
+            * default: True
+            * True: wait for result completion after asking question
+            * False: just ask the question and return it in result
+        sensors_help : bool, optional
+            * default: False
+            * False: do not print the help string for sensors
+            * True: print the help string for sensors and exit
+        filters_help : bool, optional
+            * default: False
+            * False: do not print the help string for filters
+            * True: print the help string for filters and exit
+        options_help : bool, optional
+            * default: False
+            * False: do not print the help string for options
+            * True: print the help string for options and exit
+        polling_secs : int, optional
+            * default: 5
+            * Number of seconds to wait in between GetResultInfo loops
+            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+        complete_pct : int/float, optional
+            * default: 99
+            * Percentage of mr_tested out of estimated_total to consider the question "done"
+            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+        override_timeout_secs : int, optional
+            * default: 0
+            * If supplied and not 0, timeout in seconds instead of when object expires
+            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+        callbacks : dict, optional
+            * default: {}
+            * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
+            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+        override_estimated_total : int, optional
+            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+        force_passed_done_count : int, optional
+            * when this number of systems have passed the right hand side of the question, consider the question complete
+            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        pytan.utils.check_for_help(kwargs=kwargs)
+
+        sensors = kwargs.get('sensors', [])
+        q_filters = kwargs.get('question_filters', [])
+        q_options = kwargs.get('question_options', [])
+
+        sensor_defs = pytan.utils.dehumanize_sensors(sensors=sensors)
+        q_filter_defs = pytan.utils.dehumanize_question_filters(question_filters=q_filters)
+        q_option_defs = pytan.utils.dehumanize_question_options(question_options=q_options)
+
+        clean_keys = ['sensor_defs', 'question_filter_defs', 'question_option_defs']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        result = self._create_saved_question(
+            name=name,
+            sensor_defs=sensor_defs,
+            question_filter_defs=q_filter_defs,
+            question_option_defs=q_option_defs,
+            **clean_kwargs
+        )
+        return result
+
     def ask_manual(self, **kwargs):
         """Ask a manual question using human strings and get the results back
 
@@ -723,7 +803,7 @@ class Handler(object):
         parse_job_results = self.session.add(obj=parse_job, **clean_kwargs)
         return parse_job_results
 
-    def ask_parsed(self, question_text, picker=None, get_results=True, **kwargs):
+    def ask_parsed(self, question_text, picker=None, get_results=True, **kwargs):  # noqa
         """Ask a parsed question as `question_text` and use the index of the parsed results from `picker`
 
         Parameters
@@ -1380,203 +1460,6 @@ class Handler(object):
             ret.append(list_obj)
         return ret
 
-    def run_plugin(self, obj, **kwargs):
-        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
-
-        Parameters
-        ----------
-        obj : :class:`taniumpy.object_types.plugin.Plugin`
-            * Plugin object to run
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        # run the plugin
-        h = "Issue a RunPlugin run a plugin and get results back"
-        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
-
-        clean_keys = ['obj', 'p']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
-
-        # zip up the sql results into a list of python dictionaries
-        sql_zipped = pytan.utils.plugin_zip(p=plugin_result)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
-
-        Parameters
-        ----------
-        name : str
-            * name of dashboard to create
-        text : str, optional
-            * default: ''
-            * text for this dashboard
-        group : str, optional
-            * default: ''
-            * group name for this dashboard
-        public_flag : bool, optional
-            * default: True
-            * True: make this dashboard public
-            * False: do not make this dashboard public
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
-
-        # get the ID for the group if a name was passed in
-        if group:
-            h = "Issue a GetObject to find the ID of a group name"
-            group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
-        else:
-            group_id = 0
-
-        if public_flag:
-            public_flag = 1
-        else:
-            public_flag = 0
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'CreateDashboard'
-        plugin.bundle = 'Dashboards'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'dash_name'
-        arg1.type = 'String'
-        arg1.value = name
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'dash_text'
-        arg2.type = 'String'
-        arg2.value = text
-        plugin.arguments.append(arg2)
-
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'group_id'
-        arg3.type = 'Number'
-        arg3.value = group_id
-        plugin.arguments.append(arg3)
-
-        arg4 = taniumpy.PluginArgument()
-        arg4.name = 'public_flag'
-        arg4.type = 'Number'
-        arg4.value = public_flag
-        plugin.arguments.append(arg4)
-
-        arg5 = taniumpy.PluginArgument()
-        arg5.name = 'sqid_xml'
-        arg5.type = 'String'
-        arg5.value = ''
-        plugin.arguments.append(arg5)
-
-        # run the plugin
-        h = "Issue a RunPlugin for the CreateDashboard plugin to create a dashboard"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def delete_dashboard(self, name, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
-
-        Parameters
-        ----------
-        name : str
-            * name of dashboard to delete
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'DeleteDashboards'
-        plugin.bundle = 'Dashboards'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'dashboard_ids'
-        arg1.type = 'Number_Set'
-        arg1.value = ','.join([x['id'] for x in dashboards_to_del])
-        plugin.arguments.append(arg1)
-
-        # run the plugin
-        h = "Issue a RunPlugin for the DeleteDashboards plugin to delete a dashboard"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def get_dashboards(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of dashboard to get, if empty will return all dashboards
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetDashboards'
-        plugin.bundle = 'Dashboards'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetDashboards plugin to get all dashboards"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No dashboards found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
     def create_sensor(self, **kwargs):
         """Create a sensor object
 
@@ -1736,170 +1619,6 @@ class Handler(object):
         self.mylog.info(m(package_obj.name, package_obj.id, package_obj.command))
         return package_obj
 
-    def get_user_groups(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetUserGroups plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of user group to get, if empty will return all user groups
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetUserGroups'
-        plugin.bundle = 'UserGroups'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetUserGroups plugin to get all user groups"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No user groups found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def get_action_groups(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetActionGroups plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of action group to get, if empty will return all action groups
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetActionGroups'
-        plugin.bundle = 'GroupFilter'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetActionGroups plugin to get all action groups"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No action groups found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def create_action_group(self, name, targeting=[], visibility='all', combine='and',
-                            usergroups=[], **kwargs):
-        """Document me later.
-        name
-        targeting=group names
-        visibility=admin, all, usergroups
-        combine=and, or
-        usergroups=user group names for visibility=usergroups
-
-        v=handler.create_action_group('test 1')
-        v=handler.create_action_group('test 2', visibility='all')
-        v=handler.create_action_group('test 3', visibility='admin')
-        v=handler.create_action_group('test 4', targeting=['T machines'])
-        v=handler.create_action_group('test 5', targeting=['T machines'], visibility='usergroups', usergroups=['test1'])
-
-        """
-        user_group_xml = ''
-        id_tmp = "<user_group>\n<id>{}</id>\n</user_group>".format
-        wrap_tmp = "<user_groups>\n{}\n</user_groups>".format
-
-        if visibility == 'admin':
-            public_flag = 0
-        elif visibility == 'all':
-            public_flag = 1
-        elif visibility == 'usergroups':
-            public_flag = 0
-            user_group_ids = [self.get_user_groups(x)[1][0]['id'] for x in usergroups]
-            user_group_xml = '\n'.join([id_tmp(x) for x in user_group_ids])
-            user_group_xml = wrap_tmp(user_group_xml)
-        else:
-            err = "{} is not a valid visibilty option! Must be one of: admin, all, usergroups".format
-            raise pytan.exceptions.HandlerError(err(visibility))
-
-        if combine == 'and':
-            and_flag = 1
-        elif combine == 'or':
-            and_flag = 0
-        else:
-            err = "{} is not a valid combine option! Must be one of: and, or".format
-            raise pytan.exceptions.HandlerError(err(combine))
-
-        add_group_obj = taniumpy.Group()
-        add_group_obj.name = name
-        add_group_obj.type = 1
-        add_group_obj.and_flag = and_flag
-
-        if targeting:
-            sub_groups = taniumpy.GroupList()
-            for x in targeting:
-                n = self.get('group', name=x)
-                sub_groups.append(n[0])
-            add_group_obj.sub_groups = sub_groups
-
-        kwargs['pytan_help'] = "Issue an AddObject to add a Group object"
-        kwargs['obj'] = add_group_obj
-        group_obj = self._add(**kwargs)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'AddActionGroup'
-        plugin.bundle = 'GroupFilter'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'group_id'
-        arg1.type = 'Number'
-        arg1.value = group_obj.id
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'public_flag'
-        arg2.type = 'Number'
-        arg2.value = public_flag
-        plugin.arguments.append(arg2)
-
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'user_group_xml'
-        arg3.type = 'String'
-        arg3.value = user_group_xml
-        plugin.arguments.append(arg3)
-
-        # run the plugin
-        kwargs['pytan_help'] = "Issue a RunPlugin for the AddActionGroup plugin to create an Action Group"
-        kwargs['obj'] = plugin
-        plugin_result, sql_zipped = self.run_plugin(**kwargs)
-
-        return group_obj
-
     def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
         """Create a group object
 
@@ -1950,7 +1669,6 @@ class Handler(object):
             q_filter_defs=filter_defs, q_option_defs=option_defs,
         )
         add_group_obj.name = groupname
-        add_group_obj.type = grouptype
 
         h = "Issue an AddObject to add a Group object"
         group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
@@ -2120,271 +1838,7 @@ class Handler(object):
 
         return deleted_objects
 
-    def export_obj(self, obj, export_format='csv', **kwargs):
-        """Exports a python API object to a given export format
-
-        Parameters
-        ----------
-        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
-            * TaniumPy object to export
-        export_format : str, optional
-            * default: 'csv'
-            * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
-        header_sort : list of str, bool, optional
-            * default: True
-            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
-            * True: sort the headers automatically
-            * False: do not sort the headers at all
-            * list of str: sort the headers returned by priority based on provided list
-        header_add_sensor : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
-            * False: do not prefix the headers with the associated sensor name for each column
-            * True: prefix the headers with the associated sensor name for each column
-        header_add_type : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
-            * False: do not postfix the headers with the result type for each column
-            * True: postfix the headers with the result type for each column
-        expand_grouped_columns : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
-            * False: do not expand multiline row entries into their own rows
-            * True: expand multiline row entries into their own rows
-        explode_json_string_values : bool, optional
-            * default: False
-            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
-            * False: do not explode JSON strings in object attributes into their own object attributes
-            * True: explode JSON strings in object attributes into their own object attributes
-        minimal : bool, optional
-            * default: False
-            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
-            * False: include empty attributes in XML output
-            * True: do not include empty attributes in XML output
-
-        Returns
-        -------
-        result : str
-            * the contents of exporting `export_format`
-
-        Notes
-        -----
-        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
-
-        See Also
-        --------
-        :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        objtype = type(obj)
-        try:
-            objclassname = objtype.__name__
-        except:
-            objclassname = 'Unknown'
-
-        # see if supplied obj is a supported object type
-        type_match = [
-            x for x in pytan.constants.EXPORT_MAPS if isinstance(obj, getattr(taniumpy, x))
-        ]
-
-        if not type_match:
-            err = (
-                "{} not a supported object to export, must be one of: {}"
-            ).format
-
-            # build a list of supported object types
-            supp_types = ', '.join(pytan.constants.EXPORT_MAPS.keys())
-            raise pytan.exceptions.HandlerError(err(objtype, supp_types))
-
-        # get the export formats for this obj type
-        export_formats = pytan.constants.EXPORT_MAPS.get(type_match[0], '')
-
-        if export_format not in export_formats:
-            err = (
-                "{!r} not a supported export format for {}, must be one of: {}"
-            ).format(export_format, objclassname, ', '.join(export_formats))
-            raise pytan.exceptions.HandlerError(err)
-
-        # perform validation on optional kwargs, if they exist
-        opt_keys = export_formats.get(export_format, [])
-
-        for opt_key in opt_keys:
-            check_args = dict(opt_key.items() + {'d': kwargs}.items())
-            pytan.utils.check_dictkey(**check_args)
-
-        # filter out the kwargs that are specific to this obj type and format type
-        format_kwargs = {
-            k: v for k, v in kwargs.iteritems()
-            if k in [a['key'] for a in opt_keys]
-        }
-
-        # run the handler that is specific to this objtype, if it exists
-        class_method_str = '_export_class_' + type_match[0]
-        class_handler = getattr(self, class_method_str, '')
-
-        if class_handler:
-            result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
-        else:
-            err = "{!r} not supported by Handler!".format
-            raise pytan.exceptions.HandlerError(err(objclassname))
-
-        return result
-
-    def create_report_file(self, contents, report_file=None, **kwargs):
-        """Exports a python API object to a file
-
-        Parameters
-        ----------
-        contents : str
-            * contents to write to `report_file`
-        report_file : str, optional
-            * filename to save report as
-        report_dir : str, optional
-            * default: None
-            * directory to save report in, will use current working directory if not supplied
-        prefix : str, optional
-            * default: ''
-            * prefix to add to `report_file`
-        postfix : str, optional
-            * default: ''
-            * postfix to add to `report_file`
-
-        Returns
-        -------
-        report_path : str
-            * the full path to the file created with `contents`
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        if report_file is None:
-            report_file = 'pytan_report_{}.txt'.format(pytan.utils.get_now())
-
-        # try to get report_dir from the report_file
-        report_dir = os.path.dirname(report_file)
-
-        # try to get report_dir from kwargs
-        if not report_dir:
-            report_dir = kwargs.get('report_dir', None)
-
-        # just use current working dir
-        if not report_dir:
-            report_dir = os.getcwd()
-
-        # make report_dir if it doesnt exist
-        if not os.path.isdir(report_dir):
-            os.makedirs(report_dir)
-
-        # remove any path from report_file
-        report_file = os.path.basename(report_file)
-
-        # if prefix/postfix, add to report_file
-        prefix = kwargs.get('prefix', '')
-        postfix = kwargs.get('postfix', '')
-        report_file, report_ext = os.path.splitext(report_file)
-        report_file = '{}{}{}{}'.format(prefix, report_file, postfix, report_ext)
-
-        # join the report_dir and report_file to come up with report_path
-        report_path = os.path.join(report_dir, report_file)
-
-        with open(report_path, 'wb') as fd:
-            fd.write(contents)
-
-        m = "Report file {!r} written with {} bytes".format
-        self.mylog.info(m(report_path, len(contents)))
-        return report_path
-
-    def export_to_report_file(self, obj, export_format='csv', **kwargs):
-        """Exports a python API object to a file
-
-        Parameters
-        ----------
-        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
-            * TaniumPy object to export
-        export_format : str, optional
-            * default: 'csv'
-            * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
-        header_sort : list of str, bool, optional
-            * default: True
-            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
-            * True: sort the headers automatically
-            * False: do not sort the headers at all
-            * list of str: sort the headers returned by priority based on provided list
-        header_add_sensor : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
-            * False: do not prefix the headers with the associated sensor name for each column
-            * True: prefix the headers with the associated sensor name for each column
-        header_add_type : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
-            * False: do not postfix the headers with the result type for each column
-            * True: postfix the headers with the result type for each column
-        expand_grouped_columns : bool, optional
-            * default: False
-            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
-            * False: do not expand multiline row entries into their own rows
-            * True: expand multiline row entries into their own rows
-        explode_json_string_values : bool, optional
-            * default: False
-            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
-            * False: do not explode JSON strings in object attributes into their own object attributes
-            * True: explode JSON strings in object attributes into their own object attributes
-        minimal : bool, optional
-            * default: False
-            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
-            * False: include empty attributes in XML output
-            * True: do not include empty attributes in XML output
-        report_file: str, optional
-            * default: None
-            * filename to save report as, will be automatically generated if not supplied
-        report_dir: str, optional
-            * default: None
-            * directory to save report in, will use current working directory if not supplied
-        prefix: str, optional
-            * default: ''
-            * prefix to add to `report_file`
-        postfix: str, optional
-            * default: ''
-            * postfix to add to `report_file`
-
-        Returns
-        -------
-        report_path, result : tuple
-            * report_path : str, the full path to the file created with contents of `result`
-            * result : str, the contents written to report_path
-
-        See Also
-        --------
-        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the exporting
-        :func:`pytan.handler.Handler.create_report_file` : method that performs the actual work to write the report file
-
-        Notes
-        -----
-        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
-        report_file = kwargs.get('report_file', None)
-
-        if not report_file:
-            report_file = "{}_{}.{}".format(
-                type(obj).__name__, pytan.utils.get_now(), export_format,
-            )
-            m = "No report file name supplied, generated name: {!r}".format
-            self.mylog.debug(m(report_file))
-
-        clean_keys = ['obj', 'export_format', 'contents', 'report_file']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # get the results of exporting the object
-        contents = self.export_obj(obj=obj, export_format=export_format, **clean_kwargs)
-        report_path = self.create_report_file(
-            report_file=report_file, contents=contents, **clean_kwargs
-        )
-        return report_path, contents
-
-    def get(self, objtype, **kwargs):
+    def get(self, objtype, **kwargs):  # noqa
         """Get an object type
 
         Parameters
@@ -2503,6 +1957,851 @@ class Handler(object):
 
         found = self._find(obj=api_obj_all, **clean_kwargs)
         return found
+
+    # EXPORTING
+    def export_obj(self, obj, export_format='csv', **kwargs):
+        """Exports a python API object to a given export format
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+            * TaniumPy object to export
+        export_format : str, optional
+            * default: 'csv'
+            * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
+        header_sort : list of str, bool, optional
+            * default: True
+            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+            * True: sort the headers automatically
+            * False: do not sort the headers at all
+            * list of str: sort the headers returned by priority based on provided list
+        header_add_sensor : bool, optional
+            * default: False
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * False: do not prefix the headers with the associated sensor name for each column
+            * True: prefix the headers with the associated sensor name for each column
+        header_add_type : bool, optional
+            * default: False
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * False: do not postfix the headers with the result type for each column
+            * True: postfix the headers with the result type for each column
+        expand_grouped_columns : bool, optional
+            * default: False
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * False: do not expand multiline row entries into their own rows
+            * True: expand multiline row entries into their own rows
+        explode_json_string_values : bool, optional
+            * default: False
+            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * False: do not explode JSON strings in object attributes into their own object attributes
+            * True: explode JSON strings in object attributes into their own object attributes
+        minimal : bool, optional
+            * default: False
+            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * False: include empty attributes in XML output
+            * True: do not include empty attributes in XML output
+
+        Returns
+        -------
+        result : str
+            * the contents of exporting `export_format`
+
+        Notes
+        -----
+        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
+
+        See Also
+        --------
+        :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        objtype = type(obj)
+        try:
+            objclassname = objtype.__name__
+        except:
+            objclassname = 'Unknown'
+
+        # see if supplied obj is a supported object type
+        type_match = [
+            x for x in pytan.constants.EXPORT_MAPS if isinstance(obj, getattr(taniumpy, x))
+        ]
+
+        if not type_match:
+            err = (
+                "{} not a supported object to export, must be one of: {}"
+            ).format
+
+            # build a list of supported object types
+            supp_types = ', '.join(pytan.constants.EXPORT_MAPS.keys())
+            raise pytan.exceptions.HandlerError(err(objtype, supp_types))
+
+        # get the export formats for this obj type
+        export_formats = pytan.constants.EXPORT_MAPS.get(type_match[0], '')
+
+        if export_format not in export_formats:
+            err = (
+                "{!r} not a supported export format for {}, must be one of: {}"
+            ).format(export_format, objclassname, ', '.join(export_formats))
+            raise pytan.exceptions.HandlerError(err)
+
+        # perform validation on optional kwargs, if they exist
+        opt_keys = export_formats.get(export_format, [])
+
+        for opt_key in opt_keys:
+            check_args = dict(opt_key.items() + {'d': kwargs}.items())
+            pytan.utils.check_dictkey(**check_args)
+
+        # filter out the kwargs that are specific to this obj type and format type
+        format_kwargs = {
+            k: v for k, v in kwargs.iteritems()
+            if k in [a['key'] for a in opt_keys]
+        }
+
+        # run the handler that is specific to this objtype, if it exists
+        class_method_str = '_export_class_' + type_match[0]
+        class_handler = getattr(self, class_method_str, '')
+
+        if class_handler:
+            result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
+        else:
+            err = "{!r} not supported by Handler!".format
+            raise pytan.exceptions.HandlerError(err(objclassname))
+
+        return result
+
+    def export_to_report_file(self, obj, export_format='csv', **kwargs):
+        """Exports a python API object to a file
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+            * TaniumPy object to export
+        export_format : str, optional
+            * default: 'csv'
+            * the format to export `obj` to, one of: {'csv', 'xml', 'json'}
+        header_sort : list of str, bool, optional
+            * default: True
+            * for `export_format` csv and `obj` types :class:`taniumpy.object_types.base.BaseType` or :class:`taniumpy.object_types.result_set.ResultSet`
+            * True: sort the headers automatically
+            * False: do not sort the headers at all
+            * list of str: sort the headers returned by priority based on provided list
+        header_add_sensor : bool, optional
+            * default: False
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * False: do not prefix the headers with the associated sensor name for each column
+            * True: prefix the headers with the associated sensor name for each column
+        header_add_type : bool, optional
+            * default: False
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * False: do not postfix the headers with the result type for each column
+            * True: postfix the headers with the result type for each column
+        expand_grouped_columns : bool, optional
+            * default: False
+            * for `export_format` csv and `obj` type :class:`taniumpy.object_types.result_set.ResultSet`
+            * False: do not expand multiline row entries into their own rows
+            * True: expand multiline row entries into their own rows
+        explode_json_string_values : bool, optional
+            * default: False
+            * for `export_format` json or csv and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * False: do not explode JSON strings in object attributes into their own object attributes
+            * True: explode JSON strings in object attributes into their own object attributes
+        minimal : bool, optional
+            * default: False
+            * for `export_format` xml and `obj` type :class:`taniumpy.object_types.base.BaseType`
+            * False: include empty attributes in XML output
+            * True: do not include empty attributes in XML output
+        report_file: str, optional
+            * default: None
+            * filename to save report as, will be automatically generated if not supplied
+        report_dir: str, optional
+            * default: None
+            * directory to save report in, will use current working directory if not supplied
+        prefix: str, optional
+            * default: ''
+            * prefix to add to `report_file`
+        postfix: str, optional
+            * default: ''
+            * postfix to add to `report_file`
+
+        Returns
+        -------
+        report_path, result : tuple
+            * report_path : str, the full path to the file created with contents of `result`
+            * result : str, the contents written to report_path
+
+        See Also
+        --------
+        :func:`pytan.handler.Handler.export_obj` : method that performs the actual work to do the exporting
+        :func:`pytan.handler.Handler.create_report_file` : method that performs the actual work to write the report file
+
+        Notes
+        -----
+        When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        report_file = kwargs.get('report_file', None)
+
+        if not report_file:
+            report_file = "{}_{}.{}".format(
+                type(obj).__name__, pytan.utils.get_now(), export_format,
+            )
+            m = "No report file name supplied, generated name: {!r}".format
+            self.mylog.debug(m(report_file))
+
+        clean_keys = ['obj', 'export_format', 'contents', 'report_file']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # get the results of exporting the object
+        contents = self.export_obj(obj=obj, export_format=export_format, **clean_kwargs)
+        report_path = self.create_report_file(
+            report_file=report_file, contents=contents, **clean_kwargs
+        )
+        return report_path, contents
+
+    def create_report_file(self, contents, report_file=None, **kwargs):
+        """Exports a python API object to a file
+
+        Parameters
+        ----------
+        contents : str
+            * contents to write to `report_file`
+        report_file : str, optional
+            * filename to save report as
+        report_dir : str, optional
+            * default: None
+            * directory to save report in, will use current working directory if not supplied
+        prefix : str, optional
+            * default: ''
+            * prefix to add to `report_file`
+        postfix : str, optional
+            * default: ''
+            * postfix to add to `report_file`
+
+        Returns
+        -------
+        report_path : str
+            * the full path to the file created with `contents`
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        if report_file is None:
+            report_file = 'pytan_report_{}.txt'.format(pytan.utils.get_now())
+
+        # try to get report_dir from the report_file
+        report_dir = os.path.dirname(report_file)
+
+        # try to get report_dir from kwargs
+        if not report_dir:
+            report_dir = kwargs.get('report_dir', None)
+
+        # just use current working dir
+        if not report_dir:
+            report_dir = os.getcwd()
+
+        # make report_dir if it doesnt exist
+        if not os.path.isdir(report_dir):
+            os.makedirs(report_dir)
+
+        # remove any path from report_file
+        report_file = os.path.basename(report_file)
+
+        # if prefix/postfix, add to report_file
+        prefix = kwargs.get('prefix', '')
+        postfix = kwargs.get('postfix', '')
+        report_file, report_ext = os.path.splitext(report_file)
+        report_file = '{}{}{}{}'.format(prefix, report_file, postfix, report_ext)
+
+        # join the report_dir and report_file to come up with report_path
+        report_path = os.path.join(report_dir, report_file)
+
+        with open(report_path, 'wb') as fd:
+            fd.write(contents)
+
+        m = "Report file {!r} written with {} bytes".format
+        self.mylog.info(m(report_path, len(contents)))
+        return report_path
+
+    # PLUGINS
+    def run_plugin(self, obj, **kwargs):
+        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
+
+        Parameters
+        ----------
+        obj : :class:`taniumpy.object_types.plugin.Plugin`
+            * Plugin object to run
+
+        Returns
+        -------
+        plugin_result, sql_zipped : tuple
+            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        # run the plugin
+        h = "Issue a RunPlugin run a plugin and get results back"
+        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
+
+        clean_keys = ['obj', 'p']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
+
+        # zip up the sql results into a list of python dictionaries
+        sql_zipped = pytan.utils.plugin_zip(p=plugin_result)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    # DASHBOARD PLUGINS
+    def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
+
+        Parameters
+        ----------
+        name : str
+            * name of dashboard to create
+        text : str, optional
+            * default: ''
+            * text for this dashboard
+        group : str, optional
+            * default: ''
+            * group name for this dashboard
+        public_flag : bool, optional
+            * default: True
+            * True: make this dashboard public
+            * False: do not make this dashboard public
+
+        Returns
+        -------
+        plugin_result, sql_zipped : tuple
+            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+
+        # get the ID for the group if a name was passed in
+        if group:
+            h = "Issue a GetObject to find the ID of a group name"
+            group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
+        else:
+            group_id = 0
+
+        if public_flag:
+            public_flag = 1
+        else:
+            public_flag = 0
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'CreateDashboard'
+        plugin.bundle = 'Dashboards'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'dash_name'
+        arg1.type = 'String'
+        arg1.value = name
+        plugin.arguments.append(arg1)
+
+        arg2 = taniumpy.PluginArgument()
+        arg2.name = 'dash_text'
+        arg2.type = 'String'
+        arg2.value = text
+        plugin.arguments.append(arg2)
+
+        arg3 = taniumpy.PluginArgument()
+        arg3.name = 'group_id'
+        arg3.type = 'Number'
+        arg3.value = group_id
+        plugin.arguments.append(arg3)
+
+        arg4 = taniumpy.PluginArgument()
+        arg4.name = 'public_flag'
+        arg4.type = 'Number'
+        arg4.value = public_flag
+        plugin.arguments.append(arg4)
+
+        arg5 = taniumpy.PluginArgument()
+        arg5.name = 'sqid_xml'
+        arg5.type = 'String'
+        arg5.value = ''
+        plugin.arguments.append(arg5)
+
+        # run the plugin
+        h = "Issue a RunPlugin for the CreateDashboard plugin to create a dashboard"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def delete_dashboard(self, name, **kwargs):
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
+
+        Parameters
+        ----------
+        name : str
+            * name of dashboard to delete
+
+        Returns
+        -------
+        plugin_result, sql_zipped : tuple
+            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        clean_keys = ['obj', 'name', 'pytan_help']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'DeleteDashboards'
+        plugin.bundle = 'Dashboards'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'dashboard_ids'
+        arg1.type = 'Number_Set'
+        arg1.value = ','.join([x['id'] for x in dashboards_to_del])
+        plugin.arguments.append(arg1)
+
+        # run the plugin
+        h = "Issue a RunPlugin for the DeleteDashboards plugin to delete a dashboard"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def get_dashboards(self, name='', **kwargs):
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
+
+        Parameters
+        ----------
+        name : str, optional
+            * default: ''
+            * name of dashboard to get, if empty will return all dashboards
+
+        Returns
+        -------
+        plugin_result, sql_zipped : tuple
+            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        """
+        self._debug_locals(sys._getframe().f_code.co_name, locals())
+
+        clean_keys = ['obj', 'name', 'pytan_help']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'GetDashboards'
+        plugin.bundle = 'Dashboards'
+
+        # run the plugin
+        h = "Issue a RunPlugin for the GetDashboards plugin to get all dashboards"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # if name specified, filter the list of dicts for matching name
+        if name:
+            sql_zipped = [x for x in sql_zipped if x['name'] == name]
+            if not sql_zipped:
+                m = "No dashboards found that match name: {!r}".format
+                raise pytan.exceptions.NotFoundError(m(name))
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    # USER GROUP PLUGINS
+    def create_usergroup(self, name, **kwargs):
+        """Document me later.
+        name
+        """
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'AddUserGroup'
+        plugin.bundle = 'UserGroups'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'user_group_name'
+        arg1.type = 'String'
+        arg1.value = name
+        plugin.arguments.append(arg1)
+
+        # run the plugin
+        h = "Issue a RunPlugin for the AddUserGroup plugin to create a user group"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def delete_usergroup(self, name, **kwargs):
+        """Document me later.
+        name
+        """
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+
+        usergroup_to_del = self.get_usergroups(name=name, **clean_kwargs)[1][0]
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'DeleteUserGroup'
+        plugin.bundle = 'UserGroups'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'user_group_id'
+        arg1.type = 'Number'
+        arg1.value = usergroup_to_del['id']
+        plugin.arguments.append(arg1)
+
+        # run the plugin
+        h = "Issue a RunPlugin for the AddUserGroup plugin to delete a usergroup"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def get_usergroups(self, name='', **kwargs):
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetUserGroups plugin and parse the response
+
+        Parameters
+        ----------
+        name : str, optional
+            * default: ''
+            * name of user group to get, if empty will return all user groups
+
+        Returns
+        -------
+        plugin_result, sql_zipped : tuple
+            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        """
+        clean_keys = ['obj', 'name', 'pytan_help']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'GetUserGroups'
+        plugin.bundle = 'UserGroups'
+
+        # run the plugin
+        h = "Issue a RunPlugin for the GetUserGroups plugin to get all user groups"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # if name specified, filter the list of dicts for matching name
+        if name:
+            sql_zipped = [x for x in sql_zipped if x['name'] == name]
+            if not sql_zipped:
+                m = "No user groups found that match name: {!r}".format
+                raise pytan.exceptions.NotFoundError(m(name))
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def add_user_usergroup(self, name, users=[], **kwargs):
+        """Document me later.
+        name
+        users = list of names of users to add to usergroup
+        """
+        user_xml = ''
+        id_tmp = "<user>\n<id>{}</id>\n</user>".format
+        wrap_tmp = "<users>\n{}\n</users>".format
+
+        if not users:
+            err = "Must supply list of user names to add to usergroup!".form
+            raise pytan.exceptions.HandlerError(err())
+
+        users_in_group = self.get_usergroups(name)[1]
+
+        ug_id = users_in_group[0]['id']
+        ug_name = users_in_group[0]['name']
+        new_user_ids = [int(x['user_id']) for x in users_in_group if x['user_id'] not in [None, 'None']]
+
+        user_objs = [self.get('user', name=u)[0] for u in users]
+
+        for x in user_objs:
+            new_user_ids.append(int(x.id))
+
+        new_user_ids = list(set([int(x) for x in new_user_ids]))
+
+        if new_user_ids:
+            user_xml = '\n'.join([id_tmp(x) for x in new_user_ids])
+            user_xml = wrap_tmp(user_xml)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'UpdateUserGroup'
+        plugin.bundle = 'UserGroups'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'user_group_id'
+        arg1.type = 'Number'
+        arg1.value = ug_id
+        plugin.arguments.append(arg1)
+
+        arg2 = taniumpy.PluginArgument()
+        arg2.name = 'user_group_name'
+        arg2.type = 'String'
+        arg2.value = ug_name
+        plugin.arguments.append(arg2)
+
+        arg3 = taniumpy.PluginArgument()
+        arg3.name = 'user_xml'
+        arg3.type = 'String'
+        arg3.value = user_xml
+        plugin.arguments.append(arg3)
+
+        # run the plugin
+        kwargs['pytan_help'] = "Issue a RunPlugin for the UpdateUserGroup plugin to update a User Group"
+        kwargs['obj'] = plugin
+        plugin_result, sql_zipped = self.run_plugin(**kwargs)
+
+        return sql_zipped
+
+    def remove_user_usergroup(self, name, users=[], **kwargs):
+        """Document me later.
+        name
+        users = list of names of users to remove from usergroup
+        """
+        user_xml = ''
+        id_tmp = "<user>\n<id>{}</id>\n</user>".format
+        wrap_tmp = "<users>\n{}\n</users>".format
+
+        if not users:
+            err = "Must supply list of user names to add to usergroup!".form
+            raise pytan.exceptions.HandlerError(err())
+
+        users_in_group = self.get_usergroups(name)[1]
+
+        ug_id = users_in_group[0]['id']
+        ug_name = users_in_group[0]['name']
+        new_user_ids = [int(x['user_id']) for x in users_in_group if x['user_id'] not in [None, 'None']]
+
+        user_objs = [self.get('user', name=u)[0] for u in users]
+        remove_ids = [int(x.id) for x in user_objs]
+
+        new_user_ids = list(set([int(x) for x in new_user_ids if x not in remove_ids]))
+
+        if new_user_ids:
+            user_xml = '\n'.join([id_tmp(x) for x in new_user_ids])
+            user_xml = wrap_tmp(user_xml)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'UpdateUserGroup'
+        plugin.bundle = 'UserGroups'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'user_group_id'
+        arg1.type = 'Number'
+        arg1.value = ug_id
+        plugin.arguments.append(arg1)
+
+        arg2 = taniumpy.PluginArgument()
+        arg2.name = 'user_group_name'
+        arg2.type = 'String'
+        arg2.value = ug_name
+        plugin.arguments.append(arg2)
+
+        arg3 = taniumpy.PluginArgument()
+        arg3.name = 'user_xml'
+        arg3.type = 'String'
+        arg3.value = user_xml
+        plugin.arguments.append(arg3)
+
+        # run the plugin
+        kwargs['pytan_help'] = "Issue a RunPlugin for the UpdateUserGroup plugin to update a User Group"
+        kwargs['obj'] = plugin
+        plugin_result, sql_zipped = self.run_plugin(**kwargs)
+
+        return sql_zipped
+
+    # ACTION GROUP PLUGINS
+    def create_actiongroup(self, name, targeting=[], visibility='all', combine='and',
+                           usergroups=[], **kwargs):
+        """Document me later.
+        name
+        targeting=group names
+        visibility=admin, all, usergroups
+        combine=and, or
+        usergroups=user group names for visibility=usergroups
+
+        v=handler.create_actiongroup('test 1')
+        v=handler.create_actiongroup('test 2', visibility='all')
+        v=handler.create_actiongroup('test 3', visibility='admin')
+        v=handler.create_actiongroup('test 4', targeting=['T machines'])
+        v=handler.create_actiongroup('test 5', targeting=['T machines'], visibility='usergroups', usergroups=['test1'])
+
+        """
+        user_group_xml = ''
+        id_tmp = "<user_group>\n<id>{}</id>\n</user_group>".format
+        wrap_tmp = "<user_groups>\n{}\n</user_groups>".format
+
+        if visibility == 'admin':
+            public_flag = 0
+        elif visibility == 'all':
+            public_flag = 1
+        elif visibility == 'usergroups':
+            public_flag = 0
+            user_group_ids = [self.get_usergroups(x)[1][0]['id'] for x in usergroups]
+            user_group_xml = '\n'.join([id_tmp(x) for x in user_group_ids])
+            user_group_xml = wrap_tmp(user_group_xml)
+        else:
+            err = "{} is not a valid visibilty option! Must be one of: admin, all, usergroups".format
+            raise pytan.exceptions.HandlerError(err(visibility))
+
+        if combine == 'and':
+            and_flag = 1
+        elif combine == 'or':
+            and_flag = 0
+        else:
+            err = "{} is not a valid combine option! Must be one of: and, or".format
+            raise pytan.exceptions.HandlerError(err(combine))
+
+        add_group_obj = taniumpy.Group()
+        add_group_obj.name = name
+        add_group_obj.type = 1
+        add_group_obj.and_flag = and_flag
+
+        if targeting:
+            sub_groups = taniumpy.GroupList()
+            for x in targeting:
+                n = self.get('group', name=x)
+                sub_groups.append(n[0])
+            add_group_obj.sub_groups = sub_groups
+
+        kwargs['pytan_help'] = "Issue an AddObject to add a Group object"
+        kwargs['obj'] = add_group_obj
+        group_obj = self._add(**kwargs)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'AddActionGroup'
+        plugin.bundle = 'GroupFilter'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'group_id'
+        arg1.type = 'Number'
+        arg1.value = group_obj.id
+        plugin.arguments.append(arg1)
+
+        arg2 = taniumpy.PluginArgument()
+        arg2.name = 'public_flag'
+        arg2.type = 'Number'
+        arg2.value = public_flag
+        plugin.arguments.append(arg2)
+
+        arg3 = taniumpy.PluginArgument()
+        arg3.name = 'user_group_xml'
+        arg3.type = 'String'
+        arg3.value = user_group_xml
+        plugin.arguments.append(arg3)
+
+        # run the plugin
+        kwargs['pytan_help'] = "Issue a RunPlugin for the AddActionGroup plugin to create an Action Group"
+        kwargs['obj'] = plugin
+        plugin_result, sql_zipped = self.run_plugin(**kwargs)
+
+        return group_obj
+
+    def delete_actiongroup(self, name, **kwargs):
+        """Document me later.
+        name
+        """
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+
+        actiongroup_to_del = self.get_actiongroups(name=name, **clean_kwargs)[1][0]
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'DeleteActionGroup'
+        plugin.bundle = 'GroupFilter'
+
+        # create the plugin arguments
+        plugin.arguments = taniumpy.PluginArgumentList()
+
+        arg1 = taniumpy.PluginArgument()
+        arg1.name = 'new_group_id'
+        arg1.type = 'Number'
+        arg1.value = 0
+        plugin.arguments.append(arg1)
+
+        arg2 = taniumpy.PluginArgument()
+        arg2.name = 'old_group_id'
+        arg2.type = 'Number'
+        arg2.value = actiongroup_to_del['id']
+        plugin.arguments.append(arg2)
+
+        # run the plugin
+        h = "Issue a RunPlugin for the AddUserGroup plugin to delete a user group"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
+
+    def get_actiongroups(self, name='', **kwargs):
+        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetActionGroups plugin and parse the response
+
+        Parameters
+        ----------
+        name : str, optional
+            * default: ''
+            * name of action group to get, if empty will return all action groups
+
+        Returns
+        -------
+        plugin_result, sql_zipped : tuple
+            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
+            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        """
+        clean_keys = ['obj', 'name', 'pytan_help']
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # create the plugin parent
+        plugin = taniumpy.Plugin()
+        plugin.name = 'GetActionGroups'
+        plugin.bundle = 'GroupFilter'
+
+        # run the plugin
+        h = "Issue a RunPlugin for the GetActionGroups plugin to get all action groups"
+        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+
+        # if name specified, filter the list of dicts for matching name
+        if name:
+            sql_zipped = [x for x in sql_zipped if x['name'] == name]
+            if not sql_zipped:
+                m = "No action groups found that match name: {!r}".format
+                raise pytan.exceptions.NotFoundError(m(name))
+
+        # return the plugin result and the python dictionary of results
+        return plugin_result, sql_zipped
 
     # BEGIN PRIVATE METHODS
     def _add(self, obj, **kwargs):
@@ -2978,7 +3277,7 @@ class Handler(object):
         result = pytan.utils.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
-    def _deploy_action(self, run=False, get_results=True, **kwargs):
+    def _deploy_action(self, run=False, get_results=True, **kwargs):  # noqa
         """Deploy an action and get the results back
 
         This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action` instead.
@@ -3356,6 +3655,145 @@ class Handler(object):
             ret['action_result_map'] = ret['poller_object'].result_map
 
         return ret
+
+    def _create_saved_question(self, name, **kwargs):
+        """Document me later."""
+        pytan.utils.check_for_help(kwargs=kwargs)
+
+        clean_keys = [
+            'defs',
+            'd',
+            'obj',
+            'objtype',
+            'key',
+            'default',
+            'defname',
+            'deftypes',
+            'empty_ok',
+            'id',
+            'pytan_help',
+            'handler',
+            'sse',
+        ]
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+
+        # get our defs from kwargs and churn them into what we want
+        sensor_defs = pytan.utils.parse_defs(
+            defname='sensor_defs',
+            deftypes=['list()', 'str()', 'dict()'],
+            strconv='name',
+            empty_ok=True,
+            **clean_kwargs
+        )
+
+        q_filter_defs = pytan.utils.parse_defs(
+            defname='question_filter_defs',
+            deftypes=['list()', 'dict()'],
+            empty_ok=True,
+            **clean_kwargs
+        )
+
+        q_option_defs = pytan.utils.parse_defs(
+            defname='question_option_defs',
+            deftypes=['dict()'],
+            empty_ok=True,
+            **clean_kwargs
+        )
+
+        # do basic validation of our defs
+        pytan.utils.val_sensor_defs(sensor_defs=sensor_defs)
+        pytan.utils.val_q_filter_defs(q_filter_defs=q_filter_defs)
+
+        # get the sensor objects that are in our defs and add them as d['sensor_obj']
+        h = (
+            "Issue a GetObject to get the full object of a sensor for inclusion in a "
+            "Select for a Question"
+        )
+        sensor_defs = self._get_sensor_defs(defs=sensor_defs, pytan_help=h, **clean_kwargs)
+        h = (
+            "Issue a GetObject to get the full object of a sensor for inclusion in a "
+            "Group for a Question"
+        )
+        q_filter_defs = self._get_sensor_defs(defs=q_filter_defs, pytan_help=h, **clean_kwargs)
+
+        # build a SelectList object from our sensor_defs
+        selectlist_obj = pytan.utils.build_selectlist_obj(sensor_defs=sensor_defs)
+
+        # build a Group object from our question filters/options
+        group_obj = pytan.utils.build_group_obj(
+            q_filter_defs=q_filter_defs, q_option_defs=q_option_defs,
+        )
+
+        # build a Question object from selectlist_obj and group_obj
+        question_obj = pytan.utils.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
+
+        sq_obj = taniumpy.SavedQuestion()
+        sq_obj.question = question_obj
+        sq_obj.name = name
+
+        sq_attrs = [
+            'archive_enabled_flag',
+            'expire_seconds',
+            'hidden_flag',
+            'issue_seconds',
+            'issue_seconds_never_flag',
+            'keep_seconds',
+            'public_flag',
+            'row_count_flag',
+            'sort_column',
+        ]
+
+        [setattr(sq_obj, a, kwargs.pop(a)) for a in sq_attrs if a in kwargs]
+
+        '''
+        action_tracking_flag
+            GUI DEFAULT: 0
+        archive_enabled_flag
+            GUI DEFAULT: 0
+            GUI CONTROL: History
+            0 = archive disabled
+            1 = archive enabled
+        expire_seconds
+            GUI DEFAULT: 600
+        hidden_flag
+            GUI DEFAULT: 0
+        index
+            GUI DEFAULT: NONE
+        issue_seconds
+            GUI DEFAULT: 120
+        issue_seconds_never_flag
+            GUI DEFAULT: 0
+        keep_seconds
+            GUI DEFAULT: 0
+            GUI CONTROL: Reissue this question every
+            NOTE: GUI DEFAULT is 3600 when History is checked
+        metadata
+            GUI DEFAULT: NONE
+            NOTE: TConsole.SavedQuestion.RecentOnlyFlag = 1 is set when History is checked
+        packages
+            GUI DEFAULT: Empty PackageSpecList
+            NOTE: List of packages to allow a user to select against this SQ even if they do not have package author capabilities
+        public_flag
+            GUI DEFAULT: 0
+            GUI CONTROL: Visibility
+            0 = Restrict this question to only owner and administrators
+            1 = everyone can see it
+        row_count_flag
+            GUI DEFAULT: 0
+            GUI CONTROL: Archive aggregated results / Archive complete results
+            0 = store full data in sq (Archive complete results)
+            1 = store only row counts in sq (Archive aggregated results)
+        sort_column
+            GUI DEFAULT: 0
+        '''
+
+        # add our Question and get a Question ID back
+        h = "Issue an AddObject to add a Saved Question object"
+        sq_obj = self._add(obj=sq_obj, pytan_help=h, **clean_kwargs)
+
+        m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
+        self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
+        return sq_obj
 
     def _ask_manual(self, get_results=True, **kwargs):
         """Ask a manual question using definitions and get the results back
