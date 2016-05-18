@@ -114,6 +114,16 @@ class Worker(base.Base):
             help='Print a list of all valid sensor names, their categories, their platforms, and their parameters (does not run sensors)',
         )
 
+    def get_result(self):
+        print("starting tsat")
+        try:
+            tsatworker = TsatWorker(parser=parser, handler=handler, args=args)
+            tsatworker.start()
+        except Exception as e:
+            traceback.print_exc()
+            print("\nError occurred: {}").format(e)
+            sys.exit(100)
+
 
 class TsatWorker(object):
 
@@ -720,7 +730,7 @@ class TsatWorker(object):
             self.mylog.debug("_ask_manual args:\n{}".format(pprint.pformat(q_args)))
 
         try:
-            ret = handler._ask_manual(**q_args)
+            ret = handler.ask_manual(**q_args)
             report_info['msg'] = "Successfully asked"
             report_info['question'] = ret['question_object'].query_text
             report_info['question_id'] = ret['question_object'].id
@@ -796,7 +806,7 @@ class TsatWorker(object):
             self.mylog.debug("export_to_report_file args:\n{}".format(pprint.pformat(p_args)))
 
         try:
-            report_file, result = handler.export_to_report_file(**e_args)
+            report_file, result = handler.export(**e_args)
             report_info['report_file'] = report_file
             m = "Successfully asked, polled, retrieved, and exported answers ({} rows)".format
             report_info['msg'] = m(rows_returned)
@@ -838,13 +848,3 @@ class TsatWorker(object):
         self.mylog.info(m(self.all_end_time))
         m = "TSAT elapsed time: {}".format
         self.mylog.info(m(self.all_elapsed_time))
-
-
-def process_tsat_args(parser, handler, args):
-    try:
-        tsatworker = TsatWorker(parser=parser, handler=handler, args=args)
-        tsatworker.start()
-    except Exception as e:
-        traceback.print_exc()
-        print "\nError occurred: {}".format(e)
-        sys.exit(100)
