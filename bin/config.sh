@@ -9,11 +9,6 @@ fi
 
 spew(){ test -n "${SHELL_DEBUG}" && echo "$@";}
 
-if [ -z "${my_dir}" ]; then
-    echo "Need 'my_dir' defined to know where config.sh lives"
-    exit 99
-fi
-
 parent_dirname=`dirname ${my_dir}`
 parent_dir=`cd ${parent_dirname} ; pwd`
 pytan_pkg_dir=`cd ${parent_dir}/pytan ; pwd`

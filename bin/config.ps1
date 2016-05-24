@@ -1,8 +1,3 @@
-if (!$my_dir){
-    write-host "Need 'my_dir' defined to know where config.ps1 lives"
-    exit(99)
-}
-
 $PYTHON='python'
 #$PYTHON='python3'
 
