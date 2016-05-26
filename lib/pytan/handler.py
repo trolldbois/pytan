@@ -541,63 +541,7 @@ class Handler(object):
         return ret
 
     def create_saved_question(self, name, **kwargs):
-        """Ask a manual question using human strings and get the results back
-
-        This method takes a string or list of strings and parses them into
-        their corresponding definitions needed by :func:`_ask_manual`
-
-        Parameters
-        ----------
-        sensors : str, list of str
-            * default: []
-            * sensors (columns) to include in question
-        question_filters : str, list of str, optional
-            * default: []
-            * filters that apply to the whole question
-        question_options : str, list of str, optional
-            * default: []
-            * options that apply to the whole question
-        get_results : bool, optional
-            * default: True
-            * True: wait for result completion after asking question
-            * False: just ask the question and return it in result
-        sensors_help : bool, optional
-            * default: False
-            * False: do not print the help string for sensors
-            * True: print the help string for sensors and exit
-        filters_help : bool, optional
-            * default: False
-            * False: do not print the help string for filters
-            * True: print the help string for filters and exit
-        options_help : bool, optional
-            * default: False
-            * False: do not print the help string for options
-            * True: print the help string for options and exit
-        polling_secs : int, optional
-            * default: 5
-            * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
-        complete_pct : int/float, optional
-            * default: 99
-            * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
-        override_timeout_secs : int, optional
-            * default: 0
-            * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
-        callbacks : dict, optional
-            * default: {}
-            * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
-        override_estimated_total : int, optional
-            * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
-        force_passed_done_count : int, optional
-            * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
-        """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
+        """Doc me later."""
         pytan.utils.check_for_help(kwargs=kwargs)
 
         sensors = kwargs.get('sensors', [])
@@ -3770,9 +3714,11 @@ class Handler(object):
         metadata
             GUI DEFAULT: NONE
             NOTE: TConsole.SavedQuestion.RecentOnlyFlag = 1 is set when History is checked
+            !!NOT CODED FOR
         packages
             GUI DEFAULT: Empty PackageSpecList
             NOTE: List of packages to allow a user to select against this SQ even if they do not have package author capabilities
+            !!NOT CODED FOR
         public_flag
             GUI DEFAULT: 0
             GUI CONTROL: Visibility
@@ -3789,11 +3735,11 @@ class Handler(object):
 
         # add our Question and get a Question ID back
         h = "Issue an AddObject to add a Saved Question object"
-        sq_obj = self._add(obj=sq_obj, pytan_help=h, **clean_kwargs)
+        added_obj = self._add(obj=sq_obj, pytan_help=h, **clean_kwargs)
 
-        m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
-        self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
-        return sq_obj
+        m = "Saved Question Created, ID: {}, query text: {!r}".format
+        self.mylog.debug(m(added_obj.id, added_obj.question.query_text))
+        return added_obj
 
     def _ask_manual(self, get_results=True, **kwargs):
         """Ask a manual question using definitions and get the results back
