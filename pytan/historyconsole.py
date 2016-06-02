@@ -4,7 +4,7 @@ import atexit
 try:
     import readline
 except ImportError:
-    import pyreadline as readline
+    from pytan.winext import readline
 import rlcompleter  # noqa
 
 

@@ -1,5 +1,5 @@
-$PYTHON='python'
-#$PYTHON='python3'
+#$PYTHON='python'
+$PYTHON='python3'
 
 $parent_dir=(split-path -parent $my_dir)
 $pytan_ext_dir="$parent_dir\pytan\ext"
