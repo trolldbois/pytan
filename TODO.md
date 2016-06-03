@@ -14,6 +14,8 @@
 ## Shell_Objects
  * get_history_saved_question.py
  * create_*
+ * get_results*
+ * print_sensors (?)
 
 ## Handler
  * get history methods
