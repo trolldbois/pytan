@@ -1,5 +1,5 @@
+import pprint
 from . import base
-from .. import pretty
 
 
 class Worker(base.Base):
@@ -17,15 +17,14 @@ class Worker(base.Base):
     def get_response(self, kwargs):
         m = "++ Getting server info"
         print(m.format())
-        response = self.handler.session.get_server_info()
+        response = self.handler.SESSION.get_server_info()
         m = "++ Server info fetched successfully for {} sections"
         print(m.format(len(response['diags_flat'])))
 
         if kwargs['json']:
-            result = pretty.jsonify(response['diags_flat'])
+            print(response['diags_flat'])
         else:
-            result = pretty.pretty_dict(response['diags_flat'])
-        print(result)
+            pprint.pprint(response['diags_flat'])
 
         return response
 
