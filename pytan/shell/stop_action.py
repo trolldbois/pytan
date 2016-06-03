@@ -15,10 +15,10 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Stopping action with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        print(m.format(self.pf(kwargs)))
         response = self.handler.stop_action(**kwargs)
         m = "++ Action ID stopped successfully: {}"
-        print m.format(response)
+        print(m.format(response))
         return response
 
     def get_result(self):

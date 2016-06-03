@@ -15,9 +15,9 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Calling handler.session.logout with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        print(m.format(self.pf(kwargs)))
         response = self.handler.SESSION.logout(**kwargs)
-        print "++ Logout finished successfully"
+        print("++ Logout finished successfully")
         return response
 
     def get_result(self):

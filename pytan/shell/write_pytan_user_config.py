@@ -23,7 +23,7 @@ class Worker(base.Base):
         print m.format(self.pf(kwargs))
         response = self.handler.write_pytan_user_config(**kwargs)
         m = "PyTan User config file successfully written: {}"
-        print m.format(response)
+        print(m.format(response))
         return response
 
     def get_result(self):

@@ -39,16 +39,16 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Getting server info"
-        print m.format()
+        print(m.format())
         response = self.handler.session.get_server_info()
         m = "++ Server info fetched successfully for {} sections"
-        print m.format(len(response['diags_flat']))
+        print(m.format(len(response['diags_flat'])))
 
         if kwargs['json']:
             result = pretty.jsonify(response['diags_flat'])
         else:
             result = pretty.pretty_dict(response['diags_flat'])
-        print result
+        print(result)
 
         return response
 
@@ -83,17 +83,17 @@ def process_print_sensors_args(parser, handler, args):
     )
 
     real_sensors = filter_sourced_sensors(all_sensors)
-    print "Filtered out sourced sensors: {}".format(len(real_sensors))
+    print("Filtered out sourced sensors: {}".format(len(real_sensors)))
 
     filtered_sensors = filter_sensors(
         sensors=real_sensors, filter_platforms=args.platforms, filter_categories=args.categories,
     )
-    print "Filtered out sensors based on user filters: {}".format(len(filtered_sensors))
+    print("Filtered out sensors based on user filters: {}".format(len(filtered_sensors)))
 
     if args.json:
         for x in filtered_sensors:
             result = handler.export_obj(obj=x, export_format='json')
-            print "{}:\n{}".format(x, result)
+            print("{}:\n{}".format(x, result))
         sys.exit()
 
     for x in sorted(filtered_sensors, key=lambda x: x.category):
@@ -112,10 +112,10 @@ def process_print_sensors_args(parser, handler, args):
             continue
 
         desc = (x.description or '').replace('\n', ' ').strip()
-        print (
+        print(
             "\n  * Sensor Name: '{0.name}', Platforms: {1}, Category: {0.category}"
         ).format(x, ', '.join(platforms))
-        print "  * Description: {}".format(desc)
+        print("  * Description: {}".format(desc))
 
         if args.hide_params:
             continue
@@ -129,11 +129,10 @@ def process_print_sensors_args(parser, handler, args):
         ]
 
         for param in params:
-            print "  * Parameter '{}':".format(param['key'])
+            print("  * Parameter '{}':".format(param['key']))
             for k, v in sorted(param.iteritems()):
                 if k in skip_attrs:
                     continue
                 if not v:
                     continue
-                print "    - '{}': {}".format(k, v)
-
+                print("    - '{}': {}".format(k, v))

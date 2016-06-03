@@ -11,7 +11,7 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         response = self.handler.session_id
-        print "{}".format(response)
+        print("{}".format(response))
         return response
 
     def get_result(self):

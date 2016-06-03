@@ -48,19 +48,19 @@ class Worker(base.Base):
         grps = [self.GROUP_NAME]
         kwargs = self.get_parser_args(grps)
         m = "++ Deploying action with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        print(m.format(self.pf(kwargs)))
         response = self.handler.deploy_action(**kwargs)
 
         m = (
             "++ Deployed Action {action_object.name!r} ID: {action_object.id!r}\n"
             "++ Command used in Action: '{action_object.package_spec.command}'"
         )
-        print m.format(**response)
+        print(m.format(**response))
 
         if response['action_result_map']:
-            print "++ Deploy action progress results:"
+            print("++ Deploy action progress results:")
             for k, v in sorted(response['action_result_map'].iteritems()):
-                print "\n Total {}: {}".format(k, v['total'])
+                print("\n Total {}: {}".format(k, v['total']))
 
         return response
 

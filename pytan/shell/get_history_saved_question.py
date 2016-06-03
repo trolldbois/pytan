@@ -8,13 +8,11 @@ class Worker(base.Base):
     PREFIX = 'get_history_saved_question'
     NAME = 'get history of saved questions'
 
-    def pre_init(self):
-        self.OBJECT_STR = self.OBJECT_TYPE.replace('_', ' ').capitalize()
+    # def pre_init(self):
+    #     self.OBJECT_STR = self.OBJECT_TYPE.replace('_', ' ').capitalize()
 
     def setup(self):
-        self.add_report_opts()
-        self.add_get_opts()
-        self.grp = self.parser.add_argument_group(self.SECOND_GROUP_NAME)
+        self.grp = self.parser.add_argument_group(self.GROUP_NAME)
         self.grp.add_argument(
             '--empty',
             action='store_true', dest='empty', default=False, required=False,
@@ -30,6 +28,10 @@ class Worker(base.Base):
             action='store_true', dest='verbose', default=False, required=False,
             help='Print out verbose messages',
         )
+        self.add_help_opts()
+        self.add_export_results_opts()
+        self.add_report_opts()
+        self.grp_choice_results()
 
     def verbose(self, t):
         if self.args.verbose:
@@ -38,9 +40,9 @@ class Worker(base.Base):
     def get_result(self):
         q_kwargs = {'objtype': 'question', 'include_hidden_flag': 1}
         m = "-- Getting all questions with arguments:\n{}"
-        print m.format(self.pf(q_kwargs))
+        print(m.format(self.pf(q_kwargs)))
         all_questions = self.handler.get_all(**q_kwargs)
-        print "++ Found {} total questions".format(len(all_questions))
+        print("++ Found {} total questions".format(len(all_questions)))
 
         sq_ids = []
         sq_txt = ''
@@ -85,7 +87,7 @@ class Worker(base.Base):
 
         q_dicts = []
 
-        print "-- Filtering questions"
+        print("-- Filtering questions")
 
         for x in all_questions:
             if not self.args.all and getattr(x.saved_question, 'id', '') in sq_ids:
@@ -122,7 +124,7 @@ class Worker(base.Base):
         m = ' and '.join(m)
         f = "-- Filtered {} questions down to {}".format(len(all_questions), len(q_dicts))
         m = ' '.join([f, m])
-        print m
+        print(m)
 
         # turn the list of dicts into a CSV string
         q_csv = pretty.csvdictwriter(rows_list=q_dicts, headers=human_map)
@@ -133,5 +135,5 @@ class Worker(base.Base):
             report_dir=self.args.report_dir,
         )
 
-        print "++ Wrote {} bytes to report file: '{}'".format(len(q_csv), report_file)
+        print("++ Wrote {} bytes to report file: '{}'".format(len(q_csv), report_file))
         return all_questions, q_dicts, q_csv, report_file

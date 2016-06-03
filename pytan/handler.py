@@ -1148,7 +1148,7 @@ class Handler(object):
         report_path = os.path.join(report_dir, report_file)
 
         with open(report_path, 'wb') as fd:
-            fd.write(contents)
+            fd.write(contents.encode())
 
         return report_path
 

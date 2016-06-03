@@ -15,9 +15,9 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Approving saved action with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        print(m.format(self.pf(kwargs)))
         response = self.handler.approve_saved_action(**kwargs)
-        print "++ Saved Action ID approved successfully: {0.id!r}".format(response)
+        print("++ Saved Action ID approved successfully: {0.id!r}".format(response))
         return response
 
     def get_result(self):

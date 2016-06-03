@@ -1,10 +1,7 @@
 import os
 import code
 import atexit
-try:
-    import readline
-except ImportError:
-    from pytan.winext import readline
+import readline
 import rlcompleter  # noqa
 
 
