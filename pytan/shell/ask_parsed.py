@@ -14,12 +14,15 @@ class Worker(base.Base):
         self.grp.add_argument(
             '-q', '--question_text',
             required=True, action='store', default='', dest='question_text',
-            help='The question text you want the server to parse into a list of parsed results'
+            help='The question text you want the server to parse into a list '
+            'of parsed results'
         )
         self.grp.add_argument(
             '--picker',
             required=False, action='store', type=int, dest='picker',
-            help='The index number of the parsed results that correlates to the actual question you wish to run -- you can get this by running this once without it to print out a list of indexes'
+            help='The index number of the parsed results that correlates to '
+            'the actual question you wish to run -- you can get this by '
+            'running this once without it to print out a list of indexes'
         )
         self.add_help_opts()
         self.add_export_results_opts()
@@ -36,12 +39,15 @@ class Worker(base.Base):
         except:
             raise
         m = "++ Asked Question {} ID: {}"
-        print(m.format(response.question_object.query_text, response.question_object.id))
+        print(m.format(response.question_object.query_text,
+              response.question_object.id))
         return response
 
     def get_result(self):
-        grps = ['Export Results Options', 'Export Object Options', 'Report File Options']
+        grps = ['Export Results Options', 'Export Object Options',
+                'Report File Options']
         kwargs = self.get_parser_args(grps)
         response = self.get_question_response()
-        report_file, result = self.handler.export(response.question_results.result_set, **kwargs)
+        result_set = response.question_results.result_set
+        report_file, result = self.handler.export(result_set, **kwargs)
         return response, report_file, result

@@ -80,7 +80,8 @@ class Base(object):
             parents=[self.base],
             add_help=False,
         )
-        self.parser.add_argument('--version', action='version', version=__version__)
+        self.parser.add_argument('--version', action='version',
+                                 version=__version__)
         self.parser.add_argument('--help', action='help')
         self.parser.add_argument('--print_loglevels', action=LogLevelPrinter)
 
@@ -89,22 +90,26 @@ class Base(object):
         self.grp = self.parser.add_argument_group(name)
         self.grp.add_argument(
             '--sensors-help',
-            required=False, action='store_true', default=False, dest='sensors_help',
+            required=False, action='store_true', default=False,
+            dest='sensors_help',
             help='Get the full help for sensor strings and exit',
         )
         self.grp.add_argument(
             '--filters-help',
-            required=False, action='store_true', default=False, dest='filters_help',
+            required=False, action='store_true', default=False,
+            dest='filters_help',
             help='Get the full help for filter strings and exit',
         )
         self.grp.add_argument(
             '--options-help',
-            required=False, action='store_true', default=False, dest='options_help',
+            required=False, action='store_true', default=False,
+            dest='options_help',
             help='Get the full help for option strings and exit',
         )
         self.grp.add_argument(
             '--package-help',
-            required=False, action='store_true', default=False, dest='package_help',
+            required=False, action='store_true', default=False,
+            dest='package_help',
             help='Get the full help for package strings and exit',
         )
 
@@ -113,25 +118,31 @@ class Base(object):
         self.grp = self.parser.add_argument_group(name)
         self.grp.add_argument(
             '--file',
-            required=False, action='store', default=self.SUPPRESS, dest='report_file',
+            required=False, action='store', default=self.SUPPRESS,
+            dest='report_file',
             help='File to save report to (if not supplied, will be generated)',
         )
         self.grp.add_argument(
             '--dir',
-            required=False, action='store', default=self.SUPPRESS, dest='report_dir',
-            help='Directory to save report to (if not supplied, use current directory)',
+            required=False, action='store', default=self.SUPPRESS,
+            dest='report_dir',
+            help='Directory to save report to (if not supplied, use '
+            'current directory)',
         )
 
     def grp_choice_results(self):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-results',
-            action='store_false', dest='get_results', default=self.SUPPRESS, required=False,
-            help='Do not get the results, just add the object and return right away'
+            action='store_false', dest='get_results', default=self.SUPPRESS,
+            required=False,
+            help='Do not get the results, just add the object and return '
+            'right away'
         )
         choice.add_argument(
             '--results',
-            action='store_true', dest='get_results', default=self.SUPPRESS, required=False,
+            action='store_true', dest='get_results', default=self.SUPPRESS,
+            required=False,
             help='Wait until all results are in before returning (default)'
         )
 
@@ -151,27 +162,32 @@ class Base(object):
     def grp_sse_opts(self):
         self.grp.add_argument(
             '--sse_format',
-            required=False, action='store', default='xml_obj', dest='sse_format',
+            required=False, action='store', default='xml_obj',
+            dest='sse_format',
             choices=['csv', 'xml', 'xml_obj', 'cef'],
             help='If sse = True, perform server side export in this format',
         )
         self.grp.add_argument(
             '--leading',
             required=False, action='store', default='', dest='leading',
-            help='If sse = True, and sse_format = "cef", prepend each row with this text',
+            help='If sse = True, and sse_format = "cef", prepend each row '
+            'with this text',
         )
         self.grp.add_argument(
             '--trailing',
             required=False, action='store', default='', dest='trailing',
-            help='If sse = True, and sse_format = "cef", append each row with this text',
+            help='If sse = True, and sse_format = "cef", append each row '
+            'with this text',
         )
 
     def grp_format(self):
         self.grp.add_argument(
             '--export_format',
-            required=False, action='store', default='csv', dest='export_format',
+            required=False, action='store', default='csv',
+            dest='export_format',
             choices=['csv', 'xml', 'json'],
-            help='Export Format to create report file in, only used if sse = False',
+            help='Export Format to create report file in, only used if '
+            'sse = False',
         )
 
     def grp_choice_csv_sort(self):
@@ -183,13 +199,16 @@ class Base(object):
         )
         choice.add_argument(
             '--no-sort',
-            required=False, action='store_false', default=self.SUPPRESS, dest='header_sort',
+            required=False, action='store_false', default=self.SUPPRESS,
+            dest='header_sort',
             help='For export_format: csv, Do not sort the headers at all'
         )
         choice.add_argument(
             '--auto_sort',
-            required=False, action='store_true', default=self.SUPPRESS, dest='header_sort',
-            help='For export_format: csv, Sort the headers with a basic alphanumeric sort'
+            required=False, action='store_true', default=self.SUPPRESS,
+            dest='header_sort',
+            help='For export_format: csv, Sort the headers with a basic '
+            'alphanumeric sort'
         )
 
     def grp_choice_csv_sensor(self):
@@ -202,8 +221,10 @@ class Base(object):
         )
         choice.add_argument(
             '--no-add-sensor',
-            required=False, action='store_false', default=False, dest='header_add_sensor',
-            help='For export_format: csv, Do not add the sensor names to each header'
+            required=False, action='store_false', default=False,
+            dest='header_add_sensor',
+            help='For export_format: csv, Do not add the sensor names to '
+            'each header'
         )
 
     def grp_choice_csv_type(self):
@@ -216,8 +237,10 @@ class Base(object):
         )
         choice.add_argument(
             '--no-add-type',
-            required=False, action='store_false', default=False, dest='header_add_type',
-            help='For export_format: csv, Do not add the result type to each header'
+            required=False, action='store_false', default=False,
+            dest='header_add_type',
+            help='For export_format: csv, Do not add the result type to '
+            'each header'
         )
 
     def grp_choice_csv_expand(self):
@@ -226,19 +249,23 @@ class Base(object):
             '--expand-columns',
             required=False, action='store_true', default=self.SUPPRESS,
             dest='expand_grouped_columns',
-            help='For export_format: csv, Expand multi-line cells into their own rows'
+            help='For export_format: csv, Expand multi-line cells into their '
+            'own rows'
         )
         choice.add_argument(
             '--no-columns',
-            required=False, action='store_false', default=False, dest='expand_grouped_columns',
-            help='For export_format: csv, Do not add expand multi-line cells into their own rows'
+            required=False, action='store_false', default=False,
+            dest='expand_grouped_columns',
+            help='For export_format: csv, Do not add expand multi-line cells '
+            'into their own rows'
         )
 
     def grp_choice_explode(self):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-explode-json',
-            required=False, action='store_false', default=False, dest='explode_json_string_values',
+            required=False, action='store_false', default=False,
+            dest='explode_json_string_values',
             help='Do not explode any embedded JSON into their own columns'
         )
         choice.add_argument(
@@ -252,26 +279,32 @@ class Base(object):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-include_type',
-            required=False, action='store_false', default=self.SUPPRESS, dest='include_type',
-            help='Only for export_format json, Do not include SOAP type in JSON output'
+            required=False, action='store_false', default=self.SUPPRESS,
+            dest='include_type',
+            help='Only for export_format json, Do not include SOAP type in '
+            'JSON output'
         )
         choice.add_argument(
             '--include_type',
-            required=False, action='store_true', default=True, dest='include_type',
-            help='Only for export_format json, Include SOAP type in JSON output'
+            required=False, action='store_true', default=True,
+            dest='include_type',
+            help='Only for export_format json, Include SOAP type in '
+            'JSON output'
         )
 
     def grp_choice_minimal(self):
         choice = self.grp.add_mutually_exclusive_group()
         choice.add_argument(
             '--no-minimal',
-            required=False, action='store_false', dest='minimal', default=self.SUPPRESS,
+            required=False, action='store_false', dest='minimal',
+            default=self.SUPPRESS,
             help='Only for export_format xml, include empty attributes'
         )
         choice.add_argument(
             '--minimal',
             required=False, action='store_true', dest='minimal', default=True,
-            help='Only for export_format xml, Only include attributes that are not empty'
+            help='Only for export_format xml, Only include attributes that '
+            'are not empty'
         )
 
     def add_polling_opts(self):
@@ -284,37 +317,41 @@ class Base(object):
         )
         self.grp.add_argument(
             '--override_timeout_secs',
-            required=False, type=int, action='store', default=0, dest='override_timeout_secs',
-            help='If supplied and not 0, instead of using the question expiration timestamp as '
-            'the timeout, timeout after N seconds',
+            required=False, type=int, action='store', default=0,
+            dest='override_timeout_secs',
+            help='If supplied and not 0, instead of using the question '
+            'expiration timestamp as the timeout, timeout after N seconds',
         )
         self.grp.add_argument(
             '--polling_secs',
             required=False, type=int, action='store', dest='polling_secs',
             default=Q_POLLING_SECS,
-            help='Number of seconds to wait in between GetResultInfo loops while polling for '
-            'each question',
+            help='Number of seconds to wait in between GetResultInfo loops '
+            'while polling for each question',
         )
         self.grp.add_argument(
             '--override_estimated_total',
-            required=False, type=int, action='store', dest='override_estimated_total',
+            required=False, type=int, action='store',
+            dest='override_estimated_total',
             default=0,
-            help='If supplied and not 0, use this as the estimated total number of systems '
-            'instead of what Tanium Platform reports',
+            help='If supplied and not 0, use this as the estimated total '
+            'number of systems instead of what Tanium Platform reports',
         )
         self.grp.add_argument(
             '--force_passed_done_count',
-            required=False, type=int, action='store', dest='force_passed_done_count',
+            required=False, type=int, action='store',
+            dest='force_passed_done_count',
             default=0,
-            help='If supplied and not 0, when this number of systems have passed the right '
-            'hand side of the question (the question filter), consider the question complete '
-            'instead of relying the estimated total that Tanium Platform reports',
+            help='If supplied and not 0, when this number of systems have '
+            'passed the right hand side of the question (the question '
+            'filter), consider the question complete instead of relying '
+            'the estimated total that Tanium Platform reports',
         )
 
     def add_export_results_opts(self):
         name = 'Export Results Options'
         self.grp = self.parser.add_argument_group(name)
-        # TODO: figure out SSE (this branches in the doer method, not in export!)
+        # TODO: figure out SSE (this branches in the doer method, ! in export!)
         # self.grp_choice_sse()
         # self.grp_sse_opts()
         self.grp_format()
@@ -333,8 +370,10 @@ class Base(object):
         self.grp_choice_minimal()
 
     def _get_grp_opts(self, grps):
-        action_grps = [a for a in self.parser._action_groups if a.title in grps]
-        opts = list(set([a.dest for b in action_grps for a in b._group_actions]))
+        action_grps = [a for a in self.parser._action_groups
+                       if a.title in grps]
+        opts = list(set([a.dest for b in action_grps
+                    for a in b._group_actions]))
         return opts
 
     def version_check(self, version):
@@ -353,11 +392,13 @@ class Base(object):
 
     def get_parser_args(self, grps):
         parser_opts = self._get_grp_opts(grps=grps)
-        p_args = {k: getattr(self.args, k) for k in parser_opts if hasattr(self.args, k)}
+        p_args = {k: getattr(self.args, k) for k in parser_opts
+                  if hasattr(self.args, k)}
         return p_args
 
     def get_other_args(self, kwargs):
-        other_args = {a: b for a, b in self.args.__dict__.items() if a not in kwargs}
+        other_args = {a: b for a, b in self.args.__dict__.items()
+                      if a not in kwargs}
         return other_args
 
     def check(self):
@@ -489,7 +530,8 @@ class CreateJsonBase(GetBase):
         response = self.handler.create_from_json(**kwargs)
 
         for i in response:
-            print("++ Successfully created: {}, ID: {}".format(i, getattr(i, 'id', 'unknown')))
+            print("++ Successfully created: {}, ID: {}"
+                  .format(i, getattr(i, 'id', 'unknown')))
         return response
 
     def get_result(self):
@@ -527,7 +569,8 @@ class DeleteBase(GetBase):
 class GetResultsBase(GetBase):
     OBJECT_TYPE = ''
     NAME_TEMP = 'Get {} Results Options'
-    DESC_TEMP = 'Get the results of an object of type "{}" and export it to a file'
+    DESC_TEMP = 'Get the results of an object of type "{}" '
+    'and export it to a file'
     ACTION = 'export results'
     FILE_PREFIX = ''
 
@@ -537,7 +580,8 @@ class GetResultsBase(GetBase):
         self.add_report_opts()
 
     def get_result_data(self, obj):
-        grps = ['Export Results Options', 'Export Object Options', 'Get Results Options']
+        grps = ['Export Results Options', 'Export Object Options',
+                'Get Results Options']
         kwargs = self.get_parser_args(grps)
         kwargs['obj'] = obj
         m = "-- Getting result data with arguments:\n{}"

@@ -15,12 +15,14 @@ class Worker(base.Base):
         self.grp.add_argument(
             '--run',
             required=False, action='store_true', default=False, dest='run',
-            help='Run the deploy action, required to actually start the action',
+            help='Run the deploy action, required to actually start '
+            'the action',
         )
         self.grp.add_argument(
             '-k', '--package',
             required=True, action='store', default='', dest='package',
-            help='Package to deploy action with, optionally describe parameters',
+            help='Package to deploy action with, optionally describe '
+            'parameters',
         )
         self.grp.add_argument(
             '-f', '--filter',
@@ -34,12 +36,14 @@ class Worker(base.Base):
         )
         self.grp.add_argument(
             '--start_seconds_from_now',
-            required=False, action='store', type=int, default=None, dest='start_seconds_from_now',
+            required=False, action='store', type=int, default=None,
+            dest='start_seconds_from_now',
             help='Start the action N seconds from now',
         )
         self.grp.add_argument(
             '--expire_seconds',
-            required=False, action='store', type=int, default=None, dest='expire_seconds',
+            required=False, action='store', type=int, default=None,
+            dest='expire_seconds',
             help='Expire the action N seconds after it starts',
         )
         self.grp_choice_results()
@@ -52,7 +56,8 @@ class Worker(base.Base):
         response = self.handler.deploy_action(**kwargs)
 
         m = (
-            "++ Deployed Action {action_object.name!r} ID: {action_object.id!r}\n"
+            "++ Deployed Action {action_object.name!r} ID: "
+            "{action_object.id!r}\n"
             "++ Command used in Action: '{action_object.package_spec.command}'"
         )
         print(m.format(**response))

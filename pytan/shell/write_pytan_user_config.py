@@ -1,6 +1,7 @@
 from . import base
 from pytan.constants import PYTAN_USER_CONFIG
 
+
 class Worker(base.Base):
     DESCRIPTION = 'Creates a PyTan User Config file based on the current parameters'
     GROUP_NAME = 'Write PyTan User Config Options'
@@ -20,7 +21,7 @@ class Worker(base.Base):
 
     def get_response(self, kwargs):
         m = "++ Writing Pytan User Config with arguments:\n{}"
-        print m.format(self.pf(kwargs))
+        print(m.format(self.pf(kwargs)))
         response = self.handler.write_pytan_user_config(**kwargs)
         m = "PyTan User config file successfully written: {}"
         print(m.format(response))

@@ -26,7 +26,8 @@ class Worker(base.Base):
         kwargs = self.get_parser_args(grps)
         m = "++ Getting {} with search items:\n{}"
         print(m.format(self.NAME, self.pf(kwargs)))
-        response = self.handler.delete_saved_questions(really_delete=True, **kwargs)
+        response = self.handler.delete_saved_questions(really_delete=True,
+                                                       **kwargs)
         self.handler.MYLOG.debug("{}".format(response))
         return response
 

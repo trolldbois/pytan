@@ -10,8 +10,12 @@ class Worker(base.Base):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
         self.grp.add_argument(
             '--json',
-            required=False, default=False, action='store_true', dest='json',
-            help='Just print the raw JSON, instead of pretty printing the elements',
+            required=False,
+            default=False,
+            action='store_true',
+            dest='json',
+            help='Just print the raw JSON, instead of pretty printing '
+            'the elements',
         )
 
     def get_response(self, kwargs):

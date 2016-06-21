@@ -4,19 +4,25 @@ from .. import pretty
 
 
 class Worker(base.Base):
-    DESCRIPTION = 'Get sensors based on options and print their information out'
+    DESCRIPTION = 'Get sensors based on options and print their '
+    'information out'
     GROUP_NAME = 'Print Sensors Options'
 
     def setup(self):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
         self.grp.add_argument(
             '--json',
-            required=False, default=False, action='store_true', dest='json',
-            help='Just print the raw JSON, instead of pretty printing the elements',
+            required=False,
+            default=False,
+            action='store_true',
+            dest='json',
+            help='Just print the raw JSON, instead of pretty printing '
+            'the elements',
         )
         self.grp.add_argument(
             '--hide_params',
-            required=False, default=False, action='store_true', dest='hide_params',
+            required=False, default=False, action='store_true',
+            dest='hide_params',
             help='Do not show parameters in output',
         )
 
@@ -33,7 +39,8 @@ class Worker(base.Base):
         )
         self.grp.add_argument(
             '--params_only',
-            required=False, default=False, action='store_true', dest='params_only',
+            required=False, default=False, action='store_true',
+            dest='params_only',
             help='Only show sensors with parameters',
         )
 
@@ -60,7 +67,9 @@ class Worker(base.Base):
 
 
 def print_sensors(doc):
-    """Method to setup the base :class:`CustomArgParse` class for command line scripts using :func:`base_parser`, then add specific arguments for scripts that use :mod:`pytan` to print server info.
+    """Method to setup the base :class:`CustomArgParse` class for command line
+    scripts using :func:`base_parser`, then add specific arguments for
+    scripts that use :mod:`pytan` to print server info.
     """
     return parser
 
@@ -86,9 +95,11 @@ def process_print_sensors_args(parser, handler, args):
     print("Filtered out sourced sensors: {}".format(len(real_sensors)))
 
     filtered_sensors = filter_sensors(
-        sensors=real_sensors, filter_platforms=args.platforms, filter_categories=args.categories,
+        sensors=real_sensors, filter_platforms=args.platforms,
+        filter_categories=args.categories,
     )
-    print("Filtered out sensors based on user filters: {}".format(len(filtered_sensors)))
+    print("Filtered out sensors based on user filters: {}"
+          .format(len(filtered_sensors)))
 
     if args.json:
         for x in filtered_sensors:
@@ -104,7 +115,8 @@ def process_print_sensors_args(parser, handler, args):
             try:
                 param_def = json.loads(param_def)
             except:
-                print "Error loading JSON parameter definition {}".format(param_def)
+                print("Error loading JSON parameter definition {}"
+                      .format(param_def))
                 param_def = {}
 
         params = param_def.get('parameters', [])
@@ -113,7 +125,8 @@ def process_print_sensors_args(parser, handler, args):
 
         desc = (x.description or '').replace('\n', ' ').strip()
         print(
-            "\n  * Sensor Name: '{0.name}', Platforms: {1}, Category: {0.category}"
+            "\n  * Sensor Name: '{0.name}', Platforms: {1}, "
+            "Category: {0.category}"
         ).format(x, ', '.join(platforms))
         print("  * Description: {}".format(desc))
 

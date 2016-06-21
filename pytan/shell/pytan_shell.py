@@ -62,7 +62,8 @@ print("\\n ** Type 'shell_help()' to see methods and functions available")
 
 class Worker(base.Base):
     DESCRIPTION = (
-        'Provides an interactive python console with pytan\'s Handler available as handler'
+        'Provides an interactive python console with pytan\'s Handler '
+        'available as handler'
     )
     INTERACTIVE = True
 

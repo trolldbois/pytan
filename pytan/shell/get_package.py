@@ -31,7 +31,8 @@ class Worker(base.Base):
         return response
 
     def get_result(self):
-        grps = ['Export Results Options', 'Export Object Options', 'Report File Options']
+        grps = ['Export Results Options', 'Export Object Options',
+                'Report File Options']
         kwargs = self.get_parser_args(grps)
         response = self.get_response(kwargs)
         if response:

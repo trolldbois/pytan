@@ -2,7 +2,8 @@ from . import base
 
 
 class Worker(base.Base):
-    DESCRIPTION = 'Get white listed url information and export to a report file'
+    DESCRIPTION = 'Get white listed url information and export to a '
+    'report file'
     GROUP_NAME = 'Get White Listed URL Options'
     ACTION = 'url'
     PREFIX = 'get_whitelisted_url'
@@ -31,7 +32,8 @@ class Worker(base.Base):
         return response
 
     def get_result(self):
-        grps = ['Export Results Options', 'Export Object Options', 'Report File Options']
+        grps = ['Export Results Options', 'Export Object Options',
+                'Report File Options']
         kwargs = self.get_parser_args(grps)
         response = self.get_response(kwargs)
         if response:

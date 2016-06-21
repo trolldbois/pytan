@@ -9,8 +9,10 @@ class Worker(base.Base):
         self.grp = self.parser.add_argument_group(self.GROUP_NAME)
         self.grp.add_argument(
             '--all_session_ids',
-            required=False, action='store_true', dest='all_session_ids', default=False,
-            help='Close all open tanium sessions, instead of just the one supplied'
+            required=False, action='store_true', dest='all_session_ids',
+            default=False,
+            help='Close all open tanium sessions, instead of just the '
+            'one supplied'
         )
 
     def get_response(self, kwargs):
