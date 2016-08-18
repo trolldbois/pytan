@@ -605,6 +605,7 @@ def dehumanize_question_filters(question_filters):
     for question_filter in question_filters:
         s, parsed_selector = extract_selector(question_filter)
         s, parsed_filter = extract_filter(s)
+        s, parsed_params = extract_params(s)
         if not parsed_filter:
             err = "Filter {!r} is not a valid filter!".format
             raise pytan.exceptions.HumanParserError(err(question_filter))
