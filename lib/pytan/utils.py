@@ -613,6 +613,7 @@ def dehumanize_question_filters(question_filters):
         question_filter_def = {}
         question_filter_def[parsed_selector] = s
         question_filter_def['filter'] = parsed_filter
+        question_filter_def['params'] = parsed_params
 
         dbg = (
             'parsed string {!r} into filter definition:\n {}'
