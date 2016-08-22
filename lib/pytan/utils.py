@@ -1237,6 +1237,23 @@ def build_group_obj(q_filter_defs, q_option_defs):
     for d in q_filter_defs:
         # validate/map question filter into a Filter()
         filter_obj = get_filter_obj(d)
+        sensor_obj = d['sensor_obj']
+        user_params = d.get('params', {})
+        param_objlist = build_param_objlist(
+            obj=sensor_obj,
+            user_params=user_params,
+            delim='||',
+            derive_def=True,
+            empty_ok=True
+        )
+        # if a parameter is found, we will append it to the group filter object
+        if param_objlist:
+            filter_obj.sensor.name = d['sensor_obj'].name
+            filter_obj.sensor.source_id = d['sensor_obj'].id
+            filter_obj.sensor.parameter_definition = d['sensor_obj'].parameter_definition
+            filter_obj.sensor.parameters = param_objlist
+        else:
+            filter_obj.sensor.hash = d['sensor_obj'].hash
 
         # update filter_obj with any options
         filter_obj = apply_options_obj(q_option_defs, filter_obj, 'filter')
@@ -1511,6 +1528,8 @@ def get_filter_obj(sensor_def):
     filter_obj : :class:`taniumpy.object_types.filter.Filter`
         * Filter object created from `sensor_def`
     """
+
+    # getting sensor
     sensor_obj = sensor_def['sensor_obj']
 
     # create our basic filter that is needed no matter what
