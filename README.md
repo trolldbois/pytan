@@ -10,7 +10,7 @@
 
 <!-- /MarkdownTOC -->
 
-# PyTan 
+# PyTan
 
 ## What is it?
 
@@ -19,9 +19,9 @@ This is a set of packages and scripts that provide a simple way for interfacing 
 ## Versions
 
 * Current Stable Version: 
-  * **2.1.8 (Jan 19 2016)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.8)
+  * **2.1.9 (Aug 22 2016)** [Release Link](https://github.com/tanium/pytan/releases/tag/2.1.9)
 * Current Development Version:
-  * **2.1.9** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
+  * **2.2.0** [Develop Branch](https://github.com/tanium/pytan/tree/develop)
 * Next major version:
   * **4.0.0** [Turtle branch](https://github.com/tanium/pytan/tree/turtle)
 
