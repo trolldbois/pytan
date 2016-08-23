@@ -703,6 +703,8 @@ def extract_params(s):
     # given example (note escaped comma in params):
     # 'Folder Name Search with RegEx Match{dirname=Program Files,regex=\,*}' \
     # ', that is .*, opt:max_data_age:3600, opt:ignore_case'
+    if ':\\}' in s:
+        s = s.replace(':\\}', ':\\ }')
 
     params = re.findall(pytan.constants.PARAM_RE, s)
     # params=['dirname=Program Files,regex=\\,*']
@@ -730,11 +732,12 @@ def extract_params(s):
             raise pytan.exceptions.HumanParserError(err(sp, pytan.constants.PARAM_KEY_SPLIT))
         sp_key, sp_value = sp.split(pytan.constants.PARAM_KEY_SPLIT, 1)
         # remove any escapes for {}'s
+
         if '\\}' in sp_value:
             sp_value = sp_value.replace('\\}', '}')
         if '\\{' in sp_value:
             sp_value = sp_value.replace('\\{', '{')
-
+        print(sp_value)
         # sp_key = dirname
         # sp_value = Program Files
         parsed_params[sp_key] = sp_value
