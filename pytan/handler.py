@@ -22,7 +22,7 @@ from pytan.tanium_ng import (
     ActionList, ActionStop, BaseType, GroupList, PackageSpecList, ParseJob, QuestionList,
     SavedActionApproval, SavedActionList, SavedQuestionList, SensorList, SystemSettingList,
     SystemStatusList, UserList, UserRoleList, WhiteListedUrlList, Parameter, ParameterList,
-    get_params, ComputerSpecList, ComputerGroupSpec
+    get_params, ComputerSpecList, ComputerGroupSpec, ComputerGroup
 )
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
