@@ -17,12 +17,12 @@ class Worker(base.Base):
             help='Name of computer group to create'
         )
         self.grp.add_argument(
-            'a', '--add',
+            '-a', '--add',
             required=False, action='append', dest='adds', type=str, default=[],
             help='Name or IP of computer to add to computer group'
         )
-        self.group.add_argument(
-            '-f', '--file',
+        self.grp.add_argument(
+            '-l', '--list',
             required=False, action='store', dest='file', type=str, default='',
             help='Name of file containing names or IPs of computers to add to group. One per line.'
         )
@@ -41,8 +41,7 @@ class Worker(base.Base):
         return response
 
     def get_result(self):
-        grps = ['Export Results Options', 'Export Object Options',
-                'Report File Options']
+        grps = []
         kwargs = self.get_parser_args(grps)
         response = self.get_response(kwargs)
         if response:

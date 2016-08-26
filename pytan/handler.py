@@ -1002,7 +1002,7 @@ class Handler(object):
             fileadd = []
 
         all_adds = kwargs.get('adds') + fileadd
-        all_adds = (list(set(all_adds))
+        all_adds = (list(set(all_adds)))
 
         computer_specs = ComputerSpecList()
         for a in all_adds:
@@ -1017,8 +1017,6 @@ class Handler(object):
         computer_group.name = group_name
         computer_group.computer_specs = computer_specs
 
-        m = "Adding {}".format
-        print(m(computer_group))
         result = self.SESSION.add(computer_group)
         return result
 
