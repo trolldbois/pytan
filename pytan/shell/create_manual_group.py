@@ -36,7 +36,7 @@ class Worker(base.Base):
         kwargs = self.get_parser_args(grps)
         m = "++ Creating {} with values:\n{}"
         print(m.format(self.NAME, self.pf(kwargs)))
-        response = self.handler.create_manual_groups(**kwargs)
+        response = self.handler.create_manual_group(**kwargs)
         self.handler.MYLOG.debug("{}".format(response))
         return response
 
@@ -45,7 +45,7 @@ class Worker(base.Base):
         kwargs = self.get_parser_args(grps)
         response = self.get_response(kwargs)
         if response:
-            m = "Added {}".format
-            print(m(response))
+            m = "++ Added group named {} with id {}".format
+            print(m(response.name, response.id))
         else:
             print("!! Unable to create group.")

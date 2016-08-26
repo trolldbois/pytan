@@ -984,20 +984,15 @@ class Handler(object):
         ri : :class:`tanium_ng.ComputerGroup`
             * Creates and returns success for `obj`
         """
-        if 'group_name' not in kwargs:
-            m = "Group name not readable or not supplied.  Supplied options: {}".format
-            raise self.MYLOG.error(m(kwargs))
-        else:
-            group_name = kwargs.get('group_name')
-
-        if 'file' in kwargs:
+        file = kwargs['file']
+        if file:
             try:
-                f = open(kwargs.get('file'), 'r')
+                f = open(file, 'r')
                 fileadd = [x.strip() for x in f.readlines() if x.strip()]
                 f.close
             except Exception as e:
                 m = "Unable to open file {}. Error: {}".format
-                raise self.MYLOG.error(m(kwargs.get('file'), e))
+                raise self.MYLOG.error(m(file, e))
         else:
             fileadd = []
 
@@ -1014,7 +1009,7 @@ class Handler(object):
         computer_specs.append(spec)
 
         computer_group = ComputerGroup()
-        computer_group.name = group_name
+        computer_group.name = kwargs['group_name']
         computer_group.computer_specs = computer_specs
 
         result = self.SESSION.add(computer_group)
