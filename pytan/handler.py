@@ -1019,9 +1019,8 @@ class Handler(object):
 
         m = "Adding {}".format
         print(m(computer_group))
-        added_computer_group = self.SESSION.add(computer_group)
-        m = "Added {}".format
-        print(m(added_computer_group))
+        result = self.SESSION.add(computer_group)
+        return result
 
     # GET OBJECTS
     def get_actions(self, search=[], **kwargs):
