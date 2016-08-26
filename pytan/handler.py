@@ -22,12 +22,12 @@ from pytan.tanium_ng import (
     ActionList, ActionStop, BaseType, GroupList, PackageSpecList, ParseJob, QuestionList,
     SavedActionApproval, SavedActionList, SavedQuestionList, SensorList, SystemSettingList,
     SystemStatusList, UserList, UserRoleList, WhiteListedUrlList, Parameter, ParameterList,
-    get_params
+    get_params, ComputerSpecList, ComputerGroupSpec
 )
 from pytan.tickle.deserialize import from_sse_xml
 from pytan.tickle.serialize import ToDictResultSet
 from pytan.tickle.tools import get_now, shrink_obj, str_obj
-from pytan.utils import get_group_hierarchy
+from pytan.utils import get_group_hierarchy, is_ip
 from pytan.version import __version__
 
 
@@ -961,6 +961,67 @@ class Handler(object):
         kwargs['GET_TYPE'] = 'whitelisted_urls'
         result = self._delete_objects(search, **kwargs)
         return result
+
+    # Create Objects
+    def create_manual_group(self, **kwargs):
+        """Create's a manual group via the Tanium SOAP API
+
+        This method issues a create command to the SOAP api for `obj`.
+
+        Parameters
+        ----------
+        obj : :class:`tanium_ng.base.BaseType`
+            * object to get result data for
+        group_name : str
+            * Value to be used for the name of the group to be created.
+        add : str, optional
+            * Name or IP address of computer to be added to group
+        file : str, optional
+            * Name of file containing list of computer names or IP addresses to be added to group
+
+        Returns
+        -------
+        ri : :class:`tanium_ng.ComputerGroup`
+            * Creates and returns success for `obj`
+        """
+        if 'group_name' not in kwargs:
+            m = "Group name not readable or not supplied.  Supplied options: {}".format
+            raise self.MYLOG.error(m(kwargs))
+        else:
+            group_name = kwargs.get('group_name')
+
+        if 'file' in kwargs:
+            try:
+                f = open(kwargs.get('file'), 'r')
+                fileadd = [x.strip() for x in f.readlines() if x.strip()]
+                f.close
+            except Exception as e:
+                m = "Unable to open file {}. Error: {}".format
+                raise self.MYLOG.error(m(kwargs.get('file'), e))
+        else:
+            fileadd = []
+
+        all_adds = kwargs.get('adds') + fileadd
+        all_adds = (list(set(all_adds))
+
+        computer_specs = ComputerSpecList()
+        for a in all_adds:
+            spec = ComputerGroupSpec()
+            if is_ip(a):
+                spec.ip_address = a
+            else:
+                spec.computer_name = a
+        computer_specs.append(spec)
+
+        computer_group = ComputerGroup()
+        computer_group.name = group_name
+        computer_group.computer_specs = computer_specs
+
+        m = "Adding {}".format
+        print(m(computer_group))
+        added_computer_group = self.SESSION.add(computer_group)
+        m = "Added {}".format
+        print(m(added_computer_group))
 
     # GET OBJECTS
     def get_actions(self, search=[], **kwargs):

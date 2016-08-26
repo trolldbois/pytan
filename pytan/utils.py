@@ -332,3 +332,11 @@ def get_group_hierarchy(group):
     else:
         result = '\n'.join(_get_group_hierarchy(group))
     return result
+
+def is_ip(x):
+    ip_re = re.compile('^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$')
+    if ip_re.match(x):
+        ret = True
+    else:
+        ret = False
+    return ret
