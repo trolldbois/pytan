@@ -27,6 +27,7 @@
 * ~~ Will store value as global in TSAT
 
 ## GEN
+* HashMatch op added!!
 * fix filename of datetime stamp in win
 * bring new session scripts into build system
 * 2.1.7: ask_saved: 

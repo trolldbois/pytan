@@ -930,7 +930,7 @@ def map_filter(filter_str):
     """
     filter_attrs = {}
 
-    filter_split = filter_str.split(':')
+    filter_split = filter_str.split(':', 1) # FIXBUG
     if len(filter_split) != 2:
         err = "Invalid filter in {!r}, missing ':' to seperate filter from value?" .format
         raise pytan.exceptions.HumanParserError(err(filter_str))

@@ -528,6 +528,13 @@ FILTER_MAPS = [
         'not_flag': 0,
         'help': "Filter for regular expression match for VALUE",
     },
+    {
+        'human': ['hash', 'hashmatch'],
+        'operator': 'HashMatch',
+        'not_flag': 0,
+        'help': "Filter for hash match for VALUE",
+    },
+
 ]
 """
 Maps a given set of human strings into the various filter attributes used by the SOAP API. Also used to verify that a manually supplied filter via a definition is valid. Construct:

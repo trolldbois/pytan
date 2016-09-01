@@ -38,25 +38,54 @@ def get_handler(parser, args):
     return handler
 
 
-def spew(m, error=False):
-    if error:
-        m = "ERROR!! {}".format(m)
-    print(m)
+def spew(m, t="INFO"):
+    z = "{0: <10} -- {1}".format(t, m)
+    print(z)
+
+
+def spew_error(m):
+    spew(m, t="ERROR")
+
+
+def spew_skip(m):
+    spew(m, t="SKIPPED")
+
+
+def spew_change(m):
+    spew(m, t="CHANGED")
+
+
+def spew_create(m):
+    spew(m, t="CREATED")
+
+
+def spew_disable(m):
+    spew(m, t="DISABLED")
+
+
+def spew_delete(m):
+    spew(m, t="DELETED")
+
+
+def spew_config(m):
+    spew(m, t="CONFIG")
 
 
 def read_config_file(config_file):
     if not os.path.isfile(config_file):
-        m = "CONFIG: Unable to find config file '{}'".format
-        raise Exception(m(config_file))
+        m = "Unable to find config file '{}'".format(config_file)
+        spew_error(m)
+        raise Exception(m)
 
-    m = "CONFIG: Loading file: '{}'".format
-    spew(m(config_file))
+    m = "Loading file: '{}'".format(config_file)
+    spew_config(m)
 
     try:
         cp.read(config_file)
     except Exception as e:
-        m = "CONFIG: Failed to read config file: '{}', {}".format
-        raise Exception(m(config_file, e))
+        m = "Failed to read config file: '{}', {}".format(config_file, e)
+        spew_error(m)
+        raise Exception(m)
 
     ret = {s: {k: v for k, v in cp.items(s)} for s in cp}
     return ret
@@ -94,45 +123,54 @@ def verify_config_sections(config_sections):
         sect = config_sections.get(i, {})
         for a, b in sect.items():
             if key not in b:
-                m = "Config section '{}' missing required key '{}'!".format
-                raise Exception(m(a, key))
+                m = "Config section '{}' missing required key '{}'!".format(a, key)
+                spew_error(m)
+                raise Exception(m)
 
 
 def disable_saved_action(handler, i):
+    me = "saved action {!r} (ID: {})".format
+    me = me(i.name, i.id)
+
     if i.status == 0:
         i.status = 1
         handler.session.save(i)
-        m = "Disabled saved action {!r}".format
+        m = "{}".format(me)
+        spew_disable(m)
     else:
-        m = "Saved action {!r} already disabled, leaving alone".format
-    spew(m(i.name))
+        m = "{}; already disabled".format(me)
+        spew_skip(m)
 
 
 def update_setting(handler, name, new_value):
+
     try:
         i = handler.get('setting', name=name, include_hidden_flag=1)[0]
     except:
         i = None
 
     if i is not None:
+        me = "global setting name '{}' (ID: {}); old value '{}', new value '{}'".format
+        me = me(name, i.id, i.value, new_value)
         orig_value = str(i.value)
         new_value = str(new_value)
         if orig_value != new_value:
             i.value = new_value
-
             try:
                 handler.session.save(i)
-                m = "Changed global setting name '{}' from '{}' to '{}'".format
-                spew(m(name, orig_value, new_value))
+                m = "{}".format(me)
+                spew_change(m)
             except Exception as e:
-                m = "Failed to change global setting name '{}' from '{}' to '{}' Error: {}".format
-                spew(m(name, orig_value, new_value, e), True)
+                m = "{}; failed during update, error: {}".format(me, e)
+                spew_error(m)
         else:
-            m = "NOT changing global setting name '{}', already set to '{}'".format
-            spew(m(i.name, new_value))
+            m = "{}; already set".format(me)
+            spew_skip(m)
     else:
-        m = "Unable to find a global setting named '{}'".format
-        spew(m(name), True)
+        me = "global setting name '{}', new value '{}'".format
+        me = me(name, new_value)
+        m = "{}; failed during update, unable to find".format(me)
+        spew_error(m)
 
 
 def create_computer_group(handler, section_name, group_params, delete_existing=False):
@@ -148,31 +186,70 @@ def create_computer_group(handler, section_name, group_params, delete_existing=F
         i = None
 
     if i is not None:
+        me = "computer group '{}' (ID: {})".format
+        me = me(name, i.id)
+
         if delete_existing:
             handler.session.delete(i)
-            m = (
-                "Deleted pre-existing computer group '{}' due to pitt_options=>delete_existing=True"
-            ).format
-            spew(m(name))
+            m = "{}; parsed text '{}'".format(me, i.text)
+            spew_delete(m)
         else:
-            m = (
-                "NOT Deleting pre-existing computer group '{}' due to "
-                "pitt_options=>delete_existing=False, group will not be re-created via PITT"
-            ).format
-            spew(m(name))
+            m = "{}".format(me)
+            spew_skip(m)
             return
+    else:
+        me = "computer group '{}'".format
+        me = me(name)
 
     o = handler.create_group(
         groupname=name,
         filters=filters,
         filter_options=options,
     )
-    m = (
-        "Created computer group '{}' using filters {} and options {}, ID: {}, "
-        "parsed text '{}'"
-    ).format
-    spew(m(o.name, filters, options, o.id, o.text))
+    me = "computer group '{}' (ID: {})".format
+    me = me(name, o.id)
 
+    m = "{}; filters {}, options {}, parsed text '{}'".format
+    m = m(me, filters, options, o.text)
+    spew_create(m)
+
+
+def create_user_group(handler, section_name, group_params, delete_existing=False):
+    name = group_params['name']
+    try:
+        i = handler.get_usergroups(name=name)[1][0]
+    except:
+        i = None
+
+    if i is not None:
+        me = "user group '{}' (ID: {})".format
+        me = me(name, i.id)
+
+        if delete_existing:
+            handler.session.delete(i)
+            m = "{}; parsed text '{}'".format(me, i.text)
+            spew_delete(m)
+        else:
+            m = "{}".format(me)
+            spew_skip(m)
+            return
+    else:
+        me = "computer group '{}'".format
+        me = me(name)
+
+    o = handler.create_group(
+        groupname=name,
+        filters=filters,
+        filter_options=options,
+    )
+    me = "computer group '{}' (ID: {})".format
+    me = me(name, o.id)
+
+    m = "{}; filters {}, options {}, parsed text '{}'".format
+    m = m(me, filters, options, o.text)
+    spew_create(m)
+
+# __________________________________
 parser = get_parser()
 args = get_args(parser)
 handler = get_handler(parser, args)
@@ -182,19 +259,20 @@ full_config_dict = read_config_file(config_file)
 config_sections = find_config_sections(full_config_dict)
 
 if args.debug:
-    m = "============CONFIG: parsed items from config file '{}'".format
-    spew(m(config_file))
-    spew(pprint.pformat(full_config_dict))
+    m = "parsed items from config file '{}'".format(config_file)
+    spew_config(m)
+    spew_config(pprint.pformat(full_config_dict))
 
-    m = "============CONFIG: found sections from config file '{}'".format
-    spew(m(config_file))
-    spew(pprint.pformat(config_sections))
+    m = "found sections from config file '{}'".format(config_file)
+    spew_config(m)
+    spew_config(pprint.pformat(config_sections))
 
 verify_config_sections(config_sections)
 
 pitt_options = config_sections.get('pitt_options', {})
 disable_all_saved_actions = pitt_options.get('disable_all_saved_actions', False)
 delete_existing = pitt_options.get('delete_existing', False)
+
 
 if disable_all_saved_actions:
     all_saved_actions = handler.get_all('saved_action')
@@ -206,22 +284,38 @@ else:
     m = "NOT disabling all saved actions due to pitt_options=>disable_all_saved_actions=False"
     spew(m)
 
+
 global_settings = config_sections.get('global_settings', {})
 if global_settings:
+    m = "Changing all global settings found in config file"
+    spew(m)
     for name, new_value in global_settings.items():
         update_setting(handler, name, new_value)
 else:
     m = "NOT changing any global settings, none found in config file"
     spew(m)
 
+
 computer_groups = config_sections.get('computer_groups', {})
 if computer_groups:
+    m = "Creating all computer groups found in config file"
+    spew(m)
     for section_name, group_params in computer_groups.items():
         create_computer_group(handler, section_name, group_params, delete_existing)
 else:
     m = "NOT creating any computer groups, none found in config file"
     spew(m)
 
+
+user_groups = config_sections.get('user_groups', {})
+if user_groups:
+    m = "Creating all user groups found in config file"
+    spew(m)
+    for section_name, group_params in user_groups.items():
+        create_user_group(handler, section_name, group_params, delete_existing)
+else:
+    m = "NOT creating any user groups, none found in config file"
+    spew(m)
 
 '''
 1x pitt options
