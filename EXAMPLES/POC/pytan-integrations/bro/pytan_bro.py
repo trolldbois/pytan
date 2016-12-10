@@ -2,17 +2,22 @@
 """TODO."""
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import copy
 import datetime
 import json
 import logging
 import logging.handlers
 import os
+import re
 import sys
 import threading
 import time
-from io import StringIO, open
+from io import open
 
-__author__ = 'Jim Olsen <jim.olsen@tanium.com>'
+import modules.ini_reader
+
+__author__ = 'Jim Olsen <jim.olsen@tanium.com>, Rory Prendergast <rory.prendergast@tanium.com>, ' \
+             'James Cobey <james.cobey@tanium.com>'
 __version__ = '2.1.9'
 
 REQUIRED_BROKER_VERSION_MIN = '0.6'  # for printing out, this isn't actually checked
@@ -23,7 +28,7 @@ STATIC_PYTAN_LIB_PATH = "/github/pytan/lib"
 ALLOWED_ROLES = ["Question Author"]
 """List of User Roles that are allowed to be attached to Tanium users running this script."""
 
-DEFAULT_REPEAT_SECONDS = 300
+DEFAULT_REPEAT_SECONDS = 600
 """If a section does not have a 'repeat_seconds' defined, we will default to this."""
 
 THIS_FILE = os.path.abspath(sys.argv[0])
@@ -35,8 +40,8 @@ PARENT_PATH = os.path.dirname(THIS_PATH)
 AUTO_PYTAN_LIB_PATH = os.path.join(PARENT_PATH, "lib")
 """Automagic reference to pytan library dir, if this script lives in bin/."""
 
-PYTAN_INTEGRATIONS_LIB_PATH = os.path.join('..', '..', '..', 'lib')
-"""Automagic reference to pytan library dir, if this script lives in EXAMPLES/POC/pytan-integrations"""
+PYTAN_INTEGRATIONS_LIB_PATH = os.path.join('..', '..', '..', '..', 'lib')
+"""Automagic reference to pytan library dir, if this script lives in EXAMPLES/POC/pytan-integrations/bro"""
 
 PATH_ADDS = [STATIC_PYTAN_LIB_PATH, AUTO_PYTAN_LIB_PATH, PYTAN_INTEGRATIONS_LIB_PATH]
 """Paths to add to sys.path/PYTHONPATH."""
@@ -64,7 +69,7 @@ except Exception as e:
     raise Exception(m)
 
 try:
-    import broker_sender
+    from modules import broker_sender
 except ImportError as e:
     m = (
         "!!! Unable to import Broker API Python Bindings !!!\n"
@@ -121,23 +126,49 @@ LOG_FILE_HANDLER_NAME = "log_file_handler"
 
 
 class QuestionThread(threading.Thread):
-    """Thread for running a question section."""
+    """Thread for running a question section. A question section in bro.ini looks like:
 
-    def __init__(self, handler, section_name, section_dict):
+        [question1]
+        question=Get last logged in user from all machines
+
+        ...
+
+        And, for each question, the question text is modified such that 'get computer name and Tanium Client IP Address
+        and Last Logged In User' is inserted at the beginning, after the word 'Get' is removed if necessary.
+
+        Any encountered exceptions are stored in the exception attribute.
+
+        Parameters
+        ----------
+        handler : `pytan.Handler`
+            * a functional handler instance.
+        section_name : str
+            * The name of the thread and the logger name.
+        section_dict : dict
+            * the dictionary which represents the config file section used to drive questions.
+        always_add_prefix : str OR unicode, optional
+            * The text to append to the select part of any configured question.
+            * default : 'Get Computer Name and Tanium Client IP Address and Last Logged In User and '
+
+"""
+
+    def __init__(self, handler, section_name, section_dict,
+                 always_add_prefix='Get Computer Name and Tanium Client IP Address and Last Logged In User and '):
         """Constructor."""
         threading.Thread.__init__(self)
         self.setName(section_name)
-
+        self.always_add_prefix = always_add_prefix
         self.handler = handler
 
         self.last_result = {}
         self.last_fetched = None
+        self.exception = None
 
         if "question" not in section_dict:
             m = "'question' not supplied for section '{}' (full section: {})"
             raise Exception(m.format(section_name, section_dict))
 
-        self.question = section_dict["question"]
+        self.question = self._mod_question(section_dict['question'])
 
         if "repeat_seconds" not in section_dict:
             m = "'repeat_seconds' not supplied for section '{}', using default of '{}'"
@@ -146,6 +177,11 @@ class QuestionThread(threading.Thread):
         else:
             self.repeat_seconds = section_dict["repeat_seconds"]
 
+        if self.repeat_seconds < DEFAULT_REPEAT_SECONDS:
+            raise ValueError('repeat_seconds of {} for question in section name {} with text \'{}\' '
+                             'is less than minimum value of {}'.format(self.repeat_seconds,
+                                                                       section_name, section_dict['question'],
+                                                                       DEFAULT_REPEAT_SECONDS))
         self.daemon = True
         self.start()
 
@@ -154,7 +190,17 @@ class QuestionThread(threading.Thread):
         while True:
             m = "Thread Name: {}, asking parsed question '{}'"
             THIS_LOG.debug(m.format(self.getName(), self.question))
-            self.last_result = self.handler.ask_parsed(question_text=self.question, picker=1)
+            try:
+                self.last_result = self.handler.ask_parsed(question_text=self.question, picker=1)
+            except pytan.exceptions.PollingError as e:
+                pe = "Thread Name {} - Polling error: {}"
+                THIS_LOG.warn(pe.format(self.getName(), str(e)))
+                self.exception = e
+            except Exception as e:
+                em = "Thread Name {} - Exception: {}"
+                THIS_LOG.warn(em.format(str(e)))
+                self.exception = e
+
             self.last_fetched = datetime.datetime.now()
 
             m = "Thread Name: {}, received results for question '{}': {}"
@@ -164,118 +210,12 @@ class QuestionThread(threading.Thread):
             THIS_LOG.debug(m.format(self.getName(), self.repeat_seconds))
             time.sleep(self.repeat_seconds)
 
-
-class IniReaderError(Exception):
-    """Reader exceptions."""
-
-
-class IniReader(object):
-    """Reads an INI file into a python dict structure."""
-
-    TEXT_PRE = "__TEXT::"
-
-    BOOL_OPTS = ["true", "false", "yes", "no", "on", "off"]
-
-    BOOL_TRUE = ["true", "yes", "on"]
-
-    _VERSION = sys.version_info
-    IS_PY2 = _VERSION[0] == 2
-    IS_PY3 = _VERSION[0] == 3
-
-    if IS_PY2:
-        integer_types = (int, long)  # noqa
-        text_type = unicode  # noqa
-        import ConfigParser as configparser
-    elif IS_PY3:
-        integer_types = int,
-        text_type = str
-        import configparser as configparser
-
-    _value_cache = {}
-    _parser_type = configparser.RawConfigParser
-
-    def read(self, ini_path=None, ini_text=None, ini_handle=None, **kwargs):
-        """Die."""
-        if ini_text:
-            fh = StringIO(ini_text)
-            path = "<ini_text stream>"
-        elif ini_path:
-            if os.path.isfile(ini_path):
-                fh = open(ini_path, encoding="utf-8")
-                path = ini_path
-            else:
-                m = "Unable to find 'ini_path': '{}'"
-                raise IniReaderError(m.format(ini_path))
-        elif ini_handle:
-            fh = ini_handle
-            path = "<ini_handle stream>"
-        else:
-            m = "Must provide ini_text, ini_path, or ini_handle as an argument"
-            raise IniReaderError(m)
-
-        cp = self.configparser.RawConfigParser()
-        try:
-            cp.readfp(fh)
-        except Exception as e:
-            m = "Unable to parse INI file '{}', error: {}"
-            raise IniReaderError(m.format(path, e))
-
-        ret = {s: {i[0]: self._tv(i[1]) for i in cp.items(s)} for s in cp.sections()}
-        return path, ret
-
-    def _tv(self, value):
-        """Cache to avoid transforming value too many times."""
-        if value not in self._value_cache:
-            new_value = value
-            if self.is_txt(value):
-                new_value = self.to_txt(value)
-            elif self.is_int(value):
-                new_value = int(value)
-            elif self.is_float(value):
-                new_value = float(value)
-            elif self.is_bool(value):
-                new_value = self.to_bool(value)
-            elif self.is_none(value):
-                new_value = None
-            self._value_cache[value] = new_value
-        return self._value_cache[value]
-
-    def is_float(self, value):
-        """Check if the value is a float."""
-        return self._is_type(value, float)
-
-    def is_int(self, value):
-        """Check if the value is an int."""
-        return any([self._is_type(value, t) for t in self.integer_types])
-
-    def is_txt(self, value):
-        """Check if the value begins with TEXT_PRE."""
-        return self.text_type(value).startswith(self.TEXT_PRE)
-
-    def is_bool(self, value):
-        """Check if the value is a bool."""
-        return value.lower() in self.BOOL_OPTS
-
-    def is_none(self, value):
-        """Check if the value is a None."""
-        return value.lower() == self.text_type(None).lower()
-
-    def to_txt(self, value):
-        """Convert a value to text, removing FORCE_TEXT::."""
-        return "".join(self.text_type(value).split(self.TEXT_PRE, 1)[1:])
-
-    def to_bool(self, value):
-        """Convert value to a bool."""
-        return value.lower() in self.BOOL_TRUE
-
-    def _is_type(self, value, ptype):
-        """Try to set value to python type ptype."""
-        try:
-            ptype(value)
-            ret = True
-        except Exception:
-            ret = False
-        return ret
+    def _mod_question(self, question_text):
+        """Modifies a question to remove Get and add self.always_add_prefix, which guarantees a set of data.
+        By default, this set is data which is critical to composing a broker message according to the included
+        bro example file, but if the message was changed, this could, in theory, be something else.
+        """
+        return re.compile('^get ', flags=re.IGNORECASE).sub(self.always_add_prefix, question_text)
 
 
 def get_handler(logger, handler_name):
@@ -545,16 +485,17 @@ def connect_tanium(args):
 
 def read_bro_config(args):
     """Read the bro config ini file."""
-    ini_reader = IniReader()
+    ini_reader = modules.ini_reader.IniReader()
     try:
-        bro_path, bro_config = ini_reader.read(ini_path=args.bro_config)
+        bro_config_path, bro_config = ini_reader.read(ini_path=args.bro_config)
     except:
         m = "Failed to read the Bro Config File!"
         THIS_LOG.exception(m)
         raise
 
-    THIS_LOG.debug("Successfully read Bro Config File '{}':\n{}".format(bro_path, pytan.utils.jsonify(bro_config)))
-    return bro_path, bro_config
+    THIS_LOG.debug(
+        "Successfully read Bro Config File '{}':\n{}".format(bro_config_path, pytan.utils.jsonify(bro_config)))
+    return bro_config_path, bro_config
 
 
 def session_user_id(handler):
@@ -583,14 +524,90 @@ def get_userinfo(handler):
     return result
 
 
-def handle_tracker_results(thread_tracker):
-    """Example of getting results from each thread."""
+def broker_send(broker_sender, question_start_time, question_results, event_suffix):
+    THIS_LOG.info('Sending {} Tanium Console rows of data via broker'.format(question_results.row_count))
+    try:
+        broker_sender.send_answer_rows(question_start_time, question_results,
+                                       broker_sender.event_name_prefix + event_suffix)
+    except Exception as e:
+        m = "FAILED to send data to broker listener at {}:{}, {}"
+        m = m.format(broker_sender.dst_host, broker_sender.dst_port, str(e))
+        THIS_LOG.critical(m)
+
+
+def handle_tracker_results(thread_tracker, broker_sender):
+    """Logging and sending the data to broker for each question thread"""
+
+    # looping through each thread, which is an active question
     for section_name, section_thread in thread_tracker.items():
-        result_data = section_thread.last_result.get("question_results", None)
+        # look for any exception messages
+        active_exception = copy.copy(section_thread.exception)
+        if active_exception is not None:
+            section_thread.exception = None
+            raise active_exception
+        result_data = section_thread.last_result.get('question_results', None)
+        if result_data is None:
+            m = "No result data yet for question {}"
+            THIS_LOG.warn(m.format(section_name))
+            return
+        question_obj = section_thread.last_result.get('question_object', None)
+        if question_obj is None:
+            m = "Cannot yet get question object for question {}"
+            THIS_LOG.warn(m.format(section_name))
+            return
+        # parsed_text = question_obj.query_text
+
+        question_poller = section_thread.last_result.get('poller_object', None)
+        if question_obj is None:
+            m = "Cannot yet get poller object for question {}"
+            THIS_LOG.warn(m.format(section_name))
+            return
+        percent_complete = question_poller.complete_pct
+        question_start_time = question_poller.start
+        THIS_LOG.debug("Question {} is {}% complete".format(section_name, percent_complete))
+        # todo - use dest_config to get desired completion
+        if percent_complete >= question_poller.COMPLETE_PCT_DEFAULT:
+            THIS_LOG.info("Question {} is complete".format(section_name))
+            # todo - use dest_config and wait for seconds
+
         fetched = section_thread.last_fetched
-        m = "Question '{}' last ResultData {} last fetched on {}"
-        m = m.format(section_name, result_data, fetched)
+        m = "Question '{}', start time {} last ResultData {} last fetched on {}"
+        m = m.format(section_name, question_start_time, result_data, fetched)
         THIS_LOG.info(m)
+        m = "Sending question {} data to broker listener at {}:{}"
+        m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
+        THIS_LOG.info(m)
+        # Send to broker
+        broker_send(broker_sender, question_start_time, result_data, section_name)
+
+
+def get_bro_connection_details(bro_config):
+    """Performs sanity checks and assigns defaults. Returns a dict with config items and assigned values for the
+    destination section"""
+    # todo (rp-tanium) - cleanup. loop through dict and assign from dict.keys()
+    r = dict()
+    r['broker_enabled_bro_host'] = None
+    r['broker_port'] = None
+    r['max_log_lines'] = 10000
+    r['question_completion_pct_before_send'] = 99
+    r['seconds_after_completion_to_send'] = 20
+    for section_name, section_dict in bro_config.items():
+        if section_name == 'destination':
+            r['broker_enabled_bro_host'] = section_dict.get('broker_enabled_bro_host', None)
+            r['broker_port'] = section_dict.get('broker_port', None)
+            r['max_log_lines'] = section_dict.get('max_log_lines', r['max_log_lines'])
+            r['question_completion_pct_before_send'] = section_dict.get('question_completion_pct_before_send',
+                                                                        r['question_completion_pct_before_send'])
+            r['seconds_after_completion_to_send'] = section_dict.get('seconds_after_completion_to_send',
+                                                                     r['seconds_after_completion_to_send'])
+
+    if (r['broker_enabled_bro_host'] is None) or (r['broker_port'] is None):
+        m = "Fatal - both broker_enabled_bro_host and bro_port must be specified " \
+            "in the [destination] section"
+        THIS_LOG.info(m)
+        sys.exit(1)
+
+    return r
 
 
 if __name__ == "__main__":
@@ -600,7 +617,19 @@ if __name__ == "__main__":
     args = parse_args(parser)
     setup_logging(args)
     handler = connect_tanium(args)
-    bro_path, bro_config = read_bro_config(args)
+    bro_config_path, bro_config = read_bro_config(args)
+    dest_config = get_bro_connection_details(bro_config)
+    broker_enabled_bro_host = dest_config['broker_enabled_bro_host']
+    broker_port = dest_config['broker_port']
+    max_log_lines = dest_config['max_log_lines']
+
+    try:
+        bs = broker_sender.TaniumBrokerSender(broker_enabled_bro_host, broker_port,
+                                              max_log_lines_per_send=max_log_lines)
+    except RuntimeError as e:
+        m = "Fatal - Cannot connect to broker listener at {}:{}, {}"
+        THIS_LOG.fatal(m.format(broker_enabled_bro_host, broker_port, str(e)))
+        sys.exit(1)
 
     thread_tracker = {}
 
@@ -609,9 +638,16 @@ if __name__ == "__main__":
             m = "Skipping section '{}', no 'question' setting provided!"
             THIS_LOG.info(m.format(section_name))
             continue
-
-        thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+        try:
+            thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+        except ValueError as e:
+            m = 'Fatal - Exception creating question runner, {}'
+            THIS_LOG.fatal(m.format(str(e)))
+            sys.exit(1)
 
     while True:
-        handle_tracker_results(thread_tracker)
+        try:
+            handle_tracker_results(thread_tracker, bs)
+        except Exception as e:
+            THIS_LOG.warning("Exception in question thread: {}".format(str(e)))
         time.sleep(5)
