@@ -218,7 +218,6 @@ class QuestionThread(threading.Thread):
                 em = "Thread Name {} - Exception: {}"
                 THIS_LOG.warn(em.format(self.getName(), str(e)))
                 self.exception = e
-
             self.last_fetched = datetime.datetime.now()
             try:
                 m = "Thread Name: {}, received results for question '{}': {}"
@@ -226,9 +225,12 @@ class QuestionThread(threading.Thread):
             except KeyError:
                 m = "Thread Name: {}, cannot retrieve results for question '{}': {}"
                 THIS_LOG.debug(m.format(self.getName(), self.question, self.last_result["question_results"]))
-            m = "Thread Name: {}, sleeping for {} seconds"
+            # each run of this thread pulls a new question ID. It's critical that this sleep
+            # not be conditional, or there could be a lot of question ids generated needlessly for
+            # the same result set.
+            m = "Thread Name: {}, sleeping until next question repeat time for {} seconds."
             THIS_LOG.debug(m.format(self.getName(), self.repeat_seconds))
-            self._stopper.wait(self.repeat_seconds)
+            time.sleep(self.repeat_seconds)
 
     def stop_question(self):
         THIS_LOG.info("Question thread {} stopped".format(self.getName()))
@@ -593,32 +595,37 @@ def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct
         # Questions are active for 10 minutes - the expiration time is start + 10 minutes.
         # If the question is about to expire, meaning the question's expiration time is
         # 2 x THREAD_EXAMINE_SECONDS away from now, we have as much data as we're going to get.
+        time_to_send_flag = False
+        min_percent_complete_flag = False
         if question_poller.expiration_timeout <= datetime.datetime.utcnow() - \
                 datetime.timedelta(seconds=2 * THREAD_EXAMINE_SECONDS):
-            THIS_LOG.info("Question {} with qid {} is about to expire, sending to Bro via broker".format(section_name, result_data.question_id))
-            if percent_complete >= desired_completion_pct:
-                THIS_LOG.info("Question {} has completed".format(section_name))
-                m = "Transforming {} data and attempting to send to broker listener at {}:{}"
-                m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
-                THIS_LOG.info(m)
-                try:
-                    broker_send(broker_sender, question_start_time, result_data, section_name)
-                except Exception as e:
-                    raise e
-                finally:
-                    if not section_thread.is_stopped():
-                        print('stopping thread')
-                        section_thread.stop_question()
-                        section_thread.waiting_print_flag = True
-            else:
-                fetched = section_thread.last_fetched
-                m = "Question '{}', start time {}, {}% completed, last fetched on {}. Waiting for {}% completion"
-                m = m.format(section_name, question_start_time, percent_complete, fetched, desired_completion_pct)
-                THIS_LOG.info(m)
+            THIS_LOG.info("Question {} with qid {} is about to expire, now ready to send to Bro via broker".format(section_name, result_data.question_id))
+            time_to_send_flag = True
+
+        if percent_complete >= desired_completion_pct:
+            min_percent_complete_flag = True
+        else:
+            fetched = section_thread.last_fetched
+            m = "Question '{}', start time {}, {}% completed, last fetched on {}. Waiting for {}% completion"
+            m = m.format(section_name, question_start_time, percent_complete, fetched, desired_completion_pct)
+            THIS_LOG.debug(m)
+
+        if time_to_send_flag and min_percent_complete_flag:
+            m = "Transforming {} data and attempting to send to broker listener at {}:{}"
+            m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
+            THIS_LOG.info(m)
+            try:
+                broker_send(broker_sender, question_start_time, result_data, section_name)
+            except Exception as e:
+                raise e
+            finally:
+                if not section_thread.is_stopped():
+                    section_thread.stop_question()
+                    section_thread.waiting_print_flag = True
         else:
             # only print this every so often so logs don't fill up for no reason.
             if section_thread.waiting_print_flag:
-                m = "Waiting for expiration. Expiration time for question id {} is {}, {} complete."
+                m = "Waiting for completion or expiration. Expiration time for question id {} is {}, {} complete."
                 m = m.format(result_data.question_id, question_poller.expiration_timeout, percent_complete)
                 THIS_LOG.debug(m)
                 section_thread.waiting_print_flag = False
