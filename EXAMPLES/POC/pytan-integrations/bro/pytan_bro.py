@@ -568,6 +568,9 @@ def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct
     """Logging and sending the data to broker for each question thread"""
     # looping through each thread, which is an active question
     for section_name, section_thread in thread_tracker.items():
+        if section_thread.is_stopped():
+            # if it is stopped, it is already sent and a new thread will be created.
+            continue
         # look for any exception messages
         active_exception = copy.copy(section_thread.exception)
         if active_exception is not None:
@@ -575,19 +578,19 @@ def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct
             raise active_exception
         result_data = section_thread.last_result.get('question_results', None)
         if result_data is None:
-            m = "No result data for question {}"
+            m = "{} - No result data for question"
             THIS_LOG.warn(m.format(section_name))
             continue
 
         question_obj = section_thread.last_result.get('question_object', None)
         if question_obj is None:
-            m = "Cannot yet get question object for question {}"
+            m = "() - Cannot yet get question object for question"
             THIS_LOG.warn(m.format(section_name))
             continue
 
         question_poller = section_thread.last_result.get('poller_object', None)
         if question_obj is None:
-            m = "Cannot yet get poller object for question {}"
+            m = "{} - Cannot yet get poller object for question"
             THIS_LOG.warn(m.format(section_name))
             continue
         percent_complete = question_poller.complete_pct
@@ -598,20 +601,22 @@ def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct
         time_to_send_flag = False
         min_percent_complete_flag = False
         if question_poller.expiration_timeout <= datetime.datetime.utcnow() - \
-                datetime.timedelta(seconds=2 * THREAD_EXAMINE_SECONDS):
-            THIS_LOG.info("Question {} with qid {} is about to expire, now ready to send to Bro via broker".format(section_name, result_data.question_id))
+                datetime.timedelta(seconds=1.7 * THREAD_EXAMINE_SECONDS):
+            m = "{} - with qid {} is about to expire, now ready to send to Bro via broker if complete"
+            m = m.format(section_name, result_data.question_id)
+            THIS_LOG.info(m)
             time_to_send_flag = True
 
         if percent_complete >= desired_completion_pct:
             min_percent_complete_flag = True
         else:
             fetched = section_thread.last_fetched
-            m = "Question '{}', start time {}, {}% completed, last fetched on {}. Waiting for {}% completion"
+            m = "{} -  start time {}, {}% completed, last fetched on {}. Waiting for {}% completion"
             m = m.format(section_name, question_start_time, percent_complete, fetched, desired_completion_pct)
             THIS_LOG.debug(m)
 
         if time_to_send_flag and min_percent_complete_flag:
-            m = "Transforming {} data and attempting to send to broker listener at {}:{}"
+            m = "{} - Transforming data and attempting to send to broker listener at {}:{}"
             m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
             THIS_LOG.info(m)
             try:
@@ -620,13 +625,17 @@ def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct
                 raise e
             finally:
                 if not section_thread.is_stopped():
+                    m = "{} - Stopping completed question with id {}"
+                    m = m.format(section_name, result_data.question_id)
+                    THIS_LOG.info(m)
                     section_thread.stop_question()
                     section_thread.waiting_print_flag = True
         else:
             # only print this every so often so logs don't fill up for no reason.
             if section_thread.waiting_print_flag:
-                m = "Waiting for completion and/or expiration. Expiration time for question id {} is {}, {} complete."
-                m = m.format(result_data.question_id, question_poller.expiration_timeout, percent_complete)
+                m = "{} - Waiting for completion and/or expiration. Expiration time for question id {} " \
+                    "is {}, {} complete."
+                m = m.format(section_name, result_data.question_id, question_poller.expiration_timeout, percent_complete)
                 THIS_LOG.debug(m)
                 section_thread.waiting_print_flag = False
 
@@ -682,11 +691,13 @@ if __name__ == "__main__":
         for section_name, section_dict in bro_config.items():
             if "question" not in section_dict:
                 m = "Skipping section '{}', no 'question' setting provided!"
-                THIS_LOG.info(m.format(section_name))
+                if not section_name == 'destination':
+                    THIS_LOG.info(m.format(section_name))
                 continue
             try:
                 THIS_LOG.debug('Creating question thread for {}'.format(section_name))
                 thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+                print('created thread with id {}'.format(id(thread_tracker[section_name])))
             except ValueError as e:
                 m = 'Fatal - Exception creating question runner, {}'
                 THIS_LOG.fatal(m.format(str(e)))
@@ -695,11 +706,11 @@ if __name__ == "__main__":
     def check_tracker():
         for section_name, section_thread in thread_tracker.items():
             if not section_thread.is_alive():
-                THIS_LOG.debug('Restarting terminated question thread for {}'.format(section_name))
-                # completely remove this poller and re-add it to thread_tracker dict
-                del section_thread
+                THIS_LOG.debug('Restarting stopped question thread for {}'.format(section_name))
+                # create a new thread
                 section_dict = bro_config[section_name]
                 thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+                print('re-created thread with id {}'.format(id(thread_tracker[section_name])))
 
     create_tracker()
     slept_seconds = 0
