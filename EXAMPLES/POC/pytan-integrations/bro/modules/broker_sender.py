@@ -9,7 +9,6 @@
 ###############################################################################
 from datetime import datetime
 from select import select
-import socket
 
 import pybroker  # Requires broker python bindings compiled.
 import flatten
@@ -158,25 +157,3 @@ class TaniumBrokerSender(object):
             if not m.status == pybroker.outgoing_connection_status.tag_established:
                 raise RuntimeError('Message indicates tag is not established')
 
-
-def _is_valid_ipv4_address(address):
-    try:
-        socket.inet_pton(socket.AF_INET, address)
-    except AttributeError:  # no inet_pton here, sorry
-        try:
-            socket.inet_aton(address)
-        except socket.error:
-            return False
-        return address.count('.') == 3
-    except socket.error:  # not a valid address
-        return False
-
-    return True
-
-
-def _is_valid_ipv6_address(address):
-    try:
-        socket.inet_pton(socket.AF_INET6, address)
-    except socket.error:  # not a valid address
-        return False
-    return True

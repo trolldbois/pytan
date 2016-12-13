@@ -625,7 +625,7 @@ def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct
         else:
             # only print this every so often so logs don't fill up for no reason.
             if section_thread.waiting_print_flag:
-                m = "Waiting for completion or expiration. Expiration time for question id {} is {}, {} complete."
+                m = "Waiting for completion and/or expiration. Expiration time for question id {} is {}, {} complete."
                 m = m.format(result_data.question_id, question_poller.expiration_timeout, percent_complete)
                 THIS_LOG.debug(m)
                 section_thread.waiting_print_flag = False
