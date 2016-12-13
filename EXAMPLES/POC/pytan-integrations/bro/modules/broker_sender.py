@@ -9,9 +9,9 @@
 ###############################################################################
 from datetime import datetime
 from select import select
+import socket
 
 import pybroker  # Requires broker python bindings compiled.
-
 import flatten
 
 
@@ -48,7 +48,7 @@ class TaniumBrokerSender(object):
         self.event_name_prefix = 'Tanium::QuestionData_'
 
     def send_answer_rows(self, question_time, result_set, event_name,
-                         topic_name='bro/event/taniumquestiondata'):
+                         topic_name='bro/event/taniumquestiondata', logger=None):
         """Sends question results to the destination via Broker.
 
         Args:
@@ -64,6 +64,10 @@ class TaniumBrokerSender(object):
                 This could be something like question1, or could be as descriptive as you'd like. It is important
                 that the bro script has an event defined for this, as well as logging defined for the event, with
                 a matching number of columns.
+            logger (logging.logger): A python logger instance, if desired. Exceptions while sending rows are
+                logged here. This is preferable to throwing the exception, since it would stop all rows. If logger is
+                not specified, an exception construction a row or sending a row will cause all subsequent row sends to
+                stop, as the exception is raised.
         Raises:
             ValueError: if event name does not start with 'Tanium::QuestionData-'
             RunTimeError: if the returned data does not have any of the necessary column names --
@@ -100,20 +104,42 @@ class TaniumBrokerSender(object):
             hostname = row[0]
             client_ip = row[1]
             last_user = row[2]
-            # construct first part of broker message. All python data types have to be processed by pybroker module.
-            message_list = [d(str(event_name)),
-                            d(pybroker.time_point(question_time_unix)),
-                            d(str(hostname)),
-                            d(pybroker.address_from_string(str(client_ip))),
-                            d(str(last_user))]
-
+            try:
+                # construct first part of broker message. All python data types have to be processed by pybroker module.
+                message_list = [d(str(event_name)),
+                                d(pybroker.time_point(question_time_unix)),
+                                d(str(hostname)),
+                                d(pybroker.address_from_string(str(client_ip))),
+                                d(str(last_user))]
+            except RuntimeError as e:
+                if logger is not None:
+                    logger.warning("Could not transform row into Broker types due to data in the first three columns,"
+                                   " exception was {}, row had data {}".format(str(e), row))
+                else:
+                    raise e
+                continue
             # now append to broker message the rest of the column data.
             rest_rows = row[3:]
             broker_message_rest = []
             for row_string in rest_rows:
-                broker_message_rest.append(pybroker.data(str(row_string)))
-            message_list.extend(broker_message_rest)
-            self.epc.send(topic_name, pybroker.message(message_list))
+                # strings are printed escaped. Let's unescape the double backslashes
+                broker_message_rest.append(pybroker.data(str(row_string.replace('\\\\', '\\'))))
+            try:
+                message_list.extend(broker_message_rest)
+            except RuntimeError as e:
+                if logger is not None:
+                    logger.warning("Could not transform row into Broker types due to data after the first three "
+                                   "columns, exception was {}, row had data {}".format(str(e), row))
+                else:
+                    raise e
+                continue
+            try:
+                self.epc.send(topic_name, pybroker.message(message_list))
+            except Exception as e:
+                if logger is not None:
+                    logger.warning("Could not send row to Broker, despite it conforming to Broker types".format(str(e)))
+                else:
+                    raise e
 
     def _connect_to_dest(self):
         self.epc.peer(self.dst_host, self.dst_port, 1)
@@ -131,3 +157,26 @@ class TaniumBrokerSender(object):
         for m in msgs:
             if not m.status == pybroker.outgoing_connection_status.tag_established:
                 raise RuntimeError('Message indicates tag is not established')
+
+
+def _is_valid_ipv4_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET, address)
+    except AttributeError:  # no inet_pton here, sorry
+        try:
+            socket.inet_aton(address)
+        except socket.error:
+            return False
+        return address.count('.') == 3
+    except socket.error:  # not a valid address
+        return False
+
+    return True
+
+
+def _is_valid_ipv6_address(address):
+    try:
+        socket.inet_pton(socket.AF_INET6, address)
+    except socket.error:  # not a valid address
+        return False
+    return True

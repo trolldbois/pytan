@@ -52,6 +52,13 @@ THIS_LOG = logging.getLogger(THIS_BASENAME)
 THIS_LOG.setLevel(logging.DEBUG)
 THIS_LOG.propagate = False
 
+
+if sys.version_info > (3, 0):
+    PY_VER = 3
+else:
+    PY_VER = 2
+
+
 try:
     import pytan
     import pytan.binsupport
@@ -124,6 +131,8 @@ LOG_FILE_LEVEL = "DEBUG"
 LOG_FILE_HANDLER_NAME = "log_file_handler"
 """Name to label tanium handler with."""
 
+THREAD_EXAMINE_SECONDS = 5
+
 
 class QuestionThread(threading.Thread):
     """Thread for running a question section. A question section in bro.ini looks like:
@@ -137,6 +146,8 @@ class QuestionThread(threading.Thread):
         and Last Logged In User' is inserted at the beginning, after the word 'Get' is removed if necessary.
 
         Any encountered exceptions are stored in the exception attribute.
+
+        Call .stop_question() to kill thread.
 
         Parameters
         ----------
@@ -155,14 +166,19 @@ class QuestionThread(threading.Thread):
     def __init__(self, handler, section_name, section_dict,
                  always_add_prefix='Get Computer Name and Tanium Client IP Address and Last Logged In User and '):
         """Constructor."""
-        threading.Thread.__init__(self)
+        #threading.Thread.__init__(self)
+        super(QuestionThread, self).__init__()
         self.setName(section_name)
         self.always_add_prefix = always_add_prefix
         self.handler = handler
-
         self.last_result = {}
         self.last_fetched = None
         self.exception = None
+        self._stopper = threading.Event()
+        # a flag indicating whether to log the message that the thread is waiting for completion.
+        # this is always the default case, as question won't have expired for 10 minutes after init.
+        # after printing, it is set to false, and after send it is reset to true (default state).
+        self.waiting_print_flag = True
 
         if "question" not in section_dict:
             m = "'question' not supplied for section '{}' (full section: {})"
@@ -188,6 +204,8 @@ class QuestionThread(threading.Thread):
     def run(self):
         """Run the thread."""
         while True:
+            if self.is_stopped():
+                break
             m = "Thread Name: {}, asking parsed question '{}'"
             THIS_LOG.debug(m.format(self.getName(), self.question))
             try:
@@ -198,17 +216,26 @@ class QuestionThread(threading.Thread):
                 self.exception = e
             except Exception as e:
                 em = "Thread Name {} - Exception: {}"
-                THIS_LOG.warn(em.format(str(e)))
+                THIS_LOG.warn(em.format(self.getName(), str(e)))
                 self.exception = e
 
             self.last_fetched = datetime.datetime.now()
-
-            m = "Thread Name: {}, received results for question '{}': {}"
-            THIS_LOG.debug(m.format(self.getName(), self.question, self.last_result["question_results"]))
-
+            try:
+                m = "Thread Name: {}, received results for question '{}': {}"
+                THIS_LOG.debug(m.format(self.getName(), self.question, self.last_result["question_results"]))
+            except KeyError:
+                m = "Thread Name: {}, cannot retrieve results for question '{}': {}"
+                THIS_LOG.debug(m.format(self.getName(), self.question, self.last_result["question_results"]))
             m = "Thread Name: {}, sleeping for {} seconds"
             THIS_LOG.debug(m.format(self.getName(), self.repeat_seconds))
-            time.sleep(self.repeat_seconds)
+            self._stopper.wait(self.repeat_seconds)
+
+    def stop_question(self):
+        THIS_LOG.info("Question thread {} stopped".format(self.getName()))
+        self._stopper.set()
+
+    def is_stopped(self):
+        return self._stopper.is_set()
 
     def _mod_question(self, question_text):
         """Modifies a question to remove Get and add self.always_add_prefix, which guarantees a set of data.
@@ -225,7 +252,7 @@ def get_handler(logger, handler_name):
     ----------
     logger : python logging logger object
         * python logging logger object
-    handler_name : str
+    handler_name : str OR unicode
         * str of python logging handler name to remove from `logger`
 
     Returns
@@ -528,16 +555,15 @@ def broker_send(broker_sender, question_start_time, question_results, event_suff
     THIS_LOG.info('Sending {} Tanium Console rows of data via broker'.format(question_results.row_count))
     try:
         broker_sender.send_answer_rows(question_start_time, question_results,
-                                       broker_sender.event_name_prefix + event_suffix)
+                                       broker_sender.event_name_prefix + event_suffix, logger=THIS_LOG)
     except Exception as e:
         m = "FAILED to send data to broker listener at {}:{}, {}"
         m = m.format(broker_sender.dst_host, broker_sender.dst_port, str(e))
         THIS_LOG.critical(m)
 
 
-def handle_tracker_results(thread_tracker, broker_sender):
+def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct):
     """Logging and sending the data to broker for each question thread"""
-
     # looping through each thread, which is an active question
     for section_name, section_thread in thread_tracker.items():
         # look for any exception messages
@@ -547,59 +573,74 @@ def handle_tracker_results(thread_tracker, broker_sender):
             raise active_exception
         result_data = section_thread.last_result.get('question_results', None)
         if result_data is None:
-            m = "No result data yet for question {}"
+            m = "No result data for question {}"
             THIS_LOG.warn(m.format(section_name))
-            return
+            continue
+
         question_obj = section_thread.last_result.get('question_object', None)
         if question_obj is None:
             m = "Cannot yet get question object for question {}"
             THIS_LOG.warn(m.format(section_name))
-            return
-        # parsed_text = question_obj.query_text
+            continue
 
         question_poller = section_thread.last_result.get('poller_object', None)
         if question_obj is None:
             m = "Cannot yet get poller object for question {}"
             THIS_LOG.warn(m.format(section_name))
-            return
+            continue
         percent_complete = question_poller.complete_pct
         question_start_time = question_poller.start
-        THIS_LOG.debug("Question {} is {}% complete".format(section_name, percent_complete))
-        # todo - use dest_config to get desired completion
-        if percent_complete >= question_poller.COMPLETE_PCT_DEFAULT:
-            THIS_LOG.info("Question {} is complete".format(section_name))
-            # todo - use dest_config and wait for seconds
-
-        fetched = section_thread.last_fetched
-        m = "Question '{}', start time {} last ResultData {} last fetched on {}"
-        m = m.format(section_name, question_start_time, result_data, fetched)
-        THIS_LOG.info(m)
-        m = "Sending question {} data to broker listener at {}:{}"
-        m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
-        THIS_LOG.info(m)
-        # Send to broker
-        broker_send(broker_sender, question_start_time, result_data, section_name)
+        # Questions are active for 10 minutes - the expiration time is start + 10 minutes.
+        # If the question is about to expire, meaning the question's expiration time is
+        # 2 x THREAD_EXAMINE_SECONDS away from now, we have as much data as we're going to get.
+        if question_poller.expiration_timeout <= datetime.datetime.utcnow() - \
+                datetime.timedelta(seconds=2 * THREAD_EXAMINE_SECONDS):
+            THIS_LOG.info("Question {} with qid {} is about to expire, sending to Bro via broker".format(section_name, result_data.question_id))
+            if percent_complete >= desired_completion_pct:
+                THIS_LOG.info("Question {} has completed".format(section_name))
+                m = "Transforming {} data and attempting to send to broker listener at {}:{}"
+                m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
+                THIS_LOG.info(m)
+                try:
+                    broker_send(broker_sender, question_start_time, result_data, section_name)
+                except Exception as e:
+                    raise e
+                finally:
+                    if not section_thread.is_stopped():
+                        print('stopping thread')
+                        section_thread.stop_question()
+                        section_thread.waiting_print_flag = True
+            else:
+                fetched = section_thread.last_fetched
+                m = "Question '{}', start time {}, {}% completed, last fetched on {}. Waiting for {}% completion"
+                m = m.format(section_name, question_start_time, percent_complete, fetched, desired_completion_pct)
+                THIS_LOG.info(m)
+        else:
+            # only print this every so often so logs don't fill up for no reason.
+            if section_thread.waiting_print_flag:
+                m = "Waiting for expiration. Expiration time for question id {} is {}, {} complete."
+                m = m.format(result_data.question_id, question_poller.expiration_timeout, percent_complete)
+                THIS_LOG.debug(m)
+                section_thread.waiting_print_flag = False
 
 
 def get_bro_connection_details(bro_config):
     """Performs sanity checks and assigns defaults. Returns a dict with config items and assigned values for the
     destination section"""
-    # todo (rp-tanium) - cleanup. loop through dict and assign from dict.keys()
+    # set some default values here. Only assign items to destination config that we expect.
     r = dict()
     r['broker_enabled_bro_host'] = None
     r['broker_port'] = None
     r['max_log_lines'] = 10000
     r['question_completion_pct_before_send'] = 99
     r['seconds_after_completion_to_send'] = 20
+
+    # loop through items defined in the section. Assign them to dictionary with same name.
+    # if the item doesn't exist, use the defaults specified above.
     for section_name, section_dict in bro_config.items():
         if section_name == 'destination':
-            r['broker_enabled_bro_host'] = section_dict.get('broker_enabled_bro_host', None)
-            r['broker_port'] = section_dict.get('broker_port', None)
-            r['max_log_lines'] = section_dict.get('max_log_lines', r['max_log_lines'])
-            r['question_completion_pct_before_send'] = section_dict.get('question_completion_pct_before_send',
-                                                                        r['question_completion_pct_before_send'])
-            r['seconds_after_completion_to_send'] = section_dict.get('seconds_after_completion_to_send',
-                                                                     r['seconds_after_completion_to_send'])
+            for k, v in r.items():
+                r[k] = section_dict.get(k, r[k])
 
     if (r['broker_enabled_bro_host'] is None) or (r['broker_port'] is None):
         m = "Fatal - both broker_enabled_bro_host and bro_port must be specified " \
@@ -619,35 +660,47 @@ if __name__ == "__main__":
     handler = connect_tanium(args)
     bro_config_path, bro_config = read_bro_config(args)
     dest_config = get_bro_connection_details(bro_config)
-    broker_enabled_bro_host = dest_config['broker_enabled_bro_host']
-    broker_port = dest_config['broker_port']
-    max_log_lines = dest_config['max_log_lines']
 
     try:
-        bs = broker_sender.TaniumBrokerSender(broker_enabled_bro_host, broker_port,
-                                              max_log_lines_per_send=max_log_lines)
+        bs = broker_sender.TaniumBrokerSender(dest_config['broker_enabled_bro_host'], dest_config['broker_port'],
+                                              max_log_lines_per_send=dest_config['max_log_lines'])
     except RuntimeError as e:
         m = "Fatal - Cannot connect to broker listener at {}:{}, {}"
-        THIS_LOG.fatal(m.format(broker_enabled_bro_host, broker_port, str(e)))
+        THIS_LOG.fatal(m.format(dest_config['broker_enabled_bro_host'], dest_config['broker_port'], str(e)))
         sys.exit(1)
 
     thread_tracker = {}
 
-    for section_name, section_dict in bro_config.items():
-        if "question" not in section_dict:
-            m = "Skipping section '{}', no 'question' setting provided!"
-            THIS_LOG.info(m.format(section_name))
-            continue
-        try:
-            thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
-        except ValueError as e:
-            m = 'Fatal - Exception creating question runner, {}'
-            THIS_LOG.fatal(m.format(str(e)))
-            sys.exit(1)
+    def create_tracker():
+        for section_name, section_dict in bro_config.items():
+            if "question" not in section_dict:
+                m = "Skipping section '{}', no 'question' setting provided!"
+                THIS_LOG.info(m.format(section_name))
+                continue
+            try:
+                THIS_LOG.debug('Creating question thread for {}'.format(section_name))
+                thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+            except ValueError as e:
+                m = 'Fatal - Exception creating question runner, {}'
+                THIS_LOG.fatal(m.format(str(e)))
+                sys.exit(1)
 
+    def check_tracker():
+        for section_name, section_thread in thread_tracker.items():
+            if not section_thread.is_alive():
+                THIS_LOG.debug('Restarting terminated question thread for {}'.format(section_name))
+                # completely remove this poller and re-add it to thread_tracker dict
+                del section_thread
+                section_dict = bro_config[section_name]
+                thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+
+    create_tracker()
+    slept_seconds = 0
     while True:
+        check_tracker()
         try:
-            handle_tracker_results(thread_tracker, bs)
+            handle_tracker_results(thread_tracker, bs, dest_config['question_completion_pct_before_send'])
         except Exception as e:
             THIS_LOG.warning("Exception in question thread: {}".format(str(e)))
-        time.sleep(5)
+
+        time.sleep(THREAD_EXAMINE_SECONDS)
