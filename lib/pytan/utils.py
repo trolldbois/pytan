@@ -5,9 +5,6 @@
 """Collection of classes and methods used throughout :mod:`pytan`"""
 import sys
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
 import os
 import socket
 import time
@@ -605,6 +602,7 @@ def dehumanize_question_filters(question_filters):
     for question_filter in question_filters:
         s, parsed_selector = extract_selector(question_filter)
         s, parsed_filter = extract_filter(s)
+        s, parsed_params = extract_params(s)
         if not parsed_filter:
             err = "Filter {!r} is not a valid filter!".format
             raise pytan.exceptions.HumanParserError(err(question_filter))
@@ -612,6 +610,7 @@ def dehumanize_question_filters(question_filters):
         question_filter_def = {}
         question_filter_def[parsed_selector] = s
         question_filter_def['filter'] = parsed_filter
+        question_filter_def['params'] = parsed_params
 
         dbg = (
             'parsed string {!r} into filter definition:\n {}'
@@ -701,6 +700,8 @@ def extract_params(s):
     # given example (note escaped comma in params):
     # 'Folder Name Search with RegEx Match{dirname=Program Files,regex=\,*}' \
     # ', that is .*, opt:max_data_age:3600, opt:ignore_case'
+    if ':\\}' in s:
+        s = s.replace(':\\}', ':\\ }')
 
     params = re.findall(pytan.constants.PARAM_RE, s)
     # params=['dirname=Program Files,regex=\\,*']
@@ -1235,6 +1236,23 @@ def build_group_obj(q_filter_defs, q_option_defs):
     for d in q_filter_defs:
         # validate/map question filter into a Filter()
         filter_obj = get_filter_obj(d)
+        sensor_obj = d['sensor_obj']
+        user_params = d.get('params', {})
+        param_objlist = build_param_objlist(
+            obj=sensor_obj,
+            user_params=user_params,
+            delim='||',
+            derive_def=True,
+            empty_ok=True
+        )
+        # if a parameter is found, we will append it to the group filter object
+        if param_objlist:
+            filter_obj.sensor.name = d['sensor_obj'].name
+            filter_obj.sensor.source_id = d['sensor_obj'].id
+            filter_obj.sensor.parameter_definition = d['sensor_obj'].parameter_definition
+            filter_obj.sensor.parameters = param_objlist
+        else:
+            filter_obj.sensor.hash = d['sensor_obj'].hash
 
         # update filter_obj with any options
         filter_obj = apply_options_obj(q_option_defs, filter_obj, 'filter')
