@@ -28,8 +28,11 @@
 # and names of columns coming from Tanium.
 ################################################################################
 
+# Broker listener only runs on the standalone system or the manager
+@if ( ! Cluster::is_enabled() || ( Cluster::is_enabled() && Cluster::local_node_type() == Cluster::MANAGER ) )
+
 const broker_port: port = 9999/tcp &redef; # Modify: this is the port that the Broker
-redef exit_only_after_terminate = T;
+#redef exit_only_after_terminate = T; # this is only to be used for testing
 
 ## This is the name of the Broker endpoint. It is not strictly necessary to
 ## match the endpoint name in the Tanium bro integration python script, but for
@@ -61,6 +64,7 @@ event bro_init()
 #     terminate();
 #    }
 
+@endif
 
 # defines Tanium as a namespace, and adds log and data format for Tanium messages.
 module Tanium;
