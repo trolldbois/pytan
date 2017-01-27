@@ -3,17 +3,17 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Collection of classes and methods used throughout :mod:`pytan`"""
-import sys
 
-import os
-import socket
-import time
-import logging
-import json
-import datetime
-import re
-import itertools
 import base64
+import datetime
+import itertools
+import json
+import logging
+import os
+import re
+import socket
+import sys
+import time
 from collections import OrderedDict
 
 my_file = os.path.abspath(__file__)
@@ -22,9 +22,11 @@ parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import taniumpy
-import xmltodict
-import pytan
+try:
+    import taniumpy
+    import pytan
+except:
+    raise
 
 __version__ = pytan.__version__
 
@@ -35,6 +37,10 @@ prettylog = logging.getLogger("pytan.handler.prettybody")
 timinglog = logging.getLogger("pytan.handler.timing")
 
 DEBUG_OUTPUT = False
+
+# TODO: DOC, TEST
+ARG_TMPL = "{}: '{}'".format
+LIST_RE = re.compile(r"(.*)List$")
 
 
 class SplitStreamHandler(logging.Handler):
@@ -53,7 +59,7 @@ class SplitStreamHandler(logging.Handler):
                 stream = sys.stderr
             fs = "%s\n"
             try:
-                is_unicode = isinstance(msg, unicode)
+                is_unicode = isinstance(msg, unicode)  # noqa
                 if is_unicode and getattr(stream, 'encoding', None):
                     ufs = u'%s\n'
                     try:
@@ -78,7 +84,7 @@ def is_list(l):
 
 def is_str(l):
     """returns True if `l` is a string, False if not"""
-    return type(l) in [unicode, str]
+    return type(l) in [unicode, str]  # noqa
 
 
 def is_dict(l):
@@ -88,7 +94,7 @@ def is_dict(l):
 
 def is_num(l):
     """returns True if `l` is a number, False if not"""
-    return type(l) in [float, int, long]
+    return type(l) in [float, int, long]  # noqa
 
 
 def jsonify(v, indent=2, sort_keys=True):
@@ -257,7 +263,7 @@ def spew(t):
         * string to debug print
     """
     if DEBUG_OUTPUT:
-        print "DEBUG::{}".format(t)
+        print("DEBUG::{}".format(t))
 
 
 def remove_logging_handler(name='all'):
@@ -346,13 +352,13 @@ def set_log_levels(loglevel=0):
 def print_log_levels():
     """Prints info about each loglevel from :data:`pytan.constants.LOG_LEVEL_MAPS`"""
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
-        print "Logging level: {} - Description: {}".format(logmap[0], logmap[2])
+        print("Logging level: {} - Description: {}".format(logmap[0], logmap[2]))
         if logmap[0] == 0:
             for k, v in sorted(get_all_pytan_loggers().iteritems()):
-                print "\tLogger {!r} will only show WARNING and above".format(k)
+                print("\tLogger {!r} will only show WARNING and above".format(k))
             continue
         for lname, llevel in logmap[1].iteritems():
-            print "\tLogger {!r} will show {} and above".format(lname, llevel)
+            print("\tLogger {!r} will show {} and above".format(lname, llevel))
 
 
 def set_all_loglevels(level='DEBUG'):
@@ -435,7 +441,7 @@ def load_taniumpy_from_json(json_file):
     return obj
 
 
-def load_param_json_file(parameters_json_file):
+def load_param_json_file(parameters_json_file):  # noqa
     """Opens a json file and sanity checks it for use as a parameters element for a taniumpy object
 
     Parameters
@@ -931,7 +937,7 @@ def map_filter(filter_str):
     """
     filter_attrs = {}
 
-    filter_split = filter_str.split(':', 1) # FIXBUG
+    filter_split = filter_str.split(':', 1)  # FIXBUG
     if len(filter_split) != 2:
         err = "Invalid filter in {!r}, missing ':' to seperate filter from value?" .format
         raise pytan.exceptions.HumanParserError(err(filter_str))
@@ -997,7 +1003,7 @@ def get_kwargs_int(key, default=None, **kwargs):
     return val
 
 
-def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):
+def parse_defs(defname, deftypes, strconv=None, empty_ok=True, defs=None, **kwargs):  # noqa
     """Parses and validates defs into new_defs
 
     Parameters
@@ -1476,8 +1482,7 @@ def copy_obj(obj, skip_attrs=None):
     [
         setattr(new_obj, a, getattr(obj, a))
         for a in vars(obj)
-        if getattr(obj, a, None) is not None
-        and a not in skip_attrs
+        if getattr(obj, a, None) is not None and a not in skip_attrs
     ]
     return new_obj
 
@@ -1581,7 +1586,7 @@ def get_filter_obj(sensor_def):
     return filter_obj
 
 
-def apply_options_obj(options, obj, dest):
+def apply_options_obj(options, obj, dest):  # noqa
     """Updates an object with options
 
     Parameters
@@ -1877,6 +1882,7 @@ def xml_pretty(x, pretty=True, indent='  ', **kwargs):
     str :
         * The pretty printed string of `x`
     """
+    import xmltodict
 
     x_parsed = xmltodict.parse(x)
     x_unparsed = xmltodict.unparse(x_parsed, pretty=pretty, indent=indent)
@@ -1924,6 +1930,7 @@ def xml_pretty_resultxml(x):
     str :
         * The pretty printed string of ResultXML in `x`
     """
+    import xmltodict
 
     x_parsed = xmltodict.parse(x)
     x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]["ResultXML"]
@@ -1944,6 +1951,7 @@ def xml_pretty_resultobj(x):
     str :
         * The pretty printed string of result-object in `x`
     """
+    import xmltodict
 
     x_parsed = xmltodict.parse(x)
     x_find = x_parsed["soap:Envelope"]["soap:Body"]["t:return"]
@@ -2167,7 +2175,7 @@ def vig_encode(key, string):
     """
     string = str(string)
     encoded_chars = []
-    for i in xrange(len(string)):
+    for i in xrange(len(string)):  # noqa
         key_c = key[i % len(key)]
         encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
         encoded_chars.append(encoded_c)
@@ -2206,9 +2214,284 @@ def vig_decode(key, string):
     v_string = base64.urlsafe_b64decode(string)
 
     decoded_chars = []
-    for i in xrange(len(v_string)):
+    for i in xrange(len(v_string)):  # noqa
         key_c = key[i % len(key)]
         encoded_c = chr(abs(ord(v_string[i]) - ord(key_c) % 256))
         decoded_chars.append(encoded_c)
     decoded_string = "".join(decoded_chars)
     return decoded_string
+
+
+def resolve_to_seconds(frame, time_frame="hours"):
+    """Resolves time as time_frame into seconds.
+
+    * Added in: 2.3.0
+    """
+    # TODO
+    valid_time_frames = ["days", "seconds", "minutes", "hours", "weeks"]
+    if time_frame not in valid_time_frames:
+        m = "Invalid time frame '{}', must be one of: {}"
+        m = m.format(time_frame, ", ".join(valid_time_frames))
+        raise Exception(m)
+    dargs = {time_frame: frame}
+    dt = datetime.timedelta(**dargs)
+    ret = int(dt.total_seconds())
+    return ret
+
+
+def resolve_from_seconds(seconds, time_frame="hours"):
+    """Resolves seconds into time_frame.
+
+    * Added in: 2.3.0
+    """
+    # TODO
+    valid_time_frames = ["days", "minutes", "hours"]
+    if time_frame not in valid_time_frames:
+        m = "Invalid time frame '{}', must be one of: {}"
+        m = m.format(time_frame, ", ".join(valid_time_frames))
+        raise Exception(m)
+    dt = datetime.timedelta(seconds=seconds)
+    minutes, _ = divmod(seconds, 60)
+    hours, _ = divmod(minutes, 60)
+    days = dt.days
+    ret = locals()[time_frame]
+    return ret
+
+
+# TODO: DOC, TEST
+def str_dict(d, joiner=", ", tmpl=ARG_TMPL):
+    items = [tmpl(k, v) for k, v in sorted(d.items())]
+    ret = joiner.join(items)
+    return ret
+
+
+# TODO: DOC, TEST
+def kwmerge(kwargs, **xargs):
+    ret = {}
+    ret.update(kwargs)
+    ret.update(xargs)
+    return ret
+
+
+def islist(o):
+    return isinstance(o, (list, tuple))
+
+
+def isdict(o):
+    return isinstance(o, dict)
+
+
+def isnum(o):
+    # not py3.x compat
+    return isinstance(o, (float, int, long))  # noqa
+
+
+def isstr(o):
+    # not py3.x compat
+    return isinstance(o, basestring)  # noqa
+
+
+# TODO: DOC, TEST
+def mklist(o):
+    if isinstance(o, tuple):
+        o = list(o)
+    elif not isinstance(o, list):
+        if o in ["", None, {}]:
+            o = []
+        else:
+            o = [o]
+    return o
+
+
+# TODO: DOC, TEST
+def is_bt(obj):
+    return isinstance(obj, taniumpy.BaseType)
+
+
+# TODO: DOC, TEST
+def is_wt(obj):
+    return isinstance(obj, (taniumpy.WrapType, taniumpy.WrapTypeList))
+
+
+# TODO EXC
+def get_obj_info(obj):
+    if is_bt(obj):
+        is_wraptype = False
+        is_basetype = True
+        if LIST_RE.search(obj.__class__.__name__):
+            list_class = obj.__class__
+            list_name = obj.__class__.__name__
+            list_obj = list_class()
+            list_attr, item_class = list_obj._list_properties.items()[0]
+            item_name = item_class.__name__
+            item_obj = item_class()
+        else:
+            item_class = obj.__class__
+            item_name = obj.__class__.__name__
+            item_obj = item_class()
+            list_name = "{}List".format(item_name)
+            list_class = getattr(taniumpy, list_name)
+            list_obj = list_class()
+            list_attr = list_obj._list_properties.items()[0][0]
+    elif is_wt(obj):
+        is_wraptype = True
+        is_basetype = False
+        get_method = obj._GET_METHOD
+        create_method = obj._CREATE_METHOD
+        delete_method = obj._DELETE_METHOD
+        list_attr = "_LIST_OBJ"
+        if LIST_RE.search(obj.__class__.__name__):
+            list_class = obj.__class__
+            list_name = obj.__class__.__name__
+            list_obj = list_class()
+            item_name = LIST_RE.sub(r"\1", list_name)
+            item_class = getattr(taniumpy, item_name)
+            item_obj = item_class()
+        else:
+            item_class = obj.__class__
+            item_name = obj.__class__.__name__
+            item_obj = item_class()
+            list_name = "{}List".format(item_name)
+            list_class = getattr(taniumpy, list_name)
+            list_obj = list_class()
+    else:
+        raise Exception()
+    # lazy dict building
+    ret = locals()
+    return ret
+
+
+# TODO
+def list_objs_attr(objs, **kwargs):
+    attr = kwargs.get("attr", "name")
+    ftype = kwargs.get("ftype", str)
+    clean = kwargs.get("clean", True)
+    sort = kwargs.get("sort", True)
+
+    ret = [getattr(x, attr, None) for x in objs]
+    ret = sorted(ret) if sort else ret
+    ret = [ftype(x) for x in ret] if ftype else ret
+    ret = [x for x in ret if x] if clean else ret
+    return ret
+
+
+# TODO
+def join_list_attrs(objs, **kwargs):
+    kwargs["ftype"] = kwargs.get("ftype", str)
+    ret = joiner(list_objs_attr(objs, **kwargs))
+    return ret
+
+
+# TODO
+def joiner(objs, joiner=", ", quote=True):
+    objs = ["'{}'".format(x) for x in objs] if quote else objs
+    ret = joiner.join(objs)
+    return ret
+
+
+# TODO
+def re_exact(search):
+    if not search.startswith("^") and not search.endswith("$"):
+        search = "^{}$".format(search)
+    return search
+
+
+# TODO
+def collapse_lod(lod, key, attr, **kwargs):
+    def _int(v):
+        try:
+            v = int(v) if try_int else v
+        except:
+            pass
+        return v
+
+    def _check(o, i):
+        c1 = not o[key] == i[key]
+        c2 = o[attr] is None
+        skip_vals = [o.get(k, None) == v for k, v in skip_map.items()]
+        c3 = any(skip_vals)
+        ret = False if any([c1, c2, c3]) else True
+        return ret
+
+    try_int = kwargs.get("try_int", True)
+    skip_map = kwargs.get("skip_map", {})
+
+    skips = [attr] + skip_map.keys()
+    new_attr = "{}s".format(attr)
+    collapsed = {}
+
+    for item in lod:
+        if item[key] in collapsed:
+            continue
+        # build a new item with all the attributes that are not attr
+        new_item = {k: _int(v) for k, v in item.items() if k not in skips}
+        # add a new_attr to new_item that is a list of all attr from all other items
+        new_item[new_attr] = [_int(o[attr]) for o in lod if _check(o, item)]
+        collapsed[item[key]] = new_item
+
+    ret = collapsed.values()
+    return ret
+
+
+def get_bt_objtypes():
+    skips = [
+        "WrapTypeList", "ObjectList", "ParameterList", "ArchivedQuestion", "ErrorList", "FilterList",
+        "MetadataList", "CacheFilterList", "VersionAggregateList", "StringHintList", "ArchivedQuestionList",
+        "ComputerSpecList", "SensorSubcolumnList", "SensorQueryList", "SelectList", "PluginArgumentList",
+        "ParseResultList", "ParseResultGroupList", "ParseJobList", "UploadFileList", "PackageFileStatusList",
+        "PackageFileTemplateList",
+    ]
+    ret = []
+    tanium_py_objs = sorted(dir(taniumpy))
+    for objtype in tanium_py_objs:
+        if not LIST_RE.search(objtype) or objtype in skips:
+            continue
+        single_type = LIST_RE.sub(r"\1", objtype)
+        if single_type not in tanium_py_objs:
+            continue
+        ret.append(single_type)
+        ret.append(objtype)
+    return ret
+
+
+def get_bt_obj(objtype):
+    bt_objtypes = get_bt_objtypes()
+    found = [x for x in bt_objtypes if x.lower() == objtype.lower()]
+    if found:
+        obj = getattr(taniumpy, found[0])()
+    else:
+        m = "Invalid object name '{o}', valid object names: {t}"
+        m = m.format(o=objtype, t=joiner(bt_objtypes))
+        raise pytan.exceptions.HandlerError(m)
+    return obj
+
+
+def is_simple_str(string, **kwargs):
+    default_checks = [".*", "(", ")", "[", "]", ":", "\\"]
+    checks = kwargs.get("simple_string_checks", default_checks)
+
+    ret = True
+
+    for x in checks:
+        if x in string:
+            ret = False
+
+    try:
+        int(string)
+        ret = False
+    except:
+        pass
+    return ret
+
+
+def valvalue(key, valids, kwargs):
+    sup_value = kwargs.get(key, valids[0])
+    valid_found = [x for x in valids if str(sup_value).lower() == str(x).lower()]
+
+    if not valid_found:
+        m = "{n} '{v}' is invalid, must be one of: {t}"
+        m = m.format(n=key, v=sup_value, t=joiner(valids))
+        raise pytan.exceptions.HandlerError(m)
+
+    ret = valid_found[0]
+    return ret

@@ -6,8 +6,8 @@
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>'
 __version__ = '2.1.5'
 
-import os
-import sys
+import os  # noqa
+import sys  # noqa
 sys.dont_write_bytecode = True
 
 my_file = os.path.abspath(sys.argv[0])
@@ -18,8 +18,8 @@ lib_dir = os.path.join(parent_dir, 'lib')
 path_adds = [lib_dir]
 [sys.path.append(aa) for aa in path_adds if aa not in sys.path]
 
-import pytan
-import pytan.binsupport
+import pytan  # noqa
+import pytan.binsupport  # noqa
 
 if __name__ == "__main__":
     pytan.binsupport.version_check(reqver=__version__)

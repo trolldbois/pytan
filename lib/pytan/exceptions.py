@@ -91,3 +91,18 @@ class ServerParseError(Exception):
 class PickerError(Exception):
     """Exception thrown for picker errors in :mod:`pytan.handler`"""
     pass
+
+
+class TooManyFoundError(Exception):
+    """Exception thrown for Too Many Items Found in :mod:`pytan.handler`"""
+    pass
+
+
+class TooFewFoundError(Exception):
+    """Exception thrown for Too Few Items Found in :mod:`pytan.handler`"""
+    pass
+
+
+class PermissionError(Exception):
+    """Exception thrown for Too Few Items Found in :mod:`pytan.handler`"""
+    pass

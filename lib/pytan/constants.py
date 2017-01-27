@@ -21,12 +21,14 @@ Logging format for debugformat=True
 """
 
 # info log format
-INFO_FORMAT = (
+INFO_FORMAT2 = (
     '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
 )
 """
 Logging format for debugformat=False
 """
+INFO_FORMAT1 = "%(asctime)s [%(name)s] [%(funcName)s] %(levelname)-8s %(message)s"
+INFO_FORMAT = "[%(name)s] [%(funcName)s] %(levelname)-8s %(message)s"
 
 # log levels to turn on extra loggers (higher the level the more verbose)
 LOG_LEVEL_MAPS = [
@@ -743,3 +745,10 @@ HANDLER_ARG_DEFAULTS = {
 """
 Map of handler arguments and their defaults
 """
+
+# TODO 2.3.0
+CHECK_LIMIT_MAPS = [
+    {"key": "limit_min", "msg": "items or more", "expr": ">=", "exc": "TooFewFoundError"},
+    {"key": "limit_max", "msg": "items or less", "expr": "<=", "exc": "TooManyFoundError"},
+    {"key": "limit_exact", "msg": "items exactly", "expr": "==", "exc": "NotFoundError"},
+]

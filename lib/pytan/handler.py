@@ -2,17 +2,14 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
+# import copy
+import datetime
+import io
+import json
+import logging
+import os
+import re
 import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
-import os  # noqa
-import logging  # noqa
-import io  # noqa
-import datetime  # noqa
-import pprint  # noqa
-import json  # noqa
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -20,8 +17,28 @@ parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import taniumpy  # noqa
-import pytan  # noqa
+try:
+    import taniumpy
+    import pytan
+except:
+    raise
+
+kwmerge = pytan.utils.kwmerge
+mklist = pytan.utils.mklist
+get_obj_info = pytan.utils.get_obj_info
+joiner = pytan.utils.joiner
+re_exact = pytan.utils.re_exact
+join_list_attrs = pytan.utils.join_list_attrs
+seconds_from_now = pytan.utils.seconds_from_now
+collapse_lod = pytan.utils.collapse_lod
+get_bt_obj = pytan.utils.get_bt_obj
+is_simple_str = pytan.utils.is_simple_str
+list_objs_attr = pytan.utils.list_objs_attr
+valvalue = pytan.utils.valvalue
+
+PP_NAME = "PyTan Updated"
+PP_VALUE = "{d} by v{v}"
+SEARCH_RE = re.compile(r"(?<!\\)::")
 
 
 class Handler(object):
@@ -159,7 +176,6 @@ class Handler(object):
                  loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):  # noqa
         super(Handler, self).__init__()
         self.mylog = logging.getLogger("pytan.handler")
-        self.methodlog = logging.getLogger("method_debug")
 
         # update self with all local variables that are not self/kwargs/k/v
         for k, v in locals().iteritems():
@@ -171,7 +187,7 @@ class Handler(object):
         pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
 
         # create all the loggers and set their levels based on loglevel
-        pytan.utils.set_log_levels(loglevel=self.loglevel)
+        pytan.utils.set_log_levels(loglevel=int(self.loglevel))
 
         # change the format of console logging handler if need be
         pytan.utils.change_console_format(debug=self.debugformat)
@@ -193,10 +209,6 @@ class Handler(object):
 
         if debugformat != self.debugformat:
             pytan.utils.change_console_format(debug=self.debugformat)
-
-        self.debug_method_locals = kwargs.get('debug_method_locals', False)
-
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
 
         if not self.session_id:
 
@@ -231,8 +243,6 @@ class Handler(object):
         )
 
     def __str__(self):
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(pytan.__version__, self.session)
         return ret
@@ -348,8 +358,6 @@ class Handler(object):
         server_version: str
             * Version of Tanium Server in string format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         server_version = self.session.get_server_version(**kwargs)
         return server_version
 
@@ -376,8 +384,6 @@ class Handler(object):
         :func:`pytan.handler.Handler.ask_manual` : method used when qtype == 'manual'
         :func:`pytan.handler.Handler._ask_manual` : method used when qtype == '_manual'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         qtype = kwargs.get('qtype', 'manual')
 
         clean_keys = ['qtype']
@@ -452,8 +458,6 @@ class Handler(object):
         -----
         id or name must be supplied
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
@@ -467,8 +471,8 @@ class Handler(object):
                 "Multiple saved questions returned, can only ask one "
                 "saved question!\nArgs: {}\nReturned saved questions:\n\t{}"
             ).format
-            sq_obj_str = '\n\t'.join([str(x) for x in sq_objs])
-            raise pytan.exceptions.HandlerError(err(kwargs, sq_obj_str))
+            sq_objstr = '\n\t'.join([str(x) for x in sq_objs])
+            raise pytan.exceptions.HandlerError(err(kwargs, sq_objstr))
 
         sq_obj = sq_objs[0]
 
@@ -539,30 +543,6 @@ class Handler(object):
         }
 
         return ret
-
-    def create_saved_question(self, name, **kwargs):
-        """Doc me later."""
-        pytan.utils.check_for_help(kwargs=kwargs)
-
-        sensors = kwargs.get('sensors', [])
-        q_filters = kwargs.get('question_filters', [])
-        q_options = kwargs.get('question_options', [])
-
-        sensor_defs = pytan.utils.dehumanize_sensors(sensors=sensors)
-        q_filter_defs = pytan.utils.dehumanize_question_filters(question_filters=q_filters)
-        q_option_defs = pytan.utils.dehumanize_question_options(question_options=q_options)
-
-        clean_keys = ['sensor_defs', 'question_filter_defs', 'question_option_defs']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        result = self._create_saved_question(
-            name=name,
-            sensor_defs=sensor_defs,
-            question_filter_defs=q_filter_defs,
-            question_option_defs=q_option_defs,
-            **clean_kwargs
-        )
-        return result
 
     def ask_manual(self, **kwargs):
         """Ask a manual question using human strings and get the results back
@@ -695,8 +675,6 @@ class Handler(object):
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._ask_manual` : private method with the actual workflow used to create and add the question object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         sensors = kwargs.get('sensors', [])
@@ -730,8 +708,6 @@ class Handler(object):
         -------
         parse_job_results : :class:`taniumpy.object_types.parse_result_group.ParseResultGroup`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
@@ -816,8 +792,6 @@ class Handler(object):
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
             >>> v = handler.ask_parsed('computer name', picker=1)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
@@ -1011,8 +985,6 @@ class Handler(object):
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow used to create and add the action object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         # the human string describing the sensors/filter that user wants
@@ -1054,8 +1026,6 @@ class Handler(object):
         saved_action_approve_obj : :class:`taniumpy.object_types.saved_action_approval.SavedActionApproval`
             * The object containing the return from SavedActionApproval
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -1088,8 +1058,6 @@ class Handler(object):
         action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -1147,8 +1115,6 @@ class Handler(object):
         note #2 from jwk:
         To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if shrink:
             shrunk_obj = pytan.utils.shrink_obj(obj=obj)
         else:
@@ -1219,8 +1185,6 @@ class Handler(object):
             * If sse_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format
             * If sse_format is xml_obj, export_data will be a :class:`taniumpy.object_types.result_set.ResultSet`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self._check_sse_version()
         self._check_sse_crash_prevention(obj=obj)
 
@@ -1284,8 +1248,6 @@ class Handler(object):
         rs : :class:`taniumpy.object_types.result_set.ResultSet`
             * x converted into a ResultSet object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
         rs_xml = rs_xml(x)
         rs_tree = pytan.sessions.ET.fromstring(rs_xml)
@@ -1312,8 +1274,6 @@ class Handler(object):
         ri : :class:`taniumpy.object_types.result_info.ResultInfo`
             * The return of GetResultInfo for `obj`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if shrink:
             shrunk_obj = pytan.utils.shrink_obj(obj=obj)
         else:
@@ -1349,8 +1309,6 @@ class Handler(object):
         --------
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         obj_map = pytan.utils.get_obj_map(objtype=objtype)
 
         create_json_ok = obj_map['create_json']
@@ -1416,8 +1374,6 @@ class Handler(object):
         ------
         pytan.exceptions.HandlerError : :exc:`pytan.utils.pytan.exceptions.HandlerError`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
             "Use create_sensor_from_json() instead!"
@@ -1487,8 +1443,6 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filters for verify_filters
         :data:`pytan.constants.OPTION_MAPS` : valid options for verify_filter_options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         clean_keys = ['obj', 'pytan_help', 'defs']
@@ -1595,8 +1549,6 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filters for filters
         :data:`pytan.constants.OPTION_MAPS` : valid options for filter_options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
@@ -1649,8 +1601,6 @@ class Handler(object):
         user_obj : :class:`taniumpy.object_types.user.User`
             * TaniumPy object added to Tanium SOAP Server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
@@ -1710,8 +1660,6 @@ class Handler(object):
         url_obj : :class:`taniumpy.object_types.white_listed_url.WhiteListedUrl`
             * TaniumPy object added to Tanium SOAP Server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if regex:
             url = 'regex:' + url
 
@@ -1752,8 +1700,6 @@ class Handler(object):
         --------
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         obj_map = pytan.utils.get_obj_map(objtype=objtype)
 
         delete_ok = obj_map['delete']
@@ -1803,8 +1749,6 @@ class Handler(object):
         :func:`pytan.handler.Handler._get_multi` : private method used to get multiple items
         :func:`pytan.handler.Handler._get_single` : private method used to get singular items
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
@@ -1886,8 +1830,6 @@ class Handler(object):
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         :func:`pytan.handler.Handler._find` : private method used to find items
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
@@ -1901,6 +1843,1968 @@ class Handler(object):
 
         found = self._find(obj=api_obj_all, **clean_kwargs)
         return found
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def get_id_from_session_id(self, session_id):
+        try:
+            ret = int(session_id.split('-')[0])
+        except Exception as e:
+            m = "Unable to parse user ID from session ID '{s}', error: {e}"
+            m = m.format(s=session_id, e=e)
+            raise pytan.exceptions.HandlerError(m)
+
+        m = "Parsed user ID '{i}' from session ID: '{ss}'"
+        m = m.format(i=ret, s=session_id)
+        self.mylog.debug(m)
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def get_this_user_id(self):
+        """Get the user ID from handler.session.session_id."""
+        ret = self.get_id_from_session_id(session_id=self.session.session_id)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def get_this_user_obj(self):
+        """Fetch the user info for user ID."""
+        user_id = self.get_this_user_id()
+        obj = self.build_obj(obj_name="User", attrs={"id": user_id})
+
+        try:
+            ret = self._find(obj)
+        except Exception as e:
+            m = "Failed to find {o}, error: {e}"
+            m = m.format(o=obj, e=e)
+            raise pytan.exceptions.HandlerError(m)
+
+        m = "Successfully retrieved {o}".format(o=obj)
+        self.mylog.debug(m)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # TODO: add user_has_allowed_permission
+    # TODO: add user_has_required_permission
+    # ADDED: 2.3.0
+    def user_has_allowed_roles(self, obj, allowed_roles, **kwargs):
+        """Validate that the roles for user are in allowed_roles."""
+        error = kwargs.get("error", True)
+
+        ret = []
+        roles_txt = joiner(allowed_roles)
+        allowed_roles_lower = [str(x).lower() for x in allowed_roles]
+
+        for role_obj in obj.roles:
+            role_name = str(role_obj.name).lower()
+            if role_name in allowed_roles_lower:
+                ret.append(role_obj.name)
+            else:
+                m = "{r} attached to {o} is not allowed! Allowed roles: {t}"
+                m = m.format(r=role_obj, o=obj, t=roles_txt)
+                if error:
+                    raise pytan.exceptions.PermissionError(m)
+                else:
+                    self.mylog.warning(m)
+
+        if ret:
+            m = "{o} has allowed roles: {t}"
+            m = m.format(o=obj, t=joiner(ret))
+            self.mylog.info(m)
+        else:
+            m = "{o} has none of the allowed roles: {t}"
+            m = m.format(o=obj, t=roles_txt)
+            if error:
+                raise pytan.exceptions.PermissionError(m)
+            else:
+                self.mylog.warning(m)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def user_has_required_role(self, obj, role, **kwargs):
+        """Validate that one of the roles for user equals role."""
+        error = kwargs.get("error", True)
+        ret = False
+
+        for role_obj in obj.roles:
+            if str(role_obj.name).lower() == str(role).lower():
+                ret = True
+
+        if ret:
+            m = "{o} has required role: {r}"
+            m = m.format(o=obj, r=role)
+            self.mylog.info(m)
+        else:
+            m = "{o} does not have required role: {r}"
+            m = m.format(o=obj, r=role)
+            if error:
+                raise pytan.exceptions.PermissionError(m)
+            else:
+                self.mylog.warning(m)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def this_user_is_admin(self, **kwargs):
+        role = kwargs.get("role", "Administrator")
+        obj = self.get_this_user_obj()
+        margs = kwmerge(kwargs, obj=obj, role=role)
+        ret = self.user_has_required_role(**margs)
+        return ret
+
+    # TODO: NEEDS ERROR HANDLING
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def build_obj(self, obj_name="", attrs={}, obj_class=None):
+        """
+        name = "User"
+        attrs = {"name": "Administrator", "roles": [{"name": "Administrator"}]}
+        """
+        # print(locals())
+        if obj_class:
+            ret = obj_class()
+        elif obj_name:
+            ret = getattr(taniumpy, obj_name)()
+        else:
+            raise Exception()
+
+        ta = "Built"
+
+        if ret._list_properties:
+            # raise Exception() if not isinstance(attrs, (list, tuple, dict)) else None
+            # print("in list")
+            attrs = mklist(attrs)
+            list_attr, item_class = ret._list_properties.items()[0]
+            list_items = []
+            # print(attrs)
+            for sub_attrs in attrs:
+                list_item = self.build_obj(obj_class=item_class, attrs=sub_attrs)
+                ret._track_merge(other=list_item)
+                list_items.append(list_item)
+            if list_items:
+                setattr(ret, list_attr, list_items)
+                ret._track(t_attr=list_attr, t_old=attrs, t_new=list_items, t_action=ta)
+            return ret
+
+        # raise Exception() if not isinstance(attrs, (dict)) else None
+        for attr, val in attrs.items():
+            if attr in ret._simple_properties:
+                # print("in simple")
+                # val needs to be a str/int
+                new_val = val
+            elif attr in ret._complex_properties:
+                # print("in complex")
+                # val needs to be a dict for complex type
+                # val needs to be a list of dict for multiple list items
+                complex_class = ret._complex_properties[attr]
+                new_val = self.build_obj(attrs=val, obj_class=complex_class)
+                ret._track_merge(other=new_val)
+            else:
+                # ???
+                raise Exception()
+
+            setattr(ret, attr, new_val)
+            ret._track(t_attr=attr, t_old=val, t_new=new_val, t_action=ta)
+
+        ret._build_attrs = attrs
+        ret._track(t_attr="Build attributes", t_new=attrs, t_action=ta)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def get_all_objs(self, objtype, **kwargs):
+        obj = get_bt_obj(objtype=objtype)
+        obj_info = get_obj_info(obj=obj)
+
+        if obj_info["is_basetype"]:
+            tries = [
+                {"tryobj": obj_info["list_obj"], "f": "List Object"},
+                {"tryobj": obj_info["item_obj"], "f": "Item Object"},
+            ]
+
+            ret = None
+            exc = None
+
+            for trydict in tries:
+                tryobj = trydict["tryobj"]
+                margs = kwmerge(kwargs, obj=tryobj)
+
+                try:
+                    ret = self.session.find(**margs)
+                except Exception as exc:
+                    m = "Trying to GetObject using '{f} {o}' failed: {e}"
+                    m = m.format(f=trydict["f"], o=tryobj, e=exc)
+                    self.mylog.debug(m)
+
+                if ret is not None:
+                    break
+
+            if ret is None and exc:
+                raise exc
+
+            m = "Got all objects of type '{t}' using GetObject on {o}, result: {r}"
+            m = m.format(t=objtype, o=tryobj, r=ret)
+            self.mylog.debug(m)
+        elif obj_info["is_wraptype"]:
+            method_name = obj_info["get_method"]
+            method = getattr(self, method_name)
+            ret = method(**kwargs)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT???
+    # ADDED: 2.3.0
+    def search_add_obj(self, objtype, searches, **kwargs):
+        objs = kwargs.get("objs", None)
+
+        objs = self.get_all_objs(**kwmerge(kwargs, objtype=objtype)) if objs is None else objs
+        margs = kwmerge(kwargs, searches=searches, objs=objs, limit_max=1, limit_exact=1, limit_shrink=True)
+
+        try:
+            ret = self.search_objs(**margs)
+        except pytan.exceptions.NotFoundError as exc:
+            ret = self.create_missing_obj(**kwmerge(kwargs, searches=searches, objs=objs, exc=exc))
+            ret._ADDED = True
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def create_missing_obj(self, objs, searches, **kwargs):
+        attrs = kwargs.get("attrs", {})
+        create_missing = kwargs.get("create_missing", True)
+        delete_existing = kwargs.get("delete_existing", False)
+        # exc = kwargs.get("exc", None)  # Not used as of yet
+
+        searches = mklist(searches)
+        search = searches[0]
+        search_is_simple = is_simple_str(**kwmerge(kwargs, string=search))
+
+        obj_info = get_obj_info(objs)
+        tmpls = {}
+        tmpls.update(a=attrs, s=search, ss=searches, iname=obj_info["item_name"])
+        tmpls["i"] = "a {iname} object named '{s}' using attributes: {a}".format(**tmpls)
+        tmpls["c"] = "create_missing={t}".format(t=create_missing)
+        tmpls["d"] = "delete_existing={t}".format(t=delete_existing)
+
+        if create_missing and not attrs:
+            m = "{c}, but no build attributes supplied, can not create {i}".format(**tmpls)
+            self.mylog.error(m)
+            raise pytan.exceptions.HandlerError(m)
+
+        if create_missing and delete_existing:
+            m = "{c} and {d}, will not create then delete {i}".format(**tmpls)
+            self.mylog.error(m)
+            raise pytan.exceptions.HandlerError(m)
+
+        if create_missing and not search_is_simple:
+            m = "{c}, but '{s}' is not a simple search string, will not create {i}".format(**tmpls)
+            self.mylog.error(m)
+            raise pytan.exceptions.HandlerError(m)
+
+        if create_missing and attrs:
+            m = "Creating {i}".format(**tmpls)
+            self.mylog.debug(m)
+
+            if obj_info["is_basetype"]:
+                obj = self.build_obj(obj_class=obj_info["item_class"], attrs=attrs)
+                margs = kwmerge(kwargs, obj=obj)
+                ret = self.add_obj(**margs)
+            elif obj_info["is_wraptype"]:
+                method_name = obj_info["create_method"]
+                method = getattr(self, method_name)
+                margs = kwmerge(kwargs, search_precheck=False, **attrs)
+                ret = method(**margs)
+            else:
+                m = "Unexpected type supplied to create_missing_obj!"
+                raise pytan.exceptions.HandlerError(m)
+
+            m = "Created {i} {o}".format(o=ret, **tmpls)
+            self.mylog.debug(m)
+        else:
+            m = "{c} and no object found using searches {ss}, will not create {i}".format(**tmpls)
+            self.mylog.error(m)
+            raise pytan.exceptions.NotFoundError(m)
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def search_obj(self, obj, search, **kwargs):
+        # support FOR "id::2", "name::foo", or "any_attribute::any_value"
+        # if no unescaped "::"" in search, search "name" attribute by default
+        use_regex = kwargs.get("use_regex", True)
+        exact_regex = kwargs.get("exact_regex", True)
+        case_sensitive = kwargs.get("case_sensitive", False)
+        default_search_attr = kwargs.get("default_search_attr", "name")
+
+        search = str(search) if case_sensitive else str(search).lower()
+
+        if SEARCH_RE.search(search):
+            attr, search = SEARCH_RE.split(search)
+        else:
+            attr, search = (default_search_attr, search)
+
+        value = str(getattr(obj, attr, ""))
+        value = value if case_sensitive else value.lower()
+
+        ret, msg = (False, "")
+
+        if search == value:
+            ret = True
+            msg = "'{s}' equals '{a}'".format(s=search, a=attr)
+
+        if not ret and use_regex:
+            regex = re_exact(search) if exact_regex else search
+            re_args = (regex, value) if case_sensitive else (regex, value, re.I)
+
+            try:
+                ret = re.match(*re_args)
+            except Exception as e:
+                ret = False
+                msg = "'{r}' regex failed '{a}': '{v}', error: {e}"
+                msg = msg.format(r=regex, a=attr, v=value, e=e)
+                self.mylog.exception(msg)
+            else:
+                ok = "'{r}' regex matches '{a}': '{v}'"
+                bad = "'{r}' regex does not match '{a}': '{v}'"
+                msg = ok if ret else bad
+                msg = msg.format(r=regex, a=attr, v=value)
+
+        if not ret and not msg:
+            msg = "'{s}' does not match '{a}': '{v}'"
+            msg = msg.format(s=search, a=attr, v=value)
+        return ret, msg
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def search_objs(self, objs, **kwargs):
+        """
+        objs = list of taniumpy objs
+        searches = list of str, name or 'attr:value' to search for in objs
+        use_regex = bool, try to find objects using regex against name
+        exact_regex = bool, surround search with ^$ when using regex
+        case_sensitive = bool, try to find objects matching exact case or not
+        # limit_min
+        # limit_max
+        # limit_exact
+        # limit_shrink
+        """
+        searches = mklist(kwargs.get("searches", []))
+        excludes = mklist(kwargs.get("excludes", []))
+        limit_exact = kwargs.get("limit_exact", None)
+        limit_shrink = kwargs.get("limit_shrink", True)
+        search_debug = kwargs.get("search_debug", False)
+        refetch = kwargs.get("refetch", False)
+        pre_refetch = kwargs.get("pre_refetch", False)
+
+        debug_log = self.mylog.debug if search_debug else lambda *x: None
+        obj_info = get_obj_info(obj=objs)
+        list_obj = obj_info["list_obj"]
+        list_attr = obj_info["list_attr"]
+
+        objs_list = getattr(objs, list_attr)
+        new_list = [self.session.find(x) for x in objs_list] if pre_refetch else objs_list
+        setattr(objs, list_attr, new_list)
+
+        ret = list_obj
+        ret._SEARCH_KWARGS = kwargs
+
+        if (excludes and not searches):
+            for obj in objs:
+                obj = self.session.find(obj) if refetch and not pre_refetch else obj
+                ret.append(obj)
+
+        m = "Searching with searches {s} and excludes {e} against {o}, arguments: {k}"
+        m = m.format(s=searches, e=excludes, o=objs, k=kwargs)
+        debug_log(m)
+
+        for search in searches:
+            for obj in objs:
+                check, msg = self.search_obj(**kwmerge(kwargs, obj=obj, search=search))
+                found = "Matched" if check else "Did not match"
+                added = "added" if check and obj not in ret else "did not add"
+                if check and obj not in ret:
+                    obj = self.session.find(obj) if refetch and not pre_refetch else obj
+                    ret.append(obj)
+                m = "{f} search '{s}', {a}: {o} ({m})".format(f=found, a=added, s=search, o=obj, m=msg)
+                debug_log(m)
+
+        for exclude in excludes:
+            for obj in list(ret):
+                check, msg = self.search_obj(**kwmerge(kwargs, obj=obj, search=exclude))
+                found = "Matched" if check else "Did not match"
+                added = "removed" if check and obj not in ret else "did not remove"
+                if check and obj in ret:
+                    getattr(ret, list_attr).remove(obj)
+                m = "{f} exclude '{e}', {a}: {o} ({m})".format(f=found, e=exclude, a=added, o=obj, m=msg)
+                debug_log(m)
+
+        margs = kwmerge(kwargs, ret=ret, objs=objs, searches=searches, excludes=excludes)
+        self.check_limits(**margs)
+
+        ret = ret[0] if limit_exact == 1 and limit_shrink else ret
+        ret._track_merge(other=objs)
+
+        m = "FOUND: {r} (from {o}) using searches {s} and excludes {e}"
+        m = m.format(s=searches, e=excludes, r=ret, o=objs)
+        debug_log(m)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def search_all_objs(self, objtype, searches, **kwargs):
+        objs = kwargs.get("objs", None)
+
+        margs = kwmerge(kwargs, objtype=objtype)
+        ret = objs or self.get_all_objs(**margs)
+
+        margs = kwmerge(kwargs, objs=ret, searches=searches)
+        ret = self.search_objs(**margs)
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def check_limits(self, ret, objs, **kwargs):
+        searches = kwargs.get("searches", [])
+        excludes = kwargs.get("excludes", [])
+        search_debug = kwargs.get("search_debug", False)
+
+        found_items = "Found Items: {o}".format(o=join_list_attrs(ret))
+        all_items = "All Items: {o}".format(o=join_list_attrs(objs))
+
+        debug_log = self.mylog.debug if search_debug else lambda *x: None
+        t = "Check {k} [{r}] {ret} must be {l} {m} ({e}) using searches {se}, excludes {ex}".format
+
+        limit_maps = pytan.constants.CHECK_LIMIT_MAPS
+        for limit_map in limit_maps:
+            key = limit_map["key"]
+            expr = limit_map["expr"]
+            msg = limit_map["msg"]
+            exc = getattr(pytan.exceptions, limit_map["exc"])
+            limit = kwargs.get(key, 0)
+
+            if key not in kwargs:
+                r = "SKIPPED"
+                m = t(k=key, r=r, ret=ret, l=limit, m=msg, e=expr, se=searches, ex=excludes)
+                debug_log(m)
+                continue
+
+            limit = int(kwargs[key])
+            eval_str = "len(ret) {e} limit".format(e=expr)
+            check = eval(eval_str)
+            msg = msg.format(v=limit)
+
+            if check:
+                r = "PASSED"
+                m = t(k=key, r=r, ret=ret, l=limit, m=msg, e=expr, se=searches, ex=excludes)
+                self.mylog.debug(m)
+            else:
+                r = "FAILED"
+                m = t(k=key, r=r, ret=ret, l=limit, m=msg, e=expr, se=searches, ex=excludes)
+                items = found_items if ret else all_items
+                m = "{m} - {i}".format(m=m, i=items)
+                raise exc(m)
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def run_plugin_obj(self, name, bundle, arguments=[], **kwargs):
+        attrs = {"name": name, "bundle": bundle, "arguments": arguments}
+        obj = self.build_obj(obj_name="Plugin", attrs=attrs)
+
+        m = "Built Plugin Request: {o}"
+        m = m.format(o=obj.str_obj(str_items=True, str_all_attrs=True))
+        self.mylog.debug(m)
+
+        margs = kwmerge(kwargs, obj=obj)
+        ret = self.session.run_plugin(**margs)
+        ret._track_merge(other=obj)
+        ret._PLUGIN_REQUEST = obj
+
+        m = "Received Plugin Response"
+        ret._track(t_old=obj, t_new=ret, t_action=m, str_all_attrs=True)
+
+        columns = ret.sql_response.columns
+        rows = ret.sql_response.result_row
+
+        m = "Received plugin response object: {o} with {c} columns and {r} rows"
+        m = m.format(o=ret, c=len(columns), r=len(rows))
+        self.mylog.debug(m)
+
+        # crunch sql_response into a list of dicts, should work for all plugins
+        try:
+            ret._LOD = [dict(zip(columns, x)) for x in rows]
+        except Exception as e:
+            m = "Failed to create a list of dicts from plugin response: {o} from plugin request {r} error: {e}"
+            m = m.format(o=ret, r=obj, e=e)
+            raise pytan.exceptions.HandlerError(m)
+        else:
+            m = "Crunched plugin response columns and rows into {l} dicts"
+            m = m.format(l=len(ret._LOD))
+            self.mylog.debug(m)
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def log_tracker(self, obj, **kwargs):
+        log_line_limit = kwargs.get("log_line_limit", 100)
+        log_include_build = kwargs.get("log_include_build", False)
+        log_include_plugin = kwargs.get("log_include_plugin", False)
+
+        tracker = obj._get_tracker
+        if not tracker:
+            m = "No Changes made to: {o}".format(o=obj.str_obj(**kwargs))
+            self.mylog.info(m)
+
+        for track in tracker:
+            if track["action"].lower() in ["build", "built"] and not log_include_build:
+                continue
+            if "received plugin" in track["action"].lower() and not log_include_plugin:
+                continue
+            if track.get("already_logged", False):
+                continue
+            track["already_logged"] = True
+            m = "{action} {obj}".format(**track)
+            m += " attribute '{attr}'".format(**track) if track["attr"] else ""
+            m += "{{sep1}}OLD: {old}".format(**track) if track["old"] else ""
+            m += "{{sep2}}NEW: {new}".format(**track) if track["new"] else ""
+
+            use_multiline = len(m) >= log_line_limit
+            sep1 = "\n * " if use_multiline else " "
+            sep2 = "\n * " if use_multiline else ", "
+            m = m.format(sep1=sep1, sep2=sep2)
+            self.mylog.info(m)
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def add_obj(self, obj, **kwargs):
+        margs = kwmerge(kwargs, obj=obj)
+        added_obj = self.session.add(**margs)
+
+        margs = kwmerge(kwargs, obj=added_obj)
+        ret = self.session.find(**margs)
+
+        ret._track_merge(other=obj)
+        ret._track(t_action="Added new")
+        ret._ADDED = True
+        ret._ORIGINAL_OBJ = obj
+        ret._ADDED_OBJ = added_obj
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def delete_obj(self, obj, **kwargs):
+        objinfo = get_obj_info(obj)
+
+        if objinfo["is_basetype"]:
+            margs = kwmerge(kwargs, obj=obj)
+            ret = self.session.delete(**margs)
+            ret._track_merge(other=obj)
+            ret._track(t_action="Deleted")
+
+        elif objinfo["is_wraptype"]:
+            method_name = objinfo["delete_method"]
+            method = getattr(self, method_name)
+            margs = kwmerge(kwargs, obj=obj)
+            ret = method(**margs)
+            ret._track_merge(other=obj)
+
+        ret._DELETED = True
+        ret._ORIGINAL_OBJ = obj
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def save_changed_obj(self, obj, **kwargs):
+        if obj._CHANGED:
+            margs = kwmerge(kwargs, obj=obj)
+            ret = self.session.save(**margs)
+
+            ret._track_merge(other=obj, other_first=True)
+            t_action = "Saved changes to"
+            ret._track(t_action=t_action)
+            ret._CHANGED = True
+            ret._ORIGINAL_OBJ = obj
+        else:
+            ret = obj
+            ret._track(t_action="No changes made to")
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def save_changed_obj_ag(self, obj, **kwargs):
+        if obj._CHANGED:
+            g_obj = getattr(obj, "computer_group", None)
+            g_sub_objs = getattr(g_obj, "sub_groups", [])
+
+            if len(g_sub_objs) == 0:
+                m = "Unable to save {o}, no computer groups specified!"
+                m = m.format(o=obj)
+                raise pytan.exceptions.HandlerError(m)
+
+            try:
+                d_obj = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            except:
+                pass
+            else:
+                obj._track_merge(other=d_obj)
+
+            try:
+                d_obj = self.delete_obj(**kwmerge(kwargs, obj=obj.computer_group))
+            except:
+                pass
+            else:
+                obj._track_merge(other=d_obj)
+
+            obj.computer_group.name = obj.name
+            obj.computer_group.type = 1
+            obj.computer_group.and_flag = obj.and_flag
+            obj.computer_group.id = None
+            obj.computer_group = self.add_obj(**kwmerge(kwargs, obj=obj.computer_group))
+            obj._track_merge(other=obj.computer_group)
+
+            pargs = [
+                {"name": "group_id", "type": "Number", "value": obj.computer_group.id},
+                {"name": "user_group_xml", "value": obj.user_groups_xml()},
+                {"name": "public_flag", "type": "Number", "value": obj.public_flag},
+            ]
+
+            margs = {"bundle": "GroupFilter", "name": "AddActionGroup", "arguments": pargs}
+            pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+            margs = kwmerge(kwargs, objtype="ActionGroup", searches=obj.name, limit_exact=1)
+            ret = self.search_all_objs(**margs)
+            ret._track_merge(other=pret, other_first=True)
+            ret._track_merge(other=obj, other_first=True)
+            ret._track(t_action="Added new")
+            ret._PLUGIN_RETURN = pret
+            ret._CHANGED = True
+        else:
+            ret = obj
+            ret._track(t_action="No changes made to")
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def save_changed_obj_ug(self, obj, **kwargs):
+        if obj._CHANGED:
+            pargs = [
+                {"name": "user_group_name", "value": obj.name},
+                {"name": "user_group_id", "type": "Number", "value": obj.id},
+                {"name": "user_xml", "value": obj.users_xml()},
+            ]
+
+            margs = {"bundle": "UserGroups", "name": "UpdateUserGroup", "arguments": pargs}
+            pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+            margs = kwmerge(kwargs, objtype="UserGroup", searches=obj.name, limit_exact=1)
+            ret = self.search_all_objs(**margs)
+            ret._track_merge(other=pret, other_first=True)
+            ret._track_merge(other=obj, other_first=True)
+            ret._track(t_action="Saved changes to")
+            ret._PLUGIN_RETURN = pret
+            ret._CHANGED = True
+        else:
+            ret = obj
+            ret._track(t_action="No changes made to")
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def save_changed_obj_ugs(self, objs, **kwargs):
+        this_s = kwargs.get("searches", [])
+        this_e = kwargs.get("excludes", [])
+
+        ret = objs.__class__()
+        ret._track_merge(other=objs)
+        if not objs:
+            t_action = "No User Groups found matching searches {s} and excludes {e}"
+            t_action = t_action.format(s=this_s, e=this_e)
+            ret._track(t_action=t_action)
+
+        for obj in objs:
+            obj = self.save_changed_obj_ug(**kwmerge(kwargs, obj=obj))
+            ret._track_merge(other=obj)
+            ret.append(obj)
+        ret._CHANGED = any([x._CHANGED for x in ret]) or ret._CHANGED
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def get_group_members_by_id(self, group_id, **kwargs):
+        objs = kwargs.get("objs", None)
+
+        objs = self.get_all_objs(objtype="Group") if objs is None else objs
+
+        ret = self.build_obj("GroupList")
+        ret._IS_MERGED = False
+        ret.group = [self.build_obj("Group", attrs={"id": 0, "name": "All Groups"})]
+
+        if group_id == 0:
+            ret._MSG = "Computer Group is ID 0, has access to 'All Groups'"
+        else:
+            searches = ["id:{i}".format(i=group_id)]
+
+            try:
+                ret._OBJ_FOUND = self.search_objs(objs=objs, searches=searches, limit_exact=1, use_regex=False)
+            except pytan.exceptions.NotFoundError:
+                m = "Unable to find a pre-existing Computer Group with an ID of {i}, access unknown!"
+                ret._MSG = m.format(i=group_id)
+            else:
+                ret._IS_MERGED = True if re.match("mrgroup_.*", ret._OBJ_FOUND.name) else False
+
+                if ret._IS_MERGED:
+                    ret.group = []
+                    for x in ret._OBJ_FOUND.sub_groups:
+                        if x not in ret.group:
+                            ret.group.append(x)
+                else:
+                    ret.group = [ret._OBJ_FOUND]
+
+                grpjoin = "\n   " if len(ret.group) > 1 else ""
+                grps = grpjoin.join([str(x) for x in ret.group])
+                m = "{o} (Merged: {im}) has access to {l} groups:\n   {g}"
+                ret._MSG = m.format(o=ret._OBJ_FOUND, im=ret._IS_MERGED, l=len(ret.group), g=grps)
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def get_group_members_by_searches(self, **kwargs):
+        searches = mklist(kwargs.get("searches", []))
+        excludes = mklist(kwargs.get("excludes", []))
+        objs = kwargs.get("objs", None)
+
+        objs = self.get_all_objs(objtype="Group") if objs is None else objs
+
+        ret = self.build_obj("GroupList")
+        ret._IS_MERGED = False
+        ret._IS_ALL = True
+        ret._ROOT_GROUP = self.build_obj("Group", attrs={"id": 0, "name": "All Groups"})
+        ret._OBJS_FOUND = []
+        ret._OBJS_REAL = self.search_objs(objs=objs, excludes="mrgroup_.*", exact_regex=False)
+        ret._MSG = "No Computer Groups supplied, will have access to 'All Groups'"
+        ret.group = [ret._ROOT_GROUP]
+
+        if searches:
+            margs = kwmerge(kwargs, objs=ret._OBJS_REAL, searches=searches, excludes=excludes)
+            ret._OBJS_FOUND = self.search_objs(**margs)
+
+            if len(ret._OBJS_FOUND) == 0:
+                # ret._OBJS_FOUND is empty, so new group membership will be All Groups
+                m = "No Computer Groups found matching {s}, will have access to {g}"
+                ret._MSG = m.format(s=searches, g=ret.group)
+            elif len(ret._OBJS_FOUND) == 1:
+                # ret._OBJS_FOUND == 1, so new group membership will be the found group
+                obj_found = ret._OBJS_FOUND[0]
+
+                ret._ROOT_GROUP = obj_found
+                ret._IS_ALL = False
+                ret.group = [x for x in ret._OBJS_FOUND]
+
+                m = "Computer Groups matching {s} is {l}, will have access to {g}"
+                ret._MSG = m.format(s=searches, l=len(ret.group), g=ret.group)
+            else:
+                # ret._OBJS_FOUND > 1, so new group membership will a merged group of all found groups
+                # build a set of attrs for a new merged group if one does not exist
+                ids_found = ",".join(list_objs_attr(objs=ret._OBJS_FOUND, attr="id"))
+                merged_name = "mrgroup_{i}".format(i=ids_found)
+                sub_groups = [{"id": x.id} for x in ret._OBJS_FOUND]
+                attrs = {"name": merged_name, "and_flag": 0, "sub_groups": sub_groups}
+
+                # find the merged group in objs or add it using attrs
+                margs = kwmerge(kwargs, objtype="Group", searches=[merged_name], attrs=attrs, objs=objs)
+                obj_mr = self.search_add_obj(**margs)
+
+                ret.group = [x for x in ret._OBJS_FOUND]
+                ret._ROOT_GROUP = obj_mr
+                ret._IS_MERGED = True
+                ret._IS_ALL = True
+
+                case = "Added new" if ret._ADDED else "Found pre-existing"
+                grpjoin = "\n   " if len(ret.group) > 1 else ""
+                grps = grpjoin.join([str(x) for x in ret.group])
+                m = "Computer Groups matching {s} is {l}, {c} merged {o} with access to groups:\n   {g}"
+                ret._MSG = m.format(s=searches, l=len(ret.group), g=grps, c=case, o=obj_mr)
+        return ret
+
+    # TODO: RE-FIGURE
+    # ADDED: 2.3.0
+    def get_min_packagelist(self, **kwargs):
+        packages = kwargs.get("packages", [])
+        ret = taniumpy.PackageSpecList()
+        for p in packages:
+            min_obj = taniumpy.PackageSpec()
+            min_obj.name = p
+            try:
+                full_obj = self.session.find(min_obj)
+            except:
+                m = "Unable to find package named: '{}'"
+                m = m.format(p)
+                raise pytan.exceptions.HandlerError(m)
+            min_obj.id = full_obj.id
+            ret.append(min_obj)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def get_user_groups(self, **kwargs):
+        include_deleted = kwargs.get("include_deleted", False)
+        user_objs = kwargs.get("user_objs", None)
+
+        user_objs = self.get_all_objs("User") if user_objs is None else user_objs
+
+        margs = {"bundle": "UserGroups", "name": "GetUserGroups"}
+        ug_pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+        # {'user_id': '75', 'id': '10', 'user_deleted_flag': '0', 'name': 'Test Group'}
+        # {'user_id': '76', 'id': '10', 'user_deleted_flag': '0', 'name': 'Test Group'}
+
+        # collapse individual user ids into lists of user ids keyed off group id
+        margs = kwmerge({}, lod=ug_pret._LOD, key="id", attr="user_id")
+        margs["skip_map"] = {} if include_deleted else {"user_deleted_flag": "1"}
+        coll_lod = collapse_lod(**margs)
+        # {'user_ids': [75, 76], 'id': 10, 'name': 'Test Group'}
+
+        m = "Collapsed {b} plugin response dicts into {a} dicts"
+        m = m.format(b=len(ug_pret._LOD), a=len(coll_lod))
+        self.mylog.debug(m)
+
+        # create a user group list object to store user groups objects in
+        ret = taniumpy.UserGroupList()
+        ret._UG_PLUGIN_RETURN = ug_pret
+        ret._track_merge(other=ug_pret)
+        usargs = {"objs": user_objs, "excludes": [], "default_search_attr": "id", "use_regex": False}
+
+        # churn user ids into user objs, create user group objects, and append user group objects to ret
+        for lod in coll_lod:
+            obj = taniumpy.UserGroup()
+            obj.id = int(lod["id"])
+            obj.name = lod["name"]
+            obj.users = self.search_objs(**kwmerge(usargs, searches=lod["user_ids"]))
+            ret.append(obj)
+
+        m = "Retrieved {l} User Groups"
+        m = m.format(l=len(ret))
+        self.mylog.debug(m)
+        return ret
+
+    # TODO: HERE-ISH
+    def get_dashboard_categories(self, **kwargs):
+        """
+        Dashboard Category UI Constructs:
+        - Name
+        - Icon
+        - Visibility:
+        -   Only current user can see this category
+        -   Only administrators can see this category
+        -   All users can see this category
+        -   Specific User Groups can see this category
+        - Dashboards: list of dashboards
+        """
+        # this is the "categories" section, icon information and such
+        margs = kwmerge(kwargs, bundle="DashboardGroups", name="GetContentGroups")
+        cat_pret = self.run_plugin_obj(**margs)
+        # {'user_id': '0', 'name': 'Tanium Administration', 'public_flag': '0', 'editable_flag': '1',
+        #  'text': None, 'other_flag': '0', 'user_name': None, 'id': '4', 'icon': '..b64text..'}
+
+        # this is the dashboards that exist in each category
+        margs = kwmerge(kwargs, bundle="DashboardGroups", name="GetContentGroupsDashboards")
+        cat_dash_pret = self.run_plugin_obj(**margs)
+        # {'dashboard_id': '41', 'content_group_id': '11'}
+        # {'dashboard_id': '42', 'content_group_id': '11'}
+
+        # correlates to Categories: Visibility: Specific User Groups can see this category
+        margs = kwmerge(kwargs, bundle="DashboardGroups", name="GetContentGroupsUserGroups")
+        cat_ug_pret = self.run_plugin_obj(**margs)
+        # {'user_group_id': '33', 'content_group_id': '15'}
+        # {'user_group_id': '28', 'content_group_id': '15'}
+
+        db_objs = self.get_all_objs("Dashboard")
+        db_sargs = {"objs": db_objs, "excludes": [], "default_search_attr": "id", "use_regex": False}
+        ug_objs = self.get_all_objs("UserGroup")
+        ug_sargs = {"objs": ug_objs, "excludes": [], "default_search_attr": "id", "use_regex": False}
+        u_objs = self.get_all_objs("User")
+        u_sargs = {"objs": u_objs, "limit_exact": 1, "default_search_attr": "id", "use_regex": False}
+
+        ret = taniumpy.DashboardCategoryList()
+        ret._CAT_PLUGIN_RETURN = cat_pret
+        ret._CAT_DASH_PLUGIN_RETURN = cat_dash_pret
+        ret._CAT_UG_PLUGIN_RETURN = cat_ug_pret
+        ret._track_merge(other=cat_pret)
+        ret._track_merge(other=cat_dash_pret)
+        ret._track_merge(other=cat_ug_pret)
+
+        for lod in sorted(cat_pret._LOD, key=lambda x: x["name"]):
+            db_lods = [x for x in cat_dash_pret._LOD if int(x["content_group_id"]) == int(lod["id"])]
+            db_ids = [x["dashboard_id"] for x in db_lods]
+
+            ug_lods = [x for x in cat_ug_pret._LOD if int(x["content_group_id"]) == int(lod["id"])]
+            ug_ids = [x["user_group_id"] for x in ug_lods]
+
+            all_u_obj = self.build_obj("User", attrs={"id": 0, "name": "All Users"})
+            all_u_id = lod["user_id"] == "0"
+            u_obj = all_u_obj if all_u_id else self.search_objs(**kwmerge(u_sargs, searches=lod["user_id"]))
+
+            obj = taniumpy.DashboardCategory()
+            obj.id = int(lod["id"])
+            obj.name = lod["name"]
+            obj.text = lod["text"]
+            obj.public_flag = int(lod["public_flag"])
+            obj.other_flag = int(lod["other_flag"])
+            obj.editable_flag = int(lod["editable_flag"])
+            obj.user = u_obj
+            obj.icon = taniumpy.Image(lod["icon"])
+            obj.user_groups = self.search_objs(**kwmerge(ug_sargs, searches=ug_ids))
+            obj.dashboards = self.search_objs(**kwmerge(db_sargs, searches=db_ids))
+            ret.append(obj)
+
+        return ret
+
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def get_dashboards(self, **kwargs):
+        """
+        Dashboard UI Constructs:
+        - Name
+        - Filter Computer Group: (single select?) ==> group_id
+        - Make dashboard visibile to all users (checkbox) ==> public_flag
+        - Saved questions: list of saved questions
+        """
+        # this is all of the dashboards themselves, but none of their content
+        margs = kwmerge(kwargs, bundle="Dashboards", name="GetDashboards")
+        dash_pret = self.run_plugin_obj(**margs)
+        # {'user_id': '1', 'name': 'VMware Guest CPU and Memory',
+        #  'public_flag': '1', 'text': None, 'group_id': '0', 'user_name': 'Administrator', 'id': '41'}
+
+        # actual SQ correlation to dashboards, as well as SQ sort order in dashboard
+        margs = kwmerge(kwargs, bundle="Dashboards", name="GetDashboardSQIndices")
+        dash_sq_pret = self.run_plugin_obj(**margs)
+        # {'dashboard_id': '41', 'saved_question_id': '249', 'dashboard_index': '2'}
+        # {'dashboard_id': '41', 'saved_question_id': '250', 'dashboard_index': '1'}
+
+        sq_objs = self.get_all_objs("SavedQuestion")
+        sq_sargs = {"objs": sq_objs, "default_search_attr": "id", "use_regex": False}
+        u_objs = self.get_all_objs("User")
+        u_sargs = {"objs": u_objs, "limit_exact": 1, "default_search_attr": "id", "use_regex": False}
+        g_objs = self.get_all_objs("Group")
+        g_sargs = {"objs": g_objs, "limit_exact": 1, "default_search_attr": "id", "use_regex": False}
+
+        ret = taniumpy.DashboardList()
+        ret._DASH_PLUGIN_RETURN = dash_pret
+        ret._DASH_SQ_PLUGIN_RETURN = dash_sq_pret
+        ret._track_merge(other=dash_pret)
+        ret._track_merge(other=dash_sq_pret)
+
+        for lod in sorted(dash_pret._LOD, key=lambda x: x["name"]):
+            sq_lods = [x for x in dash_sq_pret._LOD if int(x["dashboard_id"]) == int(lod["id"])]
+            sq_lods = sorted(sq_lods, key=lambda x: x["dashboard_index"])
+            sq_ids = [x["saved_question_id"] for x in sq_lods]
+
+            all_g_obj = self.build_obj("Group", attrs={"id": 0, "name": "All Groups"})
+            all_g_id = lod["group_id"] == "0"
+            g_obj = all_g_obj if all_g_id else self.search_objs(**kwmerge(g_sargs, searches=lod["group_id"]))
+
+            obj = taniumpy.Dashboard()
+            obj.id = int(lod["id"])
+            obj.name = lod["name"]
+            obj.text = lod["text"]
+            obj.public_flag = int(lod["public_flag"])
+            obj.user = self.search_objs(**kwmerge(u_sargs, searches=lod["user_id"]))
+            obj.computer_group = g_obj
+            obj.saved_questions = self.search_objs(**kwmerge(sq_sargs, searches=sq_ids))
+            ret.append(obj)
+
+        m = "Retrieved {l} Dashboards"
+        m = m.format(l=len(ret))
+        self.mylog.debug(m)
+        return ret
+
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def get_action_groups(self, **kwargs):
+        margs = {"bundle": "GroupFilter", "name": "GetActionGroups"}
+        ag_pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        margs = kwmerge({}, lod=ag_pret._LOD, key="id", attr="group_id")
+        coll_lod = collapse_lod(**margs)
+
+        m = "Collapsed {b} plugin response dicts into {a} dicts"
+        m = m.format(b=len(ag_pret._LOD), a=len(coll_lod))
+        self.mylog.debug(m)
+
+        margs = {"bundle": "GroupFilter", "name": "GetActionGroupsUserGroups"}
+        agug_pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        # FIXBUG: refetch=True need to re-fetch the single group object. group objects returned from get all
+        # have duplicate sub_group listings!!
+        g_objs = self.get_all_objs("Group")
+        g_sargs = kwmerge(kwargs, objs=g_objs, excludes=[], limit_exact=1, refetch=True)
+        ug_objs = self.get_all_objs("UserGroup")
+        ug_sargs = {"objs": ug_objs, "excludes": [], "default_search_attr": "id", "use_regex": False}
+
+        ret = taniumpy.ActionGroupList()
+        ret._AG_PLUGIN_RETURN = ag_pret
+        ret._AGUG_PLUGIN_RETURN = agug_pret
+        ret._track_merge(other=ag_pret)
+        ret._track_merge(other=agug_pret)
+
+        for lod in coll_lod:
+            ug_ids = [x["user_group_id"] for x in agug_pret._LOD if x["action_group_id"] == str(lod["id"])]
+            ug_ids = list(set(ug_ids))
+
+            obj = taniumpy.ActionGroup()
+            obj.id = int(lod["id"])
+            obj.name = lod["name"]
+            obj.public_flag = int(lod["public_flag"])
+            obj.and_flag = int(lod["and_flag"])
+            obj.computer_group = self.search_objs(**kwmerge(g_sargs, searches=lod["name"]))
+            obj.user_groups = self.search_objs(**kwmerge(ug_sargs, searches=ug_ids))
+            ret.append(obj)
+
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def create_dashboard(self, name, **kwargs):
+        text = kwargs.get("text", "")
+        sq_s = kwargs.get("sq_searches", [])
+        sq_e = kwargs.get("sq_excludes", [])
+        cgrp_s = kwargs.get("cgroup_searches", [])
+        cgrp_e = kwargs.get("cgroup_excludes", [])
+        public_flag = int(kwargs.get("public_flag", True))
+        search_precheck = kwargs.get("search_precheck", True)
+
+        if search_precheck:
+            margs = kwmerge(kwargs, objtype="Dashboard", searches=name, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no Dashboard while searching for '{n}', will create!"
+                m = m.format(n=name)
+                self.mylog.debug(m)
+            else:
+                m = "{o} found while searching for '{n}', will not create!"
+                m = m.format(o=obj, n=name)
+                raise pytan.exceptions.HandlerError(m)
+
+        # Get the Computer Group for this Dashboard if supplied
+        if cgrp_s or cgrp_e:
+            margs = kwmerge(kwargs, objtype="Group", searches=cgrp_s, excludes=cgrp_e, limit_exact=1)
+            cg_obj = self.search_all_objs(**margs)
+        else:
+            cg_obj = self.build_obj("Group", attrs={"id": 0, "name": "All Groups"})
+
+        margs = kwmerge(kwargs, objtype="SavedQuestion", searches=sq_s, excludes=sq_e)
+        sq_objs = self.search_all_objs(**margs)
+
+        obj = taniumpy.Dashboard(name=name, public_flag=public_flag, text=text)
+        obj._CHANGED = True
+        obj.computer_group = cg_obj
+        obj.set_saved_questions(sq_objs)
+
+        pargs = [
+            {"name": "dash_name", "value": obj.name},
+            {"name": "dash_text", "value": obj.text},
+            {"name": "group_id", "type": "Number", "value": obj.computer_group.id},
+            {"name": "public_flag", "type": "Number", "value": obj.public_flag},
+            {"name": "sqid_xml", "value": obj.saved_questions_xml()},
+        ]
+
+        margs = {"bundle": "Dashboards", "name": "CreateDashboard", "arguments": pargs}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        margs = kwmerge(kwargs, objtype="Dashboard", searches=name, limit_exact=1)
+        ret = self.search_all_objs(**margs)
+        ret._PLUGIN_RETURN = pret
+
+        ret._track_merge(other=pret)
+        ret._track(t_action="Added new")
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        ret._ADDED = True
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def create_user_group(self, name, **kwargs):
+        search_precheck = kwargs.get("search_precheck", True)
+
+        if search_precheck:
+            margs = kwmerge(kwargs, objtype="UserGroup", searches=name, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no User Group while searching for '{n}', will create!"
+                m = m.format(n=name)
+                self.mylog.debug(m)
+            else:
+                m = "{o} found while searching for '{n}', will not create!"
+                m = m.format(o=obj, n=name)
+                raise pytan.exceptions.HandlerError(m)
+
+        pargs = [{"name": "user_group_name", "value": name}]
+        margs = {"bundle": "UserGroups", "name": "AddUserGroup", "arguments": pargs}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        margs = kwmerge(kwargs, objtype="UserGroup", searches=name, limit_exact=1)
+        ret = self.search_all_objs(**margs)
+        ret._PLUGIN_RETURN = pret
+
+        ret._track_merge(other=pret)
+        ret._track(t_action="Added new")
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        ret._ADDED = True
+        return ret
+
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def create_action_group(self, name, **kwargs):
+        cgrp_s = kwargs.get("cgroup_searches", [])
+        cgrp_e = kwargs.get("cgroup_excludes", [])
+        ugrp_s = kwargs.get("ugroup_searches", [])
+        ugrp_e = kwargs.get("ugroup_excludes", [])
+        and_flag = int(kwargs.get("and_flag", False))
+        public_flag = int(kwargs.get("public_flag", True))
+        search_precheck = kwargs.get("search_precheck", True)
+
+        if search_precheck:
+            margs = kwmerge(kwargs, objtype="ActionGroup", searches=name, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no Action Group while searching for '{n}', will create!"
+                m = m.format(n=name)
+                self.mylog.debug(m)
+            else:
+                m = "{o} found while searching for '{n}', will not create!"
+                m = m.format(o=obj, n=name)
+                raise pytan.exceptions.HandlerError(m)
+
+        # Get the Computer Groups for this Action Group
+        margs = kwmerge(kwargs, objtype="Group", searches=cgrp_s, excludes=cgrp_e)
+        cg_objs = self.search_all_objs(**margs)
+
+        # Get the User Groups specified for this Action Group
+        margs = kwmerge(kwargs, objtype="UserGroup", searches=ugrp_s, excludes=ugrp_e)
+        ug_objs = self.search_all_objs(**margs)
+
+        obj = taniumpy.ActionGroup(name=name, public_flag=public_flag, and_flag=and_flag)
+        obj._CHANGED = True
+        obj.set_computer_groups(cg_objs)
+        obj.set_user_groups(ug_objs)
+
+        ret = self.save_changed_obj_ag(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def delete_dashboard(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            margs = kwmerge(kwargs, objtype="Dashboard", searches=this_s, excludes=this_e, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no Dashboard while searching for '{s}', will not delete!"
+                m = m.format(s=this_s)
+                raise pytan.exceptions.NotFoundError(m)
+            else:
+                m = "{o} found while searching for '{s}', will delete!"
+                m = m.format(o=obj, s=this_s)
+                self.mylog.debug(m)
+
+        arguments = [{"name": "dashboard_ids", "type": "Number_Set", "value": obj.id}]
+        margs = {"bundle": "Dashboards", "name": "DeleteDashboards", "arguments": arguments}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        ret = obj
+        ret._PLUGIN_RETURN = pret
+        ret._track_merge(other=pret)
+        ret._track(t_action="Deleted")
+        ret._DELETED = True
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def delete_action_group(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            margs = kwmerge(kwargs, objtype="ActionGroup", searches=this_s, excludes=this_e, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no Action Group while searching for '{s}', will not delete!"
+                m = m.format(s=this_s)
+                raise pytan.exceptions.NotFoundError(m)
+            else:
+                m = "{o} found while searching for '{s}', will delete!"
+                m = m.format(o=obj, s=this_s)
+                self.mylog.debug(m)
+
+        arguments = [
+            {"name": "new_group_id", "type": "Number", "value": 0},
+            {"name": "old_group_id", "type": "Number", "value": obj.id},
+        ]
+
+        margs = {"bundle": "GroupFilter", "name": "DeleteActionGroup", "arguments": arguments}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        ret = obj
+        ret._PLUGIN_RETURN = pret
+        ret._track_merge(other=pret)
+        ret._track(t_action="Deleted")
+        ret._DELETED = True
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def delete_user_group(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            margs = kwmerge(kwargs, objtype="UserGroup", searches=this_s, excludes=this_e, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no User Group while searching for '{s}', will not delete!"
+                m = m.format(s=this_s)
+                raise pytan.exceptions.NotFoundError(m)
+            else:
+                m = "{o} found while searching for '{s}', will delete!"
+                m = m.format(o=obj, s=this_s)
+                self.mylog.debug(m)
+
+        arguments = [{"name": "user_group_id", "type": "Number", "value": obj.id}]
+        margs = {"bundle": "UserGroups", "name": "DeleteUserGroup", "arguments": arguments}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        ret = obj
+        ret._PLUGIN_RETURN = pret
+        ret._track_merge(other=pret)
+        ret._track(t_action="Deleted")
+        ret._DELETED = True
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def modify_metadata_obj(self, obj, **kwargs):
+        properties = kwargs.get("properties", {}) or {}
+        prefix = kwargs.get("prefix", "")
+        add_pytan_property = kwargs.get("add_pytan_property", True)
+
+        if add_pytan_property:
+            properties[PP_NAME] = PP_VALUE.format(v=pytan.__version__, d=seconds_from_now())
+
+        # build a new metadata list if obj is None
+        obj = self.build_obj(obj_name="MetadataList") if obj is None else obj
+
+        # build a new metadata lists to return
+        ret = self.build_obj(obj_name="MetadataList")
+
+        delete_all = "_DELETEALL_" in properties
+        ptmpl = "{p}.{n}".format if prefix else "{n}".format
+        properties = {ptmpl(p=prefix, n=k): v for k, v in properties.items()}
+
+        # update/create/delete/skip properties
+        for name, value in properties.items():
+            # try to find a matching md item by lowercase name
+            found = [x for x in obj if str(x.name).lower() == name.lower()]
+            t_old = found[0] if found else ""
+            t_new = self.build_obj(obj_name="MetadataItem", attrs={"name": name, "value": value})
+
+            if value == "_DELETE_" and found:
+                t_action = "Deleted item from"
+                t_new = ""
+            elif value == "_DELETE_" and not found:
+                t_action = "Did not add item to"
+            elif name.endswith("_DELETEALL_"):
+                continue
+            elif t_old:
+                t_old._CHANGED = True
+                t_action = "Updated item in"
+                t_new = t_old
+                t_new.value = value
+                ret.append(t_new)
+            else:
+                t_action = "Created new item in"
+                ret.append(t_new)
+
+            ret._track(t_old=t_old, t_new=t_new, t_action=t_action, str_all_attrs=True)
+
+        for x in obj:
+            touched = getattr(x, "_CHANGED", False)
+            if not touched:
+                if delete_all:
+                    t_action = "Deleted item from"
+                else:
+                    t_action = "Added untouched item back to"
+                    ret.append(x)
+                ret._track(t_old=x, t_action=t_action, str_all_attrs=True)
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def modify_user_group(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        # set_s = kwargs.get("set_searches", [])
+        # set_e = kwargs.get("set_excludes", [])
+        # add_s = kwargs.get("add_searches", [])
+        # add_e = kwargs.get("add_excludes", [])
+        # del_s = kwargs.get("remove_searches", [])
+        # del_e = kwargs.get("remove_excludes", [])
+        delete_existing = kwargs.get("delete_existing", False)
+        obj = kwargs.get("obj", None)
+        user_objs = kwargs.get("user_objs", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+
+        new_a = {"name": this_s[0]}
+        margs = kwmerge(kwargs, objtype="UserGroup", searches=this_s, excludes=this_e, attrs=new_a)
+        obj = self.search_add_obj(**margs) if obj is None else obj
+
+        if delete_existing:
+            ret = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            return ret
+
+        user_objs = self.get_all_objs(objtype="User") if user_objs is None else user_objs
+        orig_users = obj.users_str()
+
+        change_map = [
+            {
+                "searches": "set_searches", "excludes": "set_excludes",
+                "method": "set_users", "objs": user_objs,
+                "t_action": "Set {l} users on",
+            },
+            {
+                "searches": "add_searches", "excludes": "add_excludes",
+                "method": "add_users", "objs": user_objs,
+                "t_action": "Added {l} users to",
+            },
+            {
+                "searches": "remove_searches", "excludes": "remove_excludes",
+                "method": "remove_users", "objs": user_objs,
+                "t_action": "Removed {l} users from",
+            },
+        ]
+
+        for c in change_map:
+            if not (c["searches"] in kwargs or c["excludes"] in kwargs):
+                continue
+            c["searches"], c["excludes"] = (kwargs.get(c["searches"], []), kwargs.get(c["excludes"], []))
+            mod_list = self.search_objs(**kwmerge(kwargs, **c))
+            obj._track_merge(other=mod_list)
+            getattr(obj, c["method"])(mod_list)
+            obj._track(t_action=c["t_action"].format(l=len(mod_list)))
+
+        new_users = obj.users_str() if obj._CHANGED else ""
+        obj._track(t_old=orig_users, t_new=new_users, t_action="User Group Membership")
+
+        ret = self.save_changed_obj_ug(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def modify_action_group(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        and_flag = int(kwargs.get("and_flag", False))
+        public_flag = int(kwargs.get("public_flag", True))
+        delete_existing = kwargs.get("delete_existing", False)
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+
+        try:
+            margs = kwmerge(kwargs, objtype="ActionGroup", searches=this_s, excludes=this_e, limit_exact=1)
+            obj = self.search_all_objs(**margs) if obj is None else obj
+        except pytan.exceptions.NotFoundError:
+            obj = taniumpy.ActionGroup(name=this_s[0], public_flag=public_flag, and_flag=and_flag)
+            obj._CHANGED = True
+
+        if delete_existing:
+            ret = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            return ret
+
+        g_objs = self.get_all_objs(objtype="Group")
+        ug_objs = self.get_all_objs(objtype="UserGroup")
+
+        orig_cg = obj.computer_groups_str()
+        orig_ug = obj.user_groups_str()
+
+        if "and_flag" in kwargs:
+            obj._track_set(t_attr="and_flag", t_new=and_flag)
+
+        if "public_flag" in kwargs:
+            obj._track_set(t_attr="public_flag", t_new=public_flag)
+
+        change_map = [
+            {
+                "searches": "cg_set_searches", "excludes": "cg_set_excludes",
+                "method": "set_computer_groups", "objs": g_objs,
+                "t_action": "Set {l} computer groups on",
+            },
+            {
+                "searches": "cg_add_searches", "excludes": "cg_add_excludes",
+                "method": "add_computer_groups", "objs": g_objs,
+                "t_action": "Added {l} computer groups to",
+            },
+            {
+                "searches": "cg_remove_searches", "excludes": "cg_remove_excludes",
+                "method": "remove_computer_groups", "objs": g_objs,
+                "t_action": "Removed {l} computer groups from",
+            },
+            {
+                "searches": "ug_set_searches", "excludes": "ug_set_excludes",
+                "method": "set_user_groups", "objs": ug_objs,
+                "t_action": "Set {l} user groups on",
+            },
+            {
+                "searches": "ug_add_searches", "excludes": "ug_add_excludes",
+                "method": "add_user_groups", "objs": ug_objs,
+                "t_action": "Added {l} user groups to",
+            },
+            {
+                "searches": "ug_remove_searches", "excludes": "ug_remove_excludes",
+                "method": "remove_user_groups", "objs": ug_objs,
+                "t_action": "Removed {l} user groups from",
+            },
+        ]
+
+        for c in change_map:
+            if not (c["searches"] in kwargs or c["excludes"] in kwargs):
+                continue
+            c["searches"], c["excludes"] = (kwargs.get(c["searches"], []), kwargs.get(c["excludes"], []))
+            mod_list = self.search_objs(**kwmerge(kwargs, **c))
+            obj._track_merge(other=mod_list)
+            getattr(obj, c["method"])(mod_list)
+            obj._track(t_action=c["t_action"].format(l=len(mod_list)))
+
+        new_cg = obj.computer_groups_str() if obj._CHANGED else ""
+        new_ug = obj.user_groups_str() if obj._CHANGED else ""
+
+        obj._track(t_old=orig_cg, t_new=new_cg, t_action="Computer Group Membership")
+        obj._track(t_old=orig_ug, t_new=new_ug, t_action="User Group Membership")
+
+        ret = self.save_changed_obj_ag(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # SHELL SCRIPT
+    # DOC, TEST
+    # ADDED: 2.3.0
+    def modify_user(self, searches=[], **kwargs):
+        """Create, modify, or delete a user object.
+
+        Notes
+        -----
+        * Searches and excludes supplied must equate to ONE user.
+        * The first string in searches should be a simple string as it will be used as the name of the
+          newly created user if `create_missing` is True and the user does not exist.
+        * When creating a missing user and no parameters supplied, the default user will be:
+
+            * Granted the role "Read Only User"
+            * Have access to All Computer Groups
+            * Have access to No User Groups
+
+        Parameters
+        ----------
+        searches: :obj:`str` or :obj:`list` of :obj:`str`
+            * search strings used to find a single user object to modify
+        excludes: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings to exclude from `searches`
+        new_user_default_role: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: "Read Only User"
+            * search strings used to find a single user role object if no `role_searches` supplied
+              and `create_missing` is True and no user found matching searches
+        role_searches: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings used to find a single user role object to assign to user
+        role_excludes: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings to exclude from `role_searches`
+        cgroup_searches: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings used to find any number of computer group objects to assign to user
+            * !names must exist, can not be created!
+        cgroup_excludes: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings to exclude from `cgroup_searches`
+        ugroup_searches: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings used to find any number of user group objects to assign to user
+            * !names must exist, can not be created!
+        ugroup_excludes: :obj:`str` or :obj:`list` of :obj:`str`, optional
+            * Default: []
+            * search strings to exclude from `ugroup_searches`
+        properties: :obj:`dict`, optional
+            * Default: {}
+        add_pytan_property: :obj:`bool`, optional
+            * Default: True
+            * Parameter also used by: update_obj_metadata
+        delete_existing: :obj:`bool`, optional
+            * Default: False
+            * Delete user matching `searches` if found
+
+        Other Parameters
+        ----------------
+        create_missing: :obj:`bool`, optional
+            * Default: True
+            * Parameter used by: search_add_obj
+        use_regex: :obj:`bool`, optional
+            * Default: True
+            * Parameter used by: search_obj
+        case_sensitive: :obj:`bool`, optional
+            * Default: False
+            * Parameter used by: search_obj
+        default_search_attr: :obj:`str`, optional
+            * Default: "name"
+            * Parameter used by: search_obj
+        search_debug: obj:`str`, optional
+            * Default: "name"
+            * Parameter used by: search_objs
+        any_taniumpy_option: :obj:`obj`, optional
+            * any parameter from taniumpy.Options
+            * Parameters used by: session.find, session.add, session.save, session.delete
+        log_line_limit: :obj:`int`, optional
+            * Default: 80
+            * Parameter used by: log_tracker
+        log_include_build: :obj:`bool`, optional
+            * Default: False
+            * Parameter used by: log_tracker
+        log_include_plugin: :obj:`bool`, optional
+            * Default: False
+            * Parameter used by: log_tracker
+        """
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        role_n = kwargs.get("new_user_default_role", "Read Only User")
+        role_s = kwargs.get("role_searches", [])
+        role_e = kwargs.get("role_excludes", [])
+        cgrp_s = kwargs.get("cgroup_searches", [])
+        cgrp_e = kwargs.get("cgroup_excludes", [])
+        ugrp_s = kwargs.get("ugroup_searches", [])
+        ugrp_e = kwargs.get("ugroup_excludes", [])
+        delete_existing = kwargs.get("delete_existing", False)
+        add_pytan_property = kwargs.get("add_pytan_property", True)
+        obj = kwargs.get("obj", None)
+
+        # find the specified role by name, require at least one match
+        margs = kwmerge(kwargs, objtype="UserRole", searches=role_s or role_n, excludes=role_e, limit_exact=1)
+        role_obj = self.search_all_objs(**margs)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            # find or add the user accordingly
+            new_a = {"name": this_s[0], "roles": [{"name": role_obj.name}]}
+            margs = kwmerge(kwargs, objtype="User", searches=this_s, excludes=this_e, attrs=new_a)
+            obj = self.search_add_obj(**margs)
+
+        if delete_existing:
+            ret = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            return ret
+
+        g_objs_all = self.get_all_objs(objtype="Group")
+        g_objs_cur = self.get_group_members_by_id(group_id=obj.group_id, objs=g_objs_all)
+        margs = kwmerge(kwargs, searches=cgrp_s, excludes=cgrp_e, objs=g_objs_all)
+        g_objs_new = self.get_group_members_by_searches(**margs)
+
+        m = "{o} current membership: {msg}"
+        m = m.format(o=obj, msg=g_objs_cur._MSG)
+        self.mylog.debug(m)
+
+        m = "{o} new membership: {msg}"
+        m = m.format(o=obj, msg=g_objs_new._MSG)
+        self.mylog.debug(m)
+
+        if "cgroup_searches" in kwargs or "cgroup_excludes" in kwargs:
+            t_action = "Updated group membership for"
+            obj._track(t_old=g_objs_cur._MSG, t_new=g_objs_new._MSG, t_action=t_action)
+            margs = kwmerge(kwargs, t_attr="group_id", t_new=g_objs_new._ROOT_GROUP.id)
+            obj._track_set(**margs)
+        elif obj._ADDED:
+            t_action = "Group membership for new"
+            obj._track(t_old=g_objs_cur._MSG, t_action=t_action)
+
+        if "role_searches" in kwargs or "role_excludes" in kwargs:
+            roles_obj = self.build_obj(obj_name="UserRoleList")
+            roles_obj.append(role_obj)
+            margs = kwmerge(kwargs, t_attr="roles", t_new=roles_obj, str_all_attrs=True, str_items=True)
+            obj._track_set(**margs)
+
+        if "ugroup_searches" in kwargs or "ugroup_excludes" in kwargs:
+            margs = kwmerge(kwargs, objtype="UserGroup", searches=ugrp_s, excludes=ugrp_e)
+            ug_objs = self.search_all_objs(**margs)
+            ug_objs.add_user(obj)
+            margs = kwmerge(kwargs, objs=ug_objs, searches=ugrp_s, excludes=ugrp_e)
+            ug_objs = self.save_changed_obj_ugs(**margs)
+            obj._track_merge(other=ug_objs)
+
+        if "properties" in kwargs or (add_pytan_property and (obj._CHANGED or obj._ADDED)):
+            margs = kwmerge(kwargs, obj=obj.metadata, prefix="TConsole.User.Property")
+            md_obj = self.modify_metadata_obj(**margs)
+            obj._track_merge(other=md_obj)
+            obj._track_set(**kwmerge(kwargs, t_attr="metadata", t_new=md_obj))
+
+        ret = self.save_changed_obj(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def modify_setting(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        value = kwargs.get("value", None)
+        value_type = valvalue(key="value_type", valids=["Numeric", "Text"], kwargs=kwargs)
+        setting_type = valvalue(key="setting_type", valids=["Server", "Client"], kwargs=kwargs)
+        note = kwargs.get("note", None)
+        delete_existing = kwargs.get("delete_existing", False)
+        add_pytan_property = kwargs.get("add_pytan_property", True)
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            new_a = {"name": this_s[0], "value": value, "value_type": value_type, "setting_type": setting_type}
+            margs = kwmerge(kwargs, objtype="SystemSetting", searches=this_s, excludes=this_e, attrs=new_a)
+            obj = self.search_add_obj(**margs)
+
+        if delete_existing:
+            ret = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            return ret
+
+        note_prop = "TConsole.Setting.Note"
+
+        old_mdl_obj = getattr(obj, "metadata", []) or []
+        old_note_obj = [x for x in old_mdl_obj if x.name == note_prop]
+        old_note_val = getattr(old_note_obj[0], "value", PP_NAME) if old_note_obj else PP_NAME
+
+        if "value" in kwargs:
+            obj._track_set(t_attr="value", t_new=value)
+
+        if "value_type" in kwargs:
+            obj._track_set(t_attr="value_type", t_new=value_type)
+
+        if "setting_type" in kwargs:
+            obj._track_set(t_attr="setting_type", t_new=setting_type)
+
+        if "note" in kwargs:
+            note_attrs = {"name": note_prop, "value": note}
+            mdl_obj = self.build_obj(obj_name="MetadataList", attrs=[note_attrs])
+            obj._track_set(t_attr="metadata", t_new=mdl_obj, str_items=True, str_all_attrs=True)
+        elif add_pytan_property and (obj._ADDED or obj._CHANGED) and old_note_val.startswith(PP_NAME):
+            pp_note = "{n} {v}".format(n=PP_NAME, v=PP_VALUE.format(v=pytan.__version__, d=seconds_from_now()))
+            note_attrs = {"name": note_prop, "value": pp_note}
+            mdl_obj = self.build_obj(obj_name="MetadataList", attrs=[note_attrs])
+            obj._track_set(t_attr="metadata", t_new=mdl_obj, str_items=True, str_all_attrs=True)
+
+        ret = self.save_changed_obj(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # TODO: WRITE!!
+    # Tricky, no group => user mapping, have to get all users and look at their GID's
+    # then figure out if it's a merged group or not
+    # may need to move some code out of update_user_group_obj for figuring shit out
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def modify_computer_group(self, name, **kwargs):
+        """
+        group_id: 0 == all group access
+        if not 0, group_id must be a valid group ID!
+        # add manual group support
+        # do not delete pre-existing groups, it detaches all users!
+        # add modify group method, copy modify user groups concept (with add/set/del/add all / remove all)
+        # add sub groups support
+        # create_missing should be GENERIC.. just create everything (even users!) if they dont exist
+        # users should get "no computers" by default
+        """
+        """
+        def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
+        pytan.utils.check_for_help(kwargs=kwargs)
+        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+
+        filter_defs = pytan.utils.dehumanize_question_filters(question_filters=filters)
+        option_defs = pytan.utils.dehumanize_question_options(question_options=filter_options)
+
+        h = (
+            "Issue a GetObject to get the full object of specified sensors for inclusion in a "
+            "group"
+        )
+        filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
+
+        add_group_obj = pytan.utils.build_group_obj(
+            q_filter_defs=filter_defs, q_option_defs=option_defs,
+        )
+        add_group_obj.name = groupname
+
+        h = "Issue an AddObject to add a Group object"
+        group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
+
+        m = "New group {!r} created with ID {!r}, filter text: {!r}".format
+        self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
+
+        return group_obj
+        """
+        pass
+
+    # TODO: REWRITE!!
+    # SHELL SCRIPT
+    # ADDED: 2.3.0
+    def modify_saved_question(self, name, **kwargs):
+        """Create a saved question.
+
+        * Added in: 2.3.0
+
+        Parameters
+        ----------
+        sensors : str, list of str
+            * default: []
+            * sensors (columns) to include in question
+        question_filters : str, list of str, optional
+            * default: []
+            * filters that apply to the whole question
+        question_options : str, list of str, optional
+            * default: []
+            * options that apply to the whole question
+        sensor_defs : str, dict, list of str or dict
+            * default: []
+            * sensor definitions, non human form
+        question_filter_defs : dict, list of dict, optional
+            * default: []
+            * question filter definitions, non human form
+        question_option_defs : dict, list of dict, optional
+            * default: []
+            * question option definitions, non human form
+        reissue: bool, optional
+            * default: False
+            * True: Enable re-asking this saved question automatically every reissue_time
+            * False: Do not re ask this question
+        reissue_time: int, optional
+            * default: 1
+            * How often to re-ask this question if reissue is True
+        reissue_time_frame: str, optional
+            * default: hours
+            * valid choices: ["days", "seconds", "minutes", "hours", "weeks"]
+            * The time frame of reissue_time
+        public: bool, optional
+            * default: True
+            * True: Make this question available to everyone
+            * False: Restrict this question to only owner and administrators
+        packages: list of str, optional
+            * default: []
+            * List of packages to be made available for use on results of the question
+        properties: dict, optional
+            * default: {}
+            * Dict of key/value pairs to set as properties (visible in console)
+        add_created_by: bool, optional
+            * default: "PyTan v{version} on {now}"
+            * str template: add "created by" to properties / metadata
+            * False: do not add "created by" to properties / metadata
+
+        Notes
+        ------
+        Can provide defs to bypass humanizing the strings, but only do this if you know what you are doing.
+
+        7.0 Console options => API Object changes => Method argument mappings:
+
+          * Checking the box "Reissue this question every":
+
+            * API Object: "archive_enabled_flag": 0 => 1
+            * Method argument: reissue, bool, [False, True]
+            * If True, default to 1 hour for reissue_time/reissue_time_frame
+
+          * Checking the box "Reissue this question every" and supplying 30 days:
+
+            * API Object: "archive_enabled_flag": 0 => 1
+            * API Object: "keep_seconds": 0 => 2592000
+            * Method argument: reissue_time, int
+            * Method argument: reissue_time_frame, str ["seconds", "minutes", "hours", "days", "weeks", "months"]
+
+          * Unchecking the box "Reissue this question every" and leaving 30 days alone:
+
+            * API Object: "archive_enabled_flag": 1 => 0
+            * Method argument: reissue, bool, [False, True]
+
+          * Checking the box "Restrict this question to only owner and administrators"
+
+            * API Object: "public_flag": 1 => 0
+            * Method argument: public, bool, [True, False]
+
+          * Adding package under Associated Actions:
+
+            * API Object: "package_spec": [] => [{"id": 123, "name": "Adobe Flash Player Installer"}]
+            * Method argument: packages, list of str
+            * Will need to fetch each package spec
+
+        Returns
+        -------
+        obj : :class:`taniumpy.object_types.saved_question.SavedQuestion`
+            * TaniumPy object added to Tanium SOAP Server
+        """
+        pytan.utils.check_for_help(kwargs=kwargs)
+
+        reissue = kwargs.get("reissue", False)
+        reissue_time = kwargs.get("reissue_time", 1)
+        reissue_time_frame = kwargs.get("reissue_time_frame", "hours")
+        public = kwargs.get("public", True)
+
+        margs = dict(**kwargs)
+        margs["prefix"] = "TConsole.SavedQuestion"
+        md_obj = pytan.utils.build_md_obj2(**margs)
+
+        set_reissue_time = "reissue_time" in kwargs or reissue
+        actual_reissue_time = pytan.utils.resolve_to_seconds(reissue_time, reissue_time_frame)
+
+        pl_obj = self.get_min_packagelist(**kwargs)
+
+        kwargs["sensor_defs"] = kwargs.get(
+            "sensor_defs",
+            pytan.utils.dehumanize_sensors(kwargs.get('sensors', [])),
+        )
+
+        kwargs["question_filter_defs"] = kwargs.get(
+            "question_filter_defs",
+            pytan.utils.dehumanize_question_filters(kwargs.get('question_filters', [])),
+        )
+
+        kwargs["question_option_defs"] = kwargs.get(
+            "question_option_defs",
+            pytan.utils.dehumanize_question_options(kwargs.get('question_options', [])),
+        )
+
+        if not any([kwargs["question_filter_defs"], kwargs["sensor_defs"]]):
+            m = "Must supply at least one sensor or filter!"
+            raise pytan.exceptions.HandlerError(m)
+
+        try:
+            search_item = taniumpy.SavedQuestion()
+            search_item.name = name
+            existing_item = self.session.find(search_item)
+        except Exception as e:
+            e_str = str(e).lower()
+            if "notunique" in e_str:
+                m = "Multiple Saved Questions Named: '{}' already exists, will not create more duplicates!"
+                m = m.format(name)
+                raise pytan.exceptions.HandlerError(m)
+            elif "notfound" in e_str:
+                existing_item = None
+
+        if existing_item is not None:
+            m = "A Saved Question Named: '{}' (ID: {}) already exists, will not create duplicates!"
+            m = m.format(existing_item.name, existing_item.id)
+            raise pytan.exceptions.HandlerError(m)
+
+        # get our defs from kwargs and churn them into what we want
+        pargs = dict(**kwargs)
+        pargs["defname"] = "sensor_defs"
+        pargs["deftypes"] = ["list()", "str()", "dict()"]
+        pargs["strconv"] = "name"
+        pargs["empty_ok"] = True
+        sdefs = pytan.utils.parse_defs(**pargs)
+
+        pargs = dict(**kwargs)
+        pargs["defname"] = "question_filter_defs"
+        pargs["deftypes"] = ["list()", "dict()"]
+        pargs["empty_ok"] = True
+        fdefs = pytan.utils.parse_defs(**pargs)
+
+        pargs = dict(**kwargs)
+        pargs["defname"] = "question_option_defs"
+        pargs["deftypes"] = ["dict()"]
+        pargs["empty_ok"] = True
+        odefs = pytan.utils.parse_defs(**pargs)
+
+        # do basic validation of our defs
+        pytan.utils.val_sensor_defs(sdefs)
+        pytan.utils.val_q_filter_defs(fdefs)
+
+        # get the sensor objects that are in our defs and add them as d['sensor_obj']
+        h = "Issue a GetObject on a sensor for inclusion in a Questions SelectList"
+        sdefs = self._get_sensor_defs(sdefs, pytan_help=h)
+        h = "Issue a GetObject on a sensor for inclusion in a Questions Group"
+        fdefs = self._get_sensor_defs(fdefs, pytan_help=h)
+
+        # build a SelectList object from our sensor_defs
+        sl_obj = pytan.utils.build_selectlist_obj(sdefs)
+
+        # build a Group object from our question filters/options
+        g_obj = pytan.utils.build_group_obj(fdefs, odefs)
+
+        # build a Question object from selectlist_obj and group_obj
+        q_obj = pytan.utils.build_manual_q(sl_obj, g_obj)
+
+        add_obj = taniumpy.SavedQuestion()
+        add_obj.question = q_obj
+        add_obj.name = name
+        add_obj.archive_enabled_flag = 1 if reissue else 0
+        add_obj.keep_seconds = actual_reissue_time if set_reissue_time else 0
+        add_obj.public_flag = 1 if public else 0
+        add_obj.packages = pl_obj
+        add_obj.metadata = md_obj
+        # print(self.export_obj(add_obj, "json"))
+
+        # add our Question and get a Question ID back
+        h = "Issue an AddObject to add a Saved Question object"
+        obj = self._add(obj=add_obj, pytan_help=h)
+
+        m = "Saved Question Created, ID: {}, query text: {!r}, reissue: {}, reissue seconds: {}, public: {}"
+        m = m.format(
+            obj.id,
+            obj.question.query_text,
+            bool(obj.archive_enabled_flag),
+            obj.keep_seconds,
+            bool(obj.public_flag),
+        )
+        self.mylog.info(m)
+
+        return obj
 
     # EXPORTING
     def export_obj(self, obj, export_format='csv', **kwargs):
@@ -1958,8 +3862,6 @@ class Handler(object):
         --------
         :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         objtype = type(obj)
         try:
             objclassname = objtype.__name__
@@ -2083,8 +3985,6 @@ class Handler(object):
         -----
         When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         report_file = kwargs.get('report_file', None)
 
         if not report_file:
@@ -2128,8 +4028,6 @@ class Handler(object):
         report_path : str
             * the full path to the file created with `contents`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if report_file is None:
             report_file = 'pytan_report_{}.txt'.format(pytan.utils.get_now())
 
@@ -2168,7 +4066,8 @@ class Handler(object):
         return report_path
 
     # PLUGINS
-    def run_plugin(self, obj, **kwargs):
+    # DEPRECATED IN 2.3.0
+    def deprecated_run_plugin(self, obj, **kwargs):
         """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
 
         Parameters
@@ -2182,8 +4081,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # run the plugin
         h = "Issue a RunPlugin run a plugin and get results back"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
@@ -2200,7 +4097,8 @@ class Handler(object):
         return plugin_result, sql_zipped
 
     # DASHBOARD PLUGINS
-    def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
+    # DEPRECATED IN 2.3.0
+    def deprecated_create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
 
         Parameters
@@ -2224,8 +4122,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
@@ -2280,12 +4176,13 @@ class Handler(object):
 
         # run the plugin
         h = "Issue a RunPlugin for the CreateDashboard plugin to create a dashboard"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+        plugin_result, sql_zipped = self.deprecated_run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
 
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
-    def delete_dashboard(self, name, **kwargs):
+    # DEPRECATED IN 2.3.0
+    def deprecated_delete_dashboard(self, name, **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
 
         Parameters
@@ -2299,12 +4196,10 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj', 'name', 'pytan_help']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        dashboards_to_del = self.get_dashboards(name=name, **clean_kwargs)[1]
+        dashboards_to_del = self.deprecated_get_dashboards(name=name, **clean_kwargs)[1]
 
         # create the plugin parent
         plugin = taniumpy.Plugin()
@@ -2322,12 +4217,13 @@ class Handler(object):
 
         # run the plugin
         h = "Issue a RunPlugin for the DeleteDashboards plugin to delete a dashboard"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+        plugin_result, sql_zipped = self.deprecated_run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
 
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
-    def get_dashboards(self, name='', **kwargs):
+    # DEPRECATED IN 2.3.0
+    def deprecated_get_dashboards(self, name='', **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
 
         Parameters
@@ -2342,8 +4238,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj', 'name', 'pytan_help']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -2354,394 +4248,13 @@ class Handler(object):
 
         # run the plugin
         h = "Issue a RunPlugin for the GetDashboards plugin to get all dashboards"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+        plugin_result, sql_zipped = self.deprecated_run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
 
         # if name specified, filter the list of dicts for matching name
         if name:
             sql_zipped = [x for x in sql_zipped if x['name'] == name]
             if not sql_zipped:
                 m = "No dashboards found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    # USER GROUP PLUGINS
-    def create_usergroup(self, name, **kwargs):
-        """Document me later.
-        name
-        """
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'AddUserGroup'
-        plugin.bundle = 'UserGroups'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'user_group_name'
-        arg1.type = 'String'
-        arg1.value = name
-        plugin.arguments.append(arg1)
-
-        # run the plugin
-        h = "Issue a RunPlugin for the AddUserGroup plugin to create a user group"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def delete_usergroup(self, name, **kwargs):
-        """Document me later.
-        name
-        """
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
-
-        usergroup_to_del = self.get_usergroups(name=name, **clean_kwargs)[1][0]
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'DeleteUserGroup'
-        plugin.bundle = 'UserGroups'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'user_group_id'
-        arg1.type = 'Number'
-        arg1.value = usergroup_to_del['id']
-        plugin.arguments.append(arg1)
-
-        # run the plugin
-        h = "Issue a RunPlugin for the AddUserGroup plugin to delete a usergroup"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def get_usergroups(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetUserGroups plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of user group to get, if empty will return all user groups
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetUserGroups'
-        plugin.bundle = 'UserGroups'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetUserGroups plugin to get all user groups"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No user groups found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def add_user_usergroup(self, name, users=[], **kwargs):
-        """Document me later.
-        name
-        users = list of names of users to add to usergroup
-        """
-        user_xml = ''
-        id_tmp = "<user>\n<id>{}</id>\n</user>".format
-        wrap_tmp = "<users>\n{}\n</users>".format
-
-        if not users:
-            err = "Must supply list of user names to add to usergroup!".form
-            raise pytan.exceptions.HandlerError(err())
-
-        users_in_group = self.get_usergroups(name)[1]
-
-        ug_id = users_in_group[0]['id']
-        ug_name = users_in_group[0]['name']
-        new_user_ids = [int(x['user_id']) for x in users_in_group if x['user_id'] not in [None, 'None']]
-
-        user_objs = [self.get('user', name=u)[0] for u in users]
-
-        for x in user_objs:
-            new_user_ids.append(int(x.id))
-
-        new_user_ids = list(set([int(x) for x in new_user_ids]))
-
-        if new_user_ids:
-            user_xml = '\n'.join([id_tmp(x) for x in new_user_ids])
-            user_xml = wrap_tmp(user_xml)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'UpdateUserGroup'
-        plugin.bundle = 'UserGroups'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'user_group_id'
-        arg1.type = 'Number'
-        arg1.value = ug_id
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'user_group_name'
-        arg2.type = 'String'
-        arg2.value = ug_name
-        plugin.arguments.append(arg2)
-
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'user_xml'
-        arg3.type = 'String'
-        arg3.value = user_xml
-        plugin.arguments.append(arg3)
-
-        # run the plugin
-        kwargs['pytan_help'] = "Issue a RunPlugin for the UpdateUserGroup plugin to update a User Group"
-        kwargs['obj'] = plugin
-        plugin_result, sql_zipped = self.run_plugin(**kwargs)
-
-        return sql_zipped
-
-    def remove_user_usergroup(self, name, users=[], **kwargs):
-        """Document me later.
-        name
-        users = list of names of users to remove from usergroup
-        """
-        user_xml = ''
-        id_tmp = "<user>\n<id>{}</id>\n</user>".format
-        wrap_tmp = "<users>\n{}\n</users>".format
-
-        if not users:
-            err = "Must supply list of user names to add to usergroup!".form
-            raise pytan.exceptions.HandlerError(err())
-
-        users_in_group = self.get_usergroups(name)[1]
-
-        ug_id = users_in_group[0]['id']
-        ug_name = users_in_group[0]['name']
-        new_user_ids = [int(x['user_id']) for x in users_in_group if x['user_id'] not in [None, 'None']]
-
-        user_objs = [self.get('user', name=u)[0] for u in users]
-        remove_ids = [int(x.id) for x in user_objs]
-
-        new_user_ids = list(set([int(x) for x in new_user_ids if x not in remove_ids]))
-
-        if new_user_ids:
-            user_xml = '\n'.join([id_tmp(x) for x in new_user_ids])
-            user_xml = wrap_tmp(user_xml)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'UpdateUserGroup'
-        plugin.bundle = 'UserGroups'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'user_group_id'
-        arg1.type = 'Number'
-        arg1.value = ug_id
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'user_group_name'
-        arg2.type = 'String'
-        arg2.value = ug_name
-        plugin.arguments.append(arg2)
-
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'user_xml'
-        arg3.type = 'String'
-        arg3.value = user_xml
-        plugin.arguments.append(arg3)
-
-        # run the plugin
-        kwargs['pytan_help'] = "Issue a RunPlugin for the UpdateUserGroup plugin to update a User Group"
-        kwargs['obj'] = plugin
-        plugin_result, sql_zipped = self.run_plugin(**kwargs)
-
-        return sql_zipped
-
-    # ACTION GROUP PLUGINS
-    def create_actiongroup(self, name, targeting=[], visibility='all', combine='and',
-                           usergroups=[], **kwargs):
-        """Document me later.
-        name
-        targeting=group names
-        visibility=admin, all, usergroups
-        combine=and, or
-        usergroups=user group names for visibility=usergroups
-
-        v=handler.create_actiongroup('test 1')
-        v=handler.create_actiongroup('test 2', visibility='all')
-        v=handler.create_actiongroup('test 3', visibility='admin')
-        v=handler.create_actiongroup('test 4', targeting=['T machines'])
-        v=handler.create_actiongroup('test 5', targeting=['T machines'], visibility='usergroups', usergroups=['test1'])
-
-        """
-        user_group_xml = ''
-        id_tmp = "<user_group>\n<id>{}</id>\n</user_group>".format
-        wrap_tmp = "<user_groups>\n{}\n</user_groups>".format
-
-        if visibility == 'admin':
-            public_flag = 0
-        elif visibility == 'all':
-            public_flag = 1
-        elif visibility == 'usergroups':
-            public_flag = 0
-            user_group_ids = [self.get_usergroups(x)[1][0]['id'] for x in usergroups]
-            user_group_xml = '\n'.join([id_tmp(x) for x in user_group_ids])
-            user_group_xml = wrap_tmp(user_group_xml)
-        else:
-            err = "{} is not a valid visibilty option! Must be one of: admin, all, usergroups".format
-            raise pytan.exceptions.HandlerError(err(visibility))
-
-        if combine == 'and':
-            and_flag = 1
-        elif combine == 'or':
-            and_flag = 0
-        else:
-            err = "{} is not a valid combine option! Must be one of: and, or".format
-            raise pytan.exceptions.HandlerError(err(combine))
-
-        add_group_obj = taniumpy.Group()
-        add_group_obj.name = name
-        add_group_obj.type = 1
-        add_group_obj.and_flag = and_flag
-
-        if targeting:
-            sub_groups = taniumpy.GroupList()
-            for x in targeting:
-                n = self.get('group', name=x)
-                sub_groups.append(n[0])
-            add_group_obj.sub_groups = sub_groups
-
-        kwargs['pytan_help'] = "Issue an AddObject to add a Group object"
-        kwargs['obj'] = add_group_obj
-        group_obj = self._add(**kwargs)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'AddActionGroup'
-        plugin.bundle = 'GroupFilter'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'group_id'
-        arg1.type = 'Number'
-        arg1.value = group_obj.id
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'public_flag'
-        arg2.type = 'Number'
-        arg2.value = public_flag
-        plugin.arguments.append(arg2)
-
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'user_group_xml'
-        arg3.type = 'String'
-        arg3.value = user_group_xml
-        plugin.arguments.append(arg3)
-
-        # run the plugin
-        kwargs['pytan_help'] = "Issue a RunPlugin for the AddActionGroup plugin to create an Action Group"
-        kwargs['obj'] = plugin
-        plugin_result, sql_zipped = self.run_plugin(**kwargs)
-
-        return group_obj
-
-    def delete_actiongroup(self, name, **kwargs):
-        """Document me later.
-        name
-        """
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
-
-        actiongroup_to_del = self.get_actiongroups(name=name, **clean_kwargs)[1][0]
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'DeleteActionGroup'
-        plugin.bundle = 'GroupFilter'
-
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
-
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'new_group_id'
-        arg1.type = 'Number'
-        arg1.value = 0
-        plugin.arguments.append(arg1)
-
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'old_group_id'
-        arg2.type = 'Number'
-        arg2.value = actiongroup_to_del['id']
-        plugin.arguments.append(arg2)
-
-        # run the plugin
-        h = "Issue a RunPlugin for the AddUserGroup plugin to delete a user group"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
-
-    def get_actiongroups(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetActionGroups plugin and parse the response
-
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of action group to get, if empty will return all action groups
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetActionGroups'
-        plugin.bundle = 'GroupFilter'
-
-        # run the plugin
-        h = "Issue a RunPlugin for the GetActionGroups plugin to get all action groups"
-        plugin_result, sql_zipped = self.run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
-
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No action groups found that match name: {!r}".format
                 raise pytan.exceptions.NotFoundError(m(name))
 
         # return the plugin result and the python dictionary of results
@@ -2761,10 +4274,9 @@ class Handler(object):
         added_obj : :class:`taniumpy.object_types.base.BaseType`
            * full object that was added
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
+        # TODO 2.3.0 bug fix
         try:
-            search_str = '; '.join([str(x) for x in obj])
+            search_str = obj.str_obj(str_all_attrs=True)
         except:
             search_str = obj
 
@@ -2810,10 +4322,9 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
+        # TODO 2.3.0 bug fix
         try:
-            search_str = '; '.join([str(x) for x in obj])
+            search_str = obj.str_obj(str_all_attrs=True)
         except:
             search_str = obj
 
@@ -2832,11 +4343,11 @@ class Handler(object):
         except Exception as e:
             self.mylog.debug(e)
             err = "No results found searching for {} (error: {})!!".format
-            raise pytan.exceptions.HandlerError(err(search_str, e))
+            raise pytan.exceptions.NotFoundError(err(search_str, e))
 
         if pytan.utils.empty_obj(found):
             err = "No results found searching for {}!!".format
-            raise pytan.exceptions.HandlerError(err(search_str))
+            raise pytan.exceptions.NotFoundError(err(search_str))
 
         self.mylog.debug("Found {}".format(found))
         return found
@@ -2854,8 +4365,6 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
@@ -2903,8 +4412,6 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
@@ -2954,8 +4461,6 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         found = []
 
         single_type = obj_map['single']
@@ -2989,8 +4494,6 @@ class Handler(object):
         defs : list of dict
            * list of dicts containing sensor definitions with sensor object in 'sensor_obj'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
         search_keys = s_obj_map['search']
 
@@ -3026,8 +4529,6 @@ class Handler(object):
         d : dict
            * dict containing package definitions with package object in 'package_obj'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         s_obj_map = pytan.constants.GET_OBJ_MAP['package']
         search_keys = s_obj_map['search']
 
@@ -3064,8 +4565,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into format `export_format`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # run the handler that is specific to this export_format, if it exists
         format_method_str = '_export_format_' + export_format
         format_handler = getattr(self, format_method_str, '')
@@ -3102,8 +4601,6 @@ class Handler(object):
         to the what_hash of each column, but only if header_add_sensor=True
         needed for: ResultSet.write_csv(header_add_sensor=True)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         header_add_sensor = kwargs.get('header_add_sensor', False)
         sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
@@ -3146,8 +4643,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into csv format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not hasattr(obj, 'write_csv'):
             err = "{!r} has no write_csv() method!".format
             raise pytan.exceptions.HandlerError(err(obj))
@@ -3178,8 +4673,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into json format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not hasattr(obj, 'to_json'):
             err = "{!r} has no to_json() method!".format
             raise pytan.exceptions.HandlerError(err(obj))
@@ -3203,8 +4696,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into XML format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         result = None
 
         if hasattr(obj, 'toSOAPBody'):
@@ -3326,8 +4817,6 @@ class Handler(object):
                 * To emulate what the console does, the SavedAction should be in a SavedActionList
                 * Action.start_time does not need to be specified
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         clean_keys = [
@@ -3600,147 +5089,6 @@ class Handler(object):
 
         return ret
 
-    def _create_saved_question(self, name, **kwargs):
-        """Document me later."""
-        pytan.utils.check_for_help(kwargs=kwargs)
-
-        clean_keys = [
-            'defs',
-            'd',
-            'obj',
-            'objtype',
-            'key',
-            'default',
-            'defname',
-            'deftypes',
-            'empty_ok',
-            'id',
-            'pytan_help',
-            'handler',
-            'sse',
-        ]
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
-
-        # get our defs from kwargs and churn them into what we want
-        sensor_defs = pytan.utils.parse_defs(
-            defname='sensor_defs',
-            deftypes=['list()', 'str()', 'dict()'],
-            strconv='name',
-            empty_ok=True,
-            **clean_kwargs
-        )
-
-        q_filter_defs = pytan.utils.parse_defs(
-            defname='question_filter_defs',
-            deftypes=['list()', 'dict()'],
-            empty_ok=True,
-            **clean_kwargs
-        )
-
-        q_option_defs = pytan.utils.parse_defs(
-            defname='question_option_defs',
-            deftypes=['dict()'],
-            empty_ok=True,
-            **clean_kwargs
-        )
-
-        # do basic validation of our defs
-        pytan.utils.val_sensor_defs(sensor_defs=sensor_defs)
-        pytan.utils.val_q_filter_defs(q_filter_defs=q_filter_defs)
-
-        # get the sensor objects that are in our defs and add them as d['sensor_obj']
-        h = (
-            "Issue a GetObject to get the full object of a sensor for inclusion in a "
-            "Select for a Question"
-        )
-        sensor_defs = self._get_sensor_defs(defs=sensor_defs, pytan_help=h, **clean_kwargs)
-        h = (
-            "Issue a GetObject to get the full object of a sensor for inclusion in a "
-            "Group for a Question"
-        )
-        q_filter_defs = self._get_sensor_defs(defs=q_filter_defs, pytan_help=h, **clean_kwargs)
-
-        # build a SelectList object from our sensor_defs
-        selectlist_obj = pytan.utils.build_selectlist_obj(sensor_defs=sensor_defs)
-
-        # build a Group object from our question filters/options
-        group_obj = pytan.utils.build_group_obj(
-            q_filter_defs=q_filter_defs, q_option_defs=q_option_defs,
-        )
-
-        # build a Question object from selectlist_obj and group_obj
-        question_obj = pytan.utils.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
-
-        sq_obj = taniumpy.SavedQuestion()
-        sq_obj.question = question_obj
-        sq_obj.name = name
-
-        sq_attrs = [
-            'archive_enabled_flag',
-            'expire_seconds',
-            'hidden_flag',
-            'issue_seconds',
-            'issue_seconds_never_flag',
-            'keep_seconds',
-            'public_flag',
-            'row_count_flag',
-            'sort_column',
-        ]
-
-        [setattr(sq_obj, a, kwargs.pop(a)) for a in sq_attrs if a in kwargs]
-
-        '''
-        action_tracking_flag
-            GUI DEFAULT: 0
-        archive_enabled_flag
-            GUI DEFAULT: 0
-            GUI CONTROL: History
-            0 = archive disabled
-            1 = archive enabled
-        expire_seconds
-            GUI DEFAULT: 600
-        hidden_flag
-            GUI DEFAULT: 0
-        index
-            GUI DEFAULT: NONE
-        issue_seconds
-            GUI DEFAULT: 120
-        issue_seconds_never_flag
-            GUI DEFAULT: 0
-        keep_seconds
-            GUI DEFAULT: 0
-            GUI CONTROL: Reissue this question every
-            NOTE: GUI DEFAULT is 3600 when History is checked
-        metadata
-            GUI DEFAULT: NONE
-            NOTE: TConsole.SavedQuestion.RecentOnlyFlag = 1 is set when History is checked
-            !!NOT CODED FOR
-        packages
-            GUI DEFAULT: Empty PackageSpecList
-            NOTE: List of packages to allow a user to select against this SQ even if they do not have package author capabilities
-            !!NOT CODED FOR
-        public_flag
-            GUI DEFAULT: 0
-            GUI CONTROL: Visibility
-            0 = Restrict this question to only owner and administrators
-            1 = everyone can see it
-        row_count_flag
-            GUI DEFAULT: 0
-            GUI CONTROL: Archive aggregated results / Archive complete results
-            0 = store full data in sq (Archive complete results)
-            1 = store only row counts in sq (Archive aggregated results)
-        sort_column
-            GUI DEFAULT: 0
-        '''
-
-        # add our Question and get a Question ID back
-        h = "Issue an AddObject to add a Saved Question object"
-        added_obj = self._add(obj=sq_obj, pytan_help=h, **clean_kwargs)
-
-        m = "Saved Question Created, ID: {}, query text: {!r}".format
-        self.mylog.debug(m(added_obj.id, added_obj.question.query_text))
-        return added_obj
-
     def _ask_manual(self, get_results=True, **kwargs):
         """Ask a manual question using definitions and get the results back
 
@@ -3836,8 +5184,6 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         clean_keys = [
@@ -3968,8 +5314,6 @@ class Handler(object):
             * True if all values in all v_maps are greater than or equal to self.session.server_version
             * False otherwise
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if self.session._invalid_server_version():
             # server version is not valid, force a refresh right now
             self.session.get_server_version(**kwargs)
@@ -3993,8 +5337,6 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if sse_format_int not in pytan.constants.SSE_RESTRICT_MAP:
             return
 
@@ -4025,8 +5367,6 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         sse_format_int = [x[-1] for x in pytan.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
 
         if not sse_format_int:
@@ -4049,8 +5389,6 @@ class Handler(object):
 
     def _check_sse_version(self, **kwargs):
         """Validates that the server version supports server side export"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not self.session.platform_is_6_5(**kwargs):
             m = "Server side export not supported in version: {}".format
             m = m(self.session.server_version)
@@ -4064,8 +5402,6 @@ class Handler(object):
         obj : :class:`taniumpy.object_types.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj', 'v_maps', 'ok_version']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -4084,8 +5420,6 @@ class Handler(object):
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         last_get_rd_sse = getattr(self, 'last_get_rd_sse', None)
 
         if last_get_rd_sse:
@@ -4106,8 +5440,6 @@ class Handler(object):
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -4118,9 +5450,3 @@ class Handler(object):
                     "No rows available to perform a server side export with, result info: {}"
                 ).format
                 raise pytan.exceptions.ServerSideExportError(m(ri))
-
-    def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.debug_method_locals is True"""
-        if getattr(self, 'debug_method_locals', False):
-            m = "Local variables for {}.{}:\n{}".format
-            self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))
