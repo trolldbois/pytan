@@ -1845,7 +1845,7 @@ class Handler(object):
         return found
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_id_from_session_id(self, session_id):
         try:
             ret = int(session_id.split('-')[0])
@@ -1854,13 +1854,13 @@ class Handler(object):
             m = m.format(s=session_id, e=e)
             raise pytan.exceptions.HandlerError(m)
 
-        m = "Parsed user ID '{i}' from session ID: '{ss}'"
+        m = "Parsed user ID '{i}' from session ID: '{s}'"
         m = m.format(i=ret, s=session_id)
         self.mylog.debug(m)
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_this_user_id(self):
         """Get the user ID from handler.session.session_id."""
         ret = self.get_id_from_session_id(session_id=self.session.session_id)
@@ -1868,7 +1868,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_this_user_obj(self):
         """Fetch the user info for user ID."""
         user_id = self.get_this_user_id()
@@ -1889,7 +1889,7 @@ class Handler(object):
     # SHELL SCRIPT
     # TODO: add user_has_allowed_permission
     # TODO: add user_has_required_permission
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def user_has_allowed_roles(self, obj, allowed_roles, **kwargs):
         """Validate that the roles for user are in allowed_roles."""
         error = kwargs.get("error", True)
@@ -1925,7 +1925,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def user_has_required_role(self, obj, role, **kwargs):
         """Validate that one of the roles for user equals role."""
         error = kwargs.get("error", True)
@@ -1950,7 +1950,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def this_user_is_admin(self, **kwargs):
         role = kwargs.get("role", "Administrator")
         obj = self.get_this_user_obj()
@@ -1960,7 +1960,7 @@ class Handler(object):
 
     # TODO: NEEDS ERROR HANDLING
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def build_obj(self, obj_name="", attrs={}, obj_class=None):
         """
         name = "User"
@@ -2018,7 +2018,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_all_objs(self, objtype, **kwargs):
         obj = get_bt_obj(objtype=objtype)
         obj_info = get_obj_info(obj=obj)
@@ -2060,7 +2060,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT???
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def search_add_obj(self, objtype, searches, **kwargs):
         objs = kwargs.get("objs", None)
 
@@ -2075,7 +2075,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def create_missing_obj(self, objs, searches, **kwargs):
         attrs = kwargs.get("attrs", {})
         create_missing = kwargs.get("create_missing", True)
@@ -2134,7 +2134,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def search_obj(self, obj, search, **kwargs):
         # support FOR "id::2", "name::foo", or "any_attribute::any_value"
         # if no unescaped "::"" in search, search "name" attribute by default
@@ -2183,7 +2183,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def search_objs(self, objs, **kwargs):
         """
         objs = list of taniumpy objs
@@ -2259,7 +2259,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def search_all_objs(self, objtype, searches, **kwargs):
         objs = kwargs.get("objs", None)
 
@@ -2271,7 +2271,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def check_limits(self, ret, objs, **kwargs):
         searches = kwargs.get("searches", [])
         excludes = kwargs.get("excludes", [])
@@ -2314,7 +2314,7 @@ class Handler(object):
                 raise exc(m)
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def run_plugin_obj(self, name, bundle, arguments=[], **kwargs):
         attrs = {"name": name, "bundle": bundle, "arguments": arguments}
         obj = self.build_obj(obj_name="Plugin", attrs=attrs)
@@ -2352,7 +2352,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def log_tracker(self, obj, **kwargs):
         log_line_limit = kwargs.get("log_line_limit", 100)
         log_include_build = kwargs.get("log_include_build", False)
@@ -2383,7 +2383,7 @@ class Handler(object):
             self.mylog.info(m)
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def add_obj(self, obj, **kwargs):
         margs = kwmerge(kwargs, obj=obj)
         added_obj = self.session.add(**margs)
@@ -2399,7 +2399,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def delete_obj(self, obj, **kwargs):
         objinfo = get_obj_info(obj)
 
@@ -2421,7 +2421,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def save_changed_obj(self, obj, **kwargs):
         if obj._CHANGED:
             margs = kwmerge(kwargs, obj=obj)
@@ -2438,7 +2438,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def save_changed_obj_ag(self, obj, **kwargs):
         if obj._CHANGED:
             g_obj = getattr(obj, "computer_group", None)
@@ -2472,7 +2472,7 @@ class Handler(object):
 
             pargs = [
                 {"name": "group_id", "type": "Number", "value": obj.computer_group.id},
-                {"name": "user_group_xml", "value": obj.user_groups_xml()},
+                {"name": "user_group_xml", "type": "String", "value": obj.user_groups_xml()},
                 {"name": "public_flag", "type": "Number", "value": obj.public_flag},
             ]
 
@@ -2492,13 +2492,13 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def save_changed_obj_ug(self, obj, **kwargs):
         if obj._CHANGED:
             pargs = [
-                {"name": "user_group_name", "value": obj.name},
+                {"name": "user_group_name", "type": "String", "value": obj.name},
                 {"name": "user_group_id", "type": "Number", "value": obj.id},
-                {"name": "user_xml", "value": obj.users_xml()},
+                {"name": "user_xml", "type": "String", "value": obj.users_xml()},
             ]
 
             margs = {"bundle": "UserGroups", "name": "UpdateUserGroup", "arguments": pargs}
@@ -2517,7 +2517,67 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
+    def save_changed_obj_db(self, obj, **kwargs):
+        if obj._CHANGED:
+            pargs = [
+                {"name": "dash_id", "type": "Number", "value": obj.id},
+                {"name": "dash_name", "type": "String", "value": obj.name},
+                {"name": "dash_text", "type": "String", "value": ""},
+                {"name": "group_id", "type": "Number", "value": obj.computer_group.id},
+                {"name": "public_flag", "type": "Number", "value": obj.public_flag},
+                {"name": "sqid_xml", "type": "String", "value": obj.saved_questions_xml()},
+            ]
+
+            margs = {"bundle": "Dashboards", "name": "UpdateDashboard", "arguments": pargs}
+            pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+            margs = kwmerge(kwargs, objtype="Dashboard", searches=obj.name, limit_exact=1)
+            ret = self.search_all_objs(**margs)
+            ret._track_merge(other=pret, other_first=True)
+            ret._track_merge(other=obj, other_first=True)
+            ret._track(t_action="Saved changes to")
+            ret._PLUGIN_RETURN = pret
+            ret._CHANGED = True
+        else:
+            ret = obj
+            ret._track(t_action="No changes made to")
+        return ret
+
+    # DOC, TEST
+    # ADDED: 3.0.0
+    def save_changed_obj_dbc(self, obj, **kwargs):
+        if obj._CHANGED:
+            pargs = [
+                {"name": "content_group_id", "type": "Number", "value": obj.id},
+                {"name": "name", "type": "String", "value": obj.name},
+                {"name": "text", "type": "String", "value": ""},
+                {"name": "user_id", "type": "Number", "value": obj.user.id},
+                {"name": "icon", "type": "String", "value": obj.icon.encode},
+                {"name": "public_flag", "type": "Number", "value": obj.public_flag},
+                {"name": "editable_flag", "type": "Number", "value": obj.editable_flag},
+                {"name": "other_flag", "type": "Number", "value": obj.other_flag},
+                {"name": "dashboard_list_xml", "type": "String", "value": obj.dashboard_xml()},
+                {"name": "user_group_xml", "type": "String", "value": obj.user_groups_xml()},
+            ]
+
+            margs = {"bundle": "DashboardGroups", "name": "UpdateContentGroup", "arguments": pargs}
+            pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+            margs = kwmerge(kwargs, objtype="DashboardCategory", searches=obj.name, limit_exact=1)
+            ret = self.search_all_objs(**margs)
+            ret._track_merge(other=pret, other_first=True)
+            ret._track_merge(other=obj, other_first=True)
+            ret._track(t_action="Saved changes to")
+            ret._PLUGIN_RETURN = pret
+            ret._CHANGED = True
+        else:
+            ret = obj
+            ret._track(t_action="No changes made to")
+        return ret
+
+    # DOC, TEST
+    # ADDED: 3.0.0
     def save_changed_obj_ugs(self, objs, **kwargs):
         this_s = kwargs.get("searches", [])
         this_e = kwargs.get("excludes", [])
@@ -2537,7 +2597,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_group_members_by_id(self, group_id, **kwargs):
         objs = kwargs.get("objs", None)
 
@@ -2575,7 +2635,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_group_members_by_searches(self, **kwargs):
         searches = mklist(kwargs.get("searches", []))
         excludes = mklist(kwargs.get("excludes", []))
@@ -2635,7 +2695,7 @@ class Handler(object):
         return ret
 
     # TODO: RE-FIGURE
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_min_packagelist(self, **kwargs):
         packages = kwargs.get("packages", [])
         ret = taniumpy.PackageSpecList()
@@ -2654,7 +2714,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_user_groups(self, **kwargs):
         include_deleted = kwargs.get("include_deleted", False)
         user_objs = kwargs.get("user_objs", None)
@@ -2695,7 +2755,9 @@ class Handler(object):
         self.mylog.debug(m)
         return ret
 
-    # TODO: HERE-ISH
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
     def get_dashboard_categories(self, **kwargs):
         """
         Dashboard Category UI Constructs:
@@ -2755,7 +2817,6 @@ class Handler(object):
             obj = taniumpy.DashboardCategory()
             obj.id = int(lod["id"])
             obj.name = lod["name"]
-            obj.text = lod["text"]
             obj.public_flag = int(lod["public_flag"])
             obj.other_flag = int(lod["other_flag"])
             obj.editable_flag = int(lod["editable_flag"])
@@ -2767,8 +2828,9 @@ class Handler(object):
 
         return ret
 
+    # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_dashboards(self, **kwargs):
         """
         Dashboard UI Constructs:
@@ -2814,7 +2876,6 @@ class Handler(object):
             obj = taniumpy.Dashboard()
             obj.id = int(lod["id"])
             obj.name = lod["name"]
-            obj.text = lod["text"]
             obj.public_flag = int(lod["public_flag"])
             obj.user = self.search_objs(**kwmerge(u_sargs, searches=lod["user_id"]))
             obj.computer_group = g_obj
@@ -2826,8 +2887,9 @@ class Handler(object):
         self.mylog.debug(m)
         return ret
 
+    # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def get_action_groups(self, **kwargs):
         margs = {"bundle": "GroupFilter", "name": "GetActionGroups"}
         ag_pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
@@ -2872,9 +2934,100 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
+    def create_dashboard_category(self, name, **kwargs):
+        """
+        Visibility notes:
+        - if public_flag = 0 and user specified, then only that user can see
+        - if public_flag = 0 and user groups specified, then only users in those user groups can see
+        - if public_flag = 0 and no user and no user groups, then only admins can see
+        - if public_flag = 1, all users can see
+        """
+        icon = kwargs.get("icon", "")
+        user_s = kwargs.get("user_searches", [])
+        user_e = kwargs.get("user_excludes", [])
+        ug_s = kwargs.get("ugroup_searches", [])
+        ug_e = kwargs.get("ugroup_excludes", [])
+        db_s = kwargs.get("dashboard_searches", [])
+        db_e = kwargs.get("dashboard_excludes", [])
+        public_flag = int(kwargs.get("public_flag", True))
+        other_flag = int(kwargs.get("other_flag", False))
+        editable_flag = int(kwargs.get("editable_flag", True))
+        search_precheck = kwargs.get("search_precheck", True)
+
+        if search_precheck:
+            margs = kwmerge(kwargs, objtype="DashboardCategory", searches=name, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no DashboardCategory while searching for '{n}', will create!"
+                m = m.format(n=name)
+                self.mylog.debug(m)
+            else:
+                m = "{o} found while searching for '{n}', will not create!"
+                m = m.format(o=obj, n=name)
+                raise pytan.exceptions.HandlerError(m)
+
+        if user_s or user_e:
+            margs = kwmerge(kwargs, objtype="User", searches=user_s, excludes=user_e, limit_exact=1)
+            u_obj = self.search_all_objs(**margs)
+            public_flag = 0
+        else:
+            u_obj = self.build_obj("User", attrs={"id": 0, "name": "All Users"})
+
+        margs = kwmerge(kwargs, objtype="UserGroup", searches=ug_s, excludes=ug_e)
+        ug_objs = self.search_all_objs(**margs)
+        public_flag = 0 if ug_objs else public_flag
+
+        margs = kwmerge(kwargs, objtype="Dashboard", searches=db_s, excludes=db_e)
+        db_objs = self.search_all_objs(**margs)
+
+        obj = taniumpy.DashboardCategory()
+        obj._CHANGED = True
+        obj.name = name
+        obj.public_flag = public_flag
+        obj.other_flag = other_flag
+        obj.editable_flag = editable_flag
+        obj.icon = taniumpy.Image(icon)
+        obj.user = u_obj
+        obj.set_user_groups(ug_objs)
+        obj.set_dashboards(db_objs)
+
+        pargs = [
+            {"name": "name", "type": "String", "value": obj.name},
+            {"name": "text", "type": "String", "value": ""},
+            {"name": "icon", "type": "String", "value": obj.icon.encode},
+            {"name": "user_id", "type": "Number", "value": obj.user.id},
+            {"name": "public_flag", "type": "Number", "value": obj.public_flag},
+            {"name": "editable_flag", "type": "Number", "value": obj.editable_flag},
+            {"name": "other_flag", "type": "Number", "value": obj.other_flag},
+            {"name": "dashboard_list_xml", "type": "String", "value": obj.dashboard_xml()},
+            {"name": "user_group_xml", "type": "String", "value": obj.user_groups_xml()},
+        ]
+
+        margs = {"bundle": "DashboardGroups", "name": "AddContentGroup", "arguments": pargs}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        if obj.user.id == self.get_this_user_id() or obj.user.id == 0:
+            margs = kwmerge(kwargs, objtype="DashboardCategory", searches=name, limit_exact=1)
+            ret = self.search_all_objs(**margs)
+            ret._PLUGIN_RETURN = pret
+
+            ret._track_merge(other=pret)
+            ret._track(t_action="Added new")
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            ret._ADDED = True
+        else:
+            m = "{o} Added, but unable to re-fetch added object created for a different user ID: {i}"
+            m = m.format(o=obj, i=obj.user.id)
+            self.mylog.warning(m)
+            ret = obj
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
     def create_dashboard(self, name, **kwargs):
-        text = kwargs.get("text", "")
         sq_s = kwargs.get("sq_searches", [])
         sq_e = kwargs.get("sq_excludes", [])
         cgrp_s = kwargs.get("cgroup_searches", [])
@@ -2905,17 +3058,19 @@ class Handler(object):
         margs = kwmerge(kwargs, objtype="SavedQuestion", searches=sq_s, excludes=sq_e)
         sq_objs = self.search_all_objs(**margs)
 
-        obj = taniumpy.Dashboard(name=name, public_flag=public_flag, text=text)
+        obj = taniumpy.Dashboard()
         obj._CHANGED = True
+        obj.name = name
+        obj.public_flag = public_flag
         obj.computer_group = cg_obj
         obj.set_saved_questions(sq_objs)
 
         pargs = [
-            {"name": "dash_name", "value": obj.name},
-            {"name": "dash_text", "value": obj.text},
+            {"name": "dash_name", "type": "String", "value": obj.name},
+            {"name": "dash_text", "type": "String", "value": ""},
             {"name": "group_id", "type": "Number", "value": obj.computer_group.id},
             {"name": "public_flag", "type": "Number", "value": obj.public_flag},
-            {"name": "sqid_xml", "value": obj.saved_questions_xml()},
+            {"name": "sqid_xml", "type": "String", "value": obj.saved_questions_xml()},
         ]
 
         margs = {"bundle": "Dashboards", "name": "CreateDashboard", "arguments": pargs}
@@ -2933,7 +3088,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def create_user_group(self, name, **kwargs):
         search_precheck = kwargs.get("search_precheck", True)
 
@@ -2950,7 +3105,7 @@ class Handler(object):
                 m = m.format(o=obj, n=name)
                 raise pytan.exceptions.HandlerError(m)
 
-        pargs = [{"name": "user_group_name", "value": name}]
+        pargs = [{"name": "user_group_name", "type": "String", "value": name}]
         margs = {"bundle": "UserGroups", "name": "AddUserGroup", "arguments": pargs}
         pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
 
@@ -2964,8 +3119,9 @@ class Handler(object):
         ret._ADDED = True
         return ret
 
+    # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def create_action_group(self, name, **kwargs):
         cgrp_s = kwargs.get("cgroup_searches", [])
         cgrp_e = kwargs.get("cgroup_excludes", [])
@@ -3005,8 +3161,9 @@ class Handler(object):
         self.log_tracker(**kwmerge(kwargs, obj=ret))
         return ret
 
+    # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def delete_dashboard(self, searches=[], **kwargs):
         this_s = mklist(searches)
         this_e = mklist(kwargs.get("excludes", []))
@@ -3040,8 +3197,45 @@ class Handler(object):
         self.log_tracker(**kwmerge(kwargs, obj=ret))
         return ret
 
+    # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
+    def delete_dashboard_category(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            margs = kwmerge(kwargs, objtype="DashboardCategory", searches=this_s, excludes=this_e, limit_exact=1)
+            try:
+                obj = self.search_all_objs(**margs)
+            except pytan.exceptions.NotFoundError:
+                m = "Found no DashboardCategory while searching for '{s}', will not delete!"
+                m = m.format(s=this_s)
+                raise pytan.exceptions.NotFoundError(m)
+            else:
+                m = "{o} found while searching for '{s}', will delete!"
+                m = m.format(o=obj, s=this_s)
+                self.mylog.debug(m)
+
+        arguments = [{"name": "content_group_ids", "type": "Number_Set", "value": obj.id}]
+        margs = {"bundle": "DashboardGroups", "name": "DeleteContentGroups", "arguments": arguments}
+        pret = self.run_plugin_obj(**kwmerge(kwargs, **margs))
+
+        ret = obj
+        ret._PLUGIN_RETURN = pret
+        ret._track_merge(other=pret)
+        ret._track(t_action="Deleted")
+        ret._DELETED = True
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
     def delete_action_group(self, searches=[], **kwargs):
         this_s = mklist(searches)
         this_e = mklist(kwargs.get("excludes", []))
@@ -3081,7 +3275,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def delete_user_group(self, searches=[], **kwargs):
         this_s = mklist(searches)
         this_e = mklist(kwargs.get("excludes", []))
@@ -3116,7 +3310,7 @@ class Handler(object):
         return ret
 
     # DOC, TEST
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def modify_metadata_obj(self, obj, **kwargs):
         properties = kwargs.get("properties", {}) or {}
         prefix = kwargs.get("prefix", "")
@@ -3174,7 +3368,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def modify_user_group(self, searches=[], **kwargs):
         this_s = mklist(searches)
         this_e = mklist(kwargs.get("excludes", []))
@@ -3238,8 +3432,9 @@ class Handler(object):
         self.log_tracker(**kwmerge(kwargs, obj=ret))
         return ret
 
+    # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def modify_action_group(self, searches=[], **kwargs):
         this_s = mklist(searches)
         this_e = mklist(kwargs.get("excludes", []))
@@ -3328,9 +3523,9 @@ class Handler(object):
         self.log_tracker(**kwmerge(kwargs, obj=ret))
         return ret
 
-    # SHELL SCRIPT
     # DOC, TEST
-    # ADDED: 2.3.0
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
     def modify_user(self, searches=[], **kwargs):
         """Create, modify, or delete a user object.
 
@@ -3494,7 +3689,7 @@ class Handler(object):
 
     # DOC, TEST
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def modify_setting(self, searches=[], **kwargs):
         this_s = mklist(searches)
         this_e = mklist(kwargs.get("excludes", []))
@@ -3548,12 +3743,186 @@ class Handler(object):
         self.log_tracker(**kwmerge(kwargs, obj=ret))
         return ret
 
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
+    def modify_dashboard(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        # sq_s = kwargs.get("sq_searches", [])
+        # sq_e = kwargs.get("sq_excludes", [])
+        cgrp_s = kwargs.get("cgroup_searches", [])
+        cgrp_e = kwargs.get("cgroup_excludes", [])
+        public_flag = int(kwargs.get("public_flag", True))
+        delete_existing = kwargs.get("delete_existing", False)
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            # find or add the user accordingly
+            new_a = kwmerge(kwargs, name=this_s[0])
+            margs = kwmerge(kwargs, objtype="Dashboard", searches=this_s, excludes=this_e, attrs=new_a)
+            obj = self.search_add_obj(**margs)
+
+        if delete_existing:
+            ret = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            return ret
+
+        sq_objs = self.get_all_objs(objtype="SavedQuestion")
+        orig_sq = obj.saved_questions_str()
+
+        obj = obj._track_set(t_attr="public_flag", t_new=public_flag) if "public_flag" in kwargs else obj
+
+        if "cgroup_searches" in kwargs or "cgroup_excludes" in kwargs:
+            if cgrp_s or cgrp_e:
+                margs = kwmerge(kwargs, objtype="Group", searches=cgrp_s, excludes=cgrp_e, limit_exact=1)
+                cg_obj = self.search_all_objs(**margs)
+            else:
+                cg_obj = self.build_obj("Group", attrs={"id": 0, "name": "All Groups"})
+            obj._track_set(t_attr="computer_group", t_new=cg_obj)
+
+        change_map = [
+            {
+                "searches": "sq_set_searches", "excludes": "sq_set_excludes",
+                "method": "set_saved_questions", "objs": sq_objs,
+                "t_action": "Set {l} saved questions on",
+            },
+            {
+                "searches": "sq_add_searches", "excludes": "sq_add_excludes",
+                "method": "add_saved_questions", "objs": sq_objs,
+                "t_action": "Added {l} saved questions to",
+            },
+            {
+                "searches": "sq_remove_searches", "excludes": "sq_remove_excludes",
+                "method": "remove_saved_questions", "objs": sq_objs,
+                "t_action": "Removed {l} saved questions from",
+            },
+        ]
+
+        for c in change_map:
+            if not (c["searches"] in kwargs or c["excludes"] in kwargs):
+                continue
+            c["searches"], c["excludes"] = (kwargs.get(c["searches"], []), kwargs.get(c["excludes"], []))
+            mod_list = self.search_objs(**kwmerge(kwargs, **c))
+            obj._track_merge(other=mod_list)
+            getattr(obj, c["method"])(mod_list)
+            obj._track(t_action=c["t_action"].format(l=len(mod_list)))
+
+        new_sq = obj.saved_questions_str() if obj._CHANGED else ""
+        obj._track(t_old=orig_sq, t_new=new_sq, t_action="Saved Question Membership of")
+
+        ret = self.save_changed_obj_db(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
+    # DOC, TEST
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
+    def modify_dashboard_category(self, searches=[], **kwargs):
+        this_s = mklist(searches)
+        this_e = mklist(kwargs.get("excludes", []))
+        user_s = kwargs.get("user_searches", [])
+        user_e = kwargs.get("user_excludes", [])
+        icon = kwargs.get("icon", "")
+        public_flag = int(kwargs.get("public_flag", True))
+        other_flag = int(kwargs.get("other_flag", False))
+        editable_flag = int(kwargs.get("editable_flag", True))
+        delete_existing = kwargs.get("delete_existing", False)
+        obj = kwargs.get("obj", None)
+
+        if not this_s and obj is None:
+            m = "Must supply a non-empty list of searches!"
+            raise pytan.exceptions.HandlerError(m)
+        elif obj is None:
+            # find or add the user accordingly
+            new_a = kwmerge(kwargs, name=this_s[0])
+            margs = kwmerge(kwargs, objtype="DashboardCategory", searches=this_s, excludes=this_e, attrs=new_a)
+            obj = self.search_add_obj(**margs)
+
+        if delete_existing:
+            ret = self.delete_obj(**kwmerge(kwargs, obj=obj))
+            self.log_tracker(**kwmerge(kwargs, obj=ret))
+            return ret
+
+        ug_objs = self.get_all_objs(objtype="UserGroup")
+        db_objs = self.get_all_objs(objtype="Dashboard")
+        orig_ug = obj.user_groups_str()
+        orig_db = obj.dashboard_str()
+
+        if "user_s_searches" in kwargs or "user_s_excludes" in kwargs:
+            if user_s or user_e:
+                margs = kwmerge(kwargs, objtype="User", searches=user_s, excludes=user_e, limit_exact=1)
+                user_obj = self.search_all_objs(**margs)
+                public_flag = 0
+            else:
+                user_obj = self.build_obj("User", attrs={"id": 0, "name": "All Users"})
+            obj._track_set(t_attr="user", t_new=user_obj)
+
+        obj = obj._track_set(t_attr="public_flag", t_new=public_flag) if "public_flag" in kwargs else obj
+        obj = obj._track_set(t_attr="other_flag", t_new=other_flag) if "other_flag" in kwargs else obj
+        obj = obj._track_set(t_attr="editable_flag", t_new=editable_flag) if "editable_flag" in kwargs else obj
+        obj = obj._track_set(t_attr="icon", t_new=taniumpy.Image(icon)) if "icon" in kwargs else obj
+
+        change_map = [
+            {
+                "searches": "ug_set_searches", "excludes": "ug_set_excludes",
+                "method": "set_user_groups", "objs": ug_objs,
+                "t_action": "Set {l} user groups on",
+            },
+            {
+                "searches": "ug_add_searches", "excludes": "ug_add_excludes",
+                "method": "add_user_groups", "objs": ug_objs,
+                "t_action": "Added {l} user groups to",
+            },
+            {
+                "searches": "ug_remove_searches", "excludes": "ug_remove_excludes",
+                "method": "remove_user_groups", "objs": ug_objs,
+                "t_action": "Removed {l} user groups from",
+            },
+            {
+                "searches": "db_set_searches", "excludes": "db_set_excludes",
+                "method": "set_dashboards", "objs": db_objs,
+                "t_action": "Set {l} dashboards on",
+            },
+            {
+                "searches": "db_add_searches", "excludes": "db_add_excludes",
+                "method": "add_dashboards", "objs": db_objs,
+                "t_action": "Added {l} dashboards to",
+            },
+            {
+                "searches": "db_remove_searches", "excludes": "db_remove_excludes",
+                "method": "remove_dashboards", "objs": db_objs,
+                "t_action": "Removed {l} dashboards from",
+            },
+        ]
+
+        for c in change_map:
+            if not (c["searches"] in kwargs or c["excludes"] in kwargs):
+                continue
+            c["searches"], c["excludes"] = (kwargs.get(c["searches"], []), kwargs.get(c["excludes"], []))
+            mod_list = self.search_objs(**kwmerge(kwargs, **c))
+            obj._track_merge(other=mod_list)
+            getattr(obj, c["method"])(mod_list)
+            obj._track(t_action=c["t_action"].format(l=len(mod_list)))
+
+        new_ug = obj.user_groups_str() if obj._CHANGED else ""
+        new_db = obj.dashboard_str() if obj._CHANGED else ""
+        obj._track(t_old=orig_ug, t_new=new_ug, t_action="User Group Membership of")
+        obj._track(t_old=orig_db, t_new=new_db, t_action="Dashboard Membership of")
+
+        ret = self.save_changed_obj_dbc(**kwmerge(kwargs, obj=obj))
+        self.log_tracker(**kwmerge(kwargs, obj=ret))
+        return ret
+
     # TODO: WRITE!!
     # Tricky, no group => user mapping, have to get all users and look at their GID's
     # then figure out if it's a merged group or not
-    # may need to move some code out of update_user_group_obj for figuring shit out
+    # may need to move some code out of update_user_group_obj for figuring it out
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def modify_computer_group(self, name, **kwargs):
         """
         group_id: 0 == all group access
@@ -3596,11 +3965,11 @@ class Handler(object):
 
     # TODO: REWRITE!!
     # SHELL SCRIPT
-    # ADDED: 2.3.0
+    # ADDED: 3.0.0
     def modify_saved_question(self, name, **kwargs):
         """Create a saved question.
 
-        * Added in: 2.3.0
+        * Added in: 3.0.0
 
         Parameters
         ----------
@@ -4066,7 +4435,7 @@ class Handler(object):
         return report_path
 
     # PLUGINS
-    # DEPRECATED IN 2.3.0
+    # DEPRECATED IN 3.0.0
     def deprecated_run_plugin(self, obj, **kwargs):
         """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
 
@@ -4097,7 +4466,7 @@ class Handler(object):
         return plugin_result, sql_zipped
 
     # DASHBOARD PLUGINS
-    # DEPRECATED IN 2.3.0
+    # DEPRECATED IN 3.0.0
     def deprecated_create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
 
@@ -4181,7 +4550,7 @@ class Handler(object):
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
-    # DEPRECATED IN 2.3.0
+    # DEPRECATED IN 3.0.0
     def deprecated_delete_dashboard(self, name, **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
 
@@ -4222,7 +4591,7 @@ class Handler(object):
         # return the plugin result and the python dictionary of results
         return plugin_result, sql_zipped
 
-    # DEPRECATED IN 2.3.0
+    # DEPRECATED IN 3.0.0
     def deprecated_get_dashboards(self, name='', **kwargs):
         """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
 
@@ -4274,7 +4643,7 @@ class Handler(object):
         added_obj : :class:`taniumpy.object_types.base.BaseType`
            * full object that was added
         """
-        # TODO 2.3.0 bug fix
+        # TODO 3.0.0 bug fix
         try:
             search_str = obj.str_obj(str_all_attrs=True)
         except:
@@ -4322,7 +4691,7 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        # TODO 2.3.0 bug fix
+        # TODO 3.0.0 bug fix
         try:
             search_str = obj.str_obj(str_all_attrs=True)
         except:

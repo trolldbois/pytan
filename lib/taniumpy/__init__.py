@@ -5,6 +5,7 @@ import base64
 import imghdr
 import io
 import json
+import os
 import struct
 
 from .object_types.all_objects import *  # noqa
@@ -59,6 +60,50 @@ def get_image_size(image_stream):
         except Exception:  # IGNORE:W0703
             pass
     return what, width, height
+
+
+class Image(object):
+
+    def __init__(self, image, **kwargs):
+        self.original_image = image
+        self.image = image or ""
+        self.image = open(self.image, "rb").read() if os.path.isfile(self.image) else self.image
+        self.image = self.decode if self.image and self.is_base64(self.image) else self.image
+
+    def __str__(self):
+        self.info
+        m = "Image Type: {}, Size: {} bytes, Width: {}, Height: {}"
+        m = m.format(self.what, len(self.image), self.width, self.height)
+        return m
+
+    def __repr__(self):
+        return self.__str__()
+
+    def is_base64(self, txt):
+        try:
+            a = base64.b64decode(txt)
+            b = base64.b64encode(a)
+        except:
+            ret = False
+        else:
+            ret = b.strip() == txt.strip()
+        return ret
+
+    @property
+    def info(self):
+        if self.image:
+            self.what, self.width, self.height = get_image_size(self.image)
+        else:
+            self.what, self.width, self.height = (None, None, None)
+        return self.what, self.width, self.height
+
+    @property
+    def encode(self):
+        return base64.b64encode(self.image)
+
+    @property
+    def decode(self):
+        return base64.b64decode(self.image)
 
 
 # TODO
@@ -481,7 +526,6 @@ class Dashboard(WrapType):
     # id (int)
     # name (str)
     # public_flag (int)
-    # text (str)
     # user (basetype obj) => User
     # computer_group (basetype obj) => Group
     # saved_questions (basetype obj) => SavedQuestionList
@@ -541,58 +585,11 @@ class DashboardList(WrapTypeList):
     _DELETE_METHOD = "delete_dashboard"
 
 
-class Image(object):
-
-    def __init__(self, image, **kwargs):
-        is_file = kwargs.get("is_file", False)
-
-        self.original_image = image
-        self.image = image or ""
-        self.image = open(self.image, 'rb').read() if is_file else self.image
-        self.image = self.decode if self.is_base64(self.image) else self.image
-
-    def __str__(self):
-        self.info
-        m = "Image Type: {}, Size: {} bytes, Width: {}, Height: {}"
-        m = m.format(self.what, len(self.image), self.width, self.height)
-        return m
-
-    def __repr__(self):
-        return self.__str__()
-
-    def is_base64(self, txt):
-        try:
-            a = base64.b64decode(txt)
-            b = base64.b64encode(a)
-        except:
-            ret = False
-        else:
-            ret = b.strip() == txt.strip()
-        return ret
-
-    @property
-    def info(self):
-        if self.image:
-            self.what, self.width, self.height = get_image_size(self.image)
-        else:
-            self.what, self.width, self.height = (None, None, None)
-        return self.what, self.width, self.height
-
-    @property
-    def encode(self):
-        return base64.b64encode(self.image)
-
-    @property
-    def decode(self):
-        return base64.b64decode(self.image)
-
-
 class DashboardCategory(WrapType):
 
     # name (str)
     # public_flag (int)
     # editable_flag (int)
-    # text (str)
     # other_flag (int)
     # icon (obj) => Image
     # user (basetype obj) => User
@@ -602,6 +599,84 @@ class DashboardCategory(WrapType):
     _GET_METHOD = "get_dashboard_categories"
     _CREATE_METHOD = "create_dashboard_category"
     _DELETE_METHOD = "delete_dashboard_category"
+
+    def _ensure_dashboards(self):
+        attr = "dashboards"
+        val = getattr(self, attr, None)
+        setattr(self, attr, DashboardList() if val is None else val)
+
+    def add_dashboard(self, item):
+        self._ensure_dashboards()
+        return self._add_list_item(item=item, list_obj=self.dashboards)
+
+    def add_dashboards(self, items):
+        self._ensure_dashboards()
+        return self._add_list_items(items=items, list_obj=self.dashboards)
+
+    def remove_dashboard(self, item):
+        self._ensure_dashboards()
+        return self._remove_list_item(item=item, list_obj=self.dashboards)
+
+    def remove_dashboards(self, items):
+        self._ensure_dashboards()
+        return self._remove_list_items(items=items, list_obj=self.dashboards)
+
+    def remove_all_dashboards(self):
+        self._ensure_dashboards()
+        return self._remove_all_list_items(list_obj=self.dashboards)
+
+    def set_dashboards(self, items):
+        self._ensure_dashboards()
+        return self._set_list_items(items=items, list_obj=self.dashboards)
+
+    def dashboard_str(self):
+        self._ensure_dashboards()
+        return self._list_to_str(list_obj=self.dashboards)
+
+    def dashboard_xml(self):
+        self._ensure_dashboards()
+        x_tmpl = "<dashboard><id>{v}</id><index>{i}</index></dashboard>".format
+        items = [x_tmpl(v=getattr(o, "id"), i=idx) for idx, o in enumerate(self.dashboards)]
+        items_txt = "\n  {i}\n".format(i="\n  ".join(items)) if items else ""
+        ret = "<dashboards>{i}</dashboards>".format(i=items_txt)
+        return ret
+
+    def _ensure_user_groups(self):
+        attr = "user_groups"
+        val = getattr(self, attr, None)
+        setattr(self, attr, UserGroupList() if val is None else val)
+
+    def add_user_group(self, item):
+        self._ensure_user_groups()
+        return self._add_list_item(item=item, list_obj=self.user_groups)
+
+    def add_user_groups(self, items):
+        self._ensure_user_groups()
+        return self._add_list_items(items=items, list_obj=self.user_groups)
+
+    def remove_user_group(self, item):
+        self._ensure_user_groups()
+        return self._remove_list_item(item=item, list_obj=self.user_groups)
+
+    def remove_user_groups(self, items):
+        self._ensure_user_groups()
+        return self._remove_list_items(items=items, list_obj=self.user_groups)
+
+    def remove_all_user_groups(self):
+        self._ensure_user_groups()
+        return self._remove_all_list_items(list_obj=self.user_groups)
+
+    def set_user_groups(self, items):
+        self._ensure_user_groups()
+        return self._set_list_items(items=items, list_obj=self.user_groups)
+
+    def user_groups_str(self):
+        self._ensure_user_groups()
+        return self._list_to_str(list_obj=self.user_groups)
+
+    def user_groups_xml(self):
+        self._ensure_user_groups()
+        return self.user_groups.user_groups_xml()
 
 
 class DashboardCategoryList(WrapTypeList):
