@@ -88,6 +88,7 @@ class TaniumBrokerSender(object):
 
         question_time_unix = (question_time - datetime(1970, 1, 1)).total_seconds()
         d = pybroker.data
+        f = pybroker.field
         required_columns = ['Computer Name', 'Tanium Client IP Address', 'Last Logged In User']
         if not len(columns) >= len(required_columns):
             clm = 'Only {} columns in question results, require at least {}'
@@ -105,11 +106,10 @@ class TaniumBrokerSender(object):
             last_user = row[2]
             try:
                 # construct first part of broker message. All python data types have to be processed by pybroker module.
-                message_list = [d(str(event_name)),
-                                d(pybroker.time_point(question_time_unix)),
-                                d(str(hostname)),
-                                d(pybroker.address_from_string(str(client_ip))),
-                                d(str(last_user))]
+                message_list = [f(d(pybroker.time_point(question_time_unix))),
+                                f(d(str(hostname))),
+                                f(d(pybroker.address_from_string(str(client_ip)))),
+                                f(d(str(last_user)))]
             except RuntimeError as e:
                 if logger is not None:
                     logger.warning("Could not transform row into Broker types due to data in the first three columns,"
@@ -122,7 +122,7 @@ class TaniumBrokerSender(object):
             broker_message_rest = []
             for row_string in rest_rows:
                 # strings are printed escaped. Let's unescape the double backslashes
-                broker_message_rest.append(pybroker.data(str(row_string.replace('\\\\', '\\'))))
+                broker_message_rest.append(f(d(str(row_string.replace('\\\\', '\\')))))
             try:
                 message_list.extend(broker_message_rest)
             except RuntimeError as e:
@@ -133,10 +133,10 @@ class TaniumBrokerSender(object):
                     raise e
                 continue
             try:
-                self.epc.send(topic_name, pybroker.message(message_list))
+                self.epc.send(topic_name, pybroker.message([d(str(event_name)), d(pybroker.record(pybroker.vector_of_field(message_list)))]))
             except Exception as e:
                 if logger is not None:
-                    logger.warning("Could not send row to Broker, despite it conforming to Broker types".format(str(e)))
+                    logger.warning("Could not send row to Broker, despite it conforming to Broker types. Exception was {}.".format(str(e)))
                 else:
                     raise e
 
