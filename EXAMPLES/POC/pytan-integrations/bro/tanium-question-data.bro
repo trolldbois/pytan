@@ -77,6 +77,8 @@ export {
 	global QuestionData_question2: event(question: question2);
 }
 
+global ip_to_user: table[addr] of string &create_expire=20min;
+
 # Broker listener only runs on the standalone system or the manager
 @if ( ! Cluster::is_enabled() || ( Cluster::is_enabled() && Cluster::local_node_type() == Cluster::MANAGER ) )
 
@@ -112,6 +114,25 @@ event bro_init()
 
 @endif
 
+# Add informmation to the type that is logged to conn.log
+redef record Conn::Info += {
+	## This is the last user that we know to have been logged into the system.
+	## Data provided by Tanium integration.
+	tanium_last_known_user: string &optional &log;
+};
+
+event connection_state_remove(c: connection) &priority=1
+	{
+	# for the moment, we assume that we sit on a link to the outside. Let's compare the address
+	# that is inside of our network. In case local_nets is not set correclty this will always
+	# default to the originator.
+	local compare_addr = Site::is_local_addr(c$id$resp_h) ? c$id$resp_h : c$id$orig_h;
+
+	if ( compare_addr in ip_to_user )
+		{
+		c$conn$tanium_last_known_user = ip_to_user[compare_addr];
+		}
+	}
 
 # Modify: the log file name is specified as $path here. The default should be
 # acceptable, as it matches the integration name. Each question receives its
@@ -122,11 +143,31 @@ event bro_init()
 	# Create the logging stream for question types
 	Log::create_stream(LOG_question1, [$columns=question1, $path="tanium_question_data-question1"]);
 	Log::create_stream(LOG_question2, [$columns=question2, $path="tanium_question_data-question2"]);
+
+	# Enrich conn.log; we want to keep the default conn.log the same and instead write only the enriched columns
+	# to a second log file.
+
+	# in the default filter, do not write the new column
+	local f = Log::get_filter(Conn::LOG, "default");
+	if ( f?$exclude )
+		add f$exclude["tanium_last_known_user"];
+	else
+		f$exclude = set("tanium_last_known_user");
+	Log::add_filter(Conn::LOG, f);
+
+	# and create a new filter to write out the separate log file
+	local newfilter = Log::Filter($name="tanium-enriched", $path="conn-tanium",
+	$pred(rec: Conn::Info) = {
+		return rec?$tanium_last_known_user;
+	});
+	Log::add_filter(Conn::LOG, newfilter);
 	}
 
 event Tanium::QuestionData_question1(question: question1)
 	{
 	Log::write( Tanium::LOG_question1, question );
+
+	ip_to_user[question$ip] = question$last_logged_in_user;
 
 	# Modify: Uncomment in order to see the data on stdout.
 	# print "Broker received Tanium Question Data", question;
