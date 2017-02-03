@@ -2,10 +2,6 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Provides exceptions for the :mod:`pytan` module."""
-import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
 
 
 class HandlerError(Exception):
@@ -104,5 +100,8 @@ class TooFewFoundError(Exception):
 
 
 class PermissionError(Exception):
-    """Exception thrown for Too Few Items Found in :mod:`pytan.handler`"""
+    pass
+
+
+class ParseError(Exception):
     pass

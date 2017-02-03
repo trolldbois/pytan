@@ -6,24 +6,16 @@
 
 This contains a number of constants that drive PyTan.
 """
-import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
 # debug log format
 DEBUG_FORMAT = (
-    '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'
-    '%(levelname)-8s %(name)s %(message)s'
+    "[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n%(levelname)-8s %(name)s %(message)s"
 )
 """
 Logging format for debugformat=True
 """
 
 # info log format
-INFO_FORMAT2 = (
-    '%(asctime)s %(levelname)-8s %(name)s: %(message)s'
-)
+INFO_FORMAT2 = "%(asctime)s %(levelname)-8s %(name)s: %(message)s"
 """
 Logging format for debugformat=False
 """
@@ -35,118 +27,118 @@ LOG_LEVEL_MAPS = [
     (
         0,
         {
-            'stats': 'DEBUG',
-            'method_debug': 'DEBUG',
+            "stats": "DEBUG",
+            "method_debug": "DEBUG",
         },
-        'Sets all loggers to only output at WARNING or above except for stats & method_debug',
+        "Sets all loggers to only output at WARNING or above except for stats & method_debug",
     ),
     (
         1,
         {
-            'pytan': 'INFO',
-            'pytan.pollers.QuestionPoller': 'INFO',
-            'pytan.pollers.ActionPoller': 'INFO',
-            'pytan.pollers.SSEPoller': 'INFO',
+            "pytan": "INFO",
+            "pytan.pollers.QuestionPoller": "INFO",
+            "pytan.pollers.ActionPoller": "INFO",
+            "pytan.pollers.SSEPoller": "INFO",
         },
-        'Pytan poller loggers show output at INFO or above',
+        "Pytan poller loggers show output at INFO or above",
     ),
     (
         2,
         {
-            'pytan': 'DEBUG',
-            'pytan.handler': 'INFO',
-            'pytan.pollers.QuestionPoller.progress': 'INFO',
-            'pytan.pollers.ActionPoller.progress': 'INFO',
-            'pytan.pollers.SSEPoller.progress': 'INFO',
-            'pytan.pollers.QuestionPoller': 'DEBUG',
-            'pytan.pollers.ActionPoller': 'DEBUG',
-            'pytan.pollers.SSEPoller': 'DEBUG',
+            "pytan": "DEBUG",
+            "pytan.handler": "INFO",
+            "pytan.pollers.QuestionPoller.progress": "INFO",
+            "pytan.pollers.ActionPoller.progress": "INFO",
+            "pytan.pollers.SSEPoller.progress": "INFO",
+            "pytan.pollers.QuestionPoller": "DEBUG",
+            "pytan.pollers.ActionPoller": "DEBUG",
+            "pytan.pollers.SSEPoller": "DEBUG",
         },
-        'Pytan handler logger show output at INFO or above, poller logs at DEBUG or above, and poller progress logs at INFO or above',
+        "Pytan handler logger show output at INFO or above, poller logs at DEBUG or above, and poller progress logs at INFO or above",
     ),
     (
         3,
         {
-            'pytan.handler': 'DEBUG',
-            'pytan.pollers.QuestionPoller.progress': 'DEBUG',
-            'pytan.pollers.ActionPoller.progress': 'DEBUG',
-            'pytan.pollers.SSEPoller.progress': 'DEBUG',
-            'pytan.pollers.QuestionPoller.resolver': 'INFO',
-            'pytan.pollers.ActionPoller.resolver': 'INFO',
-            'pytan.pollers.SSEPoller.resolver': 'INFO',
+            "pytan.handler": "DEBUG",
+            "pytan.pollers.QuestionPoller.progress": "DEBUG",
+            "pytan.pollers.ActionPoller.progress": "DEBUG",
+            "pytan.pollers.SSEPoller.progress": "DEBUG",
+            "pytan.pollers.QuestionPoller.resolver": "INFO",
+            "pytan.pollers.ActionPoller.resolver": "INFO",
+            "pytan.pollers.SSEPoller.resolver": "INFO",
         },
-        'Pytan handler logger show output at DEBUG or above, poller progress at DEBUG or above, and poller resolver at INFO or above',
+        "Pytan handler logger show output at DEBUG or above, poller progress at DEBUG or above, and poller resolver at INFO or above",
     ),
     (
         4,
         {
-            'pytan.handler.ask_manual': 'DEBUG',
-            'pytan.pollers.QuestionPoller.resolver': 'DEBUG',
-            'pytan.pollers.ActionPoller.resolver': 'DEBUG',
-            'pytan.pollers.SSEPoller.resolver': 'DEBUG',
+            "pytan.ask_manual": "DEBUG",
+            "pytan.pollers.QuestionPoller.resolver": "DEBUG",
+            "pytan.pollers.ActionPoller.resolver": "DEBUG",
+            "pytan.pollers.SSEPoller.resolver": "DEBUG",
         },
-        'Pytan ask manual logger show output at DEBUG or above and poller resolver at DEBUG or above',
+        "Pytan ask manual logger show output at DEBUG or above and poller resolver at DEBUG or above",
     ),
     (
         5,
         {
-            'pytan.handler.ask_manual_human': 'DEBUG',
+            "pytan.parser": "DEBUG",
         },
-        'Pytan ask manual human logger show output at DEBUG or above',
+        "Pytan parser logger show output at DEBUG or above",
     ),
     (
         6,
         {
-            'pytan.handler.timing': 'DEBUG',
-            'XMLCleaner': 'DEBUG',
+            "pytan.handler.timing": "DEBUG",
+            "XMLCleaner": "DEBUG",
         },
-        'Pytan timing and XMLCleaner loggers show output at DEBUG or above',
+        "Pytan timing and XMLCleaner loggers show output at DEBUG or above",
     ),
     (
         7,
         {
-            'pytan.sessions.Session': 'DEBUG',
+            "pytan.sessions.Session": "DEBUG",
         },
-        'Taniumpy session loggers show output at DEBUG or above',
+        "Taniumpy session loggers show output at DEBUG or above",
     ),
     (
         8,
         {
-            'pytan.sessions.Session.auth': 'DEBUG',
+            "pytan.sessions.Session.auth": "DEBUG",
         },
-        'PyTan session authentication loggers show output at DEBUG or above',
+        "PyTan session authentication loggers show output at DEBUG or above",
     ),
     (
         9,
         {
-            'pytan.sessions.Session.http': 'DEBUG',
+            "pytan.sessions.Session.http": "DEBUG",
         },
-        'PyTan session http loggers show output at DEBUG or above',
+        "PyTan session http loggers show output at DEBUG or above",
     ),
     (
         10,
         {
-            'pytan.handler.prettybody': 'DEBUG',
+            "pytan.handler.prettybody": "DEBUG",
         },
-        'Pytan handler pretty XML body loggers show output at DEBUG or above',
+        "Pytan handler pretty XML body loggers show output at DEBUG or above",
     ),
     (
         11,
         {
-            'pytan.sessions.Session.http.body': 'DEBUG',
+            "pytan.sessions.Session.http.body": "DEBUG",
         },
-        'PyTan session raw XML body loggers show output at DEBUG or above',
+        "PyTan session raw XML body loggers show output at DEBUG or above",
     ),
     (
         12,
         {
-            'requests': 'DEBUG',
-            'requests.packages.urllib3': 'DEBUG',
-            'requests.packages.urllib3.connectionpool': 'DEBUG',
-            'requests.packages.urllib3.poolmanager': 'DEBUG',
-            'requests.packages.urllib3.util.retry': 'DEBUG',
+            "requests": "DEBUG",
+            "requests.packages.urllib3": "DEBUG",
+            "requests.packages.urllib3.connectionpool": "DEBUG",
+            "requests.packages.urllib3.poolmanager": "DEBUG",
+            "requests.packages.urllib3.util.retry": "DEBUG",
         },
-        'Requests package show logging at DEBUG or above',
+        "Requests package show logging at DEBUG or above",
     ),
 
 ]
@@ -158,143 +150,143 @@ Map for loglevel(int) -> logger -> logger level(logging.INFO|WARN|DEBUG|...). Hi
 """
 
 SENSOR_TYPE_MAP = {
-    0: 'Hash',
+    0: "Hash",
     # SENSOR_RESULT_TYPE_STRING
-    1: 'String',
+    1: "String",
     # SENSOR_RESULT_TYPE_VERSION
-    2: 'Version',
+    2: "Version",
     # SENSOR_RESULT_TYPE_NUMERIC
-    3: 'NumericDecimal',
+    3: "NumericDecimal",
     # SENSOR_RESULT_TYPE_DATE_BES
-    4: 'BESDate',
+    4: "BESDate",
     # SENSOR_RESULT_TYPE_IPADDRESS
-    5: 'IPAddress',
+    5: "IPAddress",
     # SENSOR_RESULT_TYPE_DATE_WMI
-    6: 'WMIDate',
+    6: "WMIDate",
     #  e.g. "2 years, 3 months, 18 days, 4 hours, 22 minutes:
-    # 'TimeDiff', and 3.67 seconds" or "4.2 hours"
+    # "TimeDiff", and 3.67 seconds" or "4.2 hours"
     # (numeric + "Y|MO|W|D|H|M|S" units)
-    7: 'TimeDiff',
+    7: "TimeDiff",
     #  e.g. 125MB or 23K or 34.2Gig (numeric + B|K|M|G|T units)
-    8: 'DataSize',
-    9: 'NumericInteger',
-    10: 'VariousDate',
-    11: 'RegexMatch',
-    12: 'LastOperatorType',
+    8: "DataSize",
+    9: "NumericInteger",
+    10: "VariousDate",
+    11: "RegexMatch",
+    12: "LastOperatorType",
 }
 """
 Maps a Result type from the Tanium SOAP API from an int to a string
 """
 
 GET_OBJ_MAP = {
-    'action': {
-        'single': 'Action',
-        'multi': None,
-        'all': 'ActionList',
-        'search': ['id'],
-        'manual': False,
-        'delete': False,
-        'create_json': True,
+    "action": {
+        "single": "Action",
+        "multi": None,
+        "all": "ActionList",
+        "search": ["id"],
+        "manual": False,
+        "delete": False,
+        "create_json": True,
     },
-    'client': {
-        'single': None,
-        'multi': None,
-        'all': 'ClientStatus',
-        'search': [],
-        'manual': True,
-        'delete': False,
-        'create_json': False,
+    "client": {
+        "single": None,
+        "multi": None,
+        "all": "ClientStatus",
+        "search": [],
+        "manual": True,
+        "delete": False,
+        "create_json": False,
     },
-    'group': {
-        'single': 'Group',
-        'multi': 'GroupList',
-        'all': 'GroupList',
-        'search': ['id', 'name'],
-        'manual': True,
-        'delete': True,
-        'create_json': True,
+    "group": {
+        "single": "Group",
+        "multi": "GroupList",
+        "all": "GroupList",
+        "search": ["id", "name"],
+        "manual": True,
+        "delete": True,
+        "create_json": True,
     },
-    'package': {
-        'single': 'PackageSpec',
-        'multi': None,
-        'allfix': 'PackageSpecList',
-        'all': 'PackageSpec',
-        'search': ['id', 'name'],
-        'manual': True,
-        'delete': True,
-        'create_json': True,
+    "package": {
+        "single": "PackageSpec",
+        "multi": None,
+        "allfix": "PackageSpecList",
+        "all": "PackageSpec",
+        "search": ["id", "name"],
+        "manual": True,
+        "delete": True,
+        "create_json": True,
     },
-    'question': {
-        'single': 'Question',
-        'multi': None,
-        'all': 'QuestionList',
-        'search': ['id'],
-        'manual': False,
-        'delete': False,
-        'create_json': True,
+    "question": {
+        "single": "Question",
+        "multi": None,
+        "all": "QuestionList",
+        "search": ["id"],
+        "manual": False,
+        "delete": False,
+        "create_json": True,
     },
-    'saved_action': {
-        'single': 'SavedAction',
-        'multi': 'SavedActionList',
-        'all': 'SavedActionList',
-        'search': ['id', 'name'],
-        'manual': True,
-        'delete': False,
-        'create_json': False,  # AddObject returns null, unknown why
+    "saved_action": {
+        "single": "SavedAction",
+        "multi": "SavedActionList",
+        "all": "SavedActionList",
+        "search": ["id", "name"],
+        "manual": True,
+        "delete": False,
+        "create_json": False,  # AddObject returns null, unknown why
     },
-    'saved_question': {
-        'single': 'SavedQuestion',
-        'multi': None,
-        'all': 'SavedQuestionList',
-        'search': ['id', 'name'],
-        'manual': True,
-        'delete': True,
-        'create_json': True,
+    "saved_question": {
+        "single": "SavedQuestion",
+        "multi": None,
+        "all": "SavedQuestionList",
+        "search": ["id", "name"],
+        "manual": True,
+        "delete": True,
+        "create_json": True,
     },
-    'sensor': {
-        'single': 'Sensor',
-        'multi': 'SensorList',
-        'all': 'SensorList',
-        'search': ['id', 'name', 'hash'],
-        'manual': False,
-        'delete': True,
-        'create_json': True,
+    "sensor": {
+        "single": "Sensor",
+        "multi": "SensorList",
+        "all": "SensorList",
+        "search": ["id", "name", "hash"],
+        "manual": False,
+        "delete": True,
+        "create_json": True,
     },
-    'setting': {
-        'single': 'SystemSetting',
-        'multi': 'SystemSettingList',
-        'all': 'SystemSettingList',
-        'search': ['id', 'name'],
-        'manual': True,
-        'delete': False,
-        'create_json': False,
+    "setting": {
+        "single": "SystemSetting",
+        "multi": "SystemSettingList",
+        "all": "SystemSettingList",
+        "search": ["id", "name"],
+        "manual": True,
+        "delete": False,
+        "create_json": False,
     },
-    'user': {
-        'single': 'User',
-        'multi': None,
-        'all': 'UserList',
-        'search': ['id'],
-        'manual': True,
-        'delete': True,
-        'create_json': True,
+    "user": {
+        "single": "User",
+        "multi": None,
+        "all": "UserList",
+        "search": ["id"],
+        "manual": True,
+        "delete": True,
+        "create_json": True,
     },
-    'userrole': {
-        'single': None,
-        'multi': None,
-        'all': 'UserRoleList',
-        'search': [],
-        'manual': True,
-        'delete': False,
-        'create_json': False,
+    "userrole": {
+        "single": None,
+        "multi": None,
+        "all": "UserRoleList",
+        "search": [],
+        "manual": True,
+        "delete": False,
+        "create_json": False,
     },
-    'whitelisted_url': {
-        'single': 'WhiteListedUrlList',
-        'multi': None,
-        'all': 'WhiteListedUrlList',
-        'search': [],
-        'manual': True,
-        'delete': True,
-        'create_json': True,
+    "whitelisted_url": {
+        "single": "WhiteListedUrlList",
+        "multi": None,
+        "all": "WhiteListedUrlList",
+        "search": [],
+        "manual": True,
+        "delete": True,
+        "create_json": True,
     },
 }
 """
@@ -309,17 +301,17 @@ Maps an object type from a human friendly string into various aspects:
 """
 
 Q_OBJ_MAP = {
-    'saved': {
-        'handler': 'ask_saved',
+    "saved": {
+        "handler": "ask_saved",
     },
-    'manual': {
-        'handler': 'ask_manual',
+    "manual": {
+        "handler": "ask_manual",
     },
-    '_manual': {
-        'handler': '_ask_manual',
+    "_manual": {
+        "handler": "_ask_manual",
     },
-    'parsed': {
-        'handler': 'ask_parsed',
+    "parsed": {
+        "handler": "ask_parsed",
     },
 }
 """
@@ -327,220 +319,220 @@ Maps a question type from a human friendly string into the handler method that s
 """
 
 REQ_KWARGS = [
-    'hide_errors_flag',
-    'include_answer_times_flag',
-    'row_counts_only_flag',
-    'aggregate_over_time_flag',
-    'most_recent_flag',
-    'include_hashes_flag',
-    'hide_no_results_flag',
-    'use_user_context_flag',
-    'script_data',
-    'return_lists_flag',
-    'return_cdata_flag',
-    'pct_done_limit',
-    'context_id',
-    'sample_frequency',
-    'sample_start',
-    'sample_count',
-    'suppress_scripts',
-    'suppress_object_list',
-    'row_start',
-    'row_count',
-    'sort_order',
-    'filter_string',
-    'filter_not_flag',
-    'recent_result_buckets',
-    'cache_id',
-    'cache_expiration',
-    'cache_sort_fields',
-    'include_user_details',
-    'include_hidden_flag',
-    'use_error_objects',
-    'use_json',
-    'json_pretty_print',
-    'cache_filters',
+    "hide_errors_flag",
+    "include_answer_times_flag",
+    "row_counts_only_flag",
+    "aggregate_over_time_flag",
+    "most_recent_flag",
+    "include_hashes_flag",
+    "hide_no_results_flag",
+    "use_user_context_flag",
+    "script_data",
+    "return_lists_flag",
+    "return_cdata_flag",
+    "pct_done_limit",
+    "context_id",
+    "sample_frequency",
+    "sample_start",
+    "sample_count",
+    "suppress_scripts",
+    "suppress_object_list",
+    "row_start",
+    "row_count",
+    "sort_order",
+    "filter_string",
+    "filter_not_flag",
+    "recent_result_buckets",
+    "cache_id",
+    "cache_expiration",
+    "cache_sort_fields",
+    "include_user_details",
+    "include_hidden_flag",
+    "use_error_objects",
+    "use_json",
+    "json_pretty_print",
+    "cache_filters",
 ]
 """
 A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
 """
 
-PARAM_RE = r'(?<!\\)\{(.*?)(?<!\\)\}'
+PARAM_RE = r"(?<!\\)\{(.*?)(?<!\\)\}"
 """
 The regex that is used to parse parameters from a human string. Ex: ala {key1=value1}
 """
 
-PARAM_SPLIT_RE = r'(?<!\\),'
+PARAM_SPLIT_RE = r"(?<!\\),"
 """
 The regex that is used to split multiple parameters. Ex: key1=value1, key2=value2
 """
 
-PARAM_KEY_SPLIT = '='
+PARAM_KEY_SPLIT = "="
 """
 The string that is used to split parameter key from parameter value. Ex: `key1`\ ``=``\ `value1`
 """
 
-FILTER_RE = r',\s*that'
+FILTER_RE = r",\s*that"
 """
 The regex that is used to find filters in a string. Ex: `Sensor1`\ ``, that`` `contains blah`
 """
 
-OPTION_RE = r',\s*opt:'
+OPTION_RE = r",\s*opt:"
 """
 The regex that is used to find options in a string. Ex: `Sensor1, that contains blah`\ ``, opt:``\ `ignore_case`\ ``, opt:``\ `max_data_age:3600`
 """
 
-SELECTORS = ['id', 'name', 'hash']
+SELECTORS = ["id", "name", "hash"]
 """
 The search selectors that can be extracted from a string. Ex: ``name``:`Sensor1,` or ``id``:`1`, or ``hash``:`1111111`
 """
 
-PARAM_DELIM = '||'
+PARAM_DELIM = "||"
 """
 The string to surround a parameter with when passing parameters to the SOAP API for a sensor in a question. Ex: ``||``\ `parameter_key`\ ``||``
 """
 
 FILTER_MAPS = [
     {
-        'human': ['<', 'less', 'lt', 'less than'],
-        'operator': 'Less',
-        'not_flag': 0,
-        'help': "Filter for less than VALUE",
+        "human": ["<", "less", "lt", "less than"],
+        "operator": "Less",
+        "not_flag": 0,
+        "help": "Filter for less than VALUE",
     },
     {
-        'human': ['!<', 'notless', 'not less', 'not less than'],
-        'operator': 'Less',
-        'not_flag': 1,
-        'help': "Filter for not less than VALUE",
+        "human": ["!<", "notless", "not less", "not less than"],
+        "operator": "Less",
+        "not_flag": 1,
+        "help": "Filter for not less than VALUE",
     },
     {
-        'human': ['<=', 'less equal', 'lessequal', 'le'],
-        'operator': 'LessEqual',
-        'not_flag': 0,
-        'help': "Filter for less than or equal to VALUE",
+        "human": ["<=", "less equal", "lessequal", "le"],
+        "operator": "LessEqual",
+        "not_flag": 0,
+        "help": "Filter for less than or equal to VALUE",
     },
     {
-        'human': ['!<=', 'not less equal', 'not lessequal'],
-        'operator': 'LessEqual',
-        'not_flag': 1,
-        'help': "Filter for not less than or equal to VALUE",
+        "human": ["!<=", "not less equal", "not lessequal"],
+        "operator": "LessEqual",
+        "not_flag": 1,
+        "help": "Filter for not less than or equal to VALUE",
     },
     {
-        'human': ['>', 'greater', 'gt', 'greater than'],
-        'operator': 'Greater',
-        'not_flag': 0,
-        'help': "Filter for greater than VALUE",
+        "human": [">", "greater", "gt", "greater than"],
+        "operator": "Greater",
+        "not_flag": 0,
+        "help": "Filter for greater than VALUE",
     },
     {
-        'human': ['!>', 'not greater', 'notgreater', 'not greater than'],
-        'operator': 'Greater',
-        'not_flag': 1,
-        'help': "Filter for not greater than VALUE",
+        "human": ["!>", "not greater", "notgreater", "not greater than"],
+        "operator": "Greater",
+        "not_flag": 1,
+        "help": "Filter for not greater than VALUE",
     },
     {
-        'human': ['=>', 'greater equal', 'greaterequal', 'ge'],
-        'operator': 'GreaterEqual',
-        'not_flag': 0,
-        'help': "Filter for greater than or equal to VALUE",
+        "human": ["=>", "greater equal", "greaterequal", "ge"],
+        "operator": "GreaterEqual",
+        "not_flag": 0,
+        "help": "Filter for greater than or equal to VALUE",
     },
     {
-        'human': ['!=>', 'not greater equal', 'notgreaterequal'],
-        'operator': 'GreaterEqual',
-        'not_flag': 1,
-        'help': "Filter for not greater than VALUE",
+        "human": ["!=>", "not greater equal", "notgreaterequal"],
+        "operator": "GreaterEqual",
+        "not_flag": 1,
+        "help": "Filter for not greater than VALUE",
     },
     {
-        'human': ['=', 'equal', 'equals', 'eq'],
-        'operator': 'Equal',
-        'not_flag': 0,
-        'help': "Filter for equals to VALUE",
+        "human": ["=", "equal", "equals", "eq"],
+        "operator": "Equal",
+        "not_flag": 0,
+        "help": "Filter for equals to VALUE",
     },
     {
-        'human': [
-            '!=', 'not equal', 'notequal', 'not equals', 'notequals', 'ne',
+        "human": [
+            "!=", "not equal", "notequal", "not equals", "notequals", "ne",
         ],
-        'operator': 'Equal',
-        'not_flag': 1,
-        'help': "Filter for not equals to VALUE",
+        "operator": "Equal",
+        "not_flag": 1,
+        "help": "Filter for not equals to VALUE",
     },
     {
-        'human': ['contains'],
-        'operator': 'RegexMatch',
-        'pre_value': '.*',
-        'post_value': '.*',
-        'not_flag': 0,
-        'help': "Filter for contains VALUE (adds .* before and after VALUE)",
+        "human": ["contains"],
+        "operator": "RegexMatch",
+        "pre_value": ".*",
+        "post_value": ".*",
+        "not_flag": 0,
+        "help": "Filter for contains VALUE (adds .* before and after VALUE)",
     },
     {
-        'human': [
-            'does not contain', 'doesnotcontain', 'not contains', 'notcontains'
+        "human": [
+            "does not contain", "doesnotcontain", "not contains", "notcontains"
         ],
-        'operator': 'RegexMatch',
-        'pre_value': '.*',
-        'post_value': '.*',
-        'not_flag': 1,
-        'help': "Filter for does not contain VALUE (adds .* before and after VALUE)",
+        "operator": "RegexMatch",
+        "pre_value": ".*",
+        "post_value": ".*",
+        "not_flag": 1,
+        "help": "Filter for does not contain VALUE (adds .* before and after VALUE)",
     },
     {
-        'human': ['starts with', 'startswith'],
-        'operator': 'RegexMatch',
-        'post_value': '.*',
-        'not_flag': 0,
-        'help': "Filter for starts with VALUE (adds .* after VALUE)",
+        "human": ["starts with", "startswith"],
+        "operator": "RegexMatch",
+        "post_value": ".*",
+        "not_flag": 0,
+        "help": "Filter for starts with VALUE (adds .* after VALUE)",
     },
     {
-        'human': [
-            'does not start with', 'doesnotstartwith', 'not starts with',
-            'notstartswith',
+        "human": [
+            "does not start with", "doesnotstartwith", "not starts with",
+            "notstartswith",
         ],
-        'operator': 'RegexMatch',
-        'post_value': '.*',
-        'not_flag': 1,
-        'help': "Filter for does not start with VALUE (adds .* after VALUE)",
+        "operator": "RegexMatch",
+        "post_value": ".*",
+        "not_flag": 1,
+        "help": "Filter for does not start with VALUE (adds .* after VALUE)",
     },
     {
-        'human': ['ends with', 'endswith'],
-        'operator': 'RegexMatch',
-        'pre_value': '.*',
-        'not_flag': 0,
-        'help': "Filter for ends with VALUE (adds .* before VALUE)",
+        "human": ["ends with", "endswith"],
+        "operator": "RegexMatch",
+        "pre_value": ".*",
+        "not_flag": 0,
+        "help": "Filter for ends with VALUE (adds .* before VALUE)",
     },
     {
-        'human': [
-            'does not end with', 'doesnotendwith', 'not ends with',
-            'notstartswith',
+        "human": [
+            "does not end with", "doesnotendwith", "not ends with",
+            "notstartswith",
         ],
-        'operator': 'RegexMatch',
-        'pre_value': '.*',
-        'not_flag': 1,
-        'help': "Filter for does bit end with VALUE (adds .* before VALUE)",
+        "operator": "RegexMatch",
+        "pre_value": ".*",
+        "not_flag": 1,
+        "help": "Filter for does bit end with VALUE (adds .* before VALUE)",
     },
     {
-        'human': [
-            'is not', 'not regex', 'notregex', 'not regex match',
-            'notregexmatch', 'nre',
+        "human": [
+            "is not", "not regex", "notregex", "not regex match",
+            "notregexmatch", "nre",
         ],
-        'operator': 'RegexMatch',
-        'not_flag': 1,
-        'help': "Filter for non regular expression match for VALUE",
+        "operator": "RegexMatch",
+        "not_flag": 1,
+        "help": "Filter for non regular expression match for VALUE",
     },
     {
-        'human': ['is', 'regex', 'regex match', 'regexmatch', 're'],
-        'operator': 'RegexMatch',
-        'not_flag': 0,
-        'help': "Filter for regular expression match for VALUE",
+        "human": ["is", "regex", "regex match", "regexmatch", "re"],
+        "operator": "RegexMatch",
+        "not_flag": 0,
+        "help": "Filter for regular expression match for VALUE",
     },
     {
-        'human': ['hash', 'hashmatch'],
-        'operator': 'HashMatch',
-        'not_flag': 0,
-        'help': "Filter for hash match for VALUE",
+        "human": ["hash", "hashmatch"],
+        "operator": "HashMatch",
+        "not_flag": 0,
+        "help": "Filter for hash match for VALUE",
     },
 
 ]
 """
 Maps a given set of human strings into the various filter attributes used by the SOAP API. Also used to verify that a manually supplied filter via a definition is valid. Construct:
-    * human: a list of human strings that can be used after '`, that`'. Ex: '`, that` ``contains`` ``value``'
+    * human: a list of human strings that can be used after "`, that`". Ex: "`, that` ``contains`` ``value``"
     * operator: the filter operator used by the SOAP API when building a filter that matches `human`
     * not_flag: the value to set on `not_flag` when building a filter that matches `human`
     * pre_value: the prefix to add to the ``value`` when building a filter
@@ -549,68 +541,68 @@ Maps a given set of human strings into the various filter attributes used by the
 
 OPTION_MAPS = [
     {
-        'human': 'ignore_case',
-        'attrs': {'ignore_case_flag': 1},
-        'destination': 'filter',
-        'valid_type': int,
-        'help': "Make the filter do a case insensitive match",
+        "human": "ignore_case",
+        "attrs": {"ignore_case_flag": 1},
+        "destination": "filter",
+        "valid_type": int,
+        "help": "Make the filter do a case insensitive match",
     },
     {
-        'human': 'match_case',
-        'attrs': {'ignore_case_flag': 0},
-        'destination': 'filter',
-        'valid_type': int,
-        'help': "Make the filter do a case sensitive match",
+        "human": "match_case",
+        "attrs": {"ignore_case_flag": 0},
+        "destination": "filter",
+        "valid_type": int,
+        "help": "Make the filter do a case sensitive match",
     },
     {
-        'human': 'match_any_value',
-        'attrs': {'all_values_flag': 0, 'all_times_flag': 0},
-        'destination': 'filter',
-        'valid_type': int,
-        'help': "Make the filter match any value",
+        "human": "match_any_value",
+        "attrs": {"all_values_flag": 0, "all_times_flag": 0},
+        "destination": "filter",
+        "valid_type": int,
+        "help": "Make the filter match any value",
     },
     {
-        'human': 'match_all_values',
-        'attrs': {'all_values_flag': 1, 'all_times_flag': 1},
-        'destination': 'filter',
-        'valid_type': int,
-        'help': "Make the filter match all values",
+        "human": "match_all_values",
+        "attrs": {"all_values_flag": 1, "all_times_flag": 1},
+        "destination": "filter",
+        "valid_type": int,
+        "help": "Make the filter match all values",
     },
     {
-        'human': 'max_data_age',
-        'attr': 'max_age_seconds',
-        'human_type': 'seconds',
-        'valid_type': int,
-        'destination': 'filter',
-        'help': "Re-fetch cached values older than N seconds",
+        "human": "max_data_age",
+        "attr": "max_age_seconds",
+        "human_type": "seconds",
+        "valid_type": int,
+        "destination": "filter",
+        "help": "Re-fetch cached values older than N seconds",
     },
     {
-        'human': 'value_type',
-        'attr': 'value_type',
-        'human_type': 'value_type',
-        'valid_values': 'pytan.constants.SENSOR_TYPE_MAP.values()',
-        'destination': 'filter',
-        'valid_type': str,
-        'help': "Make the filter consider the value type as VALUE_TYPE",
+        "human": "value_type",
+        "attr": "value_type",
+        "human_type": "value_type",
+        "valid_values": "pytan.constants.SENSOR_TYPE_MAP.values()",
+        "destination": "filter",
+        "valid_type": str,
+        "help": "Make the filter consider the value type as VALUE_TYPE",
     },
     {
-        'human': 'and',
-        'attrs': {'and_flag': 1},
-        'destination': 'group',
-        'valid_type': int,
-        'help': "Use 'and' for all of the filters supplied",
+        "human": "and",
+        "attrs": {"and_flag": 1},
+        "destination": "group",
+        "valid_type": int,
+        "help": "Use 'and' for all of the filters supplied",
     },
     {
-        'human': 'or',
-        'attrs': {'and_flag': 0},
-        'destination': 'group',
-        'valid_type': int,
-        'help': "Use 'or' for all of the filters supplied",
+        "human": "or",
+        "attrs": {"and_flag": 0},
+        "destination": "group",
+        "valid_type": int,
+        "help": "Use 'or' for all of the filters supplied",
     },
 ]
 """
 Maps a given human string into the various options for filters used by the SOAP API. Also used to verify that a manually supplied option via a definition is valid. Construct:
-    * human: the human string that can be used after '`opt:`'. Ex: '`opt`:``value_type``:``value``'
+    * human: the human string that can be used after "`opt:`". Ex: "`opt`:``value_type``:``value``"
     * destination: the type of object this option can be applied to (filter or group)
     * attrs: the attributes and their values used by the SOAP API when building a filter with an option that matches `human`
     * attr: the attribute used by the SOAP API when building a filter with an option that matches `human`. ``value`` is pulled from after a `:` when only attr exists for an option map, and not attrs.
@@ -621,67 +613,67 @@ Maps a given human string into the various options for filters used by the SOAP 
 
 
 EXPORT_MAPS = {
-    'ResultSet': {
-        'csv': [
+    "ResultSet": {
+        "csv": [
             {
-                'key': 'header_sort',
-                'valid_types': [bool, list, tuple],
-                'valid_list_types': ['str', 'unicode'],
+                "key": "header_sort",
+                "valid_types": [bool, list, tuple],
+                "valid_list_types": ["str", "unicode"],
             },
             {
-                'key': 'sensors',
-                'valid_types': [list, tuple],
-                'valid_list_types': ['taniumpy.Sensor'],
+                "key": "sensors",
+                "valid_types": [list, tuple],
+                "valid_list_types": ["taniumpy.Sensor"],
             },
             {
-                'key': 'header_add_sensor',
-                'valid_types': [bool],
-                'valid_list_types': [],
+                "key": "header_add_sensor",
+                "valid_types": [bool],
+                "valid_list_types": [],
             },
             {
-                'key': 'header_add_type',
-                'valid_types': [bool],
-                'valid_list_types': [],
+                "key": "header_add_type",
+                "valid_types": [bool],
+                "valid_list_types": [],
             },
             {
-                'key': 'expand_grouped_columns',
-                'valid_types': [bool],
-                'valid_list_types': [],
+                "key": "expand_grouped_columns",
+                "valid_types": [bool],
+                "valid_list_types": [],
             },
         ],
-        'json': [],
-        'xml': [],
+        "json": [],
+        "xml": [],
     },
-    'BaseType': {
-        'csv': [
+    "BaseType": {
+        "csv": [
             {
-                'key': 'header_sort',
-                'valid_types': [bool, list, tuple],
-                'valid_list_types': ['str', 'unicode'],
+                "key": "header_sort",
+                "valid_types": [bool, list, tuple],
+                "valid_list_types": ["str", "unicode"],
             },
             {
-                'key': 'explode_json_string_values',
-                'valid_types': [bool],
-                'valid_list_types': [],
-            },
-        ],
-        'json': [
-            {
-                'key': 'include_type',
-                'valid_types': [bool],
-                'valid_list_types': [],
-            },
-            {
-                'key': 'explode_json_string_values',
-                'valid_types': [bool],
-                'valid_list_types': [],
+                "key": "explode_json_string_values",
+                "valid_types": [bool],
+                "valid_list_types": [],
             },
         ],
-        'xml': [
+        "json": [
             {
-                'key': 'minimal',
-                'valid_types': [bool],
-                'valid_list_types': [],
+                "key": "include_type",
+                "valid_types": [bool],
+                "valid_list_types": [],
+            },
+            {
+                "key": "explode_json_string_values",
+                "valid_types": [bool],
+                "valid_list_types": [],
+            },
+        ],
+        "xml": [
+            {
+                "key": "minimal",
+                "valid_types": [bool],
+                "valid_list_types": [],
             },
         ]
     },
@@ -694,30 +686,30 @@ Maps a given TaniumPy object to the list of supported export formats for each ob
     * valid_list_types: the valid python types in str format that are allowed to be passed in a list, if list is one of the `valid_types`
 """
 
-TIME_FORMAT = '%Y-%m-%dT%H:%M:%S'
+TIME_FORMAT = "%Y-%m-%dT%H:%M:%S"
 """
-Tanium's format for date time strings
+Tanium"s format for date time strings
 """
 
 SSE_FORMAT_MAP = [
-    ('csv', '0', 0),
-    ('xml', '1', 1),
-    ('xml_obj', '1', 1),
-    ('cef', '2', 2),
+    ("csv", "0", 0),
+    ("xml", "1", 1),
+    ("xml_obj", "1", 1),
+    ("cef", "2", 2),
 ]
 """
 Mapping of human friendly strings to API integers for server side export
 """
 
 SSE_RESTRICT_MAP = {
-    1: ['6.5.314.4300'],
-    2: ['6.5.314.4300'],
+    1: ["6.5.314.4300"],
+    2: ["6.5.314.4300"],
 }
 """
 Mapping of API integers for server side export format to version support
 """
 
-SSE_CRASH_MAP = ['6.5.314.4300']
+SSE_CRASH_MAP = ["6.5.314.4300"]
 """
 Mapping of versions to watch out for crashes/handle bugs for server side export
 """
@@ -733,22 +725,237 @@ Key used for obfuscation/de-obfsucation
 """
 
 HANDLER_ARG_DEFAULTS = {
-    'username': None,
-    'password': None,
-    'session_id': None,
-    'host': None,
-    'port': 443,
-    'loglevel': 0,
-    'debugformat': False,
-    'gmt_log': False,
+    "username": None,
+    "password": None,
+    "session_id": None,
+    "host": None,
+    "port": 443,
+    "loglevel": 0,
+    "gmt_log": False,
 }
 """
 Map of handler arguments and their defaults
 """
 
-# TODO 2.3.0
+# 3.0.0
 CHECK_LIMIT_MAPS = [
     {"key": "limit_min", "msg": "items or more", "expr": ">=", "exc": "TooFewFoundError"},
     {"key": "limit_max", "msg": "items or less", "expr": "<=", "exc": "TooManyFoundError"},
     {"key": "limit_exact", "msg": "items exactly", "expr": "==", "exc": "NotFoundError"},
 ]
+
+ESCAPED_COMMAS = r"(?<!\\),"
+ESCAPED_COLONS = r"(?<!\\):"
+
+DEFAULT_SEARCH_FIELD = "name"
+DEFAULT_OPERATOR = "contains"
+DEFAULT_BUCKET = "0"
+DEFAULT_DERIVE_PARAM_DEFAULTS = True
+DEFAULT_ALLOW_EMPTY_PARAM_VALUES = False
+
+FILTER_DEFAULT_TOKENS = {
+    "search_field": DEFAULT_SEARCH_FIELD,
+    "operator": DEFAULT_OPERATOR,
+    "bucket": DEFAULT_BUCKET,
+    "derive_param_defaults": DEFAULT_DERIVE_PARAM_DEFAULTS,
+    "allow_empty_params": DEFAULT_ALLOW_EMPTY_PARAM_VALUES,
+}
+
+FILTER_PROCESS_TOKENS = [
+    ("search_field", ("required",)),  # required, str
+    ("search", ("required",)),  # required, str
+    ("obj", ("search_obj",)),  # SEARCH_OBJ
+    ("operator", ("required", "operator")),  # required, str, OPTION_MAP
+    ("value", ("required",)),  # required, str
+    ("bucket", ("required",)),  # required, str
+    ("not", ("boolean",)),  # optional, bool
+    ("max_age", ("integer",)),  # optional, int
+    ("ignore_case", ("boolean",)),  # optional, bool
+    ("all_values", ("boolean",)),  # optional, bool
+    ("all_times", ("boolean",)),  # optional, bool
+    ("type", ("type",)),  # optional, str, TYPE_MAP
+    ("derive_param_defaults", ("boolean",)),  # optional, bool
+    ("allow_empty_params", ("boolean",)),  # optional, bool
+    ("param_", ("params",)),  # TODO # optional, PARAMS
+]
+
+FILTER_PARSE_ARGS = {
+    "processors": FILTER_PROCESS_TOKENS,
+    "defaults": FILTER_DEFAULT_TOKENS,
+    "unnamed": "search",
+    "search_obj_type": "Sensor",
+    "search_valid_fields": ["id", "name", "hash"],
+}
+
+# -------------------- TANIUM OPERATOR TYPES
+T_L = "Less"
+T_LEQ = "LessEqual"
+T_G = "Greater"
+T_GEQ = "GreaterEqual"
+T_E = "Equal"
+T_R = "RegexMatch"
+T_H = "HashMatch"
+TANIUM_OPS = [T_L, T_LEQ, T_G, T_GEQ, T_E, T_R, T_H]
+
+# -------------------- BASE OPERATOR TYPES
+OP_LESS = {"o": T_L, "n": False, "h": "less than VALUE"}
+OP_NOTLESS = {"o": T_L, "n": True, "h": "not less than VALUE"}
+OP_LESSEQ = {"o": T_LEQ, "n": False, "h": "less than or equal to VALUE"}
+OP_NOTLESSEQ = {"o": T_LEQ, "n": True, "h": "not less than or equal to VALUE"}
+OP_GREATER = {"o": T_G, "n": False, "h": "greater than VALUE"}
+OP_NOTGREATER = {"o": T_G, "n": True, "h": "not greater than VALUE"}
+OP_GREATEQ = {"o": T_GEQ, "n": False, "h": "greater than or equal to VALUE"}
+OP_NOTGREATEQ = {"o": T_GEQ, "n": True, "h": "not greater than or equal to VALUE"}
+OP_EQ = {"o": T_E, "n": False, "h": "equal to VALUE"}
+OP_NOTEQ = {"o": T_E, "n": True, "h": "not equal to VALUE"}
+OP_HASH = {"o": T_H, "n": False, "h": "matches hash VALUE"}
+OP_NOTHASH = {"o": T_H, "n": True, "h": "does not match hash VALUE"}
+OP_RE = {"o": T_R, "n": False, "h": "matches regex VALUE"}
+OP_NOTRE = {"o": T_R, "n": True, "h": "does not match regex VALUE"}
+OP_CONTAINS = {"o": T_R, "n": False, "pre": ".*", "post": ".*", "h": "matches regex .*VALUE.*"}
+OP_NOTCONTAINS = {"o": T_R, "n": True, "pre": ".*", "post": ".*", "h": "does not match regex .*VALUE.*"}
+OP_STARTS = {"o": T_R, "n": False, "pre": ".*", "h": "matches regex .*VALUE"}
+OP_NOTSTARTS = {"o": T_R, "n": True, "pre": ".*", "h": "does not match regex .*VALUE"}
+OP_ENDS = {"o": T_R, "n": False, "post": ".*", "h": "matches regex VALUE.*"}
+OP_NOTENDS = {"o": T_R, "n": True, "post": ".*", "h": "does not match regex VALUE.*"}
+
+# HUMAN STRING MAPPING TO BASE OPERATOR TYPES
+OPERATOR_MAPS = {
+    "<": OP_LESS,
+    "less": OP_LESS,
+
+    "!<": OP_NOTLESS,
+    "not less": OP_NOTLESS,
+
+    "<=": OP_LESSEQ,
+    "less equal": OP_LESSEQ,
+
+    "!<=": OP_NOTLESSEQ,
+    "not less equal": OP_NOTLESSEQ,
+
+    ">": OP_GREATER,
+    "greater": OP_GREATER,
+
+    "!>": OP_NOTGREATER,
+    "not greater": OP_NOTGREATER,
+
+    "=>": OP_GREATEQ,
+    "greater equal": OP_GREATEQ,
+
+    "!=>": OP_NOTGREATEQ,
+    "not greater equal": OP_NOTGREATEQ,
+
+    "=": OP_EQ,
+    "equals": OP_EQ,
+    "eq": OP_EQ,
+
+    "!=": OP_NOTEQ,
+    "not equals": OP_NOTEQ,
+    "neq": OP_NOTEQ,
+
+    "~=": OP_CONTAINS,
+    "like": OP_CONTAINS,
+    "contains": OP_CONTAINS,
+    "in": OP_CONTAINS,
+
+    "!~=": OP_NOTCONTAINS,
+    "not like": OP_NOTCONTAINS,
+    "not contains": OP_NOTCONTAINS,
+    "not in": OP_NOTCONTAINS,
+
+    "starts with": OP_STARTS,
+    "not starts with": OP_NOTSTARTS,
+    "ends with": OP_ENDS,
+    "not ends with": OP_NOTENDS,
+
+    "is": OP_RE,
+    "regex": OP_RE,
+    "re": OP_RE,
+    "regexmatch": OP_RE,
+
+    "is not": OP_NOTRE,
+    "not regex": OP_NOTRE,
+    "not regexmatch": OP_NOTRE,
+    "nre": OP_NOTRE,
+
+    "hash": OP_HASH,
+    "not hash": OP_NOTHASH,
+}
+
+YES_LIST = ['yes', 'y', 'ye', 'true', '1', 1, True]
+"""List of possible "True" strings."""
+
+NO_LIST = ['no', 'n', 'false', '0', 0, False]
+"""List of possible "No" strings."""
+
+# -------------------- BASE TYPES
+
+TYPE_STR = {
+    "t": "String",
+    "h": "standard lexicographical comparison (the default)",
+    "e": "abcdefgh",
+}
+TYPE_VER = {
+    "t": "Version",
+    "h": "version strings",
+    "e": "9.4.2 is less than 10.1.3",
+}
+TYPE_NUM = {
+    "t": "Numeric",
+    "h": "numeric, decimal, floating point, and scientific notation",
+    "e": "1000.0",
+}
+TYPE_IP = {
+    "t": "IPAddress",
+    "h": "IP addresses",
+    "e": "192.168.1.1",
+}
+TYPE_DATE = {
+    "t": "Date",
+    "h": "a date in the format YYYY-MM-DD HH:MM:SS",
+    "e": "2010-01-01 01:01:01",
+}
+TYPE_BDATE = {
+    "t": "BESDate",
+    "h": "a date in the format YYYY-MM-DD HH:MM:SS",
+    "e": "2010-01-01 01:01:01",
+}
+TYPE_WDATE = {
+    "t": "WMIDate",
+    "h": "a date in the format yyyymmddHHMMSS.ssssss(+/-)UUU",
+    "e": "20100101010101.894035+330",
+}
+TYPE_TDIFF = {
+    "t": "TimeDiff",
+    "h": "amount of time as a number followed by one of Y, MO, W, D, H, M, or S",
+    "e": "2Y, 2 years, 3 months, 18 days, 4 hours, 22 minutes, 3.67 seconds",
+}
+TYPE_DS = {
+    "t": "DataSize",
+    "h": "data size as a number followed by one of B, K, M, G, or T",
+    "e": "125MB, 23K, 34.2Gig",
+}
+TYPE_NUMI = {
+    "t": "NumericInteger",
+    "h": "be integer numeric values",
+    "e": "1000",
+}
+
+VALUE_TYPES = {
+    "string": TYPE_STR,
+    "str": TYPE_STR,
+    "version": TYPE_VER,
+    "ver": TYPE_VER,
+    "date": TYPE_BDATE,
+    "ipaddress": TYPE_IP,
+    "ip": TYPE_IP,
+    "wmidate": TYPE_WDATE,
+    "timediff": TYPE_TDIFF,
+    "datasize": TYPE_DS,
+    "numeric": TYPE_NUM,
+    "float": TYPE_NUM,
+    "decimal": TYPE_NUM,
+    "numericinteger": TYPE_NUMI,
+    "integer": TYPE_NUMI,
+    "int": TYPE_NUMI,
+}

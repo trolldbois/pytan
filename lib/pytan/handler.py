@@ -2,43 +2,44 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
-# import copy
 import datetime
 import io
 import json
 import logging
 import os
+import pprint
 import re
-import sys
-
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 try:
     import taniumpy
-    import pytan
+    from . import version
+    from . import constants
+    from . import exceptions
+    from . import utils
+    from . import sessions
+    from . import pollers
 except:
     raise
 
-kwmerge = pytan.utils.kwmerge
-mklist = pytan.utils.mklist
-get_obj_info = pytan.utils.get_obj_info
-joiner = pytan.utils.joiner
-re_exact = pytan.utils.re_exact
-join_list_attrs = pytan.utils.join_list_attrs
-seconds_from_now = pytan.utils.seconds_from_now
-collapse_lod = pytan.utils.collapse_lod
-get_bt_obj = pytan.utils.get_bt_obj
-is_simple_str = pytan.utils.is_simple_str
-list_objs_attr = pytan.utils.list_objs_attr
-valvalue = pytan.utils.valvalue
+kwmerge = utils.kwmerge
+mklist = utils.mklist
+get_obj_info = utils.get_obj_info
+joiner = utils.joiner
+re_exact = utils.re_exact
+join_list_attrs = utils.join_list_attrs
+seconds_from_now = utils.seconds_from_now
+collapse_lod = utils.collapse_lod
+get_bt_obj = utils.get_bt_obj
+is_simple_str = utils.is_simple_str
+list_objs_attr = utils.list_objs_attr
+valvalue = utils.valvalue
 
 PP_NAME = "PyTan Updated"
 PP_VALUE = "{d} by v{v}"
 SEARCH_RE = re.compile(r"(?<!\\)::")
+ESCAPED_COMMAS_RE = re.compile(constants.ESCAPED_COMMAS)
+ESCAPED_COLONS_RE = re.compile(constants.ESCAPED_COLONS)
+PARSELOG = logging.getLogger("pytan.parser")
 
 
 class Handler(object):
@@ -74,7 +75,7 @@ class Handler(object):
         * default: None
         * session_id to use while authenticating instead of username/password
     pytan_user_config : str, optional
-        * default: pytan.constants.PYTAN_USER_CONFIG
+        * default: constants.PYTAN_USER_CONFIG
         * JSON file containing key/value pairs to override class variables
 
     Other Parameters
@@ -83,67 +84,67 @@ class Handler(object):
         * default: False
         * False: do not print requests package debug
         * True: do print requests package debug
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     http_auth_retry: bool, optional
         * default: True
         * True: retry HTTP GET/POST's
         * False: do not retry HTTP GET/POST's
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     http_retry_count: int, optional
         * default: 5
         * number of times to retry HTTP GET/POST's if the connection times out/fails
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     soap_request_headers : dict, optional
         * default: {'Content-Type': 'text/xml; charset=utf-8', 'Accept-Encoding': 'gzip'}
         * dictionary of headers to add to every HTTP GET/POST
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     auth_connect_timeout_sec : int, optional
         * default: 5
         * number of seconds before timing out for a connection while authenticating
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     auth_response_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a response while authenticating
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     info_connect_timeout_sec : int, optional
         * default: 5
         * number of seconds before timing out for a connection while getting /info.json
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     info_response_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a response while getting /info.json
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     soap_connect_timeout_sec : int, optional
         * default: 15
         * number of seconds before timing out for a connection for a SOAP request
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     soap_response_timeout_sec : int, optional
         * default: 540
         * number of seconds before timing out for a response for a SOAP request
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     stats_loop_enabled : bool, optional
         * default: False
         * False: do not enable the statistics loop thread
         * True: enable the statistics loop thread
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     stats_loop_sleep_sec : int, optional
         * default: 5
         * number of seconds to sleep in between printing the statistics when stats_loop_enabled is True
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     record_all_requests: bool, optional
         * default: False
         * False: do not add each requests response object to session.ALL_REQUESTS_RESPONSES
         * True: add each requests response object to session.ALL_REQUESTS_RESPONSES
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     stats_loop_targets : list of dict, optional
         * default: [{'Version': 'Settings/Version'}, {'Active Questions': 'Active Question Cache/Active Question Estimate'}, {'Clients': 'Active Question Cache/Active Client Estimate'}, {'Strings': 'String Cache/Total String Count'}, {'Handles': 'System Performance Info/HandleCount'}, {'Processes': 'System Performance Info/ProcessCount'}, {'Memory Available': 'percentage(System Performance Info/PhysicalAvailable,System Performance Info/PhysicalTotal)'}]
         * list of dictionaries with the key being the section of info.json to print info from, and the value being the item with in that section to print the value
-        * This is passed through to :class:`pytan.sessions.Session`
+        * This is passed through to :class:`sessions.Session`
     persistent: bool, optional
         * default: False
         * False: do not request a persistent session
         * True: do request a persistent
-        * This is passed through to :func:`pytan.sessions.Session.authenticate`
+        * This is passed through to :func:`sessions.Session.authenticate`
     force_server_version: str, optional
         * default: ''
         * use this to override the server_version detection
@@ -157,9 +158,9 @@ class Handler(object):
 
     See Also
     --------
-    :data:`pytan.constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
-    :data:`pytan.constants.INFO_FORMAT` : debugformat=False
-    :data:`pytan.constants.DEBUG_FORMAT` : debugformat=True
+    :data:`constants.LOG_LEVEL_MAPS` : maps a given `loglevel` to respective logger names and their logger levels
+    :data:`constants.INFO_FORMAT` : debugformat=False
+    :data:`constants.DEBUG_FORMAT` : debugformat=True
     :class:`taniumpy.session.Session` : Session object used by Handler
 
     Examples
@@ -184,16 +185,16 @@ class Handler(object):
             setattr(self, k, v)
 
         # setup the console logging handler
-        pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
+        utils.setup_console_logging(gmt_tz=self.gmt_log)
 
         # create all the loggers and set their levels based on loglevel
-        pytan.utils.set_log_levels(loglevel=int(self.loglevel))
+        utils.set_log_levels(loglevel=int(self.loglevel))
 
         # change the format of console logging handler if need be
-        pytan.utils.change_console_format(debug=self.debugformat)
+        utils.change_console_format(debug=self.debugformat)
 
         # get the default pytan user config file
-        puc_default = os.path.expanduser(pytan.constants.PYTAN_USER_CONFIG)
+        puc_default = os.path.expanduser(constants.PYTAN_USER_CONFIG)
 
         # see if the pytan_user_config file location was overridden
         puc_kwarg = kwargs.get('pytan_user_config', '')
@@ -202,40 +203,40 @@ class Handler(object):
         kwargs = self.read_pytan_user_config(kwargs)
 
         if gmt_log != self.gmt_log:
-            pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
+            utils.setup_console_logging(gmt_tz=self.gmt_log)
 
         if loglevel != self.loglevel:
-            pytan.utils.set_log_levels(loglevel=self.loglevel)
+            utils.set_log_levels(loglevel=self.loglevel)
 
         if debugformat != self.debugformat:
-            pytan.utils.change_console_format(debug=self.debugformat)
+            utils.change_console_format(debug=self.debugformat)
 
         if not self.session_id:
 
             if not self.username:
-                raise pytan.exceptions.HandlerError("Must supply username!")
+                raise exceptions.HandlerError("Must supply username!")
 
             if not self.password:
-                raise pytan.exceptions.HandlerError("Must supply password!")
+                raise exceptions.HandlerError("Must supply password!")
 
         if self.password:
-            self.password = pytan.utils.vig_decode(pytan.constants.PYTAN_KEY, self.password)
+            self.password = utils.vig_decode(constants.PYTAN_KEY, self.password)
 
         if not self.host:
-            raise pytan.exceptions.HandlerError("Must supply host!")
+            raise exceptions.HandlerError("Must supply host!")
 
         if not self.port:
-            raise pytan.exceptions.HandlerError("Must supply port!")
+            raise exceptions.HandlerError("Must supply port!")
 
         try:
             self.port = int(self.port)
         except ValueError:
-            raise pytan.exceptions.HandlerError("port must be an integer!")
+            raise exceptions.HandlerError("port must be an integer!")
 
-        pytan.utils.test_app_port(host=self.host, port=self.port)
+        utils.test_app_port(host=self.host, port=self.port)
 
         # establish our Session class
-        self.session = pytan.sessions.Session(host=self.host, port=self.port, **kwargs)
+        self.session = sessions.Session(host=self.host, port=self.port, **kwargs)
 
         # authenticate using the Session class
         self.session.authenticate(
@@ -244,7 +245,7 @@ class Handler(object):
 
     def __str__(self):
         str_tpl = "PyTan v{} Handler for {}".format
-        ret = str_tpl(pytan.__version__, self.session)
+        ret = str_tpl(version.__version__, self.session)
         return ret
 
     def read_pytan_user_config(self, kwargs):  # noqa
@@ -271,13 +272,13 @@ class Handler(object):
             self.mylog.info(m(self.puc))
 
             # handle class params
-            for h_arg, arg_default in pytan.constants.HANDLER_ARG_DEFAULTS.iteritems():
+            for h_arg, arg_default in constants.HANDLER_ARG_DEFAULTS.iteritems():
                 if h_arg not in puc_dict:
                     continue
 
                 if h_arg == 'password':
-                    puc_dict['password'] = pytan.utils.vig_decode(
-                        pytan.constants.PYTAN_KEY, puc_dict['password'],
+                    puc_dict['password'] = utils.vig_decode(
+                        constants.PYTAN_KEY, puc_dict['password'],
                     )
 
                 class_val = getattr(self, h_arg, None)
@@ -337,14 +338,14 @@ class Handler(object):
             puc_dict[k] = v
 
         # obfuscate the password
-        puc_dict['password'] = pytan.utils.vig_encode(pytan.constants.PYTAN_KEY, self.password)
+        puc_dict['password'] = utils.vig_encode(constants.PYTAN_KEY, self.password)
 
         try:
             with open(puc, 'w+') as fh:
                 json.dump(puc_dict, fh, skipkeys=True, indent=2)
         except Exception as e:
             m = "Failed to write PyTan User config: '{}', exception: {}".format
-            raise pytan.exceptions.HandlerError(m(puc, e))
+            raise exceptions.HandlerError(m(puc, e))
         else:
             m = "PyTan User config file successfully written: {} ".format
             self.mylog.info(m(puc))
@@ -379,7 +380,7 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.Q_OBJ_MAP` : maps qtype to a method in Handler()
+        :data:`constants.Q_OBJ_MAP` : maps qtype to a method in Handler()
         :func:`pytan.handler.Handler.ask_saved` : method used when qtype == 'saved'
         :func:`pytan.handler.Handler.ask_manual` : method used when qtype == 'manual'
         :func:`pytan.handler.Handler._ask_manual` : method used when qtype == '_manual'
@@ -387,9 +388,9 @@ class Handler(object):
         qtype = kwargs.get('qtype', 'manual')
 
         clean_keys = ['qtype']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        q_obj_map = pytan.utils.get_q_obj_map(qtype=qtype)
+        q_obj_map = utils.get_q_obj_map(qtype=qtype)
 
         method = getattr(self, q_obj_map['handler'])
         result = method(**clean_kwargs)
@@ -425,25 +426,25 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         complete_pct : int/float, optional
             * default: 99
             * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         callbacks : dict, optional
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+            * This is passed through to :func:`pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
         force_passed_done_count : int, optional
             * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
 
         Returns
         -------
@@ -451,14 +452,14 @@ class Handler(object):
             * `question_object` : :class:`taniumpy.object_types.saved_question.SavedQuestion`, the saved question object
             * `question_object` : :class:`taniumpy.object_types.question.Question`, the question asked by `saved_question_object`
             * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the results for `question_object`
-            * `poller_object` : None if `refresh_data` == False, elsewise :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,
+            * `poller_object` : None if `refresh_data` == False, elsewise :class:`pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`,
             * `poller_success` : None if `refresh_data` == False, elsewise True or False
 
         Notes
         -----
         id or name must be supplied
         """
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs)
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
@@ -472,7 +473,7 @@ class Handler(object):
                 "saved question!\nArgs: {}\nReturned saved questions:\n\t{}"
             ).format
             sq_objstr = '\n\t'.join([str(x) for x in sq_objs])
-            raise pytan.exceptions.HandlerError(err(kwargs, sq_objstr))
+            raise exceptions.HandlerError(err(kwargs, sq_objstr))
 
         sq_obj = sq_objs[0]
 
@@ -499,7 +500,7 @@ class Handler(object):
                 "Issue a GetObject for the saved question in order get the ID of the newly "
                 "asked question"
             )
-            shrunk_obj = pytan.utils.shrink_obj(obj=sq_obj)
+            shrunk_obj = utils.shrink_obj(obj=sq_obj)
             sq_obj = self._find(obj=shrunk_obj, pytan_help=h, **clean_kwargs)
 
             h = (
@@ -512,7 +513,7 @@ class Handler(object):
             self.mylog.debug(m(q_obj.id, q_obj.query_text, q_obj.expiration))
 
             # poll the new question for this saved question to wait for results
-            poller = pytan.pollers.QuestionPoller(handler=self, obj=q_obj, **clean_kwargs)
+            poller = pollers.QuestionPoller(handler=self, obj=q_obj, **clean_kwargs)
             poller_success = poller.run(**clean_kwargs)
 
         # get the results
@@ -580,32 +581,32 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         complete_pct : int/float, optional
             * default: 99
             * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         callbacks : dict, optional
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+            * This is passed through to :func:`pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
         force_passed_done_count : int, optional
             * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
 
         Returns
         -------
         result : dict, containing:
             * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question created and added by PyTan
             * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
-            * `poller_object` : :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
+            * `poller_object` : :class:`pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
 
         Examples
@@ -671,22 +672,22 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._ask_manual` : private method with the actual workflow used to create and add the question object
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
 
         sensors = kwargs.get('sensors', [])
         q_filters = kwargs.get('question_filters', [])
         q_options = kwargs.get('question_options', [])
 
-        sensor_defs = pytan.utils.dehumanize_sensors(sensors=sensors)
-        q_filter_defs = pytan.utils.dehumanize_question_filters(question_filters=q_filters)
-        q_option_defs = pytan.utils.dehumanize_question_options(question_options=q_options)
+        sensor_defs = utils.dehumanize_sensors(sensors=sensors)
+        q_filter_defs = utils.dehumanize_question_filters(question_filters=q_filters)
+        q_option_defs = utils.dehumanize_question_options(question_options=q_options)
 
         clean_keys = ['sensor_defs', 'question_filter_defs', 'question_option_defs']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         result = self._ask_manual(
             sensor_defs=sensor_defs,
@@ -711,14 +712,14 @@ class Handler(object):
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
-            raise pytan.exceptions.UnsupportedVersionError(m)
+            raise exceptions.UnsupportedVersionError(m)
 
         parse_job = taniumpy.ParseJob()
         parse_job.question_text = question_text
         parse_job.parser_version = 2
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         parse_job_results = self.session.add(obj=parse_job, **clean_kwargs)
         return parse_job_results
@@ -754,32 +755,32 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         complete_pct : int/float, optional
             * default: 99
             * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         callbacks : dict, optional
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+            * This is passed through to :func:`pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
         force_passed_done_count : int, optional
             * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
 
         Returns
         -------
         ret : dict, containing:
             * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question added by PyTan
             * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
-            * `poller_object` : :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
+            * `poller_object` : :class:`pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
             * `parse_results` : :class:`taniumpy.object_types.parse_result_group_list.ParseResultGroupList`, the parse result group returned from Tanium after parsing `question_text`
 
@@ -795,10 +796,10 @@ class Handler(object):
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
-            raise pytan.exceptions.UnsupportedVersionError(m)
+            raise exceptions.UnsupportedVersionError(m)
 
         clean_keys = ['obj', 'question_text', 'handler']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
@@ -817,7 +818,7 @@ class Handler(object):
             m = (
                 "Question Text '{}' was unable to be parsed into a valid query text by the server"
             ).format
-            raise pytan.exceptions.ServerParseError(m())
+            raise exceptions.ServerParseError(m())
 
         pi = "Index {0}, Score: {1}, Query: {2}".format
         pw = (
@@ -833,7 +834,7 @@ class Handler(object):
                     for i in range(len(params) - 1):
                         text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
                 self.mylog.critical(pi(idx + 1, x.score, text))
-            raise pytan.exceptions.PickerError(pw())
+            raise exceptions.PickerError(pw())
 
         try:
             picked_parse_job = parse_job_results[picker - 1]
@@ -850,7 +851,7 @@ class Handler(object):
                     for i in range(len(params) - 1):
                         text = text.replace(params[i][0], params[i][0] + '[' + params[i][1] + ']')
                 self.mylog.critical(pi(idx + 1, x.score, text))
-            raise pytan.exceptions.PickerError(pw())
+            raise exceptions.PickerError(pw())
 
         add_obj = picked_parse_job.question
         # TODO: BUILD PARAMETER KEY AND VALUE.  BELOW CONDITIONAL SERVES AS A REMINDER
@@ -867,7 +868,7 @@ class Handler(object):
         m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
         self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
 
-        poller = pytan.pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
+        poller = pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
 
         ret = {
             'question_object': added_obj,
@@ -925,7 +926,7 @@ class Handler(object):
             * expire action N seconds from now, will be derived from package if not supplied
         run : bool, optional
             * default: False
-            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action
+            * False: just ask the question that pertains to verify action, export the results to CSV, and raise exceptions.RunFalse -- does not deploy the action
             * True: actually deploy the action
         get_results : bool, optional
             * default: True
@@ -940,18 +941,18 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
         complete_pct : int/float, optional
             * default: 100
             * Percentage of passed_count out of successfully run actions to consider the action "done"
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
         override_passed_count : int, optional
             * instead of getting number of systems that should run this action by asking a question, use this number
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
 
         Returns
         -------
@@ -960,7 +961,7 @@ class Handler(object):
             * `action_object` : :class:`taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
             * `package_object` : :class:`taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
             * `action_info` : :class:`taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
-            * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
+            * `poller_object` : :class:`pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
             * `action_results` : None if `get_results` == False, elsewise :class:`taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
             * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form
@@ -981,11 +982,11 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow used to create and add the action object
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
 
         # the human string describing the sensors/filter that user wants
         # to deploy the action against
@@ -998,12 +999,12 @@ class Handler(object):
         # name of package to deploy with params as {key=value1,key2=value2}
         package = kwargs.get('package', '')
 
-        action_filter_defs = pytan.utils.dehumanize_sensors(action_filters, 'action_filters', True)
-        action_option_defs = pytan.utils.dehumanize_question_options(action_options)
-        package_def = pytan.utils.dehumanize_package(package)
+        action_filter_defs = utils.dehumanize_sensors(action_filters, 'action_filters', True)
+        action_option_defs = utils.dehumanize_question_options(action_options)
+        package_def = utils.dehumanize_package(package)
 
         clean_keys = ['package_def', 'action_filter_defs', 'action_option_defs']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         deploy_result = self._deploy_action(
             action_filter_defs=action_filter_defs,
@@ -1027,7 +1028,7 @@ class Handler(object):
             * The object containing the return from SavedActionApproval
         """
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetObject to find saved action objects"
         saved_action_obj = self.get(objtype='saved_action', id=id, pytan_help=h, **clean_kwargs)[0]
@@ -1059,7 +1060,7 @@ class Handler(object):
             The object containing the ID of the action stop job
         """
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetObject to find the action object we want to stop"
         action_obj = self.get(objtype='action', id=id, pytan_help=h, **clean_kwargs)[0]
@@ -1080,7 +1081,7 @@ class Handler(object):
             m = (
                 "Action not stopped successfully, json of action after issuing StopAction: {}"
             ).format
-            raise pytan.exceptions.HandlerError(m(self.export_obj(after_action_obj, 'json')))
+            raise exceptions.HandlerError(m(self.export_obj(after_action_obj, 'json')))
 
         return action_stop_obj
 
@@ -1116,11 +1117,11 @@ class Handler(object):
         To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).
         """
         if shrink:
-            shrunk_obj = pytan.utils.shrink_obj(obj=obj)
+            shrunk_obj = utils.shrink_obj(obj=obj)
         else:
             shrunk_obj = obj
 
-        kwargs['export_flag'] = pytan.utils.get_kwargs_int(key='export_flag', default=0, **kwargs)
+        kwargs['export_flag'] = utils.get_kwargs_int(key='export_flag', default=0, **kwargs)
 
         if kwargs['export_flag']:
             grd = self.session.get_result_data_sse
@@ -1135,7 +1136,7 @@ class Handler(object):
             kwargs['row_counts_only_flag'] = 1
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # do a getresultdata
         rd = grd(obj=shrunk_obj, **clean_kwargs)
@@ -1175,9 +1176,9 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.SSE_FORMAT_MAP` : maps `sse_format` to an integer for use by the SOAP API
-        :data:`pytan.constants.SSE_RESTRICT_MAP` : maps sse_format integers to supported platform versions
-        :data:`pytan.constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios
+        :data:`constants.SSE_FORMAT_MAP` : maps `sse_format` to an integer for use by the SOAP API
+        :data:`constants.SSE_RESTRICT_MAP` : maps sse_format integers to supported platform versions
+        :data:`constants.SSE_CRASH_MAP` : maps platform versions that can cause issues in various scenarios
 
         Returns
         -------
@@ -1210,7 +1211,7 @@ class Handler(object):
         clean_keys = [
             'obj', 'pytan_help', 'handler', 'export_id', 'leading', 'trailing', 'sse_format',
         ]
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetResultData to start a Server Side Export and get an export_id"
         export_id = self.get_result_data(obj=obj, pytan_help=h, **clean_kwargs)
@@ -1218,7 +1219,7 @@ class Handler(object):
         m = "Server Side Export Started, id: '{}'".format
         self.mylog.debug(m(export_id))
 
-        poller = pytan.pollers.SSEPoller(handler=self, export_id=export_id, **clean_kwargs)
+        poller = pollers.SSEPoller(handler=self, export_id=export_id, **clean_kwargs)
         poller_success = poller.run(**clean_kwargs)
 
         if not poller_success:
@@ -1226,7 +1227,7 @@ class Handler(object):
                 "Server Side Export Poller failed while waiting for completion, last status: {}"
             ).format
             sse_status = getattr(poller, 'sse_status', 'Unknown')
-            raise pytan.exceptions.ServerSideExportError(m(sse_status))
+            raise exceptions.ServerSideExportError(m(sse_status))
 
         export_data = poller.get_sse_data(**clean_kwargs)
 
@@ -1250,7 +1251,7 @@ class Handler(object):
         """
         rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
         rs_xml = rs_xml(x)
-        rs_tree = pytan.sessions.ET.fromstring(rs_xml)
+        rs_tree = sessions.ET.fromstring(rs_xml)
         rs = taniumpy.ResultSet.fromSOAPElement(rs_tree)
         rs._RAW_XML = rs_xml
         return rs
@@ -1275,7 +1276,7 @@ class Handler(object):
             * The return of GetResultInfo for `obj`
         """
         if shrink:
-            shrunk_obj = pytan.utils.shrink_obj(obj=obj)
+            shrunk_obj = utils.shrink_obj(obj=obj)
         else:
             shrunk_obj = obj
 
@@ -1284,7 +1285,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         ri = self.session.get_result_info(obj=shrunk_obj, **clean_kwargs)
         return ri
@@ -1307,20 +1308,20 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
+        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
         """
-        obj_map = pytan.utils.get_obj_map(objtype=objtype)
+        obj_map = utils.get_obj_map(objtype=objtype)
 
         create_json_ok = obj_map['create_json']
 
         if not create_json_ok:
             json_createable = ', '.join([
-                x for x, y in pytan.constants.GET_OBJ_MAP.items() if y['create_json']
+                x for x, y in constants.GET_OBJ_MAP.items() if y['create_json']
             ])
             m = "{} is not a json createable object! Supported objects: {}".format
-            raise pytan.exceptions.HandlerError(m(objtype, json_createable))
+            raise exceptions.HandlerError(m(objtype, json_createable))
 
-        add_obj = pytan.utils.load_taniumpy_from_json(json_file=json_file)
+        add_obj = utils.load_taniumpy_from_json(json_file=json_file)
 
         if getattr(add_obj, '_list_properties', ''):
             obj_list = [x for x in add_obj]
@@ -1339,13 +1340,13 @@ class Handler(object):
         else:
             all_type = obj_map['all']
 
-        ret = pytan.utils.get_taniumpy_obj(obj_map=all_type)()
+        ret = utils.get_taniumpy_obj(obj_map=all_type)()
 
         h = "Issue an AddObject to add an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         for x in obj_list:
             try:
@@ -1354,7 +1355,7 @@ class Handler(object):
                 m = (
                     "Failure while importing {}: {}\nJSON Dump of object: {}"
                 ).format
-                raise pytan.exceptions.HandlerError(m(x, e, x.to_json(x)))
+                raise exceptions.HandlerError(m(x, e, x.to_json(x)))
 
             m = "New {} (ID: {}) created successfully!".format
             self.mylog.info(m(list_obj, getattr(list_obj, 'id', 'Unknown')))
@@ -1372,13 +1373,13 @@ class Handler(object):
 
         Raises
         ------
-        pytan.exceptions.HandlerError : :exc:`pytan.utils.pytan.exceptions.HandlerError`
+        exceptions.HandlerError : :exc:`utils.exceptions.HandlerError`
         """
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
             "Use create_sensor_from_json() instead!"
         )
-        raise pytan.exceptions.HandlerError(m)
+        raise exceptions.HandlerError(m)
 
     def create_package(self, name, command, display_name='', file_urls=[],
                        command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
@@ -1440,16 +1441,16 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filters for verify_filters
-        :data:`pytan.constants.OPTION_MAPS` : valid options for verify_filter_options
+        :data:`constants.FILTER_MAPS` : valid filters for verify_filters
+        :data:`constants.OPTION_MAPS` : valid options for verify_filter_options
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
 
         clean_keys = ['obj', 'pytan_help', 'defs']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         metadata = kwargs.get('metadata', [])
-        metadatalist_obj = pytan.utils.build_metadatalist_obj(properties=metadata)
+        metadatalist_obj = utils.build_metadatalist_obj(properties=metadata)
 
         # bare minimum arguments for new package: name, command
         add_package_obj = taniumpy.PackageSpec()
@@ -1463,14 +1464,14 @@ class Handler(object):
 
         # VERIFY FILTERS
         if verify_filters:
-            verify_filter_defs = pytan.utils.dehumanize_question_filters(
+            verify_filter_defs = utils.dehumanize_question_filters(
                 question_filters=verify_filters
             )
-            verify_option_defs = pytan.utils.dehumanize_question_options(
+            verify_option_defs = utils.dehumanize_question_options(
                 question_options=verify_filter_options
             )
             verify_filter_defs = self._get_sensor_defs(defs=verify_filter_defs, **clean_kwargs)
-            add_verify_group = pytan.utils.build_group_obj(
+            add_verify_group = utils.build_group_obj(
                 q_filter_defs=verify_filter_defs, q_option_defs=verify_option_defs
             )
             h = "Issue an AddObject to add a Group object for this package"
@@ -1483,7 +1484,7 @@ class Handler(object):
 
         # PARAMETERS
         if parameters_json_file:
-            add_package_obj.parameter_definition = pytan.utils.load_param_json_file(
+            add_package_obj.parameter_definition = utils.load_param_json_file(
                 parameters_json_file=parameters_json_file
             )
 
@@ -1546,14 +1547,14 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filters for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid options for filter_options
+        :data:`constants.FILTER_MAPS` : valid filters for filters
+        :data:`constants.OPTION_MAPS` : valid options for filter_options
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs)
 
-        filter_defs = pytan.utils.dehumanize_question_filters(question_filters=filters)
-        option_defs = pytan.utils.dehumanize_question_options(question_options=filter_options)
+        filter_defs = utils.dehumanize_question_filters(question_filters=filters)
+        option_defs = utils.dehumanize_question_options(question_options=filter_options)
 
         h = (
             "Issue a GetObject to get the full object of specified sensors for inclusion in a "
@@ -1561,7 +1562,7 @@ class Handler(object):
         )
         filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-        add_group_obj = pytan.utils.build_group_obj(
+        add_group_obj = utils.build_group_obj(
             q_filter_defs=filter_defs, q_option_defs=option_defs,
         )
         add_group_obj.name = groupname
@@ -1601,7 +1602,7 @@ class Handler(object):
         user_obj : :class:`taniumpy.object_types.user.User`
             * TaniumPy object added to Tanium SOAP Server
         """
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
         if group:
@@ -1616,7 +1617,7 @@ class Handler(object):
         else:
             rolelist_obj = taniumpy.RoleList()
 
-        metadatalist_obj = pytan.utils.build_metadatalist_obj(
+        metadatalist_obj = utils.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.User.Property',
         )
         add_user_obj = taniumpy.User()
@@ -1663,7 +1664,7 @@ class Handler(object):
         if regex:
             url = 'regex:' + url
 
-        metadatalist_obj = pytan.utils.build_metadatalist_obj(
+        metadatalist_obj = utils.build_metadatalist_obj(
             properties=properties, nameprefix='TConsole.WhitelistedURL',
         )
 
@@ -1672,7 +1673,7 @@ class Handler(object):
         add_url_obj.download_seconds = download_seconds
         add_url_obj.metadata = metadatalist_obj
 
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs)
 
         h = "Issue an AddObject to add a WhitelistedURL object"
         url_obj = self._add(obj=add_url_obj, pytan_help=h, **clean_kwargs)
@@ -1698,20 +1699,20 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
+        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
-        obj_map = pytan.utils.get_obj_map(objtype=objtype)
+        obj_map = utils.get_obj_map(objtype=objtype)
 
         delete_ok = obj_map['delete']
 
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs)
 
         if not delete_ok:
             deletable = ', '.join([
-                x for x, y in pytan.constants.GET_OBJ_MAP.items() if y['delete']
+                x for x, y in constants.GET_OBJ_MAP.items() if y['delete']
             ])
             m = "{} is not a deletable object! Deletable objects: {}".format
-            raise pytan.exceptions.HandlerError(m(objtype, deletable))
+            raise exceptions.HandlerError(m(objtype, deletable))
 
         h = "Issue a GetObject to find the object to be deleted"
         objs_to_del = self.get(objtype=objtype, pytan_help=h, **clean_kwargs)
@@ -1745,7 +1746,7 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
+        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         :func:`pytan.handler.Handler._get_multi` : private method used to get multiple items
         :func:`pytan.handler.Handler._get_single` : private method used to get singular items
         """
@@ -1753,12 +1754,12 @@ class Handler(object):
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         err_keys = ['pytan_help']
-        err_args = pytan.utils.clean_kwargs(kwargs=kwargs, keys=err_keys)
+        err_args = utils.clean_kwargs(kwargs=kwargs, keys=err_keys)
 
-        obj_map = pytan.utils.get_obj_map(objtype=objtype)
+        obj_map = utils.get_obj_map(objtype=objtype)
 
         manual_search = obj_map['manual']
         api_attrs = obj_map['search']
@@ -1778,7 +1779,7 @@ class Handler(object):
                     continue
                 if not hasattr(all_objs[0], k):
                     continue
-                if not pytan.utils.is_list(v):
+                if not utils.is_list(v):
                     v = [v]
                 for aobj in all_objs:
                     aobj_val = getattr(aobj, k)
@@ -1789,7 +1790,7 @@ class Handler(object):
 
             if not return_objs:
                 err = "No results found searching for {} with {}!!".format
-                raise pytan.exceptions.HandlerError(err(objtype, err_args))
+                raise exceptions.HandlerError(err(objtype, err_args))
 
             return return_objs
 
@@ -1797,7 +1798,7 @@ class Handler(object):
         # but no filters supplied in kwargs, raise
         if not any(api_kwattrs):
             err = "Getting a {} requires at least one filter: {}".format
-            raise pytan.exceptions.HandlerError(err(objtype, api_attrs))
+            raise exceptions.HandlerError(err(objtype, api_attrs))
 
         # if there is a multi in obj_map, that means we can pass a list
         # type to the taniumpy. the list will have an entry for each api_kw
@@ -1810,7 +1811,7 @@ class Handler(object):
             return self._get_single(obj_map=obj_map, **clean_kwargs)
 
         err = "No single or multi search defined for {}".format
-        raise pytan.exceptions.HandlerError(err(objtype))
+        raise exceptions.HandlerError(err(objtype))
 
     def get_all(self, objtype, **kwargs):
         """Get all objects of a type
@@ -1827,19 +1828,19 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
+        :data:`constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         :func:`pytan.handler.Handler._find` : private method used to find items
         """
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        obj_map = pytan.utils.get_obj_map(objtype=objtype)
+        obj_map = utils.get_obj_map(objtype=objtype)
 
         all_type = obj_map['all']
-        api_obj_all = pytan.utils.get_taniumpy_obj(obj_map=all_type)()
+        api_obj_all = utils.get_taniumpy_obj(obj_map=all_type)()
 
         found = self._find(obj=api_obj_all, **clean_kwargs)
         return found
@@ -1852,7 +1853,7 @@ class Handler(object):
         except Exception as e:
             m = "Unable to parse user ID from session ID '{s}', error: {e}"
             m = m.format(s=session_id, e=e)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         m = "Parsed user ID '{i}' from session ID: '{s}'"
         m = m.format(i=ret, s=session_id)
@@ -1879,7 +1880,7 @@ class Handler(object):
         except Exception as e:
             m = "Failed to find {o}, error: {e}"
             m = m.format(o=obj, e=e)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         m = "Successfully retrieved {o}".format(o=obj)
         self.mylog.debug(m)
@@ -1906,7 +1907,7 @@ class Handler(object):
                 m = "{r} attached to {o} is not allowed! Allowed roles: {t}"
                 m = m.format(r=role_obj, o=obj, t=roles_txt)
                 if error:
-                    raise pytan.exceptions.PermissionError(m)
+                    raise exceptions.PermissionError(m)
                 else:
                     self.mylog.warning(m)
 
@@ -1918,7 +1919,7 @@ class Handler(object):
             m = "{o} has none of the allowed roles: {t}"
             m = m.format(o=obj, t=roles_txt)
             if error:
-                raise pytan.exceptions.PermissionError(m)
+                raise exceptions.PermissionError(m)
             else:
                 self.mylog.warning(m)
         return ret
@@ -1943,7 +1944,7 @@ class Handler(object):
             m = "{o} does not have required role: {r}"
             m = m.format(o=obj, r=role)
             if error:
-                raise pytan.exceptions.PermissionError(m)
+                raise exceptions.PermissionError(m)
             else:
                 self.mylog.warning(m)
         return ret
@@ -2016,6 +2017,149 @@ class Handler(object):
         ret._track(t_attr="Build attributes", t_new=attrs, t_action=ta)
         return ret
 
+    # ADDED: 3.0.0
+    # DOC, TEST
+    def build_params_obj(self, obj, params, delimiter=""):
+        """Creates a ParameterList object from params."""
+        ret = taniumpy.ParameterList()
+
+        # extract the params from the object
+        obj._PARAM_DEF = getattr(obj, "parameter_definition", "{}") or "{}"
+        obj._PARAM_DEF = json.loads(obj._PARAM_DEF) if obj._PARAM_DEF else obj._PARAM_DEF
+        obj._PARAMS = obj._PARAM_DEF.get("parameters", []) if obj._PARAM_DEF else [] or []
+
+        for p in obj._PARAMS:
+            p_key = p["key"]
+            p_default = p.get("defaultValue", "")
+            p_values = p.get("values", [])
+            p_value = p_values[0] if p_values else ""
+            default_value = p_default or p_value
+
+            key = "{d}{k}{d}".format(d=delimiter, k=p_key)
+            value = params.get(p_key, "")
+            value = default_value if not value and constants.DERIVE_PARAMETER_DEFAULTS else value
+
+            if not value and not constants.EMPTY_PARAMETER_VALUES_OK:
+                m = "Parameter key '{k}' for object {o} requires a value, parameter definition:\n{d}"
+                m = m.format(k=p_key, o=obj, d=pprint.pformat(p))
+                raise exceptions.HandlerError(m)
+
+            value = "" if value == "__EMPTY__" else value
+
+            param_obj = self.build_obj(obj_name="Parameter", attrs={"key": key, "value": value})
+            ret.append(param_obj)
+
+            m = "Object Parameter key '{k}' for object {o} mapped to: {p}"
+            m = m.format(k=p_key, o=obj, p=param_obj)
+            utils.manuallog.debug(m)
+
+        processed = [x["key"] for x in obj._PARAMS]
+
+        # ADD SUPPORT FOR PARAMS THAT ARE NOT IN OBJECT
+        for k, v in params.iteritems():
+            if k not in processed:
+                processed.append(k)
+
+                key = "{d}{k}{d}".format(d=delimiter, k=k)
+                param_obj = self.build_obj(obj_name="Parameter", attrs={"key": key, "value": v})
+                ret.append(param_obj)
+
+                m = "Non-object Parameter key '{k}' for object {o} mapped to: {p}"
+                m = m.format(k=p_key, o=obj, p=param_obj)
+                utils.manuallog.debug(m)
+        return ret
+
+    # ADDED: 3.0.0
+    # DOC, TEST
+    def build_group_buckets(self, buckets, **kwargs):
+        default_bucket = constants.DEFAULT_BUCKET
+
+        ret = self.build_obj(obj_name="Group", attrs={"sub_groups": [], "filters": []})
+        ret._BUCKET = default_bucket
+        ret._SPEC = buckets.pop(default_bucket) if default_bucket in buckets else {}
+
+        bucket_items = sorted([(k, v) for k, v in buckets.items() if not k.startswith("_")])
+
+        for bucket, spec in bucket_items:
+            print(bucket)
+            print(spec)
+        return buckets
+
+    def build_group_obj(self, group_obj, filters, options, groups):
+        ret = self.build_obj(obj_name="Group", attrs={"sub_groups": [], "filters": []})
+
+        for this_filter in filters:
+            filter_obj = self.build_filter_obj(sensor_def=this_filter)
+            sensor_obj = this_filter["obj"]
+            params = this_filter.get("params", {})
+
+            param_objs = self.build_params_obj(obj=sensor_obj, params=params, delimiter="||")
+
+            if param_objs:
+                filter_obj.sensor.name = sensor_obj.name
+                filter_obj.sensor.source_id = sensor_obj.id
+                filter_obj.sensor.parameter_definition = sensor_obj.parameter_definition
+                filter_obj.sensor.parameters = param_objs
+            else:
+                filter_obj.sensor.hash = sensor_obj.hash
+
+            # filter_obj = utils.apply_options_obj(options, filter_obj, "filter")
+            # filter_objs.filter.append(filter_obj)
+
+        # ret.filters = filter_objs
+        ret = utils.apply_options_obj(options, ret, "group")
+        return ret
+
+    # ADDED: 3.0.0
+    # DOC, TEST
+    def build_filter_obj(self, sensor_def):
+        """Creates a Filter object from sensor_def."""
+        if "obj" not in sensor_def:
+            m = "No sensor object available in filter dictionary: {f}"
+            m = m.format(f=sensor_def)
+            raise exceptions.DefinitionParserError(m)
+
+        sensor_obj = sensor_def["obj"]
+
+        # create our basic filter that is needed no matter what
+        ret = self.build_obj(obj_name="Filter", attrs={"sensor": {"hash": sensor_obj.hash}})
+
+        # get the filter the user supplied
+        filter_def = sensor_def.get("filter", {})
+
+        # if user supplied filter options, parse the filter options
+        if filter_def:
+            op = filter_def.get("operator", "")  # operator required
+            value = filter_def.get("value", "")  # value required
+            not_flag = filter_def.get("not_flag", None)  # not_flag optional
+            match = [x for x in constants.FILTER_MAPS if op.lower() == x["operator"].lower()]
+
+            if not op:
+                m = "Filter {f!r} requires an 'operator' key in sensor definition:\n{s}"
+                m = m.format(f=filter_def, s=pprint.pformat(sensor_def))
+                raise exceptions.DefinitionParserError(m)
+
+            if not value:
+                m = "Filter {f!r} requires a 'value' key in sensor definition:\n{s}"
+                m = m.format(f=filter_def, s=pprint.pformat(sensor_def))
+                raise exceptions.DefinitionParserError(m)
+
+            if not match:
+                m = "Operator {o!r} in filter {f!r} is invalid in sensor definition:\n{s}"
+                m = m.format(o=op, f=filter_def, s=pprint.pformat(sensor_def))
+                raise exceptions.DefinitionParserError(m)
+
+            match = match[0]
+            ret.value = value
+            ret.operator = match["operator"]
+            ret.not_flag = not_flag
+
+            m = "Operator {o!r} in filter {f!r} mapped to filter obj {fo!r}"
+            m = m.format(o=op, f=filter_def, fo=ret)
+            utils.parselog(m)
+
+        return ret
+
     # DOC, TEST
     # SHELL SCRIPT
     # ADDED: 3.0.0
@@ -2069,7 +2213,7 @@ class Handler(object):
 
         try:
             ret = self.search_objs(**margs)
-        except pytan.exceptions.NotFoundError as exc:
+        except exceptions.NotFoundError as exc:
             ret = self.create_missing_obj(**kwmerge(kwargs, searches=searches, objs=objs, exc=exc))
             ret._ADDED = True
         return ret
@@ -2096,17 +2240,17 @@ class Handler(object):
         if create_missing and not attrs:
             m = "{c}, but no build attributes supplied, can not create {i}".format(**tmpls)
             self.mylog.error(m)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         if create_missing and delete_existing:
             m = "{c} and {d}, will not create then delete {i}".format(**tmpls)
             self.mylog.error(m)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         if create_missing and not search_is_simple:
             m = "{c}, but '{s}' is not a simple search string, will not create {i}".format(**tmpls)
             self.mylog.error(m)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         if create_missing and attrs:
             m = "Creating {i}".format(**tmpls)
@@ -2123,14 +2267,14 @@ class Handler(object):
                 ret = method(**margs)
             else:
                 m = "Unexpected type supplied to create_missing_obj!"
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
             m = "Created {i} {o}".format(o=ret, **tmpls)
             self.mylog.debug(m)
         else:
             m = "{c} and no object found using searches {ss}, will not create {i}".format(**tmpls)
             self.mylog.error(m)
-            raise pytan.exceptions.NotFoundError(m)
+            raise exceptions.NotFoundError(m)
         return ret
 
     # DOC, TEST
@@ -2283,12 +2427,12 @@ class Handler(object):
         debug_log = self.mylog.debug if search_debug else lambda *x: None
         t = "Check {k} [{r}] {ret} must be {l} {m} ({e}) using searches {se}, excludes {ex}".format
 
-        limit_maps = pytan.constants.CHECK_LIMIT_MAPS
+        limit_maps = constants.CHECK_LIMIT_MAPS
         for limit_map in limit_maps:
             key = limit_map["key"]
             expr = limit_map["expr"]
             msg = limit_map["msg"]
-            exc = getattr(pytan.exceptions, limit_map["exc"])
+            exc = getattr(exceptions, limit_map["exc"])
             limit = kwargs.get(key, 0)
 
             if key not in kwargs:
@@ -2344,7 +2488,7 @@ class Handler(object):
         except Exception as e:
             m = "Failed to create a list of dicts from plugin response: {o} from plugin request {r} error: {e}"
             m = m.format(o=ret, r=obj, e=e)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         else:
             m = "Crunched plugin response columns and rows into {l} dicts"
             m = m.format(l=len(ret._LOD))
@@ -2447,7 +2591,7 @@ class Handler(object):
             if len(g_sub_objs) == 0:
                 m = "Unable to save {o}, no computer groups specified!"
                 m = m.format(o=obj)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
             try:
                 d_obj = self.delete_obj(**kwmerge(kwargs, obj=obj))
@@ -2614,7 +2758,7 @@ class Handler(object):
 
             try:
                 ret._OBJ_FOUND = self.search_objs(objs=objs, searches=searches, limit_exact=1, use_regex=False)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Unable to find a pre-existing Computer Group with an ID of {i}, access unknown!"
                 ret._MSG = m.format(i=group_id)
             else:
@@ -2707,7 +2851,7 @@ class Handler(object):
             except:
                 m = "Unable to find package named: '{}'"
                 m = m.format(p)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
             min_obj.id = full_obj.id
             ret.append(min_obj)
         return ret
@@ -2959,14 +3103,14 @@ class Handler(object):
             margs = kwmerge(kwargs, objtype="DashboardCategory", searches=name, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no DashboardCategory while searching for '{n}', will create!"
                 m = m.format(n=name)
                 self.mylog.debug(m)
             else:
                 m = "{o} found while searching for '{n}', will not create!"
                 m = m.format(o=obj, n=name)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
         if user_s or user_e:
             margs = kwmerge(kwargs, objtype="User", searches=user_s, excludes=user_e, limit_exact=1)
@@ -3039,14 +3183,14 @@ class Handler(object):
             margs = kwmerge(kwargs, objtype="Dashboard", searches=name, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no Dashboard while searching for '{n}', will create!"
                 m = m.format(n=name)
                 self.mylog.debug(m)
             else:
                 m = "{o} found while searching for '{n}', will not create!"
                 m = m.format(o=obj, n=name)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
         # Get the Computer Group for this Dashboard if supplied
         if cgrp_s or cgrp_e:
@@ -3096,14 +3240,14 @@ class Handler(object):
             margs = kwmerge(kwargs, objtype="UserGroup", searches=name, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no User Group while searching for '{n}', will create!"
                 m = m.format(n=name)
                 self.mylog.debug(m)
             else:
                 m = "{o} found while searching for '{n}', will not create!"
                 m = m.format(o=obj, n=name)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
         pargs = [{"name": "user_group_name", "type": "String", "value": name}]
         margs = {"bundle": "UserGroups", "name": "AddUserGroup", "arguments": pargs}
@@ -3135,14 +3279,14 @@ class Handler(object):
             margs = kwmerge(kwargs, objtype="ActionGroup", searches=name, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no Action Group while searching for '{n}', will create!"
                 m = m.format(n=name)
                 self.mylog.debug(m)
             else:
                 m = "{o} found while searching for '{n}', will not create!"
                 m = m.format(o=obj, n=name)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
         # Get the Computer Groups for this Action Group
         margs = kwmerge(kwargs, objtype="Group", searches=cgrp_s, excludes=cgrp_e)
@@ -3171,15 +3315,15 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             margs = kwmerge(kwargs, objtype="Dashboard", searches=this_s, excludes=this_e, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no Dashboard while searching for '{s}', will not delete!"
                 m = m.format(s=this_s)
-                raise pytan.exceptions.NotFoundError(m)
+                raise exceptions.NotFoundError(m)
             else:
                 m = "{o} found while searching for '{s}', will delete!"
                 m = m.format(o=obj, s=this_s)
@@ -3207,15 +3351,15 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             margs = kwmerge(kwargs, objtype="DashboardCategory", searches=this_s, excludes=this_e, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no DashboardCategory while searching for '{s}', will not delete!"
                 m = m.format(s=this_s)
-                raise pytan.exceptions.NotFoundError(m)
+                raise exceptions.NotFoundError(m)
             else:
                 m = "{o} found while searching for '{s}', will delete!"
                 m = m.format(o=obj, s=this_s)
@@ -3243,15 +3387,15 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             margs = kwmerge(kwargs, objtype="ActionGroup", searches=this_s, excludes=this_e, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no Action Group while searching for '{s}', will not delete!"
                 m = m.format(s=this_s)
-                raise pytan.exceptions.NotFoundError(m)
+                raise exceptions.NotFoundError(m)
             else:
                 m = "{o} found while searching for '{s}', will delete!"
                 m = m.format(o=obj, s=this_s)
@@ -3283,15 +3427,15 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             margs = kwmerge(kwargs, objtype="UserGroup", searches=this_s, excludes=this_e, limit_exact=1)
             try:
                 obj = self.search_all_objs(**margs)
-            except pytan.exceptions.NotFoundError:
+            except exceptions.NotFoundError:
                 m = "Found no User Group while searching for '{s}', will not delete!"
                 m = m.format(s=this_s)
-                raise pytan.exceptions.NotFoundError(m)
+                raise exceptions.NotFoundError(m)
             else:
                 m = "{o} found while searching for '{s}', will delete!"
                 m = m.format(o=obj, s=this_s)
@@ -3317,7 +3461,7 @@ class Handler(object):
         add_pytan_property = kwargs.get("add_pytan_property", True)
 
         if add_pytan_property:
-            properties[PP_NAME] = PP_VALUE.format(v=pytan.__version__, d=seconds_from_now())
+            properties[PP_NAME] = PP_VALUE.format(v=version.__version__, d=seconds_from_now())
 
         # build a new metadata list if obj is None
         obj = self.build_obj(obj_name="MetadataList") if obj is None else obj
@@ -3384,7 +3528,7 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         new_a = {"name": this_s[0]}
         margs = kwmerge(kwargs, objtype="UserGroup", searches=this_s, excludes=this_e, attrs=new_a)
@@ -3445,12 +3589,12 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         try:
             margs = kwmerge(kwargs, objtype="ActionGroup", searches=this_s, excludes=this_e, limit_exact=1)
             obj = self.search_all_objs(**margs) if obj is None else obj
-        except pytan.exceptions.NotFoundError:
+        except exceptions.NotFoundError:
             obj = taniumpy.ActionGroup(name=this_s[0], public_flag=public_flag, and_flag=and_flag)
             obj._CHANGED = True
 
@@ -3629,7 +3773,7 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             # find or add the user accordingly
             new_a = {"name": this_s[0], "roles": [{"name": role_obj.name}]}
@@ -3703,7 +3847,7 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             new_a = {"name": this_s[0], "value": value, "value_type": value_type, "setting_type": setting_type}
             margs = kwmerge(kwargs, objtype="SystemSetting", searches=this_s, excludes=this_e, attrs=new_a)
@@ -3734,7 +3878,7 @@ class Handler(object):
             mdl_obj = self.build_obj(obj_name="MetadataList", attrs=[note_attrs])
             obj._track_set(t_attr="metadata", t_new=mdl_obj, str_items=True, str_all_attrs=True)
         elif add_pytan_property and (obj._ADDED or obj._CHANGED) and old_note_val.startswith(PP_NAME):
-            pp_note = "{n} {v}".format(n=PP_NAME, v=PP_VALUE.format(v=pytan.__version__, d=seconds_from_now()))
+            pp_note = "{n} {v}".format(n=PP_NAME, v=PP_VALUE.format(v=version.__version__, d=seconds_from_now()))
             note_attrs = {"name": note_prop, "value": pp_note}
             mdl_obj = self.build_obj(obj_name="MetadataList", attrs=[note_attrs])
             obj._track_set(t_attr="metadata", t_new=mdl_obj, str_items=True, str_all_attrs=True)
@@ -3759,7 +3903,7 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             # find or add the user accordingly
             new_a = kwmerge(kwargs, name=this_s[0])
@@ -3835,7 +3979,7 @@ class Handler(object):
 
         if not this_s and obj is None:
             m = "Must supply a non-empty list of searches!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
         elif obj is None:
             # find or add the user accordingly
             new_a = kwmerge(kwargs, name=this_s[0])
@@ -3918,49 +4062,15 @@ class Handler(object):
         return ret
 
     # TODO: WRITE!!
-    # Tricky, no group => user mapping, have to get all users and look at their GID's
-    # then figure out if it's a merged group or not
-    # may need to move some code out of update_user_group_obj for figuring it out
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
+    def create_manual_group(self, name, **kwargs):
+        pass
+
+    # TODO: WRITE!!
     # SHELL SCRIPT
     # ADDED: 3.0.0
     def modify_computer_group(self, name, **kwargs):
-        """
-        group_id: 0 == all group access
-        if not 0, group_id must be a valid group ID!
-        # add manual group support
-        # do not delete pre-existing groups, it detaches all users!
-        # add modify group method, copy modify user groups concept (with add/set/del/add all / remove all)
-        # add sub groups support
-        # create_missing should be GENERIC.. just create everything (even users!) if they dont exist
-        # users should get "no computers" by default
-        """
-        """
-        def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
-        pytan.utils.check_for_help(kwargs=kwargs)
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
-
-        filter_defs = pytan.utils.dehumanize_question_filters(question_filters=filters)
-        option_defs = pytan.utils.dehumanize_question_options(question_options=filter_options)
-
-        h = (
-            "Issue a GetObject to get the full object of specified sensors for inclusion in a "
-            "group"
-        )
-        filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
-
-        add_group_obj = pytan.utils.build_group_obj(
-            q_filter_defs=filter_defs, q_option_defs=option_defs,
-        )
-        add_group_obj.name = groupname
-
-        h = "Issue an AddObject to add a Group object"
-        group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
-
-        m = "New group {!r} created with ID {!r}, filter text: {!r}".format
-        self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
-
-        return group_obj
-        """
         pass
 
     # TODO: REWRITE!!
@@ -4057,7 +4167,7 @@ class Handler(object):
         obj : :class:`taniumpy.object_types.saved_question.SavedQuestion`
             * TaniumPy object added to Tanium SOAP Server
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
 
         reissue = kwargs.get("reissue", False)
         reissue_time = kwargs.get("reissue_time", 1)
@@ -4066,31 +4176,31 @@ class Handler(object):
 
         margs = dict(**kwargs)
         margs["prefix"] = "TConsole.SavedQuestion"
-        md_obj = pytan.utils.build_md_obj2(**margs)
+        md_obj = utils.build_md_obj2(**margs)
 
         set_reissue_time = "reissue_time" in kwargs or reissue
-        actual_reissue_time = pytan.utils.resolve_to_seconds(reissue_time, reissue_time_frame)
+        actual_reissue_time = utils.resolve_to_seconds(reissue_time, reissue_time_frame)
 
         pl_obj = self.get_min_packagelist(**kwargs)
 
         kwargs["sensor_defs"] = kwargs.get(
             "sensor_defs",
-            pytan.utils.dehumanize_sensors(kwargs.get('sensors', [])),
+            utils.dehumanize_sensors(kwargs.get('sensors', [])),
         )
 
         kwargs["question_filter_defs"] = kwargs.get(
             "question_filter_defs",
-            pytan.utils.dehumanize_question_filters(kwargs.get('question_filters', [])),
+            utils.dehumanize_question_filters(kwargs.get('question_filters', [])),
         )
 
         kwargs["question_option_defs"] = kwargs.get(
             "question_option_defs",
-            pytan.utils.dehumanize_question_options(kwargs.get('question_options', [])),
+            utils.dehumanize_question_options(kwargs.get('question_options', [])),
         )
 
         if not any([kwargs["question_filter_defs"], kwargs["sensor_defs"]]):
             m = "Must supply at least one sensor or filter!"
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         try:
             search_item = taniumpy.SavedQuestion()
@@ -4101,14 +4211,14 @@ class Handler(object):
             if "notunique" in e_str:
                 m = "Multiple Saved Questions Named: '{}' already exists, will not create more duplicates!"
                 m = m.format(name)
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
             elif "notfound" in e_str:
                 existing_item = None
 
         if existing_item is not None:
             m = "A Saved Question Named: '{}' (ID: {}) already exists, will not create duplicates!"
             m = m.format(existing_item.name, existing_item.id)
-            raise pytan.exceptions.HandlerError(m)
+            raise exceptions.HandlerError(m)
 
         # get our defs from kwargs and churn them into what we want
         pargs = dict(**kwargs)
@@ -4116,23 +4226,23 @@ class Handler(object):
         pargs["deftypes"] = ["list()", "str()", "dict()"]
         pargs["strconv"] = "name"
         pargs["empty_ok"] = True
-        sdefs = pytan.utils.parse_defs(**pargs)
+        sdefs = utils.parse_defs(**pargs)
 
         pargs = dict(**kwargs)
         pargs["defname"] = "question_filter_defs"
         pargs["deftypes"] = ["list()", "dict()"]
         pargs["empty_ok"] = True
-        fdefs = pytan.utils.parse_defs(**pargs)
+        fdefs = utils.parse_defs(**pargs)
 
         pargs = dict(**kwargs)
         pargs["defname"] = "question_option_defs"
         pargs["deftypes"] = ["dict()"]
         pargs["empty_ok"] = True
-        odefs = pytan.utils.parse_defs(**pargs)
+        odefs = utils.parse_defs(**pargs)
 
         # do basic validation of our defs
-        pytan.utils.val_sensor_defs(sdefs)
-        pytan.utils.val_q_filter_defs(fdefs)
+        utils.val_sensor_defs(sdefs)
+        utils.val_q_filter_defs(fdefs)
 
         # get the sensor objects that are in our defs and add them as d['sensor_obj']
         h = "Issue a GetObject on a sensor for inclusion in a Questions SelectList"
@@ -4141,13 +4251,13 @@ class Handler(object):
         fdefs = self._get_sensor_defs(fdefs, pytan_help=h)
 
         # build a SelectList object from our sensor_defs
-        sl_obj = pytan.utils.build_selectlist_obj(sdefs)
+        sl_obj = utils.build_selectlist_obj(sdefs)
 
         # build a Group object from our question filters/options
-        g_obj = pytan.utils.build_group_obj(fdefs, odefs)
+        g_obj = utils.build_group_obj(fdefs, odefs)
 
         # build a Question object from selectlist_obj and group_obj
-        q_obj = pytan.utils.build_manual_q(sl_obj, g_obj)
+        q_obj = utils.build_manual_q(sl_obj, g_obj)
 
         add_obj = taniumpy.SavedQuestion()
         add_obj.question = q_obj
@@ -4229,7 +4339,7 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
+        :data:`constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
         """
         objtype = type(obj)
         try:
@@ -4239,7 +4349,7 @@ class Handler(object):
 
         # see if supplied obj is a supported object type
         type_match = [
-            x for x in pytan.constants.EXPORT_MAPS if isinstance(obj, getattr(taniumpy, x))
+            x for x in constants.EXPORT_MAPS if isinstance(obj, getattr(taniumpy, x))
         ]
 
         if not type_match:
@@ -4248,24 +4358,24 @@ class Handler(object):
             ).format
 
             # build a list of supported object types
-            supp_types = ', '.join(pytan.constants.EXPORT_MAPS.keys())
-            raise pytan.exceptions.HandlerError(err(objtype, supp_types))
+            supp_types = ', '.join(constants.EXPORT_MAPS.keys())
+            raise exceptions.HandlerError(err(objtype, supp_types))
 
         # get the export formats for this obj type
-        export_formats = pytan.constants.EXPORT_MAPS.get(type_match[0], '')
+        export_formats = constants.EXPORT_MAPS.get(type_match[0], '')
 
         if export_format not in export_formats:
             err = (
                 "{!r} not a supported export format for {}, must be one of: {}"
             ).format(export_format, objclassname, ', '.join(export_formats))
-            raise pytan.exceptions.HandlerError(err)
+            raise exceptions.HandlerError(err)
 
         # perform validation on optional kwargs, if they exist
         opt_keys = export_formats.get(export_format, [])
 
         for opt_key in opt_keys:
             check_args = dict(opt_key.items() + {'d': kwargs}.items())
-            pytan.utils.check_dictkey(**check_args)
+            utils.check_dictkey(**check_args)
 
         # filter out the kwargs that are specific to this obj type and format type
         format_kwargs = {
@@ -4281,7 +4391,7 @@ class Handler(object):
             result = class_handler(obj=obj, export_format=export_format, **format_kwargs)
         else:
             err = "{!r} not supported by Handler!".format
-            raise pytan.exceptions.HandlerError(err(objclassname))
+            raise exceptions.HandlerError(err(objclassname))
 
         return result
 
@@ -4358,13 +4468,13 @@ class Handler(object):
 
         if not report_file:
             report_file = "{}_{}.{}".format(
-                type(obj).__name__, pytan.utils.get_now(), export_format,
+                type(obj).__name__, utils.get_now(), export_format,
             )
             m = "No report file name supplied, generated name: {!r}".format
             self.mylog.debug(m(report_file))
 
         clean_keys = ['obj', 'export_format', 'contents', 'report_file']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # get the results of exporting the object
         contents = self.export_obj(obj=obj, export_format=export_format, **clean_kwargs)
@@ -4398,7 +4508,7 @@ class Handler(object):
             * the full path to the file created with `contents`
         """
         if report_file is None:
-            report_file = 'pytan_report_{}.txt'.format(pytan.utils.get_now())
+            report_file = 'pytan_report_{}.txt'.format(utils.get_now())
 
         # try to get report_dir from the report_file
         report_dir = os.path.dirname(report_file)
@@ -4434,200 +4544,264 @@ class Handler(object):
         self.mylog.info(m(report_path, len(contents)))
         return report_path
 
-    # PLUGINS
-    # DEPRECATED IN 3.0.0
-    def deprecated_run_plugin(self, obj, **kwargs):
-        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
-
-        Parameters
-        ----------
-        obj : :class:`taniumpy.object_types.plugin.Plugin`
-            * Plugin object to run
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+    # TODO: WRITE!!
+    # SHELL SCRIPT
+    # ADDED: 3.0.0
+    def create_computer_group(self, name, **kwargs):
+        buckets = self.parse_buckets(**kwargs)
+        g_obj = self.build_group_buckets(**kwmerge(kwargs, buckets=buckets))
+        return g_obj
         """
-        # run the plugin
-        h = "Issue a RunPlugin run a plugin and get results back"
-        kwargs['pytan_help'] = kwargs.get('pytan_help', h)
+        def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
+        utils.check_for_help(kwargs=kwargs)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs)
 
-        clean_keys = ['obj', 'p']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        filter_defs = utils.dehumanize_question_filters(question_filters=filters)
+        option_defs = utils.dehumanize_question_options(question_options=filter_options)
 
-        plugin_result = self.session.run_plugin(obj=obj, **clean_kwargs)
+        h = (
+            "Issue a GetObject to get the full object of specified sensors for inclusion in a "
+            "group"
+        )
+        filter_defs = self._get_sensor_defs(defs=filter_defs, pytan_help=h, **clean_kwargs)
 
-        # zip up the sql results into a list of python dictionaries
-        sql_zipped = pytan.utils.plugin_zip(p=plugin_result)
+        add_group_obj = utils.build_group_obj(
+            q_filter_defs=filter_defs, q_option_defs=option_defs,
+        )
+        add_group_obj.name = groupname
 
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+        h = "Issue an AddObject to add a Group object"
+        group_obj = self._add(obj=add_group_obj, pytan_help=h, **clean_kwargs)
 
-    # DASHBOARD PLUGINS
-    # DEPRECATED IN 3.0.0
-    def deprecated_create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
+        m = "New group {!r} created with ID {!r}, filter text: {!r}".format
+        self.mylog.info(m(group_obj.name, group_obj.id, group_obj.text))
 
-        Parameters
-        ----------
-        name : str
-            * name of dashboard to create
-        text : str, optional
-            * default: ''
-            * text for this dashboard
-        group : str, optional
-            * default: ''
-            * group name for this dashboard
-        public_flag : bool, optional
-            * default: True
-            * True: make this dashboard public
-            * False: do not make this dashboard public
-
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
+        return group_obj
         """
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
-        # get the ID for the group if a name was passed in
-        if group:
-            h = "Issue a GetObject to find the ID of a group name"
-            group_id = self.get(objtype='group', name=group, pytan_help=h, **clean_kwargs)[0].id
-        else:
-            group_id = 0
+    def token_processor_operator(self, token_name, parsed, **kwargs):
+        def striplow(x):
+            return x.lower().replace(" ", "")
 
-        if public_flag:
-            public_flag = 1
-        else:
-            public_flag = 0
+        if token_name in parsed:
+            value = parsed[token_name]
 
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'CreateDashboard'
-        plugin.bundle = 'Dashboards'
+            try:
+                match = [x for x in constants.OPERATOR_MAPS if striplow(x) == striplow(value)][0]
+            except:
+                valid_tmpl = "operator: {k:<20} help: {h}".format
+                valids = constants.OPERATOR_MAPS.items()
+                valids = [valid_tmpl(k=k, **v) for k, v in valids]
+                valids = "\n\t".join(sorted(list(valids)))
 
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
+                m = "Invalid value '{o}' supplied for token '{t}' in string {s!r}, valid values:\n\t{v}"
+                m = m.format(t=token_name, o=value, v=valids, s=parsed["parsed_from"])
+                raise exceptions.ParseError(m)
+            else:
+                match_def = constants.OPERATOR_MAPS[match]
 
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'dash_name'
-        arg1.type = 'String'
-        arg1.value = name
-        plugin.arguments.append(arg1)
+            orig_token_name = "__ORIGINAL_{t}".format(t=token_name)
+            parsed[orig_token_name] = parsed[token_name]
 
-        arg2 = taniumpy.PluginArgument()
-        arg2.name = 'dash_text'
-        arg2.type = 'String'
-        arg2.value = text
-        plugin.arguments.append(arg2)
+            parsed["__MATCHED_OPERATOR"] = {match: match_def}
+            parsed["__ORIGINAL_VALUE"] = parsed["value"]
+            parsed["value"] = match_def.get("pre", "") + parsed["value"] + match_def.get("post", "")
+            parsed[token_name] = match_def["o"]
 
-        arg3 = taniumpy.PluginArgument()
-        arg3.name = 'group_id'
-        arg3.type = 'Number'
-        arg3.value = group_id
-        plugin.arguments.append(arg3)
+            if "not" not in parsed and "n" in match_def:
+                parsed["not"] = match_def["n"]
 
-        arg4 = taniumpy.PluginArgument()
-        arg4.name = 'public_flag'
-        arg4.type = 'Number'
-        arg4.value = public_flag
-        plugin.arguments.append(arg4)
+        return parsed
 
-        arg5 = taniumpy.PluginArgument()
-        arg5.name = 'sqid_xml'
-        arg5.type = 'String'
-        arg5.value = ''
-        plugin.arguments.append(arg5)
+    def token_processor_boolean(self, token_name, parsed, **kwargs):
+        def coerce_bool(x):
+            if str(x).lower() in constants.YES_LIST:
+                ret = True
+            elif str(x).lower() in constants.NO_LIST:
+                ret = False
+            else:
+                ret = None
+            return ret
 
-        # run the plugin
-        h = "Issue a RunPlugin for the CreateDashboard plugin to create a dashboard"
-        plugin_result, sql_zipped = self.deprecated_run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+        if token_name in parsed:
+            value = parsed[token_name]
+            bool_type = coerce_bool(value)
+            if bool_type is None:
+                valid_tmpl = "{b} type: {t}".format
+                valids = []
+                valids += [valid_tmpl(b="True", t=t) for t in constants.YES_LIST]
+                valids += [valid_tmpl(b="False", t=t) for t in constants.NO_LIST]
+                valids = "\n\t".join(valids)
 
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+                m = "Invalid boolean '{o}' supplied for token '{t}' in string {s!r}, valid values:\n\t{v}"
+                m = m.format(o=value, t=token_name, v=valids, s=parsed["parsed_from"])
+                raise exceptions.ParseError(m)
 
-    # DEPRECATED IN 3.0.0
-    def deprecated_delete_dashboard(self, name, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
+            orig_token_name = "__ORIGINAL_{t}".format(t=token_name)
+            parsed[orig_token_name] = value
+            parsed[token_name] = bool_type
 
-        Parameters
-        ----------
-        name : str
-            * name of dashboard to delete
+        return parsed
 
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+    def token_processor_integer(self, token_name, parsed, **kwargs):
+        if token_name in parsed:
+            value = parsed[token_name]
 
-        dashboards_to_del = self.deprecated_get_dashboards(name=name, **clean_kwargs)[1]
+            try:
+                int_type = int(value)
+            except:
+                m = "Invalid integer '{o}' supplied for token '{t}' in string {s!r}"
+                m = m.format(o=value, t=token_name, s=parsed["parsed_from"])
+                raise exceptions.ParseError(m)
 
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'DeleteDashboards'
-        plugin.bundle = 'Dashboards'
+            orig_token_name = "__ORIGINAL_{t}".format(t=token_name)
+            parsed[orig_token_name] = value
+            parsed[token_name] = int_type
 
-        # create the plugin arguments
-        plugin.arguments = taniumpy.PluginArgumentList()
+        return parsed
 
-        arg1 = taniumpy.PluginArgument()
-        arg1.name = 'dashboard_ids'
-        arg1.type = 'Number_Set'
-        arg1.value = ','.join([x['id'] for x in dashboards_to_del])
-        plugin.arguments.append(arg1)
+    def token_processor_type(self, token_name, parsed, **kwargs):
+        def striplow(x):
+            return x.lower().replace(" ", "")
 
-        # run the plugin
-        h = "Issue a RunPlugin for the DeleteDashboards plugin to delete a dashboard"
-        plugin_result, sql_zipped = self.deprecated_run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+        if token_name in parsed:
+            value = parsed[token_name]
 
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+            try:
+                match = [x for x in constants.VALUE_TYPES if striplow(x) == striplow(value)][0]
+            except:
+                valid_tmpl = "type: {k:<20} help: {h}".format
+                valids = constants.VALUE_TYPES.items()
+                valids = [valid_tmpl(k=k, **v) for k, v in valids]
+                valids = "\n\t".join(sorted(list(valids)))
 
-    # DEPRECATED IN 3.0.0
-    def deprecated_get_dashboards(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
+                m = "Invalid value '{o}' supplied for token '{t}' in string {s!r}, valid values:\n\t{v}"
+                m = m.format(t=token_name, o=value, v=valids, s=parsed["parsed_from"])
+                raise exceptions.ParseError(m)
+            else:
+                match_def = constants.VALUE_TYPES[match]
 
-        Parameters
-        ----------
-        name : str, optional
-            * default: ''
-            * name of dashboard to get, if empty will return all dashboards
+            orig_token_name = "__ORIGINAL_{t}".format(t=token_name)
+            parsed[orig_token_name] = parsed[token_name]
 
-        Returns
-        -------
-        plugin_result, sql_zipped : tuple
-            * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
-            * sql_zipped will be a dict with the SQL results embedded in the SOAP response
-        """
-        clean_keys = ['obj', 'name', 'pytan_help']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+            parsed["__MATCHED_TYPE"] = {match: match_def}
+            parsed[token_name] = match_def["t"]
 
-        # create the plugin parent
-        plugin = taniumpy.Plugin()
-        plugin.name = 'GetDashboards'
-        plugin.bundle = 'Dashboards'
+        return parsed
 
-        # run the plugin
-        h = "Issue a RunPlugin for the GetDashboards plugin to get all dashboards"
-        plugin_result, sql_zipped = self.deprecated_run_plugin(obj=plugin, pytan_help=h, **clean_kwargs)
+    def token_processor_params(self, token_name, parsed, **kwargs):
 
-        # if name specified, filter the list of dicts for matching name
-        if name:
-            sql_zipped = [x for x in sql_zipped if x['name'] == name]
-            if not sql_zipped:
-                m = "No dashboards found that match name: {!r}".format
-                raise pytan.exceptions.NotFoundError(m(name))
+        # found_params =
+        return parsed
 
-        # return the plugin result and the python dictionary of results
-        return plugin_result, sql_zipped
+    def token_processor_required(self, token_name, parsed, **kwargs):
+        if token_name not in parsed:
+            m = "Token '{k}' not found in string '{s}', tokens found: {t}"
+            m = m.format(k=token_name, s=parsed["parsed_from"], t=parsed.keys())
+            PARSELOG.error(m)
+            raise exceptions.ParseError(m)
+        return parsed
+
+    def token_processor_search_obj(self, token_name, parsed, **kwargs):
+        search_ot = kwargs.get("search_obj_type", "")
+        valid_sf = kwargs.get("search_valid_fields", [])
+        include_hidden = kwargs.get("search_include_hidden", False)
+
+        if search_ot:
+            search_obj = parsed["search_obj"] = getattr(taniumpy, search_ot)()
+            parsed_from = parsed["parsed_from"]
+            search = parsed["search"]
+            search_field = parsed["search_field"]
+
+            try:
+                match = [x for x in valid_sf if search_field.lower() == x.lower()][0]
+            except:
+                valids = "\n\t".join(valid_sf)
+                m = "Invalid value '{o}' supplied for token '{t}' in string {s!r}, valid values:\n\t{v}"
+                m = m.format(t="search_field", o=search_field, v=valids, s=parsed_from)
+                raise exceptions.ParseError(m)
+            else:
+                search_field = parsed["search_field"] = match
+
+            setattr(search_obj, search_field, search)
+            margs = kwmerge(kwargs, obj=search_obj, include_hidden_flag=int(include_hidden))
+
+            if "source_id" in dir(search_obj) and not include_hidden:
+                cf_obj = self.build_obj(obj_name="CacheFilter", attrs={"value": 0, "field": "source_id"})
+                margs["cache_filters"] = margs.get("cache_filters", taniumpy.CacheFilterList())
+                margs["cache_filters"].append(cf_obj)
+
+            try:
+                obj = parsed["obj"] = self.session.find(**margs)
+            except:
+                m = "Unable to find {o} by search_field '{f}' using search '{s}' (from string {os!r})"
+                m = m.format(o=search_obj, f=search_field, s=search, os=parsed_from)
+                raise exceptions.NotFoundError(m)
+            else:
+                m = "Found {o} by search_field '{f}' using search '{s}' (from string {os!r})"
+                m = m.format(o=obj, f=search_field, s=search, os=parsed_from)
+                PARSELOG.debug(m)
+
+        return parsed
+
+    def parse_string_to_tokens(self, string, unnamed, **kwargs):
+        defaults = kwargs.get("defaults", {})
+        processors = kwargs.get("processors", {})
+
+        tokens = [x.lstrip() for x in ESCAPED_COMMAS_RE.split(string)]
+
+        parsed = {}
+
+        for token in tokens:
+            split_token = ESCAPED_COLONS_RE.split(token, maxsplit=1)
+            name, value = split_token if len(split_token) == 2 else (unnamed, split_token[0])
+
+            if name in parsed:
+                m = "Duplicate token found with name '{n}' value '{v}', other value '{o}' in string '{s}'"
+                m = m.format(n=name, v=value, o=parsed[name], s=string)
+                PARSELOG.error(m)
+                raise exceptions.ParseError(m)
+
+            parsed[name] = value
+
+        parsed["parsed_from"] = string
+
+        for name, default_value in defaults.items():
+            parsed[name] = parsed.get(name, default_value)
+
+        for name, token_processors in processors:
+            for token_processor in token_processors:
+                method = getattr(self, "token_processor_{tp}".format(tp=token_processor))
+                parsed = method(**kwmerge(kwargs, token_name=name, parsed=parsed))
+
+        m = "Parsed string '{s}' into:\n{t}"
+        m = m.format(s=string, t=pprint.pformat(parsed))
+        PARSELOG.debug(m)
+        return parsed
+
+    def parse_filters(self, buckets, **kwargs):
+        strings = mklist(kwargs.get("filters", []))
+        pargs = kwmerge(kwargs, **constants.FILTER_PARSE_ARGS)
+
+        for string in strings:
+            parsed = self.parse_string_to_tokens(**kwmerge(pargs, string=string))
+
+            buckets[parsed["bucket"]] = buckets.get(parsed["bucket"], {})
+            buckets[parsed["bucket"]]["filters"] = buckets[parsed["bucket"]].get("filters", [])
+            buckets[parsed["bucket"]]["filters"].append(parsed)
+        return buckets
+
+    def parse_buckets(self, **kwargs):
+        buckets = kwargs.get("buckets", {})
+
+        buckets = self.parse_filters(buckets=buckets, **kwargs)
+        # ret["groups"] = self.parse_groups(**kwargs)
+
+        # buckets = {}
+        # buckets = self.parse_filter_buckets(parses=filters, buckets=buckets)
+        # buckets = self.parse_group_buckets(parses=groups, buckets=buckets)
+        # buckets = self.parse_option_buckets(parses=options, buckets=buckets)
+        return buckets
 
     # BEGIN PRIVATE METHODS
     def _add(self, obj, **kwargs):
@@ -4654,7 +4828,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue an AddObject to add an object"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
@@ -4663,7 +4837,7 @@ class Handler(object):
             added_obj = self.session.add(obj=obj, **clean_kwargs)
         except Exception as e:
             err = "Error while trying to add object '{}': {}!!".format
-            raise pytan.exceptions.HandlerError(err(search_str, e))
+            raise exceptions.HandlerError(err(search_str, e))
 
         h = "Issue a GetObject on the recently added object in order to get the full object"
         clean_kwargs['pytan_help'] = h
@@ -4673,7 +4847,7 @@ class Handler(object):
         except Exception as e:
             self.mylog.error(e)
             err = "Error while trying to find recently added object {}!!".format
-            raise pytan.exceptions.HandlerError(err(search_str))
+            raise exceptions.HandlerError(err(search_str))
 
         self.mylog.debug("Added object {}".format(added_obj))
         return added_obj
@@ -4702,7 +4876,7 @@ class Handler(object):
         kwargs['suppress_object_list'] = kwargs.get('suppress_object_list', 1)
 
         clean_keys = ['obj', 'objtype', 'obj_map']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         h = "Issue a GetObject to find an object"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
@@ -4712,11 +4886,11 @@ class Handler(object):
         except Exception as e:
             self.mylog.debug(e)
             err = "No results found searching for {} (error: {})!!".format
-            raise pytan.exceptions.NotFoundError(err(search_str, e))
+            raise exceptions.NotFoundError(err(search_str, e))
 
-        if pytan.utils.empty_obj(found):
+        if utils.empty_obj(found):
             err = "No results found searching for {}!!".format
-            raise pytan.exceptions.NotFoundError(err(search_str))
+            raise exceptions.NotFoundError(err(search_str))
 
         self.mylog.debug("Found {}".format(found))
         return found
@@ -4742,7 +4916,7 @@ class Handler(object):
         single_type = obj_map['single']
 
         # create a list object to append our searches to
-        api_obj_multi = pytan.utils.get_taniumpy_obj(obj_map=multi_type)()
+        api_obj_multi = utils.get_taniumpy_obj(obj_map=multi_type)()
 
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
@@ -4751,18 +4925,18 @@ class Handler(object):
             if not v:
                 continue  # if v empty, skip
 
-            if pytan.utils.is_list(v):
+            if utils.is_list(v):
                 for i in v:
-                    api_obj_single = pytan.utils.get_taniumpy_obj(obj_map=single_type)()
+                    api_obj_single = utils.get_taniumpy_obj(obj_map=single_type)()
                     setattr(api_obj_single, k, i)
                     api_obj_multi.append(api_obj_single)
             else:
-                api_obj_single = pytan.utils.get_taniumpy_obj(obj_map=single_type)()
+                api_obj_single = utils.get_taniumpy_obj(obj_map=single_type)()
                 setattr(api_obj_single, k, v)
                 api_obj_multi.append(api_obj_single)
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # find the multi list object
         found = self._find(obj=api_obj_multi, **clean_kwargs)
@@ -4791,10 +4965,10 @@ class Handler(object):
         else:
             all_type = obj_map['all']
 
-        found = pytan.utils.get_taniumpy_obj(obj_map=all_type)()
+        found = utils.get_taniumpy_obj(obj_map=all_type)()
 
         clean_keys = ['obj_map', 'k', 'v']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         for k, v in api_kw.iteritems():
             if v and k not in obj_map['search']:
@@ -4803,7 +4977,7 @@ class Handler(object):
             if not v:
                 continue  # if v empty, skip
 
-            if pytan.utils.is_list(v):
+            if utils.is_list(v):
                 for i in v:
                     for x in self._single_find(obj_map=obj_map, k=k, v=i, **clean_kwargs):
                         found.append(x)
@@ -4833,12 +5007,12 @@ class Handler(object):
         found = []
 
         single_type = obj_map['single']
-        api_obj_single = pytan.utils.get_taniumpy_obj(obj_map=single_type)()
+        api_obj_single = utils.get_taniumpy_obj(obj_map=single_type)()
 
         setattr(api_obj_single, k, v)
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         obj_ret = self._find(obj=api_obj_single, **clean_kwargs)
 
@@ -4863,13 +5037,13 @@ class Handler(object):
         defs : list of dict
            * list of dicts containing sensor definitions with sensor object in 'sensor_obj'
         """
-        s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
+        s_obj_map = constants.GET_OBJ_MAP['sensor']
         search_keys = s_obj_map['search']
 
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
 
         clean_keys = ['objtype']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         for d in defs:
             def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
@@ -4898,13 +5072,13 @@ class Handler(object):
         d : dict
            * dict containing package definitions with package object in 'package_obj'
         """
-        s_obj_map = pytan.constants.GET_OBJ_MAP['package']
+        s_obj_map = constants.GET_OBJ_MAP['package']
         search_keys = s_obj_map['search']
 
         kwargs['include_hidden_flag'] = kwargs.get('include_hidden_flag', 0)
 
         clean_keys = ['objtype']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         def_search = {s: d.get(s, '') for s in search_keys if d.get(s, '')}
         def_search.update(clean_kwargs)
@@ -4939,13 +5113,13 @@ class Handler(object):
         format_handler = getattr(self, format_method_str, '')
 
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if format_handler:
             result = format_handler(obj=obj, **clean_kwargs)
         else:
             err = "{!r} not coded for in Handler!".format
-            raise pytan.exceptions.HandlerError(err(export_format))
+            raise exceptions.HandlerError(err(export_format))
 
         return result
 
@@ -4974,7 +5148,7 @@ class Handler(object):
         sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
         clean_keys = ['objtype', 'hash', 'obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if header_add_sensor and export_format == 'csv':
             clean_kwargs['sensors'] = sensors
@@ -4995,7 +5169,7 @@ class Handler(object):
             result = format_handler(obj=obj, **clean_kwargs)
         else:
             err = "{!r} not coded for in Handler!".format
-            raise pytan.exceptions.HandlerError(err(export_format))
+            raise exceptions.HandlerError(err(export_format))
 
         return result
 
@@ -5014,12 +5188,12 @@ class Handler(object):
         """
         if not hasattr(obj, 'write_csv'):
             err = "{!r} has no write_csv() method!".format
-            raise pytan.exceptions.HandlerError(err(obj))
+            raise exceptions.HandlerError(err(obj))
 
         out = io.BytesIO()
 
         clean_keys = ['fd', 'val']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if getattr(obj, '_list_properties', ''):
             result = obj.write_csv(fd=out, val=list(obj), **clean_kwargs)
@@ -5044,10 +5218,10 @@ class Handler(object):
         """
         if not hasattr(obj, 'to_json'):
             err = "{!r} has no to_json() method!".format
-            raise pytan.exceptions.HandlerError(err(obj))
+            raise exceptions.HandlerError(err(obj))
 
         clean_keys = ['jsonable']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         result = obj.to_json(jsonable=obj, **clean_kwargs)
         return result
@@ -5073,12 +5247,12 @@ class Handler(object):
             raw_xml = obj._RAW_XML
         else:
             err = "{!r} has no toSOAPBody() method or _RAW_XML attribute!".format
-            raise pytan.exceptions.HandlerError(err(obj))
+            raise exceptions.HandlerError(err(obj))
 
         clean_keys = ['x']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        result = pytan.utils.xml_pretty(x=raw_xml, **clean_kwargs)
+        result = utils.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
     def _deploy_action(self, run=False, get_results=True, **kwargs):  # noqa
@@ -5110,7 +5284,7 @@ class Handler(object):
             * expire action N seconds from now, will be derived from package if not supplied
         run : bool, optional
             * default: False
-            * False: just ask the question that pertains to verify action, export the results to CSV, and raise pytan.exceptions.RunFalse -- does not deploy the action
+            * False: just ask the question that pertains to verify action, export the results to CSV, and raise exceptions.RunFalse -- does not deploy the action
             * True: actually deploy the action
         get_results : bool, optional
             * default: True
@@ -5125,18 +5299,18 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
         complete_pct : int/float, optional
             * default: 100
             * Percentage of passed_count out of successfully run actions to consider the action "done"
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
         override_passed_count : int, optional
             * instead of getting number of systems that should run this action by asking a question, use this number
-            * This is passed through to :class:`pytan.pollers.ActionPoller`
+            * This is passed through to :class:`pollers.ActionPoller`
 
         Returns
         -------
@@ -5145,7 +5319,7 @@ class Handler(object):
             * `action_object` : :class:`taniumpy.object_types.action.Action`, the action object that tanium created for `saved_action`
             * `package_object` : :class:`taniumpy.object_types.package_spec.PackageSPec`, the package object used in `saved_action`
             * `action_info` : :class:`taniumpy.object_types.result_info.ResultInfo`, the initial GetResultInfo call done before getting results
-            * `poller_object` : :class:`pytan.pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
+            * `poller_object` : :class:`pollers.ActionPoller`, poller object used to wait until all results are in before getting `action_results`
             * `poller_success` : None if `get_results` == False, elsewise True or False
             * `action_results` : None if `get_results` == False, elsewise :class:`taniumpy.object_types.result_set.ResultSet`, the results for `action_object`
             * `action_result_map` : None if `get_results` == False, elsewise progress map for `action_object` in dictionary form
@@ -5171,8 +5345,8 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
 
         Notes
         -----
@@ -5186,7 +5360,7 @@ class Handler(object):
                 * To emulate what the console does, the SavedAction should be in a SavedActionList
                 * Action.start_time does not need to be specified
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
 
         clean_keys = [
             'defs',
@@ -5203,7 +5377,7 @@ class Handler(object):
             'handler',
         ]
 
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if not self.session.platform_is_6_5(**kwargs):
             objtype = taniumpy.Action
@@ -5214,28 +5388,28 @@ class Handler(object):
             objlisttype = taniumpy.SavedActionList
             force_start_time = False
 
-        package_def = pytan.utils.parse_defs(
+        package_def = utils.parse_defs(
             defname='package_def',
             deftypes=['dict()'],
             empty_ok=False,
             **clean_kwargs
         )
-        action_filter_defs = pytan.utils.parse_defs(
+        action_filter_defs = utils.parse_defs(
             defname='action_filter_defs',
             deftypes=['list()', 'str()', 'dict()'],
             strconv='name',
             empty_ok=True,
             **clean_kwargs
         )
-        action_option_defs = pytan.utils.parse_defs(
+        action_option_defs = utils.parse_defs(
             defname='action_option_defs',
             deftypes=['dict()'],
             empty_ok=True,
             **clean_kwargs
         )
 
-        pytan.utils.val_package_def(package_def=package_def)
-        pytan.utils.val_sensor_defs(sensor_defs=action_filter_defs)
+        utils.val_package_def(package_def=package_def)
+        utils.val_sensor_defs(sensor_defs=action_filter_defs)
 
         package_def = self._get_package_def(d=package_def, **clean_kwargs)
         h = (
@@ -5246,16 +5420,16 @@ class Handler(object):
             defs=action_filter_defs, pytan_help=h, **clean_kwargs
         )
 
-        start_seconds_from_now = pytan.utils.get_kwargs_int(
+        start_seconds_from_now = utils.get_kwargs_int(
             key='start_seconds_from_now', default=0, **clean_kwargs
         )
 
-        expire_seconds = pytan.utils.get_kwargs_int(key='expire_seconds', **clean_kwargs)
+        expire_seconds = utils.get_kwargs_int(key='expire_seconds', **clean_kwargs)
 
         action_name_default = "API Deploy {0.name}".format(package_def['package_obj'])
         action_name = kwargs.get('action_name', action_name_default)
 
-        action_comment_default = 'Created by PyTan v{}'.format(pytan.__version__)
+        action_comment_default = 'Created by PyTan v{}'.format(version.__version__)
         action_comment = kwargs.get('action_comment', action_comment_default)
 
         issue_seconds_default = 0
@@ -5283,7 +5457,7 @@ class Handler(object):
         """
         if not run:
             pre_action_sensors = ['Computer Name', 'Online, that =:True']
-            pre_action_sensor_defs = pytan.utils.dehumanize_sensors(sensors=pre_action_sensors)
+            pre_action_sensor_defs = utils.dehumanize_sensors(sensors=pre_action_sensors)
 
             q_clean_keys = [
                 'sensor_defs',
@@ -5293,7 +5467,7 @@ class Handler(object):
                 'pytan_help',
                 'get_results',
             ]
-            q_clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=q_clean_keys)
+            q_clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=q_clean_keys)
 
             h = (
                 "Ask a question to determine the number of systems this action would affect if it "
@@ -5312,7 +5486,7 @@ class Handler(object):
 
             if passed_count == 0:
                 m = "Number of systems that match the action filters provided is zero!"
-                raise pytan.exceptions.HandlerError(m)
+                raise exceptions.HandlerError(m)
 
             default_format = 'csv'
             export_format = kwargs.get('export_format', default_format)
@@ -5325,7 +5499,7 @@ class Handler(object):
                 'export_format',
                 'prefix',
             ]
-            e_clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=e_clean_keys)
+            e_clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=e_clean_keys)
             e_clean_kwargs['obj'] = pre_action_question['question_results']
             e_clean_kwargs['export_format'] = export_format
             e_clean_kwargs['prefix'] = export_prefix
@@ -5336,17 +5510,17 @@ class Handler(object):
                 "View and verify the contents of {} (length: {} bytes)\n"
                 "Re-run this deploy action with run=True after verifying"
             ).format
-            raise pytan.exceptions.RunFalse(m(report_path, len(result)))
+            raise exceptions.RunFalse(m(report_path, len(result)))
 
         # BUILD THE PACKAGE OBJECT TO BE ADDED TO THE ACTION
-        add_package_obj = pytan.utils.copy_package_obj_for_action(obj=package_def['package_obj'])
+        add_package_obj = utils.copy_package_obj_for_action(obj=package_def['package_obj'])
 
         # if source_id is specified, a new package will be created with the parameters
         # for this action embedded into it - specifying hidden = 1 will ensure the new package
         # is hidden
         add_package_obj.hidden_flag = 1
 
-        param_objlist = pytan.utils.build_param_objlist(
+        param_objlist = utils.build_param_objlist(
             obj=package_def['package_obj'],
             user_params=package_def['params'],
             delim='',
@@ -5382,7 +5556,7 @@ class Handler(object):
         add_obj.issue_count = 0
 
         if action_filter_defs or action_option_defs:
-            targetgroup_obj = pytan.utils.build_group_obj(
+            targetgroup_obj = utils.build_group_obj(
                 q_filter_defs=action_filter_defs, q_option_defs=action_option_defs,
             )
             add_obj.target_group = targetgroup_obj
@@ -5390,12 +5564,12 @@ class Handler(object):
             targetgroup_obj = None
 
         if start_seconds_from_now:
-            add_obj.start_time = pytan.utils.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = utils.seconds_from_now(secs=start_seconds_from_now)
 
         if force_start_time and not add_obj.start_time:
             if not start_seconds_from_now:
                 start_seconds_from_now = 1
-            add_obj.start_time = pytan.utils.seconds_from_now(secs=start_seconds_from_now)
+            add_obj.start_time = utils.seconds_from_now(secs=start_seconds_from_now)
 
         if package_def['package_obj'].expire_seconds:
             add_obj.expire_seconds = package_def['package_obj'].expire_seconds
@@ -5438,7 +5612,7 @@ class Handler(object):
         m = "DEPLOY_ACTION ADDED: Question for Action Results, ID: {}".format
         self.mylog.debug(m(action_info.question_id))
 
-        poller = pytan.pollers.ActionPoller(handler=self, obj=action_obj, **clean_kwargs)
+        poller = pollers.ActionPoller(handler=self, obj=action_obj, **clean_kwargs)
         ret = {
             'saved_action_object': added_obj,
             'action_object': action_obj,
@@ -5496,32 +5670,32 @@ class Handler(object):
         polling_secs : int, optional
             * default: 5
             * Number of seconds to wait in between GetResultInfo loops
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         complete_pct : int/float, optional
             * default: 99
             * Percentage of mr_tested out of estimated_total to consider the question "done"
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         override_timeout_secs : int, optional
             * default: 0
             * If supplied and not 0, timeout in seconds instead of when object expires
-            * This is passed through to :class:`pytan.pollers.QuestionPoller`
+            * This is passed through to :class:`pollers.QuestionPoller`
         callbacks : dict, optional
             * default: {}
             * can be a dict of functions to be run with the key names being the various state changes: 'ProgressChanged', 'AnswersChanged', 'AnswersComplete'
-            * This is passed through to :func:`pytan.pollers.QuestionPoller.run`
+            * This is passed through to :func:`pollers.QuestionPoller.run`
         override_estimated_total : int, optional
             * instead of getting number of systems that should see this question from result_info.estimated_total, use this number
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
         force_passed_done_count : int, optional
             * when this number of systems have passed the right hand side of the question, consider the question complete
-            * This is passed through to :func:`pytan.pollers.QuestionPoller`
+            * This is passed through to :func:`pollers.QuestionPoller`
 
         Returns
         -------
         ret : dict, containing:
             * `question_object` : :class:`taniumpy.object_types.question.Question`, the actual question created and added by PyTan
             * `question_results` : :class:`taniumpy.object_types.result_set.ResultSet`, the Result Set for `question_object` if `get_results` == True
-            * `poller_object` : :class:`pytan.pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
+            * `poller_object` : :class:`pollers.QuestionPoller`, poller object used to wait until all results are in before getting `question_results`
             * `poller_success` : None if `get_results` == True, elsewise True or False
 
         Examples
@@ -5550,10 +5724,10 @@ class Handler(object):
 
         See Also
         --------
-        :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
-        :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
+        :data:`constants.FILTER_MAPS` : valid filter dictionaries for filters
+        :data:`constants.OPTION_MAPS` : valid option dictionaries for options
         """
-        pytan.utils.check_for_help(kwargs=kwargs)
+        utils.check_for_help(kwargs=kwargs)
 
         clean_keys = [
             'defs',
@@ -5570,10 +5744,10 @@ class Handler(object):
             'handler',
             'sse',
         ]
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         # get our defs from kwargs and churn them into what we want
-        sensor_defs = pytan.utils.parse_defs(
+        sensor_defs = utils.parse_defs(
             defname='sensor_defs',
             deftypes=['list()', 'str()', 'dict()'],
             strconv='name',
@@ -5581,14 +5755,14 @@ class Handler(object):
             **clean_kwargs
         )
 
-        q_filter_defs = pytan.utils.parse_defs(
+        q_filter_defs = utils.parse_defs(
             defname='question_filter_defs',
             deftypes=['list()', 'dict()'],
             empty_ok=True,
             **clean_kwargs
         )
 
-        q_option_defs = pytan.utils.parse_defs(
+        q_option_defs = utils.parse_defs(
             defname='question_option_defs',
             deftypes=['dict()'],
             empty_ok=True,
@@ -5598,13 +5772,13 @@ class Handler(object):
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
 
-        max_age_seconds = pytan.utils.get_kwargs_int(
+        max_age_seconds = utils.get_kwargs_int(
             key='max_age_seconds', default=600, **clean_kwargs
         )
 
         # do basic validation of our defs
-        pytan.utils.val_sensor_defs(sensor_defs=sensor_defs)
-        pytan.utils.val_q_filter_defs(q_filter_defs=q_filter_defs)
+        utils.val_sensor_defs(sensor_defs=sensor_defs)
+        utils.val_q_filter_defs(q_filter_defs=q_filter_defs)
 
         # get the sensor objects that are in our defs and add them as d['sensor_obj']
         h = (
@@ -5619,15 +5793,15 @@ class Handler(object):
         q_filter_defs = self._get_sensor_defs(defs=q_filter_defs, pytan_help=h, **clean_kwargs)
 
         # build a SelectList object from our sensor_defs
-        selectlist_obj = pytan.utils.build_selectlist_obj(sensor_defs=sensor_defs)
+        selectlist_obj = utils.build_selectlist_obj(sensor_defs=sensor_defs)
 
         # build a Group object from our question filters/options
-        group_obj = pytan.utils.build_group_obj(
+        group_obj = utils.build_group_obj(
             q_filter_defs=q_filter_defs, q_option_defs=q_option_defs,
         )
 
         # build a Question object from selectlist_obj and group_obj
-        add_obj = pytan.utils.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
+        add_obj = utils.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
 
         add_obj.max_age_seconds = max_age_seconds
 
@@ -5638,7 +5812,7 @@ class Handler(object):
         m = "Question Added, ID: {}, query text: {!r}, expires: {}".format
         self.mylog.debug(m(added_obj.id, added_obj.query_text, added_obj.expiration))
 
-        poller = pytan.pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
+        poller = pollers.QuestionPoller(handler=self, obj=added_obj, **clean_kwargs)
 
         ret = {
             'question_object': added_obj,
@@ -5706,10 +5880,10 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        if sse_format_int not in pytan.constants.SSE_RESTRICT_MAP:
+        if sse_format_int not in constants.SSE_RESTRICT_MAP:
             return
 
-        restrict_maps = pytan.constants.SSE_RESTRICT_MAP[sse_format_int]
+        restrict_maps = constants.SSE_RESTRICT_MAP[sse_format_int]
 
         if not self._version_support_check(v_maps=restrict_maps, **kwargs):
             restrict_maps_txt = '\n'.join([str(x) for x in restrict_maps])
@@ -5721,7 +5895,7 @@ class Handler(object):
 
             m = m(self.session.server_version, sse_format, restrict_maps_txt)
 
-            raise pytan.exceptions.UnsupportedVersionError(m)
+            raise exceptions.UnsupportedVersionError(m)
 
     def _resolve_sse_format(self, sse_format, **kwargs):
         """Resolves the server side export format the user supplied to an integer for the API
@@ -5736,14 +5910,14 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        sse_format_int = [x[-1] for x in pytan.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
+        sse_format_int = [x[-1] for x in constants.SSE_FORMAT_MAP if sse_format.lower() in x]
 
         if not sse_format_int:
             m = "Unsupport export format {!r}, must be one of:\n{}".format
             ef_map_txt = '\n'.join(
-                [', '.join(['{!r}'.format(x) for x in y]) for y in pytan.constants.SSE_FORMAT_MAP]
+                [', '.join(['{!r}'.format(x) for x in y]) for y in constants.SSE_FORMAT_MAP]
             )
-            raise pytan.exceptions.HandlerError(m(sse_format, ef_map_txt))
+            raise exceptions.HandlerError(m(sse_format, ef_map_txt))
 
         sse_format_int = sse_format_int[0]
 
@@ -5761,7 +5935,7 @@ class Handler(object):
         if not self.session.platform_is_6_5(**kwargs):
             m = "Server side export not supported in version: {}".format
             m = m(self.session.server_version)
-            raise pytan.exceptions.UnsupportedVersionError(m)
+            raise exceptions.UnsupportedVersionError(m)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
         """Runs a number of methods used to prevent crashing the platform server when performing server side exports
@@ -5772,9 +5946,9 @@ class Handler(object):
             * object to pass to self._check_sse_empty_rs
         """
         clean_keys = ['obj', 'v_maps', 'ok_version']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        restrict_maps = pytan.constants.SSE_CRASH_MAP
+        restrict_maps = constants.SSE_CRASH_MAP
 
         ok_version = self._version_support_check(v_maps=restrict_maps, **clean_kwargs)
 
@@ -5782,7 +5956,7 @@ class Handler(object):
         self._check_sse_empty_rs(obj=obj, ok_version=ok_version, **clean_kwargs)
 
     def _check_sse_timing(self, ok_version, **kwargs):
-        """Checks that the last server side export was at least 1 second ago if server version is less than any versions in pytan.constants.SSE_CRASH_MAP
+        """Checks that the last server side export was at least 1 second ago if server version is less than any versions in constants.SSE_CRASH_MAP
 
         Parameters
         ----------
@@ -5795,12 +5969,12 @@ class Handler(object):
             last_elapsed = datetime.datetime.utcnow() - last_get_rd_sse
             if last_elapsed.seconds == 0 and not ok_version:
                 m = "You must wait at least one second between server side export requests!".format
-                raise pytan.exceptions.ServerSideExportError(m())
+                raise exceptions.ServerSideExportError(m())
 
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
-        """Checks if the server version is less than any versions in pytan.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
+        """Checks if the server version is less than any versions in constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
 
         Parameters
         ----------
@@ -5810,7 +5984,7 @@ class Handler(object):
             * if the version currently running is an "ok" version
         """
         clean_keys = ['obj']
-        clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
+        clean_kwargs = utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         if not ok_version:
             ri = self.get_result_info(obj=obj, **clean_kwargs)
@@ -5818,4 +5992,4 @@ class Handler(object):
                 m = (
                     "No rows available to perform a server side export with, result info: {}"
                 ).format
-                raise pytan.exceptions.ServerSideExportError(m(ri))
+                raise exceptions.ServerSideExportError(m(ri))
