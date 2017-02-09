@@ -1,5 +1,16 @@
 #!/usr/bin/env python
-"""TODO."""
+"""TODO:
+replace thread looper with Jim's code
+allow only one question to be defined for conn.log augmentation
+look at johanna's .bro file which augments conn.log - looks up each conn on bro side against hash table
+https://github.com/0xxon/pytan/commit/67a684713d2df1a22b01c32bfb82b3cf1c5793a5
+
+after this stuff is in, begin template stuff in doc (whee)
+
+do not forget to run broctl deploy in order to actually get your bro script to listen on broker
+
+
+"""
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
@@ -564,6 +575,8 @@ def broker_send(broker_sender, question_start_time, question_results, event_suff
         THIS_LOG.critical(m)
 
 
+# todo: this is the main logic for how to retreive question results, and send to broker
+# This is the stuff that will be replaced by the code in slack
 def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct):
     """Logging and sending the data to broker for each question thread"""
     # looping through each thread, which is an active question
