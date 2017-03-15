@@ -2,6 +2,9 @@
 [Shell Objects](#shell_objects)
 [Handler](#handler)
 [Bug](#bug)
+
+![](http://venturegalleries.com/wp-content/uploads/2013/06/jumbo-red-ear-slider-turtles-for-sale-picture-1-640-454.jpg)
+
 ## Doc
  * shell examples
  * generate initial documentation
@@ -10,7 +13,7 @@
   * filters-help
   * options-help
   * package-help
- 
+
 ## Shell_Objects
  * get_history_saved_question.py
  * create_*
