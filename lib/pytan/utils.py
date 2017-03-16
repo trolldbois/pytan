@@ -739,7 +739,7 @@ def extract_params(s):
             sp_value = sp_value.replace('\\{', '{')
         if '\\,' in sp_value:
             sp_value = sp_value.replace('\\,', ',')
-        print(sp_value)
+        # print(sp_value)
         # sp_key = dirname
         # sp_value = Program Files
         parsed_params[sp_key] = sp_value
@@ -1400,7 +1400,17 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
 
     processed = []
 
+    # list of parameter types that are not actually parameters and thusly should be ignored
+    skip_types = [
+        "com.tanium.components.parameters::SeparatorParameter",
+    ]
+
     for obj_param in obj_params:
+        p_type = obj_param.get("parameterType", "")
+
+        if p_type in skip_types:
+            continue
+
         # get the key for this param
         p_key = obj_param["key"]
         processed.append(p_key)
