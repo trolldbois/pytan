@@ -706,9 +706,6 @@ def extract_params(s):
     if ':\\}' in s:
         s = s.replace(':\\}', ':\\ }')
 
-    # if '/,' in s:
-        # s = s.replace('/,', ',')
-
     params = re.findall(pytan.constants.PARAM_RE, s)
     # params=['dirname=Program Files,regex=\\,*']
 
