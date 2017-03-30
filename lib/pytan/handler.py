@@ -993,7 +993,7 @@ class Handler(object):
         action_option_defs = pytan.utils.dehumanize_question_options(action_options)
         package_def = pytan.utils.dehumanize_package(package)
 
-        clean_keys = ['package_def', 'action_filter_defs', 'action_option_defs']
+        clean_keys = ['package_def', 'action_filter_defs', 'action_option_defs', 'action_group']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
         deploy_result = self._deploy_action(
@@ -3093,7 +3093,6 @@ class Handler(object):
         add_obj = objtype()
         add_obj.package_spec = add_package_obj
         add_obj.id = -1
-        add_obj.action_group = action_group_obj
         add_obj.name = action_name
         add_obj.issue_seconds = issue_seconds
         add_obj.distribute_seconds = distribute_seconds
@@ -3105,6 +3104,12 @@ class Handler(object):
         add_obj.policy_flag = 0
         add_obj.approved_flag = 0
         add_obj.issue_count = 0
+
+        if 'default' not in action_group_obj.name:
+            action_obj = taniumpy.Action()
+            action_obj.action_group = action_group_obj
+            action_group_obj = action_obj.action_group
+            add_obj.action_group = action_group_obj
 
         if action_filter_defs or action_option_defs:
             targetgroup_obj = pytan.utils.build_group_obj(
