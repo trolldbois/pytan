@@ -891,7 +891,7 @@ class Handler(object):
         action_filters : str, list of str, optional
             * default: []
             * each string must describe a sensor and a filter which limits which computers the action will deploy `package` to
-        action_groups : str, optional
+        action_group : str, optional
             * default: u'default'
             * have an action group assigned to allow for proper scoping of actions
         action_options : str, list of str, optional
@@ -2815,6 +2815,9 @@ class Handler(object):
         action_option_defs : dict, list of dict, optional
             * default: []
             * action filter option definitions
+        action_group : str, optional
+            * default: u'default'
+            * have an action group assigned to allow for proper scoping of actions
         start_seconds_from_now : int, optional
             * default: 0
             * start action N seconds from now
