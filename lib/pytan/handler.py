@@ -891,6 +891,9 @@ class Handler(object):
         action_filters : str, list of str, optional
             * default: []
             * each string must describe a sensor and a filter which limits which computers the action will deploy `package` to
+        action_groups : str, optional
+            * default: u'default'
+            * have an action group assigned to allow for proper scoping of actions
         action_options : str, list of str, optional
             * default: []
             * options to apply to `action_filters`
@@ -976,6 +979,9 @@ class Handler(object):
         # to deploy the action against
         action_filters = kwargs.get('action_filters', [])
 
+        # the name of the action group to deploy the action against
+        action_group = kwargs.get('action_group', u'default')
+
         # the question options to use on the pre-action question and on the
         # group for the action filters
         action_options = kwargs.get('action_options', [])
@@ -994,6 +1000,7 @@ class Handler(object):
             action_filter_defs=action_filter_defs,
             action_option_defs=action_option_defs,
             package_def=package_def,
+            action_group=action_group,
             **clean_kwargs
         )
         return deploy_result
@@ -2793,7 +2800,7 @@ class Handler(object):
         result = pytan.utils.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
-    def _deploy_action(self, run=False, get_results=True, **kwargs):
+    def _deploy_action(self, action_group, run=False, get_results=True, **kwargs):
         """Deploy an action and get the results back
 
         This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action` instead.
@@ -2964,6 +2971,9 @@ class Handler(object):
             key='start_seconds_from_now', default=0, **clean_kwargs
         )
 
+        action_group = self.get(objtype=u'action_groups', name=action_group)
+        action_group_obj = action_group[0]
+
         expire_seconds = pytan.utils.get_kwargs_int(key='expire_seconds', **clean_kwargs)
 
         action_name_default = "API Deploy {0.name}".format(package_def['package_obj'])
@@ -3083,6 +3093,7 @@ class Handler(object):
         add_obj = objtype()
         add_obj.package_spec = add_package_obj
         add_obj.id = -1
+        add_obj.action_group = action_group_obj
         add_obj.name = action_name
         add_obj.issue_seconds = issue_seconds
         add_obj.distribute_seconds = distribute_seconds
