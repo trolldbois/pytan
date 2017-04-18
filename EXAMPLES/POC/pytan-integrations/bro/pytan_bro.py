@@ -1,16 +1,5 @@
 #!/usr/bin/env python
-"""TODO:
-replace thread looper with Jim's code
-allow only one question to be defined for conn.log augmentation
-look at johanna's .bro file which augments conn.log - looks up each conn on bro side against hash table
-https://github.com/0xxon/pytan/commit/67a684713d2df1a22b01c32bfb82b3cf1c5793a5
-
-after this stuff is in, begin template stuff in doc (whee)
-
-do not forget to run broctl deploy in order to actually get your bro script to listen on broker
-
-
-"""
+"""Main integration code for bro question sending"""
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
@@ -28,8 +17,8 @@ from io import open
 import modules.ini_reader
 
 __author__ = 'Jim Olsen <jim.olsen@tanium.com>, Rory Prendergast <rory.prendergast@tanium.com>, ' \
-             'James Cobey <james.cobey@tanium.com>'
-__version__ = '2.1.9'
+             'James Cobey <james.cobey@tanium.com>, Frederik Lusse <frederik.lusse@tanium.com>'
+__version__ = '2.1.10'
 
 REQUIRED_BROKER_VERSION_MIN = '0.6'  # for printing out, this isn't actually checked
 
@@ -37,10 +26,10 @@ STATIC_PYTAN_LIB_PATH = "/github/pytan/lib"
 """Manually defined PyTan library directory, for scripts that do not live in bin/."""
 
 ALLOWED_ROLES = ["Question Author"]
-"""List of User Roles that are allowed to be attached to Tanium users running this script."""
+"""List of User Roles that are allowed to be attached to Tanium users running this script.
+The user that logs in must have one of the exact roles listed. For instance, if the only
+entry is Quesiton Author, an administrator account is disallowed."""
 
-DEFAULT_REPEAT_SECONDS = 600
-"""If a section does not have a 'repeat_seconds' defined, we will default to this."""
 
 THIS_FILE = os.path.abspath(sys.argv[0])
 THIS_NAME = os.path.basename(THIS_FILE)
@@ -144,7 +133,6 @@ LOG_FILE_HANDLER_NAME = "log_file_handler"
 
 THREAD_EXAMINE_SECONDS = 5
 
-
 class QuestionThread(threading.Thread):
     """Thread for running a question section. A question section in bro.ini looks like:
 
@@ -174,14 +162,14 @@ class QuestionThread(threading.Thread):
 
 """
 
-    def __init__(self, handler, section_name, section_dict,
+    def __init__(self, handler, section_name, section_dict, broker_sender,
                  always_add_prefix='Get Computer Name and Tanium Client IP Address and Last Logged In User and '):
         """Constructor."""
-        #threading.Thread.__init__(self)
         super(QuestionThread, self).__init__()
         self.setName(section_name)
         self.always_add_prefix = always_add_prefix
         self.handler = handler
+        self.broker_sender = broker_sender
         self.last_result = {}
         self.last_fetched = None
         self.exception = None
@@ -196,19 +184,6 @@ class QuestionThread(threading.Thread):
             raise Exception(m.format(section_name, section_dict))
 
         self.question = self._mod_question(section_dict['question'])
-
-        if "repeat_seconds" not in section_dict:
-            m = "'repeat_seconds' not supplied for section '{}', using default of '{}'"
-            THIS_LOG.info(m.format(section_name, DEFAULT_REPEAT_SECONDS))
-            self.repeat_seconds = DEFAULT_REPEAT_SECONDS
-        else:
-            self.repeat_seconds = section_dict["repeat_seconds"]
-
-        if self.repeat_seconds < DEFAULT_REPEAT_SECONDS:
-            raise ValueError('repeat_seconds of {} for question in section name {} with text \'{}\' '
-                             'is less than minimum value of {}'.format(self.repeat_seconds,
-                                                                       section_name, section_dict['question'],
-                                                                       DEFAULT_REPEAT_SECONDS))
         self.daemon = True
         self.start()
 
@@ -217,10 +192,13 @@ class QuestionThread(threading.Thread):
         while True:
             if self.is_stopped():
                 break
-            m = "Thread Name: {}, asking parsed question '{}'"
-            THIS_LOG.debug(m.format(self.getName(), self.question))
+            THIS_LOG.debug("Thread Name: {}, asking parsed question '{}'".format(self.getName(), self.question))
+            # An empty set of row_ids to pass to the callback funtion to filter out already reported rows
+            sent_row_ids = set()
             try:
-                self.last_result = self.handler.ask_parsed(question_text=self.question, picker=1)
+                # Ask te question with a complete % of 200, as this will never be reached the question
+                # will remain active until timeout
+                self.last_result = self.handler.ask_parsed(question_text=self.question, picker=1, callbacks={"ProgressChanged": cb_question_progress}, event_name=self.getName(), row_ids=sent_row_ids, bs=self.broker_sender, complete_pct=200)
             except pytan.exceptions.PollingError as e:
                 pe = "Thread Name {} - Polling error: {}"
                 THIS_LOG.warn(pe.format(self.getName(), str(e)))
@@ -229,6 +207,9 @@ class QuestionThread(threading.Thread):
                 em = "Thread Name {} - Exception: {}"
                 THIS_LOG.warn(em.format(self.getName(), str(e)))
                 self.exception = e
+
+            # Clean the sent_row_ids for the next run
+            sent_row_ids.clear()
             self.last_fetched = datetime.datetime.now()
             try:
                 m = "Thread Name: {}, received results for question '{}': {}"
@@ -239,9 +220,9 @@ class QuestionThread(threading.Thread):
             # each run of this thread pulls a new question ID. It's critical that this sleep
             # not be conditional, or there could be a lot of question ids generated needlessly for
             # the same result set.
-            m = "Thread Name: {}, sleeping until next question repeat time for {} seconds."
-            THIS_LOG.debug(m.format(self.getName(), self.repeat_seconds))
-            time.sleep(self.repeat_seconds)
+            # m = "Thread Name: {}, sleeping until next question repeat time for {} seconds."
+            # THIS_LOG.debug(m.format(self.getName(), self.repeat_seconds))
+            # time.sleep(self.repeat_seconds)
 
     def stop_question(self):
         THIS_LOG.info("Question thread {} stopped".format(self.getName()))
@@ -257,6 +238,56 @@ class QuestionThread(threading.Thread):
         """
         return re.compile('^get ', flags=re.IGNORECASE).sub(self.always_add_prefix, question_text)
 
+def cb_question_progress(poller, pct, **kwargs):
+    """Callback function to be called on progress change of question results
+
+    Parameters
+    ----------
+    poller : pytan QuestionPoller object
+    pct    : percentage completion of the question
+    kwargs : pytan optional arguments
+
+    Returns
+    -------
+    Nothing
+    """
+    sent_row_ids = kwargs["row_ids"]
+    event_name = kwargs["event_name"]
+    broker_sender = kwargs["bs"]
+
+    # Check if rows have been returned, first call normally is empty
+    if poller.get_result_info().row_count > 0:
+        result_data = poller.get_result_data()
+        fresh_rows = []
+        for row in result_data.rows:
+            if row.id not in sent_row_ids:
+                fresh_rows.append(row)
+                sent_row_ids.add(row.id)
+
+        # Check if there are new rows to send to bro
+        # Wrap them in a result set to re-use the send_
+        if len(fresh_rows) > 0:
+            result_data.rows = fresh_rows
+            result_data.row_count = len(fresh_rows)
+            # Send this result_data to bro
+            m = "Callback: {} - Transforming data and attempting to send to broker listener at {}:{}"
+            m = m.format(event_name, broker_sender.dst_host, broker_sender.dst_port)
+            THIS_LOG.info(m)
+            try:
+                broker_send(broker_sender, datetime.datetime.now(), result_data, event_name)
+            except Exception as e:
+                THIS_LOG.exception("Error in sending data to bro in callback function")
+                raise e
+            # Log percentage complete
+            m = "Callback: {}, sent {} new rows for question id {} to bro, percentage complete is {:04.1f}%"
+            THIS_LOG.debug(m.format(event_name, len(fresh_rows), poller.get_result_info().question_id, pct))
+        else:
+            # Only log percentage complete
+            m = "Callback: {}, no new rows received for question id {}, percentage complete is {:04.1f}%"
+            THIS_LOG.debug(m.format(event_name, poller.get_result_info().question_id, pct))
+    else:
+        m = "Callback: {}, received empty result set for question id {}"
+        THIS_LOG.debug(m.format(event_name, poller.get_result_info().question_id))
 
 def get_handler(logger, handler_name):
     """Retrieve a handler object from a logger by name.
@@ -575,84 +606,6 @@ def broker_send(broker_sender, question_start_time, question_results, event_suff
         THIS_LOG.critical(m)
 
 
-# todo: this is the main logic for how to retreive question results, and send to broker
-# This is the stuff that will be replaced by the code in slack
-def handle_tracker_results(thread_tracker, broker_sender, desired_completion_pct):
-    """Logging and sending the data to broker for each question thread"""
-    # looping through each thread, which is an active question
-    for section_name, section_thread in thread_tracker.items():
-        if section_thread.is_stopped():
-            # if it is stopped, it is already sent and a new thread will be created.
-            continue
-        # look for any exception messages
-        active_exception = copy.copy(section_thread.exception)
-        if active_exception is not None:
-            section_thread.exception = None
-            raise active_exception
-        result_data = section_thread.last_result.get('question_results', None)
-        if result_data is None:
-            m = "{} - No result data for question"
-            THIS_LOG.warn(m.format(section_name))
-            continue
-
-        question_obj = section_thread.last_result.get('question_object', None)
-        if question_obj is None:
-            m = "() - Cannot yet get question object for question"
-            THIS_LOG.warn(m.format(section_name))
-            continue
-
-        question_poller = section_thread.last_result.get('poller_object', None)
-        if question_obj is None:
-            m = "{} - Cannot yet get poller object for question"
-            THIS_LOG.warn(m.format(section_name))
-            continue
-        percent_complete = question_poller.complete_pct
-        question_start_time = question_poller.start
-        # Questions are active for 10 minutes - the expiration time is start + 10 minutes.
-        # If the question is about to expire, meaning the question's expiration time is
-        # 2 x THREAD_EXAMINE_SECONDS away from now, we have as much data as we're going to get.
-        time_to_send_flag = False
-        min_percent_complete_flag = False
-        if question_poller.expiration_timeout <= datetime.datetime.utcnow() - \
-                datetime.timedelta(seconds=1.7 * THREAD_EXAMINE_SECONDS):
-            m = "{} - with qid {} is about to expire, now ready to send to Bro via broker if complete"
-            m = m.format(section_name, result_data.question_id)
-            THIS_LOG.info(m)
-            time_to_send_flag = True
-
-        if percent_complete >= desired_completion_pct:
-            min_percent_complete_flag = True
-        else:
-            fetched = section_thread.last_fetched
-            m = "{} -  start time {}, {}% completed, last fetched on {}. Waiting for {}% completion"
-            m = m.format(section_name, question_start_time, percent_complete, fetched, desired_completion_pct)
-            THIS_LOG.debug(m)
-
-        if time_to_send_flag and min_percent_complete_flag:
-            m = "{} - Transforming data and attempting to send to broker listener at {}:{}"
-            m = m.format(section_name, broker_sender.dst_host, broker_sender.dst_port)
-            THIS_LOG.info(m)
-            try:
-                broker_send(broker_sender, question_start_time, result_data, section_name)
-            except Exception as e:
-                raise e
-            finally:
-                if not section_thread.is_stopped():
-                    m = "{} - Stopping completed question with id {}"
-                    m = m.format(section_name, result_data.question_id)
-                    THIS_LOG.info(m)
-                    section_thread.stop_question()
-                    section_thread.waiting_print_flag = True
-        else:
-            # only print this every so often so logs don't fill up for no reason.
-            if section_thread.waiting_print_flag:
-                m = "{} - Waiting for completion and/or expiration. Expiration time for question id {} " \
-                    "is {}, {} complete."
-                m = m.format(section_name, result_data.question_id, question_poller.expiration_timeout, percent_complete)
-                THIS_LOG.debug(m)
-                section_thread.waiting_print_flag = False
-
-
 def get_bro_connection_details(bro_config):
     """Performs sanity checks and assigns defaults. Returns a dict with config items and assigned values for the
     destination section"""
@@ -709,7 +662,7 @@ if __name__ == "__main__":
                 continue
             try:
                 THIS_LOG.debug('Creating question thread for {}'.format(section_name))
-                thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+                thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict, bs)
                 print('created thread with id {}'.format(id(thread_tracker[section_name])))
             except ValueError as e:
                 m = 'Fatal - Exception creating question runner, {}'
@@ -729,9 +682,4 @@ if __name__ == "__main__":
     slept_seconds = 0
     while True:
         check_tracker()
-        try:
-            handle_tracker_results(thread_tracker, bs, dest_config['question_completion_pct_before_send'])
-        except Exception as e:
-            THIS_LOG.warning("Exception in question thread: {}".format(str(e)))
-
         time.sleep(THREAD_EXAMINE_SECONDS)
