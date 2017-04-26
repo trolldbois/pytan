@@ -2,7 +2,6 @@
 """Main integration code for bro question sending"""
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import copy
 import datetime
 import json
 import logging
@@ -30,7 +29,6 @@ ALLOWED_ROLES = ["Question Author"]
 The user that logs in must have one of the exact roles listed. For instance, if the only
 entry is Quesiton Author, an administrator account is disallowed."""
 
-
 THIS_FILE = os.path.abspath(sys.argv[0])
 THIS_NAME = os.path.basename(THIS_FILE)
 THIS_BASENAME = os.path.splitext(THIS_NAME)[0]
@@ -52,12 +50,10 @@ THIS_LOG = logging.getLogger(THIS_BASENAME)
 THIS_LOG.setLevel(logging.DEBUG)
 THIS_LOG.propagate = False
 
-
 if sys.version_info > (3, 0):
     PY_VER = 3
 else:
     PY_VER = 2
-
 
 try:
     import pytan
@@ -133,6 +129,7 @@ LOG_FILE_HANDLER_NAME = "log_file_handler"
 
 THREAD_EXAMINE_SECONDS = 5
 
+
 class QuestionThread(threading.Thread):
     """Thread for running a question section. A question section in bro.ini looks like:
 
@@ -198,7 +195,10 @@ class QuestionThread(threading.Thread):
             try:
                 # Ask te question with a complete % of 200, as this will never be reached the question
                 # will remain active until timeout
-                self.last_result = self.handler.ask_parsed(question_text=self.question, picker=1, callbacks={"ProgressChanged": cb_question_progress}, event_name=self.getName(), row_ids=sent_row_ids, bs=self.broker_sender, complete_pct=200)
+                self.last_result = self.handler.ask_parsed(question_text=self.question, picker=1,
+                                                           callbacks={"ProgressChanged": cb_question_progress},
+                                                           event_name=self.getName(), row_ids=sent_row_ids,
+                                                           bs=self.broker_sender, complete_pct=200)
             except pytan.exceptions.PollingError as e:
                 pe = "Thread Name {} - Polling error: {}"
                 THIS_LOG.warn(pe.format(self.getName(), str(e)))
@@ -217,12 +217,6 @@ class QuestionThread(threading.Thread):
             except KeyError:
                 m = "Thread Name: {}, cannot retrieve results for question '{}': {}"
                 THIS_LOG.debug(m.format(self.getName(), self.question, self.last_result["question_results"]))
-            # each run of this thread pulls a new question ID. It's critical that this sleep
-            # not be conditional, or there could be a lot of question ids generated needlessly for
-            # the same result set.
-            # m = "Thread Name: {}, sleeping until next question repeat time for {} seconds."
-            # THIS_LOG.debug(m.format(self.getName(), self.repeat_seconds))
-            # time.sleep(self.repeat_seconds)
 
     def stop_question(self):
         THIS_LOG.info("Question thread {} stopped".format(self.getName()))
@@ -237,6 +231,7 @@ class QuestionThread(threading.Thread):
         bro example file, but if the message was changed, this could, in theory, be something else.
         """
         return re.compile('^get ', flags=re.IGNORECASE).sub(self.always_add_prefix, question_text)
+
 
 def cb_question_progress(poller, pct, **kwargs):
     """Callback function to be called on progress change of question results
@@ -288,6 +283,7 @@ def cb_question_progress(poller, pct, **kwargs):
     else:
         m = "Callback: {}, received empty result set for question id {}"
         THIS_LOG.debug(m.format(event_name, poller.get_result_info().question_id))
+
 
 def get_handler(logger, handler_name):
     """Retrieve a handler object from a logger by name.
@@ -653,6 +649,7 @@ if __name__ == "__main__":
 
     thread_tracker = {}
 
+
     def create_tracker():
         for section_name, section_dict in bro_config.items():
             if "question" not in section_dict:
@@ -669,6 +666,7 @@ if __name__ == "__main__":
                 THIS_LOG.fatal(m.format(str(e)))
                 sys.exit(1)
 
+
     def check_tracker():
         for section_name, section_thread in thread_tracker.items():
             if not section_thread.is_alive():
@@ -677,6 +675,7 @@ if __name__ == "__main__":
                 section_dict = bro_config[section_name]
                 thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict, bs)
                 print('re-created thread with id {}'.format(id(thread_tracker[section_name])))
+
 
     create_tracker()
     slept_seconds = 0
