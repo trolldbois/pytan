@@ -675,7 +675,7 @@ if __name__ == "__main__":
                 THIS_LOG.debug('Restarting stopped question thread for {}'.format(section_name))
                 # create a new thread
                 section_dict = bro_config[section_name]
-                thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict)
+                thread_tracker[section_name] = QuestionThread(handler, section_name, section_dict, bs)
                 print('re-created thread with id {}'.format(id(thread_tracker[section_name])))
 
     create_tracker()
