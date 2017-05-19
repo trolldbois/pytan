@@ -160,4 +160,3 @@ class TaniumBrokerSender(object):
         for m in msgs:
             if not m.status == pybroker.outgoing_connection_status.tag_established:
                 raise RuntimeError('Message indicates tag is not established')
-
