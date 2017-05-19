@@ -106,8 +106,7 @@ class TaniumBrokerSender(object):
             last_user = row[2]
             try:
                 # construct first part of broker message. All python data types have to be processed by pybroker module.
-                message_list = [f(d(str(event_name))),
-                                f(d(pybroker.time_point(question_time_unix))),
+                message_list = [f(d(pybroker.time_point(question_time_unix))),
                                 f(d(str(hostname))),
                                 f(d(pybroker.address_from_string(str(client_ip)))),
                                 f(d(str(last_user)))]
