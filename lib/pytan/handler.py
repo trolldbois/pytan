@@ -2721,7 +2721,7 @@ class Handler(object):
         callback = callbacks.get(cb, None)
         if callback:
             m = "Running callback function {f} for {n}".format
-            m = m.format(f=callback, n=cb)
+            m = m(f=callback, n=cb)
             self.mylog.debug(m)
             try:
                 obj = callback(handler=self, obj=obj, kwargs=kwargs)
@@ -2730,11 +2730,11 @@ class Handler(object):
                     raise
                 else:
                     m = "Exception occurred in callback function {f} for {n}: {e}".format
-                    m = m.format(f=callback, n=cb, e=e)
+                    m = m(f=callback, n=cb, e=e)
                     self.mylog.exception(m)
         else:
             m = "No callback function specified for {n}".format
-            m = m.format(n=cb)
+            m = m(n=cb)
             self.mylog.debug(m)
         return obj
 
