@@ -4,7 +4,7 @@
 '''A python package that makes using the Tanium Server SOAP API easy.'''
 
 __title__ = 'PyTan'
-__version__ = '2.1.8'
+__version__ = '2.2.0'
 """
 Version of PyTan
 """
@@ -35,6 +35,11 @@ my_dir = os.path.dirname(my_file)
 parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds]
+
+try:
+    import libs_external  # noqa
+except:
+    pass
 
 import taniumpy  # noqa
 
