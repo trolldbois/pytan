@@ -2268,6 +2268,12 @@ class Handler(object):
         -------
         added_obj : :class:`taniumpy.object_types.base.BaseType`
            * full object that was added
+
+        Notes
+        -------
+
+            * Callback Support:
+                * PreAddObject
         """
         try:
             search_str = '; '.join([str(x) for x in obj])
@@ -2283,6 +2289,8 @@ class Handler(object):
 
         h = "Issue an AddObject to add an object"
         clean_kwargs['pytan_help'] = clean_kwargs.get('pytan_help', h)
+
+        obj = self.handle_cb(obj=obj, cb="PreAddObject", kwargs=kwargs)
 
         try:
             added_obj = self.session.add(obj=obj, **clean_kwargs)
