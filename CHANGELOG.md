@@ -99,6 +99,7 @@
   * ``_add`` now supports the following callbacks:
     * PreAddObject: allows you to change ANY object before it gets added
   * More callbacks can be added throughout Handler with ease, please advise if you see the need for one somewhere
+  * added ``EXAMPLES\POC\deploy_action_computer_groups.py`` as a proof to show callback support, specifically in deploy_action. Utilizies a callback function named ``handle_cgs`` that is an example PreAddAction callback that modifies the target_group of an Action if computer group names are supplied.
 
 # 2.1.9
 
