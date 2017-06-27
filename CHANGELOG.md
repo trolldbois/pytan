@@ -67,6 +67,30 @@
   * force_server_version can still be used to force pytan behavior to 6.2
 * Modified default behavior of lib/taniumpy/object_types/result_set.py:
   * 'Count' column will no longer be removed from CSV exports of Result Sets by default, need to supply remove_count=True as an argument to the CSV exporter in order to revert to old behavior
+* Callback support added to pytan.handler.Handler:
+  * ``handle_cb`` is the new method added to handle callbacks
+    * takes 3 arguments itself:
+      * obj: the object to pass into a callback function and return
+      * cb: the name of the callback to fetch from the ``callbacks`` dict argument in kwargs
+      * kwargs: the extra arguments passed to the calling method
+    * If a callback named "cb" is found in the ``callbacks`` dict argument in kwargs, that callback will be run with 3 arguments:
+      * handler: the instantiated object of the handler itself
+      * obj: the object that the callback method should return after modifying
+      * kwargs: the extra arguments passed to the calling method
+    * If a callback function fails, it will throw an exception. This behavior can be over-ridden by passing callback_exception_failure=False
+  * ``_deploy_action`` now supports the following callbacks:
+    * PackageDefinition: allows you to change the package definition dict object
+    * ActionFilterDefinitions: allows you to change the action filter definitions list object
+    * ActionOptionDefinitions: allows you to change the action option definitions list object
+    * VerifyActionQuestion: allows you to change the verification question arguments dictionary if run=False
+    * PreAddAction: allows you to change the Action object before it gets added
+  * ``_ask_manual`` now supports the following callbacks:
+    * SensorDefinitions: allows you to change the sensor definitions list object
+    * QuestionFilterDefinitions: allows you to change the question filter definitions list object
+    * QuestionOptionDefinitions: allows you to change the question option definitions list object
+    * PreAddQuestion: allows you to change the Question object before it gets added
+  * ``_add`` now supports the following callbacks:
+    * PreAddObject: allows you to change ANY object before it gets added
 
 # 2.1.9
 
