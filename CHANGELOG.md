@@ -1,34 +1,36 @@
 <!-- MarkdownTOC -->
 
 - [2.2.0](#220)
+  - [bug fixes](#bug-fixes)
+  - [enhancements](#enhancements)
 - [2.1.9](#219)
 - [2.1.8](#218)
-  - [enhancements](#enhancements)
-- [2.1.7](#217)
   - [enhancements](#enhancements-1)
+- [2.1.7](#217)
+  - [enhancements](#enhancements-2)
   - [doc updates](#doc-updates)
-  - [bug fixes](#bug-fixes)
+  - [bug fixes](#bug-fixes-1)
   - [work in progress](#work-in-progress)
   - [notes](#notes)
 - [2.1.6](#216)
-  - [enhancements](#enhancements-2)
-- [2.1.5](#215)
-  - [bug fixes](#bug-fixes-1)
   - [enhancements](#enhancements-3)
-- [2.1.4](#214)
+- [2.1.5](#215)
   - [bug fixes](#bug-fixes-2)
   - [enhancements](#enhancements-4)
+- [2.1.4](#214)
+  - [bug fixes](#bug-fixes-3)
+  - [enhancements](#enhancements-5)
   - [doc updates](#doc-updates-1)
   - [test updates](#test-updates)
 - [2.1.3](#213)
-  - [enhancements](#enhancements-5)
-- [2.1.2](#212)
-  - [bug fixes](#bug-fixes-3)
-- [2.1.1](#211)
   - [enhancements](#enhancements-6)
-- [2.1.0](#210)
+- [2.1.2](#212)
   - [bug fixes](#bug-fixes-4)
+- [2.1.1](#211)
   - [enhancements](#enhancements-7)
+- [2.1.0](#210)
+  - [bug fixes](#bug-fixes-5)
+  - [enhancements](#enhancements-8)
   - [doc updates](#doc-updates-2)
 - [2.0.3](#203)
 - [2.0.2](#202)
@@ -50,6 +52,8 @@
 
 [Released](https://github.com/tanium/pytan/releases/tag/2.2.0) on Jun 27 2017
 
+## bug fixes
+
 * lib directory updates:
   * requests and xmltodict now moved into lib/libs_external directory
   * lib/libs_external directory has support for multi-platform libraries, but not used as of yet - only "any" directory used
@@ -58,6 +62,9 @@
   * requests updated to latest version
   * xmltodict updated to latest version
   * ddt NOT updated to latest version, still lives in lib/ instead of lib/libs_external due to massive changes that break how pytan relies on ddt in testing suite
+
+## enhancements
+
 * PEP8/flake8 fixes:
   * lib/pytan/sessions.py
   * lib/pytan/handler.py
@@ -91,6 +98,7 @@
     * PreAddQuestion: allows you to change the Question object before it gets added
   * ``_add`` now supports the following callbacks:
     * PreAddObject: allows you to change ANY object before it gets added
+  * More callbacks can be added throughout Handler with ease, please advise if you see the need for one somewhere
 
 # 2.1.9
 
