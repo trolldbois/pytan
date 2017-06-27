@@ -60,6 +60,13 @@
   * ddt NOT updated to latest version, still lives in lib/ instead of lib/libs_external due to massive changes that break how pytan relies on ddt in testing suite
 * PEP8/flake8 fixes:
   * lib/pytan/sessions.py
+  * lib/pytan/handler.py
+* Modified default behavior of lib/pytan/sessions.py:Session.platform_is_6_5():
+  * No longer assume that platform is 6.2
+  * Will now default to assuming platform is 6.5 or greater
+  * force_server_version can still be used to force pytan behavior to 6.2
+* Modified default behavior of lib/taniumpy/object_types/result_set.py:
+  * 'Count' column will no longer be removed from CSV exports of Result Sets by default, need to supply remove_count=True as an argument to the CSV exporter in order to revert to old behavior
 
 # 2.1.9
 

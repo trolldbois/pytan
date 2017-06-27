@@ -2,17 +2,12 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
-import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
-import os
-import logging
-import io
 import datetime
-import pprint
+import io
 import json
+import logging
+import os
+import sys
 
 my_file = os.path.abspath(__file__)
 my_dir = os.path.dirname(my_file)
@@ -20,12 +15,15 @@ parent_dir = os.path.dirname(my_dir)
 path_adds = [parent_dir]
 [sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-import taniumpy
-import pytan
+try:
+    import taniumpy
+    import pytan
+except Exception:
+    raise
 
 
 class Handler(object):
-    """Creates a connection to a Tanium SOAP Server on host:port
+    """Creates a connection to a Tanium SOAP Server on host:port.
 
     Parameters
     ----------
@@ -157,6 +155,7 @@ class Handler(object):
 
     def __init__(self, username=None, password=None, host=None, port=443,
                  loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):
+        """Constructor."""
         super(Handler, self).__init__()
         self.mylog = logging.getLogger("pytan.handler")
         self.methodlog = logging.getLogger("method_debug")
@@ -196,8 +195,6 @@ class Handler(object):
 
         self.debug_method_locals = kwargs.get('debug_method_locals', False)
 
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not self.session_id:
 
             if not self.username:
@@ -231,14 +228,13 @@ class Handler(object):
         )
 
     def __str__(self):
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
+        """String method."""
         str_tpl = "PyTan v{} Handler for {}".format
         ret = str_tpl(pytan.__version__, self.session)
         return ret
 
     def read_pytan_user_config(self, kwargs):
-        """Read a PyTan User Config and update the current class variables
+        """Read a PyTan User Config and update the current class variables.
 
         Returns
         -------
@@ -297,7 +293,7 @@ class Handler(object):
         return kwargs
 
     def write_pytan_user_config(self, **kwargs):
-        """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler()
+        """Write a PyTan User Config with the current class variables for use with pytan_user_config in instantiating Handler().
 
         Parameters
         ----------
@@ -341,21 +337,19 @@ class Handler(object):
         return puc
 
     def get_server_version(self, **kwargs):
-        """Uses :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server
+        """Use :func:`taniumpy.session.Session.get_server_version` to get the version of the Tanium Server.
 
         Returns
         -------
         server_version: str
             * Version of Tanium Server in string format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         server_version = self.session.get_server_version(**kwargs)
         return server_version
 
     # Questions
     def ask(self, **kwargs):
-        """Ask a type of question and get the results back
+        """Ask a type of question and get the results back.
 
         Parameters
         ----------
@@ -376,8 +370,6 @@ class Handler(object):
         :func:`pytan.handler.Handler.ask_manual` : method used when qtype == 'manual'
         :func:`pytan.handler.Handler._ask_manual` : method used when qtype == '_manual'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         qtype = kwargs.get('qtype', 'manual')
 
         clean_keys = ['qtype']
@@ -390,7 +382,7 @@ class Handler(object):
         return result
 
     def ask_saved(self, refresh_data=False, **kwargs):
-        """Ask a saved question and get the results back
+        """Ask a saved question and get the results back.
 
         Parameters
         ----------
@@ -452,8 +444,6 @@ class Handler(object):
         -----
         id or name must be supplied
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
@@ -541,7 +531,7 @@ class Handler(object):
         return ret
 
     def ask_manual(self, **kwargs):
-        """Ask a manual question using human strings and get the results back
+        """Ask a manual question using human strings and get the results back.
 
         This method takes a string or list of strings and parses them into
         their corresponding definitions needed by :func:`_ask_manual`
@@ -671,8 +661,6 @@ class Handler(object):
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._ask_manual` : private method with the actual workflow used to create and add the question object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         sensors = kwargs.get('sensors', [])
@@ -695,7 +683,7 @@ class Handler(object):
         return result
 
     def parse_query(self, question_text, **kwargs):
-        """Ask a parsed question as `question_text` and get a list of parsed results back
+        """Ask a parsed question as `question_text` and get a list of parsed results back.
 
         Parameters
         ----------
@@ -706,8 +694,6 @@ class Handler(object):
         -------
         parse_job_results : :class:`taniumpy.object_types.parse_result_group.ParseResultGroup`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
@@ -724,7 +710,7 @@ class Handler(object):
         return parse_job_results
 
     def ask_parsed(self, question_text, picker=None, get_results=True, **kwargs):
-        """Ask a parsed question as `question_text` and use the index of the parsed results from `picker`
+        """Ask a parsed question as `question_text` and use the index of the parsed results from `picker`.
 
         Parameters
         ----------
@@ -792,8 +778,6 @@ class Handler(object):
         Ask the server to parse 'computer name' and pick index 1 as the question you want to run:
             >>> v = handler.ask_parsed('computer name', picker=1)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not self.session.platform_is_6_5(**kwargs):
             m = "ParseJob not supported in version: {}".format
             m = m(self.session.server_version)
@@ -830,7 +814,7 @@ class Handler(object):
 
         try:
             picked_parse_job = parse_job_results[picker - 1]
-        except:
+        except Exception:
             invalid_pw = (
                 "You supplied an invalid picker index {} - {}"
             ).format
@@ -879,7 +863,7 @@ class Handler(object):
 
     # Actions
     def deploy_action(self, **kwargs):
-        """Deploy an action and get the results back
+        """Deploy an action and get the results back.
 
         This method takes a string or list of strings and parses them into
         their corresponding definitions needed by :func:`_deploy_action`
@@ -970,8 +954,6 @@ class Handler(object):
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         :func:`pytan.handler.Handler._deploy_action` : private method with the actual workflow used to create and add the action object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         # the human string describing the sensors/filter that user wants
@@ -1001,7 +983,7 @@ class Handler(object):
         return deploy_result
 
     def approve_saved_action(self, id, **kwargs):
-        """Approve a saved action
+        """Approve a saved action.
 
         Parameters
         ----------
@@ -1013,8 +995,6 @@ class Handler(object):
         saved_action_approve_obj : :class:`taniumpy.object_types.saved_action_approval.SavedActionApproval`
             * The object containing the return from SavedActionApproval
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -1035,7 +1015,7 @@ class Handler(object):
         return sap_obj
 
     def stop_action(self, id, **kwargs):
-        """Stop an action
+        """Stop an action.
 
         Parameters
         ----------
@@ -1047,8 +1027,6 @@ class Handler(object):
         action_stop_obj : :class:`taniumpy.object_types.action_stop.ActionStop`
             The object containing the ID of the action stop job
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['pytan_help', 'objtype', 'id', 'obj']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -1077,7 +1055,7 @@ class Handler(object):
 
     # Result Data / Result Info
     def get_result_data(self, obj, aggregate=False, shrink=True, **kwargs):
-        """Get the result data for a python API object
+        """Get the result data for a python API object.
 
         This method issues a GetResultData command to the SOAP api for `obj`. GetResultData returns the columns and rows that are currently available for `obj`.
 
@@ -1099,15 +1077,12 @@ class Handler(object):
         rd : :class:`taniumpy.object_types.result_set.ResultSet`
             The return of GetResultData for `obj`
         """
-
         """ note #1 from jwk:
         For Action GetResultData: You have to make a ResultInfo request at least once every 2 minutes. The server gathers the result data by asking a saved question. It won't re-issue the saved question unless you make a GetResultInfo request. When you make a GetResultInfo request, if there is no question that is less than 2 minutes old, the server will automatically reissue a new question instance to make sure fresh data is available.
 
         note #2 from jwk:
         To get the aggregate data (without computer names), set row_counts_only_flag = 1. To get the computer names, use row_counts_only_flag = 0 (default).
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if shrink:
             shrunk_obj = pytan.utils.shrink_obj(obj=obj)
         else:
@@ -1136,7 +1111,7 @@ class Handler(object):
         return rd
 
     def get_result_data_sse(self, obj, **kwargs):
-        """Get the result data for a python API object using a server side export (sse)
+        """Get the result data for a python API object using a server side export (sse).
 
         This method issues a GetResultData command to the SOAP api for `obj` with the option
         `export_flag` set to 1. This will cause the server to process all of the data for a given
@@ -1178,8 +1153,6 @@ class Handler(object):
             * If sse_format is one of csv, xml, or cef, export_data will be a `str` containing the contents of the ResultSet in said format
             * If sse_format is xml_obj, export_data will be a :class:`taniumpy.object_types.result_set.ResultSet`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         self._check_sse_version()
         self._check_sse_crash_prevention(obj=obj)
 
@@ -1231,7 +1204,7 @@ class Handler(object):
         return export_data
 
     def xml_to_result_set_obj(self, x, **kwargs):
-        """Wraps a Result Set XML from a server side export in the appropriate tags and returns a ResultSet object
+        """Wrap a Result Set XML from a server side export in the appropriate tags and returns a ResultSet object.
 
         Parameters
         ----------
@@ -1243,8 +1216,6 @@ class Handler(object):
         rs : :class:`taniumpy.object_types.result_set.ResultSet`
             * x converted into a ResultSet object
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         rs_xml = '<result_sets><result_set>{}</result_set></result_sets>'.format
         rs_xml = rs_xml(x)
         rs_tree = pytan.sessions.ET.fromstring(rs_xml)
@@ -1253,7 +1224,7 @@ class Handler(object):
         return rs
 
     def get_result_info(self, obj, shrink=True, **kwargs):
-        """Get the result info for a python API object
+        """Get the result info for a python API object.
 
         This method issues a GetResultInfo command to the SOAP api for `obj`. GetResultInfo returns information about how many servers have passed the `obj`, total number of servers, and so on.
 
@@ -1271,8 +1242,6 @@ class Handler(object):
         ri : :class:`taniumpy.object_types.result_info.ResultInfo`
             * The return of GetResultInfo for `obj`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if shrink:
             shrunk_obj = pytan.utils.shrink_obj(obj=obj)
         else:
@@ -1290,7 +1259,7 @@ class Handler(object):
 
     # Objects
     def create_from_json(self, objtype, json_file, **kwargs):
-        """Creates a new object using the SOAP api from a json file
+        """Create a new object using the SOAP api from a json file.
 
         Parameters
         ----------
@@ -1308,8 +1277,6 @@ class Handler(object):
         --------
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'create_json' types
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         obj_map = pytan.utils.get_obj_map(objtype=objtype)
 
         create_json_ok = obj_map['create_json']
@@ -1364,7 +1331,7 @@ class Handler(object):
         return ret
 
     def run_plugin(self, obj, **kwargs):
-        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary
+        """Wrapper around :func:`pytan.session.Session.run_plugin` to run the plugin and zip up the SQL results into a python dictionary.
 
         Parameters
         ----------
@@ -1377,8 +1344,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # run the plugin
         h = "Issue a RunPlugin run a plugin and get results back"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
@@ -1395,7 +1360,7 @@ class Handler(object):
         return plugin_result, sql_zipped
 
     def create_dashboard(self, name, text='', group='', public_flag=True, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response
+        """Call :func:`pytan.handler.Handler.run_plugin` to run the CreateDashboard plugin and parse the response.
 
         Parameters
         ----------
@@ -1418,8 +1383,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
@@ -1480,7 +1443,7 @@ class Handler(object):
         return plugin_result, sql_zipped
 
     def delete_dashboard(self, name, **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response
+        """Call :func:`pytan.handler.Handler.run_plugin` to run the DeleteDashboards plugin and parse the response.
 
         Parameters
         ----------
@@ -1493,8 +1456,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj', 'name', 'pytan_help']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -1522,7 +1483,7 @@ class Handler(object):
         return plugin_result, sql_zipped
 
     def get_dashboards(self, name='', **kwargs):
-        """Calls :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response
+        """Call :func:`pytan.handler.Handler.run_plugin` to run the GetDashboards plugin and parse the response.
 
         Parameters
         ----------
@@ -1536,8 +1497,6 @@ class Handler(object):
             * plugin_result will be the taniumpy object representation of the SOAP response from Tanium server
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj', 'name', 'pytan_help']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -1561,7 +1520,7 @@ class Handler(object):
         return plugin_result, sql_zipped
 
     def create_sensor(self, **kwargs):
-        """Create a sensor object
+        """Create a sensor object.
 
         Warnings
         --------
@@ -1572,8 +1531,6 @@ class Handler(object):
         ------
         pytan.exceptions.HandlerError : :exc:`pytan.utils.pytan.exceptions.HandlerError`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         m = (
             "Sensor creation not supported via PyTan as of yet, too complex\n"
             "Use create_sensor_from_json() instead!"
@@ -1584,7 +1541,7 @@ class Handler(object):
                        command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
                        verify_filters=[], verify_filter_options=[], verify_expire_seconds=600,
                        **kwargs):
-        """Create a package object
+        """Create a package object.
 
         Parameters
         ----------
@@ -1643,8 +1600,6 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filters for verify_filters
         :data:`pytan.constants.OPTION_MAPS` : valid options for verify_filter_options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         clean_keys = ['obj', 'pytan_help', 'defs']
@@ -1720,7 +1675,7 @@ class Handler(object):
         return package_obj
 
     def create_group(self, groupname, filters=[], filter_options=[], **kwargs):
-        """Create a group object
+        """Create a group object.
 
         Parameters
         ----------
@@ -1751,8 +1706,6 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filters for filters
         :data:`pytan.constants.OPTION_MAPS` : valid options for filter_options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
@@ -1778,7 +1731,7 @@ class Handler(object):
         return group_obj
 
     def create_user(self, name, rolename=[], roleid=[], properties=[], group='', **kwargs):
-        """Create a user object
+        """Create a user object.
 
         Parameters
         ----------
@@ -1804,8 +1757,6 @@ class Handler(object):
         user_obj : :class:`taniumpy.object_types.user.User`
             * TaniumPy object added to Tanium SOAP Server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
 
         # get the ID for the group if a name was passed in
@@ -1841,7 +1792,7 @@ class Handler(object):
 
     def create_whitelisted_url(self, url, regex=False, download_seconds=86400, properties=[],
                                **kwargs):
-        """Create a whitelisted url object
+        """Create a whitelisted url object.
 
         Parameters
         ----------
@@ -1865,8 +1816,6 @@ class Handler(object):
         url_obj : :class:`taniumpy.object_types.white_listed_url.WhiteListedUrl`
             * TaniumPy object added to Tanium SOAP Server
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if regex:
             url = 'regex:' + url
 
@@ -1889,7 +1838,7 @@ class Handler(object):
         return url_obj
 
     def delete(self, objtype, **kwargs):
-        """Delete an object type
+        """Delete an object type.
 
         Parameters
         ----------
@@ -1907,8 +1856,6 @@ class Handler(object):
         --------
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         obj_map = pytan.utils.get_obj_map(objtype=objtype)
 
         delete_ok = obj_map['delete']
@@ -1938,7 +1885,7 @@ class Handler(object):
         return deleted_objects
 
     def export_obj(self, obj, export_format='csv', **kwargs):
-        """Exports a python API object to a given export format
+        """Export a python API object to a given export format.
 
         Parameters
         ----------
@@ -1992,12 +1939,10 @@ class Handler(object):
         --------
         :data:`pytan.constants.EXPORT_MAPS` : maps the type `obj` to `export_format` and the optional args supported for each
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         objtype = type(obj)
         try:
             objclassname = objtype.__name__
-        except:
+        except Exception:
             objclassname = 'Unknown'
 
         # see if supplied obj is a supported object type
@@ -2049,7 +1994,7 @@ class Handler(object):
         return result
 
     def create_report_file(self, contents, report_file=None, **kwargs):
-        """Exports a python API object to a file
+        """Export a python API object to a file.
 
         Parameters
         ----------
@@ -2072,8 +2017,6 @@ class Handler(object):
         report_path : str
             * the full path to the file created with `contents`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if report_file is None:
             report_file = 'pytan_report_{}.txt'.format(pytan.utils.get_now())
 
@@ -2112,7 +2055,7 @@ class Handler(object):
         return report_path
 
     def export_to_report_file(self, obj, export_format='csv', **kwargs):
-        """Exports a python API object to a file
+        """Export a python API object to a file.
 
         Parameters
         ----------
@@ -2180,8 +2123,6 @@ class Handler(object):
         -----
         When performing a CSV export and importing that CSV into excel, keep in mind that Excel has a per cell character limit of 32,000. Any cell larger than that will be broken up into a whole new row, which can wreak havoc with data in Excel.
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         report_file = kwargs.get('report_file', None)
 
         if not report_file:
@@ -2202,7 +2143,7 @@ class Handler(object):
         return report_path, contents
 
     def get(self, objtype, **kwargs):
-        """Get an object type
+        """Get an object type.
 
         Parameters
         ----------
@@ -2222,8 +2163,6 @@ class Handler(object):
         :func:`pytan.handler.Handler._get_multi` : private method used to get multiple items
         :func:`pytan.handler.Handler._get_single` : private method used to get singular items
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
@@ -2288,7 +2227,7 @@ class Handler(object):
         raise pytan.exceptions.HandlerError(err(objtype))
 
     def get_all(self, objtype, **kwargs):
-        """Get all objects of a type
+        """Get all objects of a type.
 
         Parameters
         ----------
@@ -2305,8 +2244,6 @@ class Handler(object):
         :data:`pytan.constants.GET_OBJ_MAP` : maps objtype to supported 'search' keys
         :func:`pytan.handler.Handler._find` : private method used to find items
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         h = "Issue a GetObject to find an object"
         kwargs['pytan_help'] = kwargs.get('pytan_help', h)
 
@@ -2323,7 +2260,7 @@ class Handler(object):
 
     # BEGIN PRIVATE METHODS
     def _add(self, obj, **kwargs):
-        """Wrapper for interfacing with :func:`taniumpy.session.Session.add`
+        """Wrapper for interfacing with :func:`taniumpy.session.Session.add`.
 
         Parameters
         ----------
@@ -2335,11 +2272,9 @@ class Handler(object):
         added_obj : :class:`taniumpy.object_types.base.BaseType`
            * full object that was added
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         try:
             search_str = '; '.join([str(x) for x in obj])
-        except:
+        except Exception:
             search_str = obj
 
         self.mylog.debug("Adding object {}".format(search_str))
@@ -2372,7 +2307,7 @@ class Handler(object):
         return added_obj
 
     def _find(self, obj, **kwargs):
-        """Wrapper for interfacing with :func:`taniumpy.session.Session.find`
+        """Wrapper for interfacing with :func:`taniumpy.session.Session.find`.
 
         Parameters
         ----------
@@ -2384,11 +2319,9 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         try:
             search_str = '; '.join([str(x) for x in obj])
-        except:
+        except Exception:
             search_str = obj
 
         self.mylog.debug("Searching for {}".format(search_str))
@@ -2416,7 +2349,7 @@ class Handler(object):
         return found
 
     def _get_multi(self, obj_map, **kwargs):
-        """Find multiple item wrapper using :func:`_find`
+        """Find multiple item wrapper using :func:`_find`.
 
         Parameters
         ----------
@@ -2428,8 +2361,6 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
@@ -2465,7 +2396,7 @@ class Handler(object):
         return found
 
     def _get_single(self, obj_map, **kwargs):
-        """Find single item wrapper using :func:`_find`
+        """Find single item wrapper using :func:`_find`.
 
         Parameters
         ----------
@@ -2477,8 +2408,6 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         api_attrs = obj_map['search']
         api_kwattrs = [kwargs.get(x, '') for x in api_attrs]
         api_kw = {k: v for k, v in zip(api_attrs, api_kwattrs)}
@@ -2512,7 +2441,7 @@ class Handler(object):
         return found
 
     def _single_find(self, obj_map, k, v, **kwargs):
-        """Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`
+        """Wrapper for single item searches interfacing with :func:`taniumpy.session.Session.find`.
 
         Parameters
         ----------
@@ -2528,8 +2457,6 @@ class Handler(object):
         found : :class:`taniumpy.object_types.base.BaseType`
            * full object that was found
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         found = []
 
         single_type = obj_map['single']
@@ -2551,7 +2478,7 @@ class Handler(object):
         return found
 
     def _get_sensor_defs(self, defs, **kwargs):
-        """Uses :func:`get` to update a definition with a sensor object
+        """Use :func:`get` to update a definition with a sensor object.
 
         Parameters
         ----------
@@ -2563,8 +2490,6 @@ class Handler(object):
         defs : list of dict
            * list of dicts containing sensor definitions with sensor object in 'sensor_obj'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         s_obj_map = pytan.constants.GET_OBJ_MAP['sensor']
         search_keys = s_obj_map['search']
 
@@ -2588,7 +2513,7 @@ class Handler(object):
         return defs
 
     def _get_package_def(self, d, **kwargs):
-        """Uses :func:`get` to update a definition with a package object
+        """Use :func:`get` to update a definition with a package object.
 
         Parameters
         ----------
@@ -2600,8 +2525,6 @@ class Handler(object):
         d : dict
            * dict containing package definitions with package object in 'package_obj'
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         s_obj_map = pytan.constants.GET_OBJ_MAP['package']
         search_keys = s_obj_map['search']
 
@@ -2623,8 +2546,8 @@ class Handler(object):
             d['package_obj'] = self.get(objtype='package', **def_search)[0]
         return d
 
-    def _export_class_BaseType(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`taniumpy.object_types.base.BaseType`
+    def _export_class_BaseType(self, obj, export_format, **kwargs):  # noqa
+        """Handle exporting :class:`taniumpy.object_types.base.BaseType`.
 
         Parameters
         ----------
@@ -2638,8 +2561,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into format `export_format`
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         # run the handler that is specific to this export_format, if it exists
         format_method_str = '_export_format_' + export_format
         format_handler = getattr(self, format_method_str, '')
@@ -2655,8 +2576,8 @@ class Handler(object):
 
         return result
 
-    def _export_class_ResultSet(self, obj, export_format, **kwargs): # noqa
-        """Handles exporting :class:`taniumpy.object_types.result_set.ResultSet`
+    def _export_class_ResultSet(self, obj, export_format, **kwargs):  # noqa
+        """Handle exporting :class:`taniumpy.object_types.result_set.ResultSet`.
 
         Parameters
         ----------
@@ -2676,8 +2597,6 @@ class Handler(object):
         to the what_hash of each column, but only if header_add_sensor=True
         needed for: ResultSet.write_csv(header_add_sensor=True)
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         header_add_sensor = kwargs.get('header_add_sensor', False)
         sensors = kwargs.get('sensors', []) or getattr(obj, 'sensors', [])
 
@@ -2708,7 +2627,7 @@ class Handler(object):
         return result
 
     def _export_format_csv(self, obj, **kwargs):
-        """Handles exporting format: CSV
+        """Handle exporting format: CSV.
 
         Parameters
         ----------
@@ -2720,8 +2639,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into csv format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not hasattr(obj, 'write_csv'):
             err = "{!r} has no write_csv() method!".format
             raise pytan.exceptions.HandlerError(err(obj))
@@ -2740,7 +2657,7 @@ class Handler(object):
         return result
 
     def _export_format_json(self, obj, **kwargs):
-        """Handles exporting format: JSON
+        """Handle exporting format: JSON.
 
         Parameters
         ----------
@@ -2752,8 +2669,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into json format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if not hasattr(obj, 'to_json'):
             err = "{!r} has no to_json() method!".format
             raise pytan.exceptions.HandlerError(err(obj))
@@ -2765,7 +2680,7 @@ class Handler(object):
         return result
 
     def _export_format_xml(self, obj, **kwargs):
-        """Handles exporting format: XML
+        """Handle exporting format: XML.
 
         Parameters
         ----------
@@ -2777,8 +2692,6 @@ class Handler(object):
         result : str
            * results of exporting `obj` into XML format
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         result = None
 
         if hasattr(obj, 'toSOAPBody'):
@@ -2796,7 +2709,7 @@ class Handler(object):
         return result
 
     def _deploy_action(self, run=False, get_results=True, **kwargs):
-        """Deploy an action and get the results back
+        """Deploy an action and get the results back.
 
         This method requires in-depth knowledge of how filters and options are created in the API, and as such is not meant for human consumption. Use :func:`deploy_action` instead.
 
@@ -2902,8 +2815,6 @@ class Handler(object):
                 * To emulate what the console does, the SavedAction should be in a SavedActionList
                 * Action.start_time does not need to be specified
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         clean_keys = [
@@ -3183,7 +3094,7 @@ class Handler(object):
         return ret
 
     def _ask_manual(self, get_results=True, **kwargs):
-        """Ask a manual question using definitions and get the results back
+        """Ask a manual question using definitions and get the results back.
 
         This method requires in-depth knowledge of how filters and options are created in the API,
         and as such is not meant for human consumption. Use :func:`ask_manual` instead.
@@ -3277,8 +3188,6 @@ class Handler(object):
         :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
         :data:`pytan.constants.OPTION_MAPS` : valid option dictionaries for options
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         pytan.utils.check_for_help(kwargs=kwargs)
 
         clean_keys = [
@@ -3391,8 +3300,7 @@ class Handler(object):
         return ret
 
     def _version_support_check(self, v_maps, **kwargs):
-        """Checks that each of the version maps in v_maps is greater than or equal to
-        the current servers version
+        """Check that each of the version maps in v_maps is greater than or equal to the current servers version.
 
         Parameters
         ----------
@@ -3409,8 +3317,6 @@ class Handler(object):
             * True if all values in all v_maps are greater than or equal to self.session.server_version
             * False otherwise
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if self.session._invalid_server_version():
             # server version is not valid, force a refresh right now
             self.session.get_server_version(**kwargs)
@@ -3425,7 +3331,7 @@ class Handler(object):
         return True
 
     def _check_sse_format_support(self, sse_format, sse_format_int, **kwargs):
-        """Determines if the export format integer is supported in the server version
+        """Determine if the export format integer is supported in the server version.
 
         Parameters
         ----------
@@ -3434,8 +3340,6 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         if sse_format_int not in pytan.constants.SSE_RESTRICT_MAP:
             return
 
@@ -3454,7 +3358,7 @@ class Handler(object):
             raise pytan.exceptions.UnsupportedVersionError(m)
 
     def _resolve_sse_format(self, sse_format, **kwargs):
-        """Resolves the server side export format the user supplied to an integer for the API
+        """Resolve the server side export format the user supplied to an integer for the API.
 
         Parameters
         ----------
@@ -3466,8 +3370,6 @@ class Handler(object):
         sse_format_int : int
             * `sse_format` parsed into an int
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         sse_format_int = [x[-1] for x in pytan.constants.SSE_FORMAT_MAP if sse_format.lower() in x]
 
         if not sse_format_int:
@@ -3489,24 +3391,20 @@ class Handler(object):
         return sse_format_int
 
     def _check_sse_version(self, **kwargs):
-        """Validates that the server version supports server side export"""
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
+        """Validate that the server version supports server side export."""
         if not self.session.platform_is_6_5(**kwargs):
             m = "Server side export not supported in version: {}".format
             m = m(self.session.server_version)
             raise pytan.exceptions.UnsupportedVersionError(m)
 
     def _check_sse_crash_prevention(self, obj, **kwargs):
-        """Runs a number of methods used to prevent crashing the platform server when performing server side exports
+        """Run a number of methods used to prevent crashing the platform server when performing server side exports.
 
         Parameters
         ----------
         obj : :class:`taniumpy.object_types.base.BaseType`
             * object to pass to self._check_sse_empty_rs
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj', 'v_maps', 'ok_version']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -3518,15 +3416,13 @@ class Handler(object):
         self._check_sse_empty_rs(obj=obj, ok_version=ok_version, **clean_kwargs)
 
     def _check_sse_timing(self, ok_version, **kwargs):
-        """Checks that the last server side export was at least 1 second ago if server version is less than any versions in pytan.constants.SSE_CRASH_MAP
+        """Check that the last server side export was at least 1 second ago if server version is less than any versions in pytan.constants.SSE_CRASH_MAP.
 
         Parameters
         ----------
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         last_get_rd_sse = getattr(self, 'last_get_rd_sse', None)
 
         if last_get_rd_sse:
@@ -3538,7 +3434,7 @@ class Handler(object):
         self.last_get_rd_sse = datetime.datetime.utcnow()
 
     def _check_sse_empty_rs(self, obj, ok_version, **kwargs):
-        """Checks if the server version is less than any versions in pytan.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty
+        """Check if the server version is less than any versions in pytan.constants.SSE_CRASH_MAP, if so verifies that the result set is not empty.
 
         Parameters
         ----------
@@ -3547,8 +3443,6 @@ class Handler(object):
         ok_version : bool
             * if the version currently running is an "ok" version
         """
-        self._debug_locals(sys._getframe().f_code.co_name, locals())
-
         clean_keys = ['obj']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
@@ -3559,9 +3453,3 @@ class Handler(object):
                     "No rows available to perform a server side export with, result info: {}"
                 ).format
                 raise pytan.exceptions.ServerSideExportError(m(ri))
-
-    def _debug_locals(self, fname, flocals):
-        """Method to print out locals for a function if self.debug_method_locals is True"""
-        if getattr(self, 'debug_method_locals', False):
-            m = "Local variables for {}.{}:\n{}".format
-            self.methodlog.debug(m(self.__class__.__name__, fname, pprint.pformat(flocals)))
