@@ -1,5 +1,6 @@
 <!-- MarkdownTOC -->
 
+- [2.2.0](#220)
 - [2.1.9](#219)
 - [2.1.8](#218)
   - [enhancements](#enhancements)
@@ -45,9 +46,24 @@
 
 <!-- /MarkdownTOC -->
 
+# 2.2.0
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.2.0) on Jun 27 2017
+
+* lib directory updates:
+  * requests and xmltodict now moved into lib/libs_external directory
+  * lib/libs_external directory has support for multi-platform libraries, but not used as of yet - only "any" directory used
+  * init.py in lib/pytan package now tries to import lib/libs_external directory before anything else
+  * using requests[security] to overcome SSL oddities on OSX / other platforms
+  * requests updated to latest version
+  * xmltodict updated to latest version
+  * ddt NOT updated to latest version, still lives in lib/ instead of lib/libs_external due to massive changes that break how pytan relies on ddt in testing suite
+
 # 2.1.9
 
 [Development branch](https://github.com/tanium/pytan/tree/develop) on N/A
+
+* Not released, major dev work stop-gapped for other reasons. Do not touch develop branch!
 
 # 2.1.8
 
