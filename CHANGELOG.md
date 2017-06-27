@@ -58,6 +58,8 @@
   * requests updated to latest version
   * xmltodict updated to latest version
   * ddt NOT updated to latest version, still lives in lib/ instead of lib/libs_external due to massive changes that break how pytan relies on ddt in testing suite
+* PEP8/flake8 fixes:
+  * lib/pytan/sessions.py
 
 # 2.1.9
 

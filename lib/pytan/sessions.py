@@ -16,7 +16,7 @@ from datetime import datetime
 
 try:
     import xml.etree.cElementTree as ET
-except:
+except Exception:
     import xml.etree.ElementTree as ET
 
 my_file = os.path.abspath(__file__)
@@ -761,7 +761,7 @@ class Session(object):
         version = None
         try:
             version = self.server_info['diags_flat']['Settings']['Version']
-        except:
+        except Exception:
             m = "Unable to find Version key in Settings: {}".format
             self.mylog.debug(m(self.server_info['diags_flat']))
 
@@ -790,13 +790,13 @@ class Session(object):
         """
         try:
             self._check_auth()
-        except:
+        except Exception:
             return "Not yet authenticated!"
 
         si = self.get_server_info(**kwargs)
         try:
             diags = si['diags_flat']
-        except:
+        except Exception:
             pass
 
         stats_resolved = [
@@ -1447,7 +1447,7 @@ class Session(object):
             ]
             try:
                 result = self._get_percentage(part=points[0], whole=points[1])
-            except:
+            except Exception:
                 result = ', '.join(points)
         else:
             result = self._resolve_stat_target(search_path=search_path, diags=diags)
