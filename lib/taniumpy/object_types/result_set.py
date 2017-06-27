@@ -121,6 +121,7 @@ class ResultSet(object):
             header_add_sensor = kwargs.get('header_add_sensor', False)
             header_add_type = kwargs.get('header_add_type', False)
             sensors = kwargs.get('sensors', [])
+            remove_count = kwargs.get('remove_count', False)
 
             headers = []
             for h in val.columns:
@@ -134,7 +135,7 @@ class ResultSet(object):
                 if header is 'Count', check all row vals and if all are == 1,
                 skip adding 'Count' header
                 '''
-                if h_name == 'Count':
+                if h_name == 'Count' and remove_count:
                     count_vals = [int(r['Count'][0]) for r in val.rows]
                     count_gt_one = any([c > 1 for c in count_vals])
                     if not count_gt_one:
