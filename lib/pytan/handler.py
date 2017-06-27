@@ -1,6 +1,3 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """The main :mod:`pytan` module that provides first level entities for programmatic use."""
 import datetime
 import io
@@ -2708,6 +2705,31 @@ class Handler(object):
         result = pytan.utils.xml_pretty(x=raw_xml, **clean_kwargs)
         return result
 
+    def handle_cb(self, obj, cb, kwargs):
+        """Handle a callback named `cb` from callbacks dict argument in kwargs."""
+        callbacks = kwargs.get("callbacks", {})
+        callback_exception_failure = kwargs.get("callback_exception_failure", True)
+
+        callback = callbacks.get(cb, None)
+        if callback:
+            m = "Running callback function {f} for {n}".format
+            m = m.format(f=callback, n=cb)
+            self.mylog.debug(m)
+            try:
+                obj = callback(handler=self, obj=obj, kwargs=kwargs)
+            except Exception as e:
+                if callback_exception_failure:
+                    raise
+                else:
+                    m = "Exception occurred in callback function {f} for {n}: {e}".format
+                    m = m.format(f=callback, n=cb, e=e)
+                    self.mylog.exception(m)
+        else:
+            m = "No callback function specified for {n}".format
+            m = m.format(n=cb)
+            self.mylog.debug(m)
+        return obj
+
     def _deploy_action(self, run=False, get_results=True, **kwargs):
         """Deploy an action and get the results back.
 
@@ -2814,6 +2836,13 @@ class Handler(object):
                 * We need to add a SavedAction object, the server creates the Action object for us
                 * To emulate what the console does, the SavedAction should be in a SavedActionList
                 * Action.start_time does not need to be specified
+
+            * Callback Support:
+                * PackageDefinition
+                * ActionFilterDefinitions
+                * ActionOptionDefinitions
+                * VerifyActionQuestion
+                * PreAddAction
         """
         pytan.utils.check_for_help(kwargs=kwargs)
 
@@ -2849,6 +2878,8 @@ class Handler(object):
             empty_ok=False,
             **clean_kwargs
         )
+        package_def = self.handle_cb(obj=package_def, cb="PackageDefinition", kwargs=kwargs)
+
         action_filter_defs = pytan.utils.parse_defs(
             defname='action_filter_defs',
             deftypes=['list()', 'str()', 'dict()'],
@@ -2856,12 +2887,15 @@ class Handler(object):
             empty_ok=True,
             **clean_kwargs
         )
+        action_filter_defs = self.handle_cb(obj=action_filter_defs, cb="ActionFilterDefinitions", kwargs=kwargs)
+
         action_option_defs = pytan.utils.parse_defs(
             defname='action_option_defs',
             deftypes=['dict()'],
             empty_ok=True,
             **clean_kwargs
         )
+        action_option_defs = self.handle_cb(obj=action_option_defs, cb="ActionOptionDefinitions", kwargs=kwargs)
 
         pytan.utils.val_package_def(package_def=package_def)
         pytan.utils.val_sensor_defs(sensor_defs=action_filter_defs)
@@ -2932,7 +2966,7 @@ class Handler(object):
             q_clean_kwargs['question_filter_defs'] = action_filter_defs
             q_clean_kwargs['question_option_defs'] = action_option_defs
             q_clean_kwargs['hide_no_results_flag'] = 1
-
+            q_clean_kwargs = self.handle_cb(obj=q_clean_kwargs, cb="VerifyActionQuestion", kwargs=kwargs)
             pre_action_question = self._ask_manual(pytan_help=h, **q_clean_kwargs)
 
             passed_count = pre_action_question['question_results'].passed
@@ -3037,6 +3071,8 @@ class Handler(object):
 
         if expire_seconds:
             add_obj.expire_seconds = expire_seconds
+
+        add_obj = self.handle_cb(obj=add_obj, cb="PreAddAction", kwargs=kwargs)
 
         if objlisttype:
             add_objs = objlisttype()
@@ -3183,6 +3219,14 @@ class Handler(object):
         ...     'value': '.*'
         ... }
 
+        Notes
+        -----
+            * Callback Support:
+                * SensorDefinitions
+                * QuestionFilterDefinitions
+                * QuestionOptionDefinitions
+                * PreAddQuestion
+
         See Also
         --------
         :data:`pytan.constants.FILTER_MAPS` : valid filter dictionaries for filters
@@ -3215,6 +3259,7 @@ class Handler(object):
             empty_ok=True,
             **clean_kwargs
         )
+        sensor_defs = self.handle_cb(obj=sensor_defs, cb="SensorDefinitions", kwargs=kwargs)
 
         q_filter_defs = pytan.utils.parse_defs(
             defname='question_filter_defs',
@@ -3222,6 +3267,7 @@ class Handler(object):
             empty_ok=True,
             **clean_kwargs
         )
+        q_filter_defs = self.handle_cb(obj=q_filter_defs, cb="QuestionFilterDefinitions", kwargs=kwargs)
 
         q_option_defs = pytan.utils.parse_defs(
             defname='question_option_defs',
@@ -3229,6 +3275,7 @@ class Handler(object):
             empty_ok=True,
             **clean_kwargs
         )
+        q_option_defs = self.handle_cb(obj=q_option_defs, cb="QuestionOptionDefinitions", kwargs=kwargs)
 
         sse = kwargs.get('sse', False)
         clean_kwargs['sse_format'] = clean_kwargs.get('sse_format', 'xml_obj')
@@ -3265,6 +3312,8 @@ class Handler(object):
         add_obj = pytan.utils.build_manual_q(selectlist_obj=selectlist_obj, group_obj=group_obj)
 
         add_obj.max_age_seconds = max_age_seconds
+
+        add_obj = self.handle_cb(obj=add_obj, cb="PreAddQuestion", kwargs=kwargs)
 
         # add our Question and get a Question ID back
         h = "Issue an AddObject to add a Question object"
