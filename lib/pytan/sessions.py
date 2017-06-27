@@ -32,6 +32,7 @@ try:
     import taniumpy
 except Exception:
     raise
+
 requests.packages.urllib3.disable_warnings()
 
 try:
@@ -1345,30 +1346,25 @@ class Session(object):
     def platform_is_6_5(self, **kwargs):
         """Check to see if self.server_version is less than 6.5.
 
+        Changed in 2.2.0 to assume platform IS 6.5 or greater.
+
         Returns
         -------
-        is6_5 : bool
+        ret : bool
             * True if self.force_server_version is greater than or equal to 6.5
             * True if self.server_version is greater than or equal to 6.5
             * False if self.server_version is less than 6.5
         """
+        ret = True
         if self.force_server_version:
-            if self.force_server_version >= '6.5':
-                return True
-            else:
-                return False
-
-        if self._invalid_server_version():
-            # server version is not valid, force a refresh right now
-            self.get_server_version(**kwargs)
-
-        if self._invalid_server_version():
-            # server version is STILL invalid, we will assume its 6.2 since port 444 may be
-            # inaccessible
-            return False
-
-        is6_5 = self.server_version >= '6.5'
-        return is6_5
+            ret = False if not self.force_server_version >= '6.5' else ret
+        else:
+            if self._invalid_server_version():
+                # server version is not valid, force a refresh right now
+                self.get_server_version(**kwargs)
+            if not self._invalid_server_version():
+                ret = False if not self.server_version >= '6.5' else ret
+        return ret
 
     def _stats_loop(self, **kwargs):
         """Utility method for logging server stats via :func:`pytan.sessions.Session.get_server_stats` every self.STATS_LOOP_SLEEP_SEC."""
