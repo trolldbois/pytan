@@ -2,7 +2,7 @@
     "export_resultset_csv_default_options": {
         "desc": "Export a ResultSet from asking a question as CSV with the default options",
         "priority": "1",
-        "args": {"export_format": "csv"},
+        "args": {"export_format": "csv", "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -21,7 +21,7 @@
     "export_resultset_csv_sort_empty": {
         "desc": "Export a ResultSet from asking a question as CSV with an empty list for header_sort",
         "priority": "2",
-        "args": {"export_format": "csv", "header_sort": []},
+        "args": {"export_format": "csv", "header_sort": [], "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -39,7 +39,7 @@
     "export_resultset_csv_sort_true": {
         "desc": "Export a ResultSet from asking a question as CSV with true for header_sort",
         "priority": "3",
-        "args": {"export_format": "csv", "header_sort": true},
+        "args": {"export_format": "csv", "header_sort": true, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -57,7 +57,7 @@
     "export_resultset_csv_sort_false": {
         "desc": "Export a ResultSet from asking a question as CSV with false for header_sort",
         "priority": "4",
-        "args": {"export_format": "csv", "header_sort": false},
+        "args": {"export_format": "csv", "header_sort": false, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -75,7 +75,7 @@
     "export_resultset_csv_sort_list": {
         "desc": "Export a ResultSet from asking a question as CSV with Computer Name and IP Address for the header_sort",
         "priority": "5",
-        "args": {"export_format": "csv", "header_sort": ["Computer Name", "IP Address"]},
+        "args": {"export_format": "csv", "header_sort": ["Computer Name", "IP Address"], "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -93,7 +93,7 @@
     "export_resultset_csv_type_false": {
         "desc": "Export a ResultSet from asking a question as CSV with false for header_add_type",
         "priority": "6",
-        "args": {"export_format": "csv", "header_add_type": false},
+        "args": {"export_format": "csv", "header_add_type": false, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -111,7 +111,7 @@
     "export_resultset_csv_type_true": {
         "desc": "Export a ResultSet from asking a question as CSV with true for header_add_type",
         "priority": "7",
-        "args": {"export_format": "csv", "header_add_type": true},
+        "args": {"export_format": "csv", "header_add_type": true, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -130,7 +130,7 @@
     "export_resultset_csv_sensor_false": {
         "desc": "Export a ResultSet from asking a question as CSV with false for header_add_sensor",
         "priority": "8",
-        "args": {"export_format": "csv", "header_add_sensor": false},
+        "args": {"export_format": "csv", "header_add_sensor": false, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -148,7 +148,7 @@
     "export_resultset_csv_sensor_true": {
         "desc": "Export a ResultSet from asking a question as CSV with true for header_add_sensor",
         "priority": "9",
-        "args": {"export_format": "csv", "header_add_sensor": true},
+        "args": {"export_format": "csv", "header_add_sensor": true, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -166,7 +166,7 @@
     "export_resultset_csv_expand_false": {
         "desc": "Export a ResultSet from asking a question as CSV with false for expand_grouped_columns",
         "priority": "10",
-        "args": {"export_format": "csv", "expand_grouped_columns": false},
+        "args": {"export_format": "csv", "expand_grouped_columns": false, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -184,7 +184,7 @@
     "export_resultset_csv_expand_true": {
         "desc": "Export a ResultSet from asking a question as CSV with true for expand_grouped_columns",
         "priority": "11",
-        "args": {"export_format": "csv", "expand_grouped_columns": true},
+        "args": {"export_format": "csv", "expand_grouped_columns": true, "remove_count": true},
         "method_template": "export_resultset",
         "response_template": "export_obj",
         "tests": [
@@ -205,6 +205,7 @@
         "priority": "12",
         "args": {
             "export_format": "csv",
+            "remove_count": true,
             "header_add_sensor": true,
             "header_add_type": true,
             "header_sort": true,

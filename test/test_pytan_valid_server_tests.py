@@ -145,7 +145,11 @@ class ValidServerTests(unittest.TestCase):
         spew(export_str_list[0])
         for x in tests:
             spew("+++ EVAL TEST: %s" % x)
-            self.assertTrue(eval(x))
+            try:
+                self.assertTrue(eval(x))
+            except Exception:
+                spew("!!! EVAL TEST FAILED: '%s' - Against export string list:\n%s" % (x, export_str_list))
+                raise
 
     @ddt.file_data('ddt/ddt_valid_export_basetype.json')
     def test_valid_export_basetype(self, value):

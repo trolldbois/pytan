@@ -644,6 +644,11 @@ EXPORT_MAPS = {
                 'valid_list_types': [],
             },
             {
+                'key': 'remove_count',
+                'valid_types': [bool],
+                'valid_list_types': [],
+            },
+            {
                 'key': 'expand_grouped_columns',
                 'valid_types': [bool],
                 'valid_list_types': [],
