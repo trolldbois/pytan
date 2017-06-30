@@ -1,7 +1,9 @@
 <!-- MarkdownTOC -->
 
-- [2.2.0](#220)
+- [2.2.1](#221)
   - [bug fixes](#bug-fixes)
+- [2.2.0](#220)
+  - [bug fixes](#bug-fixes-1)
   - [enhancements](#enhancements)
 - [2.1.9](#219)
 - [2.1.8](#218)
@@ -9,27 +11,27 @@
 - [2.1.7](#217)
   - [enhancements](#enhancements-2)
   - [doc updates](#doc-updates)
-  - [bug fixes](#bug-fixes-1)
+  - [bug fixes](#bug-fixes-2)
   - [work in progress](#work-in-progress)
   - [notes](#notes)
 - [2.1.6](#216)
   - [enhancements](#enhancements-3)
 - [2.1.5](#215)
-  - [bug fixes](#bug-fixes-2)
+  - [bug fixes](#bug-fixes-3)
   - [enhancements](#enhancements-4)
 - [2.1.4](#214)
-  - [bug fixes](#bug-fixes-3)
+  - [bug fixes](#bug-fixes-4)
   - [enhancements](#enhancements-5)
   - [doc updates](#doc-updates-1)
   - [test updates](#test-updates)
 - [2.1.3](#213)
   - [enhancements](#enhancements-6)
 - [2.1.2](#212)
-  - [bug fixes](#bug-fixes-4)
+  - [bug fixes](#bug-fixes-5)
 - [2.1.1](#211)
   - [enhancements](#enhancements-7)
 - [2.1.0](#210)
-  - [bug fixes](#bug-fixes-5)
+  - [bug fixes](#bug-fixes-6)
   - [enhancements](#enhancements-8)
   - [doc updates](#doc-updates-2)
 - [2.0.3](#203)
@@ -47,6 +49,16 @@
 - [0.0.0](#000)
 
 <!-- /MarkdownTOC -->
+
+# 2.2.1
+
+[Released](https://github.com/tanium/pytan/releases/tag/2.2.1) on Jun 30 2017
+
+## bug fixes
+
+* Changing how CSV export of ResultSet objects worked to include Count column by default broke some validation tests
+* Added remove_count=True to Valid Export ResultSet tests
+* Also added remove_count as valid option to constants.EXPORT_MAPS so it can get funneled down properly to the underlying methods
 
 # 2.2.0
 
