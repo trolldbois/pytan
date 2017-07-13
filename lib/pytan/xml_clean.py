@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
-"""This is a regex based XML cleaner that will replace unsupported characters"""
+"""A regex based XML cleaner that will replace unsupported characters."""
 import sys
 import re
 import logging

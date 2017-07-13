@@ -1,11 +1,9 @@
-#!/usr/bin/env python
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """PyTan Constants
 
 This contains a number of constants that drive PyTan.
 """
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 # debug log format
 DEBUG_FORMAT = (
     "[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n%(levelname)-8s %(name)s %(message)s"
@@ -178,440 +176,6 @@ SENSOR_TYPE_MAP = {
 Maps a Result type from the Tanium SOAP API from an int to a string
 """
 
-GET_OBJ_MAP = {
-    "action": {
-        "single": "Action",
-        "multi": None,
-        "all": "ActionList",
-        "search": ["id"],
-        "manual": False,
-        "delete": False,
-        "create_json": True,
-    },
-    "client": {
-        "single": None,
-        "multi": None,
-        "all": "ClientStatus",
-        "search": [],
-        "manual": True,
-        "delete": False,
-        "create_json": False,
-    },
-    "group": {
-        "single": "Group",
-        "multi": "GroupList",
-        "all": "GroupList",
-        "search": ["id", "name"],
-        "manual": True,
-        "delete": True,
-        "create_json": True,
-    },
-    "package": {
-        "single": "PackageSpec",
-        "multi": None,
-        "allfix": "PackageSpecList",
-        "all": "PackageSpec",
-        "search": ["id", "name"],
-        "manual": True,
-        "delete": True,
-        "create_json": True,
-    },
-    "question": {
-        "single": "Question",
-        "multi": None,
-        "all": "QuestionList",
-        "search": ["id"],
-        "manual": False,
-        "delete": False,
-        "create_json": True,
-    },
-    "saved_action": {
-        "single": "SavedAction",
-        "multi": "SavedActionList",
-        "all": "SavedActionList",
-        "search": ["id", "name"],
-        "manual": True,
-        "delete": False,
-        "create_json": False,  # AddObject returns null, unknown why
-    },
-    "saved_question": {
-        "single": "SavedQuestion",
-        "multi": None,
-        "all": "SavedQuestionList",
-        "search": ["id", "name"],
-        "manual": True,
-        "delete": True,
-        "create_json": True,
-    },
-    "sensor": {
-        "single": "Sensor",
-        "multi": "SensorList",
-        "all": "SensorList",
-        "search": ["id", "name", "hash"],
-        "manual": False,
-        "delete": True,
-        "create_json": True,
-    },
-    "setting": {
-        "single": "SystemSetting",
-        "multi": "SystemSettingList",
-        "all": "SystemSettingList",
-        "search": ["id", "name"],
-        "manual": True,
-        "delete": False,
-        "create_json": False,
-    },
-    "user": {
-        "single": "User",
-        "multi": None,
-        "all": "UserList",
-        "search": ["id"],
-        "manual": True,
-        "delete": True,
-        "create_json": True,
-    },
-    "userrole": {
-        "single": None,
-        "multi": None,
-        "all": "UserRoleList",
-        "search": [],
-        "manual": True,
-        "delete": False,
-        "create_json": False,
-    },
-    "whitelisted_url": {
-        "single": "WhiteListedUrlList",
-        "multi": None,
-        "all": "WhiteListedUrlList",
-        "search": [],
-        "manual": True,
-        "delete": True,
-        "create_json": True,
-    },
-}
-"""
-Maps an object type from a human friendly string into various aspects:
-    * single: The :mod:`TaniumPy` object used to find singular instances of this object type
-    * multi: The :mod:`TaniumPy` object used to find multiple instances of this object type
-    * all: The :mod:`TaniumPy` object used to find all instances of this object type
-    * search: The list of attributes that can be used with the Tanium SOAP API for searches
-    * manual: Whether or not this object type is allowed to do a manual search, that is -- allow the user to specify an attribute that is not in search, which will get ALL objects of that type then search for a match based on attribute values for EVERY key/value pair supplied
-    * delete: Whether or not this object type can be deleted
-    * create_json: Whether or not this object type can be created by importing from JSON
-"""
-
-Q_OBJ_MAP = {
-    "saved": {
-        "handler": "ask_saved",
-    },
-    "manual": {
-        "handler": "ask_manual",
-    },
-    "_manual": {
-        "handler": "_ask_manual",
-    },
-    "parsed": {
-        "handler": "ask_parsed",
-    },
-}
-"""
-Maps a question type from a human friendly string into the handler method that supports each type
-"""
-
-REQ_KWARGS = [
-    "hide_errors_flag",
-    "include_answer_times_flag",
-    "row_counts_only_flag",
-    "aggregate_over_time_flag",
-    "most_recent_flag",
-    "include_hashes_flag",
-    "hide_no_results_flag",
-    "use_user_context_flag",
-    "script_data",
-    "return_lists_flag",
-    "return_cdata_flag",
-    "pct_done_limit",
-    "context_id",
-    "sample_frequency",
-    "sample_start",
-    "sample_count",
-    "suppress_scripts",
-    "suppress_object_list",
-    "row_start",
-    "row_count",
-    "sort_order",
-    "filter_string",
-    "filter_not_flag",
-    "recent_result_buckets",
-    "cache_id",
-    "cache_expiration",
-    "cache_sort_fields",
-    "include_user_details",
-    "include_hidden_flag",
-    "use_error_objects",
-    "use_json",
-    "json_pretty_print",
-    "cache_filters",
-]
-"""
-A list of arguments that will be pulled from any respective kwargs for most calls to :class:`taniumpy.session.Session`
-"""
-
-PARAM_RE = r"(?<!\\)\{(.*?)(?<!\\)\}"
-"""
-The regex that is used to parse parameters from a human string. Ex: ala {key1=value1}
-"""
-
-PARAM_SPLIT_RE = r"(?<!\\),"
-"""
-The regex that is used to split multiple parameters. Ex: key1=value1, key2=value2
-"""
-
-PARAM_KEY_SPLIT = "="
-"""
-The string that is used to split parameter key from parameter value. Ex: `key1`\ ``=``\ `value1`
-"""
-
-FILTER_RE = r",\s*that"
-"""
-The regex that is used to find filters in a string. Ex: `Sensor1`\ ``, that`` `contains blah`
-"""
-
-OPTION_RE = r",\s*opt:"
-"""
-The regex that is used to find options in a string. Ex: `Sensor1, that contains blah`\ ``, opt:``\ `ignore_case`\ ``, opt:``\ `max_data_age:3600`
-"""
-
-SELECTORS = ["id", "name", "hash"]
-"""
-The search selectors that can be extracted from a string. Ex: ``name``:`Sensor1,` or ``id``:`1`, or ``hash``:`1111111`
-"""
-
-PARAM_DELIM = "||"
-"""
-The string to surround a parameter with when passing parameters to the SOAP API for a sensor in a question. Ex: ``||``\ `parameter_key`\ ``||``
-"""
-
-FILTER_MAPS = [
-    {
-        "human": ["<", "less", "lt", "less than"],
-        "operator": "Less",
-        "not_flag": 0,
-        "help": "Filter for less than VALUE",
-    },
-    {
-        "human": ["!<", "notless", "not less", "not less than"],
-        "operator": "Less",
-        "not_flag": 1,
-        "help": "Filter for not less than VALUE",
-    },
-    {
-        "human": ["<=", "less equal", "lessequal", "le"],
-        "operator": "LessEqual",
-        "not_flag": 0,
-        "help": "Filter for less than or equal to VALUE",
-    },
-    {
-        "human": ["!<=", "not less equal", "not lessequal"],
-        "operator": "LessEqual",
-        "not_flag": 1,
-        "help": "Filter for not less than or equal to VALUE",
-    },
-    {
-        "human": [">", "greater", "gt", "greater than"],
-        "operator": "Greater",
-        "not_flag": 0,
-        "help": "Filter for greater than VALUE",
-    },
-    {
-        "human": ["!>", "not greater", "notgreater", "not greater than"],
-        "operator": "Greater",
-        "not_flag": 1,
-        "help": "Filter for not greater than VALUE",
-    },
-    {
-        "human": ["=>", "greater equal", "greaterequal", "ge"],
-        "operator": "GreaterEqual",
-        "not_flag": 0,
-        "help": "Filter for greater than or equal to VALUE",
-    },
-    {
-        "human": ["!=>", "not greater equal", "notgreaterequal"],
-        "operator": "GreaterEqual",
-        "not_flag": 1,
-        "help": "Filter for not greater than VALUE",
-    },
-    {
-        "human": ["=", "equal", "equals", "eq"],
-        "operator": "Equal",
-        "not_flag": 0,
-        "help": "Filter for equals to VALUE",
-    },
-    {
-        "human": [
-            "!=", "not equal", "notequal", "not equals", "notequals", "ne",
-        ],
-        "operator": "Equal",
-        "not_flag": 1,
-        "help": "Filter for not equals to VALUE",
-    },
-    {
-        "human": ["contains"],
-        "operator": "RegexMatch",
-        "pre_value": ".*",
-        "post_value": ".*",
-        "not_flag": 0,
-        "help": "Filter for contains VALUE (adds .* before and after VALUE)",
-    },
-    {
-        "human": [
-            "does not contain", "doesnotcontain", "not contains", "notcontains"
-        ],
-        "operator": "RegexMatch",
-        "pre_value": ".*",
-        "post_value": ".*",
-        "not_flag": 1,
-        "help": "Filter for does not contain VALUE (adds .* before and after VALUE)",
-    },
-    {
-        "human": ["starts with", "startswith"],
-        "operator": "RegexMatch",
-        "post_value": ".*",
-        "not_flag": 0,
-        "help": "Filter for starts with VALUE (adds .* after VALUE)",
-    },
-    {
-        "human": [
-            "does not start with", "doesnotstartwith", "not starts with",
-            "notstartswith",
-        ],
-        "operator": "RegexMatch",
-        "post_value": ".*",
-        "not_flag": 1,
-        "help": "Filter for does not start with VALUE (adds .* after VALUE)",
-    },
-    {
-        "human": ["ends with", "endswith"],
-        "operator": "RegexMatch",
-        "pre_value": ".*",
-        "not_flag": 0,
-        "help": "Filter for ends with VALUE (adds .* before VALUE)",
-    },
-    {
-        "human": [
-            "does not end with", "doesnotendwith", "not ends with",
-            "notstartswith",
-        ],
-        "operator": "RegexMatch",
-        "pre_value": ".*",
-        "not_flag": 1,
-        "help": "Filter for does bit end with VALUE (adds .* before VALUE)",
-    },
-    {
-        "human": [
-            "is not", "not regex", "notregex", "not regex match",
-            "notregexmatch", "nre",
-        ],
-        "operator": "RegexMatch",
-        "not_flag": 1,
-        "help": "Filter for non regular expression match for VALUE",
-    },
-    {
-        "human": ["is", "regex", "regex match", "regexmatch", "re"],
-        "operator": "RegexMatch",
-        "not_flag": 0,
-        "help": "Filter for regular expression match for VALUE",
-    },
-    {
-        "human": ["hash", "hashmatch"],
-        "operator": "HashMatch",
-        "not_flag": 0,
-        "help": "Filter for hash match for VALUE",
-    },
-
-]
-"""
-Maps a given set of human strings into the various filter attributes used by the SOAP API. Also used to verify that a manually supplied filter via a definition is valid. Construct:
-    * human: a list of human strings that can be used after "`, that`". Ex: "`, that` ``contains`` ``value``"
-    * operator: the filter operator used by the SOAP API when building a filter that matches `human`
-    * not_flag: the value to set on `not_flag` when building a filter that matches `human`
-    * pre_value: the prefix to add to the ``value`` when building a filter
-    * post_value: the postfix to add to the ``value`` when building a filter
-"""
-
-OPTION_MAPS = [
-    {
-        "human": "ignore_case",
-        "attrs": {"ignore_case_flag": 1},
-        "destination": "filter",
-        "valid_type": int,
-        "help": "Make the filter do a case insensitive match",
-    },
-    {
-        "human": "match_case",
-        "attrs": {"ignore_case_flag": 0},
-        "destination": "filter",
-        "valid_type": int,
-        "help": "Make the filter do a case sensitive match",
-    },
-    {
-        "human": "match_any_value",
-        "attrs": {"all_values_flag": 0, "all_times_flag": 0},
-        "destination": "filter",
-        "valid_type": int,
-        "help": "Make the filter match any value",
-    },
-    {
-        "human": "match_all_values",
-        "attrs": {"all_values_flag": 1, "all_times_flag": 1},
-        "destination": "filter",
-        "valid_type": int,
-        "help": "Make the filter match all values",
-    },
-    {
-        "human": "max_data_age",
-        "attr": "max_age_seconds",
-        "human_type": "seconds",
-        "valid_type": int,
-        "destination": "filter",
-        "help": "Re-fetch cached values older than N seconds",
-    },
-    {
-        "human": "value_type",
-        "attr": "value_type",
-        "human_type": "value_type",
-        "valid_values": "pytan.constants.SENSOR_TYPE_MAP.values()",
-        "destination": "filter",
-        "valid_type": str,
-        "help": "Make the filter consider the value type as VALUE_TYPE",
-    },
-    {
-        "human": "and",
-        "attrs": {"and_flag": 1},
-        "destination": "group",
-        "valid_type": int,
-        "help": "Use 'and' for all of the filters supplied",
-    },
-    {
-        "human": "or",
-        "attrs": {"and_flag": 0},
-        "destination": "group",
-        "valid_type": int,
-        "help": "Use 'or' for all of the filters supplied",
-    },
-]
-"""
-Maps a given human string into the various options for filters used by the SOAP API. Also used to verify that a manually supplied option via a definition is valid. Construct:
-    * human: the human string that can be used after "`opt:`". Ex: "`opt`:``value_type``:``value``"
-    * destination: the type of object this option can be applied to (filter or group)
-    * attrs: the attributes and their values used by the SOAP API when building a filter with an option that matches `human`
-    * attr: the attribute used by the SOAP API when building a filter with an option that matches `human`. ``value`` is pulled from after a `:` when only attr exists for an option map, and not attrs.
-    * valid_values: if supplied, the list of valid values for this option
-    * valid_type: performs type checking on the value supplied to verify it is correct
-    * human_type: the human string for the value type if the option requires a value
-"""
-
-
 EXPORT_MAPS = {
     "ResultSet": {
         "csv": [
@@ -737,6 +301,30 @@ HANDLER_ARG_DEFAULTS = {
 Map of handler arguments and their defaults
 """
 
+SESSION_ARG_DEFAULTS = {
+    "host": "",
+    "port": 443,
+    "protocol": "https",
+    "verify_ssl": "False",
+    "port_fallback": 444,
+    "session_fallback": True,
+    "retry_count": 5,
+    "record_all": False,
+    "force_version": "",
+    "connect_secs": 5,
+    "connect_secs_soap": 15,
+    "response_secs": 15,
+    "response_secs_soap": 540,
+    "clean_xml_restricted": True,
+    "clean_xml_invalid": True,
+    "http_proxy": "",
+    "https_proxy": "",
+    "request_headers": {
+        "Accept-Encoding": "gzip, deflate",
+        "User-Agent": "{title}/{version}",
+    },
+}
+
 # 3.0.0
 CHECK_LIMIT_MAPS = [
     {"key": "limit_min", "msg": "items or more", "expr": ">=", "exc": "TooFewFoundError"},
@@ -744,48 +332,165 @@ CHECK_LIMIT_MAPS = [
     {"key": "limit_exact", "msg": "items exactly", "expr": "==", "exc": "NotFoundError"},
 ]
 
+# REGEXES:
 ESCAPED_COMMAS = r"(?<!\\),"
 ESCAPED_COLONS = r"(?<!\\):"
+IP_ADDRESS = r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$"
 
-DEFAULT_SEARCH_FIELD = "name"
+PARAM_INDEX = r"^param__(\d+)"
+PARAM_NAMED = r"^param_(\w+)"
+
+DEFAULT_FIELD = "name"
 DEFAULT_OPERATOR = "contains"
-DEFAULT_BUCKET = "0"
-DEFAULT_DERIVE_PARAM_DEFAULTS = True
-DEFAULT_ALLOW_EMPTY_PARAM_VALUES = False
-
-FILTER_DEFAULT_TOKENS = {
-    "search_field": DEFAULT_SEARCH_FIELD,
-    "operator": DEFAULT_OPERATOR,
-    "bucket": DEFAULT_BUCKET,
-    "derive_param_defaults": DEFAULT_DERIVE_PARAM_DEFAULTS,
-    "allow_empty_params": DEFAULT_ALLOW_EMPTY_PARAM_VALUES,
-}
+ROOT_BUCKET = "0"
+DEFAULT_BUCKET = "1"
+DEFAULT_HIDDEN = False
+DEFAULT_PARAMS_DEFAULT = True
+DEFAULT_PARAMS_VALIDATE = True
+DEFAULT_PARAMS_EXTRAS = False
+DEFAULT_PARAMS_SURROUND = "||"
 
 FILTER_PROCESS_TOKENS = [
-    ("search_field", ("required",)),  # required, str
-    ("search", ("required",)),  # required, str
-    ("obj", ("search_obj",)),  # SEARCH_OBJ
-    ("operator", ("required", "operator")),  # required, str, OPTION_MAP
-    ("value", ("required",)),  # required, str
-    ("bucket", ("required",)),  # required, str
-    ("not", ("boolean",)),  # optional, bool
-    ("max_age", ("integer",)),  # optional, int
-    ("ignore_case", ("boolean",)),  # optional, bool
-    ("all_values", ("boolean",)),  # optional, bool
-    ("all_times", ("boolean",)),  # optional, bool
-    ("type", ("type",)),  # optional, str, TYPE_MAP
-    ("derive_param_defaults", ("boolean",)),  # optional, bool
-    ("allow_empty_params", ("boolean",)),  # optional, bool
-    ("param_", ("params",)),  # TODO # optional, PARAMS
+    {
+        "token": "search_field",
+        "methods": ["default", "required"],
+        "default": DEFAULT_FIELD,
+    },
+    {
+        "token": "search",
+        "methods": ["required"],
+    },
+    {
+        "token": "include_hidden_flag",
+        "methods": ["default", "boolean", "integer"],
+        "default": DEFAULT_HIDDEN,
+    },
+    {
+        "token": "obj",
+        "methods": ["search_obj"],
+        "obj_type": "Sensor",
+        "valid_fields": ["id", "name", "hash"],
+    },
+    {
+        "token": "operator",
+        "methods": ["default", "required", "operator"],
+        "default": DEFAULT_OPERATOR,
+    },
+    {
+        "token": "value",
+        "methods": ["required"],
+    },
+    {
+        "token": "value_type",
+        "methods": ["value_type"],
+    },
+    {
+        "token": "bucket",
+        "methods": ["default", "required"],
+        "default": DEFAULT_BUCKET,
+    },
+    {
+        "token": "max_age_seconds",
+        "methods": ["integer"],
+    },
+    {
+        "token": "ignore_case_flag",
+        "methods": ["boolean", "integer"],
+    },
+    {
+        "token": "all_values_flag",
+        "methods": ["boolean", "integer"],
+    },
+    {
+        "token": "all_times_flag",
+        "methods": ["boolean", "integer"],
+    },
+    {
+        "token": "not_flag",
+        "methods": ["boolean", "integer"],
+    },
+    {
+        "token": "params_surround",
+        "methods": ["default"],
+        "default": DEFAULT_PARAMS_SURROUND,
+    },
+    {
+        "token": "params_default",
+        "methods": ["default", "boolean"],
+        "default": DEFAULT_PARAMS_DEFAULT,
+    },
+    {
+        "token": "params_validate",
+        "methods": ["default", "boolean"],
+        "default": DEFAULT_PARAMS_VALIDATE,
+    },
+    {
+        "token": "params_extras",
+        "methods": ["default", "boolean"],
+        "default": DEFAULT_PARAMS_EXTRAS,
+    },
+    {
+        "token": "param_",
+        "methods": ["params"],
+    },
 ]
 
-FILTER_PARSE_ARGS = {
-    "processors": FILTER_PROCESS_TOKENS,
-    "defaults": FILTER_DEFAULT_TOKENS,
-    "unnamed": "search",
-    "search_obj_type": "Sensor",
-    "search_valid_fields": ["id", "name", "hash"],
-}
+FILTER_PARSE_ARGS = {"processors": FILTER_PROCESS_TOKENS, "unnamed": "search"}
+
+GROUP_PROCESS_TOKENS = [
+    {
+        "token": "search_field",
+        "methods": ["default", "required"],
+        "default": DEFAULT_FIELD,
+    },
+    {
+        "token": "search",
+        "methods": ["required"],
+    },
+    {
+        "token": "include_hidden_flag",
+        "methods": ["default", "boolean", "integer"],
+        "default": DEFAULT_HIDDEN,
+    },
+    {
+        "token": "obj",
+        "methods": ["search_obj"],
+        "obj_type": "Group",
+        "valid_fields": ["id", "name"],
+    },
+    {
+        "token": "bucket",
+        "methods": ["default", "required"],
+        "default": DEFAULT_BUCKET,
+    },
+]
+
+GROUP_PARSE_ARGS = {"processors": GROUP_PROCESS_TOKENS, "unnamed": "search"}
+
+OPTION_PROCESS_TOKENS = [
+    {
+        "token": "bucket",
+        "methods": ["default", "required"],
+        "default": DEFAULT_BUCKET,
+    },
+    {
+        "token": "not_flag",
+        "methods": ["boolean", "integer"],
+    },
+    {
+        "token": "and_flag",
+        "methods": ["boolean", "integer"],
+    },
+
+]
+
+OPTION_PARSE_ARGS = {"processors": OPTION_PROCESS_TOKENS, "unnamed": "bucket"}
+
+BUCKET_PARSERS = [
+    {"target": "filters", "args": FILTER_PARSE_ARGS},
+    {"target": "groups", "args": GROUP_PARSE_ARGS},
+    {"target": "options", "args": OPTION_PARSE_ARGS},
+]
 
 # -------------------- TANIUM OPERATOR TYPES
 T_L = "Less"
@@ -872,6 +577,9 @@ OPERATOR_MAPS = {
     "regex": OP_RE,
     "re": OP_RE,
     "regexmatch": OP_RE,
+    "matching": OP_RE,
+    "matches": OP_RE,
+    "match": OP_RE,
 
     "is not": OP_NOTRE,
     "not regex": OP_NOTRE,
@@ -882,14 +590,13 @@ OPERATOR_MAPS = {
     "not hash": OP_NOTHASH,
 }
 
-YES_LIST = ['yes', 'y', 'ye', 'true', '1', 1, True]
+YES_LIST = ["yes", "y", "ye", "true", "1", 1, True]
 """List of possible "True" strings."""
 
-NO_LIST = ['no', 'n', 'false', '0', 0, False]
+NO_LIST = ["no", "n", "false", "0", 0, False]
 """List of possible "No" strings."""
 
 # -------------------- BASE TYPES
-
 TYPE_STR = {
     "t": "String",
     "h": "standard lexicographical comparison (the default)",
@@ -959,3 +666,359 @@ VALUE_TYPES = {
     "integer": TYPE_NUMI,
     "int": TYPE_NUMI,
 }
+
+INIT_HASHES = {
+    7318847: "Last Logged In User",
+    8168018: "Video Driver Version",
+    15451865: "USB Device",
+    21983240: "AD Organizational Unit",
+    45421433: "Operating System",
+    63201224: "File Size",
+    74624344: "Windows OS Type",
+    75018363: "User Sessions",
+    77425467: "SQL Log Sizes",
+    93198492: "Open Share Details",
+    95001259: "Tanium File Exists",
+    98057726: "Boot Time",
+    99939055: "Wireless Network SSID Strength",
+    102224229: "Computer Serial Number",
+    112406691: "File Version",
+    131549066: "Online",
+    151176619: "Onboard Devices",
+    170942492: "System Drive",
+    182214159: "Local User Login Dates",
+    189860887: "Audio Controller",
+    191451006: "Tanium Buffer Count",
+    254407409: "Installed HotFixes",
+    276664624: "Maximum Process Memory Size",
+    283520893: "Tanium Client Dump Files",
+    314220795: "USB Device Details",
+    316030016: "Total Memory",
+    319662655: "Running Processes Memory Usage",
+    322086833: "Download Statuses",
+    324032765: "UDP Connections",
+    333178608: "Tanium Zone Server Version",
+    341438855: "Recently Run Applications",
+    367063513: "BIOS Name",
+    391368340: "SQL Server Agent Long Running Jobs",
+    422662332: "Static IP Addresses",
+    432766313: "SQL Buffer Hit Ratio",
+    435227963: "IP Route Details",
+    435957060: "Tanium Client Version",
+    462732724: "AD Domain",
+    482346946: "SQL Product Level",
+    487354270: "IP Routes",
+    502812713: "Application Event Log IDs",
+    508127351: "Disk Used Space",
+    525163843: "AD Computer Groups",
+    533135859: "Disk Used Percentage",
+    542266296: "Share Folder Permissions",
+    549503533: "Operating System Language",
+    568581921: "Reboot Required",
+    590837956: "Number of Fixed Drives",
+    600562575: "CPU by Process",
+    601571508: "Open Port",
+    607666494: "Application Crashes Yesterday",
+    617084407: "Logical Volumes",
+    632662206: "Folder Size",
+    664237249: "Application Run Time",
+    676468157: "Installed RPMs",
+    711837192: "Tanium Server Version",
+    740857544: "Target",
+    745447734: "Cached AD Logins",
+    747106243: "System Slots In Use",
+    749653644: "SQL Server Edition",
+    782305667: "RAM Max Capacity",
+    794103688: "Domain Name",
+    801419063: "Defrag Needed",
+    801908140: "User Details",
+    824239263: "Tanium Client Core Health",
+    833799742: "BIOS Version",
+    856087598: "PST Information",
+    861367460: "Shared Network Printer Details",
+    865123401: "Kernel Modules",
+    867160258: "Hyperthreading Enabled",
+    876725971: "Network Printer Details",
+    885259283: "Motherboard Manufacturer",
+    889071797: "Firewall Status",
+    902205018: "Country Code",
+    916410332: "Data Execution Prevention Enabled",
+    923740265: "CD-ROM Drive",
+    926119908: "Service",
+    945314213: "Disk Drives",
+    953427826: "Video/Graphics Card",
+    969736519: "Tanium Action Log",
+    991644931: "Workgroup",
+    1022769818: "Is Virtual",
+    1039470236: "SQL Clustered",
+    1043670154: "Disk Free Space Below Threshold",
+    1046354727: "Virtual Platform",
+    1092986182: "Logged In Users",
+    1101836903: "Folder Exists",
+    1125023461: "Boot Device",
+    1132013379: "Open Shares",
+    1140552555: "Internet Explorer Version",
+    1154425412: "DHCP Enabled?",
+    1155294592: "Domain Controller SYSVOL Size",
+    1156943497: "Disk IOPS",
+    1206550580: "Network Link Speed",
+    1208633896: "MAC Address",
+    1240245618: "SQL Database Recovery Mode",
+    1260624634: "Free Memory",
+    1260646358: "CPU Consumption",
+    1263879283: "High Uptime",
+    1265351278: "Application Crashes in Last X Days",
+    1271450145: "Service Login Names",
+    1281370578: "BitLocker Details",
+    1302957088: "Disk Free Space",
+    1314534715: "Security Event Log IDs",
+    1315630323: "Used Memory",
+    1326015223: "FileVault Details",
+    1348043492: "Printers",
+    1348161929: "Default Login Domain",
+    1404374135: "Startup Programs",
+    1417112132: "No Screen Saver Password",
+    1426187539: "Physical Volumes",
+    1466668831: "Wireless Network Connected SSID",
+    1471370561: "DHCP Server",
+    1496471156: "NET Version",
+    1497251383: "Running Service",
+    1502679547: "Monitor Details",
+    1509255291: "Non-Approved Established Connections",
+    1511329504: "Installed Applications",
+    1512811088: "Registry Key Value Exists",
+    1526750078: "Screen Saver Active",
+    1527458369: "High Memory Processes",
+    1528412180: "Established Connections",
+    1544486184: "Operating System Boot Directory",
+    1559751995: "Running Applications",
+    1569955801: "Unencrypted Wireless Networks",
+    1579270802: "Sound Card",
+    1580351176: "BIOS Vendor",
+    1591480148: "System Event Log IDs",
+    1591958393: "Registry Value Data",
+    1646244079: "CPU Speed Mhz",
+    1652607578: "Disk Drive Details",
+    1670489640: "High CPU Consumption",
+    1688928675: "Has Application Management Tools",
+    1718946935: "High Memory Consumption",
+    1723627713: "Local User Password Change Dates",
+    1724798097: "Last System Crash",
+    1735107559: "Network Throughput Outbound",
+    1742036917: "x64/x86?",
+    1744818157: "Tanium Client Subnet",
+    1782389954: "Has Tanium Standard Utilities",
+    1785623864: "Ram Slots Unused",
+    1792443391: "Action Statuses",
+    1805210070: "Tanium PowerShell Execution Policy",
+    1806420230: "Network Printers",
+    1810333216: "Established Ports by Application",
+    1815821395: "Last System Crash in X Days",
+    1819649983: "Network Throughput Percentage",
+    1832324705: "Run Once Keys",
+    1845399463: "SQL Server CPU Consumption",
+    1865193433: "Tanium Server Name List",
+    1913997657: "Username",
+    1927765752: "Active Devices",
+    1927941770: "Last Application Launch Date",
+    1978207968: "System Environment Variables",
+    1982695066: "Operating System Install Date",
+    1988427982: "User Accounts",
+    1994896093: "Driver Details",
+    2006202074: "Time Zone",
+    2060254274: "Local Administrators Without Groups",
+    2074877994: "Recently Closed Connections",
+    2095666087: "Default Login UserID",
+    2106396979: "Logged in User Details",
+    2114351169: "Network Drives Accessed",
+    2130080578: "CPU Manufacturer",
+    2154864096: "Outlook Version",
+    2177412849: "Last Logins",
+    2177703669: "Memory Consumption",
+    2183585490: "Path Permissions",
+    2195303088: "SQL Product Version",
+    2207214962: "Disk Type of C:",
+    2222730558: "Operating System Temp Directory",
+    2233537498: "Wireless Networks Visible",
+    2254780098: "Stopped Service Short Name",
+    2265461905: "Monitor Resolution",
+    2290387752: "Tanium Client Action Folder Sizes",
+    2322714946: "AD Short Domain",
+    2344747808: "SQL Server Databases",
+    2353715452: "Volume Group Names",
+    2357545787: "Predicted Disk Failures",
+    2361722934: "Load Average",
+    2370758491: "Client Time",
+    2384520458: "Service Details",
+    2387001299: "Installed Application Version",
+    2417208908: "Password Policy Details",
+    2463256440: "CPU Architecture",
+    2490353155: "Registry Key Exists",
+    2505938414: "Default Printer",
+    2513829483: "AD Distinguished Name",
+    2542613392: "Manufacturer",
+    2574398281: "Application Event Log Search",
+    2581054686: "Has Hardware Tools",
+    2595849133: "Motherboard Name",
+    2607823237: "Video Graphics Card RAM",
+    2614767778: "UAC Status",
+    2620257697: "Domain Member",
+    2623590847: "Network Throughput Total",
+    2634431519: "Last Date of Local Administrator Login",
+    2648511780: "Packet Loss",
+    2671758800: "Action Lock Status",
+    2680423840: "Local Account Last Password Change Days Ago",
+    2704923764: "PowerShell Version",
+    2706539957: "Local Printers",
+    2711879278: "High CPU Processes",
+    2721439124: "Is Windows",
+    2728641061: "Chassis Type",
+    2735360016: "Tanium Client Neighborhood",
+    2753029185: "Primary Owner Name",
+    2758038984: "Tanium Client Action Timing",
+    2759217311: "BIOS Current Language",
+    2783988057: "Network Adapter Name",
+    2800817874: "Is Mac",
+    2811135310: "Last Reboot",
+    2811171321: "Time Zone Offset",
+    2812601404: "File Creation Date",
+    2819106613: "IP Connections",
+    2823285829: "VMware Guest",
+    2845896284: "Network Throughput Inbound",
+    2853143977: "CPU",
+    2866852225: "TCP connections",
+    2881145629: "Service Pack",
+    2932384540: "Default Web Browser",
+    2939169480: "Low Disk Space",
+    2950466201: "Number Of Users",
+    2961425050: "Model",
+    2977419696: "Subnet Mask",
+    2997757654: "Operating System Language Code",
+    3004497651: "Custom Tags",
+    3005061811: "Has Stale Tanium Client Data",
+    3009680784: "Network Adapter Details",
+    3027378756: "Number of Application Crashes in Last X Days",
+    3057103978: "Windows Server Installed Roles",
+    3083322981: "Number of Processor Cores",
+    3103658637: "Tanium Sensor Randomization Enabled",
+    3112892791: "DNS Server",
+    3114455387: "Internet Explorer Add-Ons",
+    3133617106: "Motherboard Version",
+    3133620839: "Revision of CPU",
+    3134254821: "Java Auto Update",
+    3145690673: "Hardware Device Failed to Load",
+    3147407985: "SQL Recovery Mode",
+    3147580256: "Total Swap",
+    3157180652: "Tanium Client Downloads Directory Details",
+    3170446499: "PCI Device",
+    3170496172: "Number of Logged In Users",
+    3177804004: "Locale Code",
+    3188527889: "Stopped Service",
+    3200371050: "Listen Ports",
+    3209138996: "IP Address",
+    3226581166: "OS Boot Time",
+    3271577967: "SQL Database Count",
+    3276808962: "Network Adapter Type",
+    3285711879: "Registry Key Subkeys",
+    3320877330: "Number of Processors",
+    3369713834: "Organization",
+    3394404860: "Wireless Networks Using WEP",
+    3397569679: "Hosted Wireless Ad-Hoc Networks",
+    3409330187: "Computer Name",
+    3418227220: "Tanium Client Installation Date",
+    3418263806: "Local Account Expiration Details",
+    3479253433: "Tanium Client Installation Time",
+    3480890585: "Uptime",
+    3482410175: "System Directory",
+    3499030954: "Page File Details",
+    3518770446: "Hosts File Entries",
+    3554080383: "Is Linux",
+    3556221173: "Computer ID",
+    3575849436: "Network IP Gateway",
+    3595988712: "USB Write Protected",
+    3603927824: "Installed Pkgs",
+    3605572245: "Human Interface Device",
+    3622133010: "Local Administrators",
+    3646624356: "CPU Cache Size",
+    3652459872: "Tanium Reboot Days Ago",
+    3662289857: "File Exists",
+    3682298314: "Processes Using Module",
+    3685017662: "Is Terminal Server",
+    3727949854: "Client Date",
+    3734316770: "Tanium Client CPU",
+    3756702099: "Is AIX",
+    3760050184: "Tanium Client Explicit Setting",
+    3763483691: "CPU Family",
+    3764526140: "SCSI Controller Driver Name",
+    3770282786: "Operating System Build Number",
+    3792181176: "Is Solaris",
+    3796118374: "SQL Database Sizes",
+    3798171813: "BIOS Release Date",
+    3799348944: "Registry Key Value Names with Data",
+    3868118771: "Used Swap",
+    3881863289: "Folder Contents",
+    3891170751: "System UUID",
+    3898138660: "Tanium Client NAT IP Address",
+    3910101228: "Power Plans Active",
+    3914171274: "CD-ROM Drive Loaded",
+    3963156324: "Attached Battery",
+    3993657420: "Installed Java Runtimes",
+    3999173666: "User Profile Directory Details",
+    4018912755: "Primary WINS Server",
+    4055028299: "CPU Details",
+    4058321794: "Run Keys",
+    4070262781: "Tanium File Contents",
+    4076878703: "Tanium Server Name",
+    4080631087: "File Modification Date",
+    4086041268: "RAM Slots Used and Unused",
+    4086596771: "Tanium Client Logging Level",
+    4105783647: "SCSI Controller Caption",
+    4142232197: "Running Processes",
+    4165545489: "AD Forest",
+    4180356655: "System Disk Free Space",
+    4201347922: "Free Swap",
+    4206488295: "Wireless Network Used by Tanium",
+    4212162125: "Disk Total Size of System Drive",
+    4225957259: "Tanium Current Directory",
+    4244179900: "Run Level",
+    4244410676: "Disk Total Space",
+    4254566410: "System Slots Available",
+    4261354259: "Tanium Peer Address",
+    4264207873: "AD User Groups",
+    4264271977: "Tanium Client IP Address",
+    4267153065: "Wireless Network Details",
+    4276555360: "Registry Key Value Names",
+    4279567267: "RAM",
+    4284507739: "USB Storage Devices",
+    4287813257: "Power Plans Available",
+    4293389196: "Tanium Back Peer Address",
+}
+
+XMLNS = {
+    "soap": "http://schemas.xmlsoap.org/soap/envelope/",
+    "xsd": "http://www.w3.org/2001/XMLSchema",
+    "xsi": "http://www.w3.org/2001/XMLSchema-instance",
+    "t": "urn:TaniumSOAP",
+    "encodingStyle": "http://schemas.xmlsoap.org/soap/encoding/",
+}
+"""The XML namespace mappings for all SOAP XML bodies"""
+
+SOAP_REQUEST_BODY = (
+    """<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="{soap}" xmlns:xsd="{xsd}" soap:encodingStyle="{encodingStyle}">
+  <soap:Body xmlns:t="{t}" xmlns:xsi="{xsi}">
+    <t:tanium_soap_request>
+      <command>$command</command>
+      <object_list>$object_list</object_list>
+      $options
+    </t:tanium_soap_request>
+  </soap:Body>
+</soap:Envelope>
+""")
+"""
+The XML template used for all SOAP Requests in string form
+{} variables will be replaced with keys from XMLNS
+$ variables will be replaced with strings from the objects during request time
+"""
+
+SOAP_CONTENT_TYPE = "text/xml; charset=utf-8"

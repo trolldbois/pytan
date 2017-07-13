@@ -1,7 +1,9 @@
-# -*- mode: Python; tab-width: 4; indent-tabs-mode: nil; -*-
-# ex: set tabstop=4
-# Please do not change the two lines above. See PEP 8, PEP 263.
 """Provides exceptions for the :mod:`pytan` module."""
+
+
+class PytanError(Exception):
+    """Base exception thrown for all exceptions in pytan"""
+    pass
 
 
 class HandlerError(Exception):
