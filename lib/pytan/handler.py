@@ -1369,6 +1369,9 @@ class Handler(object):
         group : str, optional
             * default: ''
             * group name for this dashboard
+        sqs : list, optional
+            * default: []
+            * list of str of saved questions to be added to this dashboard, in order!!
         public_flag : bool, optional
             * default: True
             * True: make this dashboard public
@@ -1381,6 +1384,7 @@ class Handler(object):
             * sql_zipped will be a dict with the SQL results embedded in the SOAP response
         """
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs)
+        sqs = kwargs.get("sqs", [])
 
         # get the ID for the group if a name was passed in
         if group:
@@ -1393,6 +1397,16 @@ class Handler(object):
             public_flag = 1
         else:
             public_flag = 0
+
+        if sqs:
+            h = "Issue a GetObject to find the supplied Saved Questions"
+            sq_objs = [self.get("saved_question", name=n, pytan_help=h)[0] for n in sqs]
+            x_tmpl = "<sq><id>{id}</id><index>{idx}</index></sq>".format
+            sq_ids_xml_list = [x_tmpl(id=getattr(o, "id"), idx=idx) for idx, o in enumerate(sq_objs)]
+            sq_ids_xml_text = "\n  {i}\n".format(i="\n  ".join(sq_ids_xml_list)) if sq_ids_xml_list else ""
+            sqid_xml = "<dash_sqs>{i}</dash_sqs>".format(i=sq_ids_xml_text)
+        else:
+            sqid_xml = ""
 
         # create the plugin parent
         plugin = taniumpy.Plugin()
@@ -1429,7 +1443,7 @@ class Handler(object):
         arg5 = taniumpy.PluginArgument()
         arg5.name = 'sqid_xml'
         arg5.type = 'String'
-        arg5.value = ''
+        arg5.value = sqid_xml
         plugin.arguments.append(arg5)
 
         # run the plugin
