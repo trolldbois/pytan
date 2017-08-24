@@ -1556,8 +1556,8 @@ class Handler(object):
 
     def create_package(self, name, command, display_name='', file_urls=[],
                        command_timeout_seconds=600, expire_seconds=600, parameters_json_file='',
-                       verify_filters=[], verify_filter_options=[], verify_expire_seconds=600,
-                       **kwargs):
+                       parameters_json='', verify_filters=[], verify_filter_options=[],
+                       verify_expire_seconds=600, **kwargs):
         """Create a package object.
 
         Parameters
@@ -1581,6 +1581,9 @@ class Handler(object):
         parameters_json_file : str, optional
             * default: ''
             * path to json file describing parameters for package
+        parameters_json : str, optional
+            * default: ''
+            * json string describing parameters for package
         expire_seconds : int, optional
             * default: 600
             * timeout for action expiry in seconds
@@ -1660,6 +1663,12 @@ class Handler(object):
             add_package_obj.parameter_definition = pytan.utils.load_param_json_file(
                 parameters_json_file=parameters_json_file
             )
+        elif parameters_json:  # From JSON formatted string
+            try:
+                json_obj = json.loads( json.dumps(parameters_json) )
+                add_package_obj.parameter_definition = parameters_json
+            except ValueError, e:
+                self.mylog.warning( 'Ignoring Parameter Definition JSON. Invalid Formatted JSON.' )
 
         # FILES
         if file_urls:
