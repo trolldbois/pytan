@@ -308,8 +308,11 @@ def setup_console_logging(gmt_tz=True):
         v.addHandler(ch)
 
 
-def setup_file_logging(gmt_tz=True, logfilepath='pytan.log'):
+def setup_file_logging(gmt_tz=True, logfilepath=None):
     """Creates a file logging handler using logging.StreamHandler()"""
+    if logfilepath is None or logfilepath == '':
+        return
+
     fh_name = 'file'
     remove_logging_handler('file')
 
