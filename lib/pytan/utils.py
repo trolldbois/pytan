@@ -17,6 +17,7 @@ import datetime
 import re
 import itertools
 import base64
+import errno
 from collections import OrderedDict
 
 my_file = os.path.abspath(__file__)
@@ -305,6 +306,48 @@ def setup_console_logging(gmt_tz=True):
     for k, v in sorted(get_all_pytan_loggers().iteritems()):
         spew("setup_console_logging(): add handler: {0}/{0.name} to logger {1}".format(ch, k))
         v.addHandler(ch)
+
+
+def setup_file_logging(gmt_tz=True, logfilepath='pytan.log'):
+    """Creates a file logging handler using logging.StreamHandler()"""
+    fh_name = 'file'
+    remove_logging_handler('file')
+
+    if gmt_tz:
+        # change the default time zone to GM time
+        logging.Formatter.converter = time.gmtime
+    else:
+        logging.Formatter.converter = time.localtime
+
+    # clean / sanitize logfilepath
+    clean_kwargs = { 'path' : logfilepath
+                   , 'return_absolute_path' : True
+                   , 'allow_absolute_path' : False
+                   , 'allow_symbol_home_dir' : True
+                   , 'allow_symbol_parent_dir' : False
+                   }
+    clean_logfilepath = clean_path( **clean_kwargs )
+    # create log directory if necessary
+    log_dir = os.path.dirname(clean_logfilepath)
+    try:
+        os.makedirs( log_dir )
+    except:
+        pass
+
+    if not os.path.exists( log_dir ):
+        sys.exit("Failed to create log directory: "+log_dir)
+
+    # add a file handler to all loggers that goes to STDOUT for INFO
+    # and below, but STDERR for WARNING and above (old method)
+
+    fh = logging.FileHandler(clean_logfilepath)
+    fh.set_name(fh_name)
+    fh.setLevel(logging.DEBUG)
+    fh.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
+
+    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+        spew("setup_file_logging(): add handler: {0}/{0.name} to logger {1}".format(fh, k))
+        v.addHandler(fh)
 
 
 def change_console_format(debug=False):
@@ -2230,3 +2273,71 @@ def vig_decode(key, string):
         decoded_chars.append(encoded_c)
     decoded_string = "".join(decoded_chars)
     return decoded_string
+
+
+'''--- clean_path ------------------------------------------------------
+    Cleans a given path based on parameters
+
+    Parameters
+    ----------
+        path : str
+            * default : None
+            * direcotry or file path to be sanitized
+        return_absolute_path : bool, optional
+            * default : True
+            * expands cleaned_path and returns an absolute path
+            * true = sets path relative to current working directory
+            * false = allow absolute paths as path
+        return_real_path : bool, optional
+            * default : True
+            * follows links to return the real location of cleaned_path
+            * true = sets path relative to current working directory
+            * false = allow absolute paths as path
+        allow_absolute_path : bool, optional
+            * default : True
+            * permit or ba use of absolute paths as input path
+            * true = make path relative to current working directory
+            * false = allow absolute paths as path
+        allow_symbol_home_dir : bool, optional
+            * default : True
+            * permit or ba nuse of tilde (~) in path
+            * only used in unix paths
+            * true = allow use of ~ to redirect to curretn user home dir
+            * false = strip ~ from path before expanding
+        allow_symbol_parent_dir : bool, optional
+            * default : True
+            * permit or ban use of double dots (..) in path
+            * true = allow use of .. to redirect to parent dir
+            * false = strip .. from path before expanding
+
+    Returns
+    -------
+        cleaned_path : str
+----------------------------------------------------------------------'''
+def clean_path( path=None, return_absolute_path=True, return_real_path=True
+             , allow_absolute_path=True , allow_symbol_home_dir=True
+             , allow_symbol_parent_dir=True ):
+#
+    if (path is None)or (path == ''):
+        return path
+
+    cleaned_path = os.path.expandvars( path.strip() )
+    if not allow_absolute_path:
+        cleaned_path = re.sub( r'^(\\|\/|[A-z]:[\\\/])?', '', cleaned_path )
+
+    if not allow_symbol_home_dir:
+        cleaned_path = re.sub( r'\~', '', cleaned_path )
+
+    if not allow_symbol_parent_dir:
+        cleaned_path = re.sub( r'(^|\\|\/)?\.\.[\\\/]', '', cleaned_path )
+
+    cleaned_path = re.sub( r'([\\\/])\s*[\\\/]+', r'\g<1>', cleaned_path )
+    cleaned_path = re.sub( r'([\\\/]?\.[\\\/])+', '.'+os.path.sep, cleaned_path )
+    cleaned_path = os.path.expanduser( cleaned_path )
+
+    if return_absolute_path:
+        cleaned_path = os.path.normpath( os.path.join( os.getcwd(), cleaned_path) )
+
+    if return_real_path:
+        cleaned_path = os.path.realpath( cleaned_path )
+    return cleaned_path

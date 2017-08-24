@@ -40,6 +40,9 @@ class Handler(object):
         * default: 0
         * 0 do not print anything except warnings/errors
         * 1 and higher will print more
+    logfile : str, optional
+        * default: None
+        * path to og file, if 'None', no log file is written
     debugformat : bool, optional
         * default: False
         * False: use one line logformat
@@ -151,7 +154,7 @@ class Handler(object):
     """
 
     def __init__(self, username=None, password=None, host=None, port=443,
-                 loglevel=0, debugformat=False, gmt_log=True, session_id=None, **kwargs):
+                 loglevel=0, logfile=None, debugformat=False, gmt_log=True, session_id=None, **kwargs):
         """Constructor."""
         super(Handler, self).__init__()
         self.mylog = logging.getLogger("pytan.handler")
@@ -165,6 +168,9 @@ class Handler(object):
 
         # setup the console logging handler
         pytan.utils.setup_console_logging(gmt_tz=self.gmt_log)
+
+        # setup the file logging handler
+        pytan.utils.setup_file_logging(gmt_tz=self.gmt_log, logfilepath=self.logfile )
 
         # create all the loggers and set their levels based on loglevel
         pytan.utils.set_log_levels(loglevel=self.loglevel)
