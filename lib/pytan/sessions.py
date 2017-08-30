@@ -1710,6 +1710,9 @@ class Session(object):
         if not ret and fail:
             m = "Unable to find {} in body: {}".format
             raise Exception(m(regex.pattern, body))
+        if not ret:
+            m = "Unable to find {} in body: {}".format
+            self.mylog.debug(m(regex.pattern, body))
         else:
             ret = str(ret.groups()[0].strip())
 
