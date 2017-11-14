@@ -404,7 +404,7 @@ class MDTest():
         if not content:
             logging.debug("No content to create in {}".format(sectname))
             return
-        for k, v in content.iteritems():
+        for k, v in content.items():
             fn = v.get('cname', '')
             ftext = v.get('ctext', '')
             if not fn:

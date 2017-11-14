@@ -1267,8 +1267,8 @@ class Session(object):
             self.authlog.debug("Using session ID for authentication headers")
 
         elif self._username and self._password:
-            headers['username'] = b64encode(self._username)
-            headers['password'] = b64encode(self._password)
+            headers['username'] = b64encode(self._username.encode())
+            headers['password'] = b64encode(self._password.encode())
             self.authlog.debug("Using Username/Password for authentication headers")
         return headers
 

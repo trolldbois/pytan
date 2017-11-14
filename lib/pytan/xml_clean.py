@@ -165,34 +165,34 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_clean_messages=T
     str
         * the cleaned version of `s`
     """
-    if type(s) == str:
-        try:
-            # if orig_str is not unicode, decode the string into unicode with encoding
-            s = s.decode(encoding, 'xmlcharrefreplace')
-        except:
-            if log_clean_messages:
-                m = "Falling back to latin1 for decoding, unable to decode as UTF-8!".format
-                mylog.warning(m())
-            try:
-                # if can't decode as encoding, fallback to latin1
-                s = s.decode('latin1', 'xmlcharrefreplace')
-            except:
-                if log_clean_messages:
-                    m = (
-                        "Unable to decode as latin-1 or UTF-8, decoding document as UTF-8 and "
-                        "ignoring errors"
-                    ).format
-                    mylog.warning(m())
-                s = str(s, 'utf-8', errors='ignore')
-
-    # encode the string as utf-8
-    pass1 = s.encode('utf-8', 'xmlcharrefreplace')
-
-    # decode the string from utf-8 into unicode
-    pass2 = pass1.decode('utf-8', 'xmlcharrefreplace')
+    # if type(s) == str:
+    #     try:
+    #         # if orig_str is not unicode, decode the string into unicode with encoding
+    #         s = s.decode(encoding, 'xmlcharrefreplace')
+    #     except:
+    #         if log_clean_messages:
+    #             m = "Falling back to latin1 for decoding, unable to decode as UTF-8!".format
+    #             mylog.warning(m())
+    #         try:
+    #             # if can't decode as encoding, fallback to latin1
+    #             s = s.decode('latin1', 'xmlcharrefreplace')
+    #         except:
+    #             if log_clean_messages:
+    #                 m = (
+    #                     "Unable to decode as latin-1 or UTF-8, decoding document as UTF-8 and "
+    #                     "ignoring errors"
+    #                 ).format
+    #                 mylog.warning(m())
+    #             s = str(s, 'utf-8', errors='ignore')
+    #
+    # # encode the string as utf-8
+    # pass1 = s.encode('utf-8', 'xmlcharrefreplace')
+    #
+    # # decode the string from utf-8 into unicode
+    # pass2 = pass1.decode('utf-8', 'xmlcharrefreplace')
 
     # replace any invalid unicode characters
-    pass3, pass3_cnt, pass3_re = replace_invalid_unicode(text=pass2, replacement=replacement)
+    pass3, pass3_cnt, pass3_re = replace_invalid_unicode(text=s, replacement=replacement)
 
     # if any invalid characters found, print how many were replaced
     if pass3_cnt and log_clean_messages:
