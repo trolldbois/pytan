@@ -2,19 +2,6 @@
 # ex: set tabstop=4
 # Please do not change the two lines above. See PEP 8, PEP 263.
 """Provides methods for the :mod:`pytan` module to print help."""
-import sys
-
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
-import os
-
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
-
 import pytan
 
 

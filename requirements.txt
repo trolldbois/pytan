@@ -1,0 +1,15 @@
+asn1crypto
+certifi
+cffi
+chardet
+cryptography
+#enum
+idna
+#ipaddress
+#OpenSSL
+pycparser
+pyOpenSSL
+requests
+six
+urllib3
+xmltodict

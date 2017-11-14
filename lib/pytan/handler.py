@@ -6,17 +6,9 @@ import logging
 import os
 import sys
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
-try:
-    import taniumpy
-    import pytan
-except Exception:
-    raise
+import taniumpy
+import pytan
 
 
 class Handler(object):
@@ -158,7 +150,7 @@ class Handler(object):
         self.methodlog = logging.getLogger("method_debug")
 
         # update self with all local variables that are not self/kwargs/k/v
-        for k, v in locals().iteritems():
+        for k, v in locals().items():
             if k in ['self', 'kwargs', 'k', 'v']:
                 continue
             setattr(self, k, v)
@@ -254,7 +246,7 @@ class Handler(object):
             self.mylog.info(m(self.puc))
 
             # handle class params
-            for h_arg, arg_default in pytan.constants.HANDLER_ARG_DEFAULTS.iteritems():
+            for h_arg, arg_default in pytan.constants.HANDLER_ARG_DEFAULTS.items():
                 if h_arg not in puc_dict:
                     continue
 
@@ -277,7 +269,7 @@ class Handler(object):
                     setattr(self, h_arg, puc_val)
 
             # handle kwargs params
-            for k, v in puc_dict.iteritems():
+            for k, v in puc_dict.items():
                 if k in ['self', 'kwargs', 'k', 'v']:
                     m = "Skipping kwargs variable {} from: {}".format
                     self.mylog.debug(m(k, self.puc))
@@ -309,7 +301,7 @@ class Handler(object):
 
         puc_dict = {}
 
-        for k, v in vars(self).iteritems():
+        for k, v in vars(self).items():
             if k in ['mylog', 'methodlog', 'session', 'puc']:
                 m = "Skipping class variable {} from inclusion in: {}".format
                 self.mylog.debug(m(k, puc))
@@ -1280,7 +1272,7 @@ class Handler(object):
 
         if not create_json_ok:
             json_createable = ', '.join([
-                x for x, y in pytan.constants.GET_OBJ_MAP.items() if y['create_json']
+                x for x, y in list(pytan.constants.GET_OBJ_MAP.items()) if y['create_json']
             ])
             m = "{} is not a json createable object! Supported objects: {}".format
             raise pytan.exceptions.HandlerError(m(objtype, json_createable))
@@ -1875,7 +1867,7 @@ class Handler(object):
 
         if not delete_ok:
             deletable = ', '.join([
-                x for x, y in pytan.constants.GET_OBJ_MAP.items() if y['delete']
+                x for x, y in list(pytan.constants.GET_OBJ_MAP.items()) if y['delete']
             ])
             m = "{} is not a deletable object! Deletable objects: {}".format
             raise pytan.exceptions.HandlerError(m(objtype, deletable))
@@ -1967,7 +1959,7 @@ class Handler(object):
             ).format
 
             # build a list of supported object types
-            supp_types = ', '.join(pytan.constants.EXPORT_MAPS.keys())
+            supp_types = ', '.join(list(pytan.constants.EXPORT_MAPS.keys()))
             raise pytan.exceptions.HandlerError(err(objtype, supp_types))
 
         # get the export formats for this obj type
@@ -1983,12 +1975,12 @@ class Handler(object):
         opt_keys = export_formats.get(export_format, [])
 
         for opt_key in opt_keys:
-            check_args = dict(opt_key.items() + {'d': kwargs}.items())
+            check_args = dict(list(opt_key.items()) + list({'d': kwargs}.items()))
             pytan.utils.check_dictkey(**check_args)
 
         # filter out the kwargs that are specific to this obj type and format type
         format_kwargs = {
-            k: v for k, v in kwargs.iteritems()
+            k: v for k, v in kwargs.items()
             if k in [a['key'] for a in opt_keys]
         }
 
@@ -2198,7 +2190,7 @@ class Handler(object):
 
             return_objs = getattr(taniumpy, all_objs.__class__.__name__)()
 
-            for k, v in kwargs.iteritems():
+            for k, v in kwargs.items():
                 if not v:
                     continue
                 if not hasattr(all_objs[0], k):
@@ -2390,7 +2382,7 @@ class Handler(object):
         # create a list object to append our searches to
         api_obj_multi = pytan.utils.get_taniumpy_obj(obj_map=multi_type)()
 
-        for k, v in api_kw.iteritems():
+        for k, v in api_kw.items():
             if v and k not in obj_map['search']:
                 continue  # if we can't search for k, skip
 
@@ -2442,7 +2434,7 @@ class Handler(object):
         clean_keys = ['obj_map', 'k', 'v']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)
 
-        for k, v in api_kw.iteritems():
+        for k, v in api_kw.items():
             if v and k not in obj_map['search']:
                 continue  # if we can't search for k, skip
 

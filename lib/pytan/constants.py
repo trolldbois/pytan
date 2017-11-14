@@ -8,9 +8,6 @@ This contains a number of constants that drive PyTan.
 """
 import sys
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
 # debug log format
 DEBUG_FORMAT = (
     '[%(lineno)-5d - %(filename)20s:%(funcName)s()] %(asctime)s\n'

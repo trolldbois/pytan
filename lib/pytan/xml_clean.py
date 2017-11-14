@@ -7,9 +7,6 @@ import sys
 import re
 import logging
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
 mylog = logging.getLogger("XMLCleaner")
 
 XML_1_0_VALID_HEX = [
@@ -74,21 +71,21 @@ for i in [hex(i) for i in range(1, 17)]:
         int('{}FFFF'.format(i), 0),
     ])
 
-XML_1_0_VALID_UNI = ['-'.join([unichr(y) for y in x]) for x in XML_1_0_VALID_HEX]
-INVALID_UNICODE_RAW_RE = ur'[^{}]'.format(''.join(XML_1_0_VALID_UNI))
+XML_1_0_VALID_UNI = ['-'.join([chr(y) for y in x]) for x in XML_1_0_VALID_HEX]
+INVALID_UNICODE_RAW_RE = r'[^{}]'.format(''.join(XML_1_0_VALID_UNI))
 """The raw regex string to use when replacing invalid characters"""
 
 INVALID_UNICODE_RE = re.compile(INVALID_UNICODE_RAW_RE, re.U)
 """The regex object to use when replacing invalid characters"""
 
-XML_1_0_RESTRICTED_UNI = ['-'.join([unichr(y) for y in x]) for x in XML_1_0_RESTRICTED_HEX]
-RESTRICTED_UNICODE_RAW_RE = ur'[{}]'.format(''.join(XML_1_0_RESTRICTED_UNI))
+XML_1_0_RESTRICTED_UNI = ['-'.join([chr(y) for y in x]) for x in XML_1_0_RESTRICTED_HEX]
+RESTRICTED_UNICODE_RAW_RE = r'[{}]'.format(''.join(XML_1_0_RESTRICTED_UNI))
 """The raw regex string to use when replacing restricted characters"""
 
 RESTRICTED_UNICODE_RE = re.compile(RESTRICTED_UNICODE_RAW_RE, re.U)
 """The regex object to use when replacing restricted characters"""
 
-DEFAULT_REPLACEMENT = u'\uFFFD'
+DEFAULT_REPLACEMENT = '\uFFFD'
 """The default character to use when replacing characters"""
 
 
@@ -186,7 +183,7 @@ def xml_cleaner(s, encoding='utf-8', clean_restricted=True, log_clean_messages=T
                         "ignoring errors"
                     ).format
                     mylog.warning(m())
-                s = unicode(s, 'utf-8', errors='ignore')
+                s = str(s, 'utf-8', errors='ignore')
 
     # encode the string as utf-8
     pass1 = s.encode('utf-8', 'xmlcharrefreplace')

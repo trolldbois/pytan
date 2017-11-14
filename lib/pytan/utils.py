@@ -5,9 +5,6 @@
 """Collection of classes and methods used throughout :mod:`pytan`"""
 import sys
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
 import os
 import socket
 import time
@@ -19,11 +16,6 @@ import itertools
 import base64
 from collections import OrderedDict
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
 
 import taniumpy
 import xmltodict
@@ -56,9 +48,9 @@ class SplitStreamHandler(logging.Handler):
                 stream = sys.stderr
             fs = "%s\n"
             try:
-                is_unicode = isinstance(msg, unicode)
+                is_unicode = isinstance(msg, str)
                 if is_unicode and getattr(stream, 'encoding', None):
-                    ufs = u'%s\n'
+                    ufs = '%s\n'
                     try:
                         stream.write(ufs % msg)
                     except UnicodeEncodeError:
@@ -81,7 +73,7 @@ def is_list(l):
 
 def is_str(l):
     """returns True if `l` is a string, False if not"""
-    return type(l) in [unicode, str]
+    return type(l) in [str, str]
 
 
 def is_dict(l):
@@ -91,7 +83,7 @@ def is_dict(l):
 
 def is_num(l):
     """returns True if `l` is a number, False if not"""
-    return type(l) in [float, int, long]
+    return type(l) in [float, int, int]
 
 
 def jsonify(v, indent=2, sort_keys=True):
@@ -260,7 +252,7 @@ def spew(t):
         * string to debug print
     """
     if DEBUG_OUTPUT:
-        print "DEBUG::{}".format(t)
+        print("DEBUG::{}".format(t))
 
 
 def remove_logging_handler(name='all'):
@@ -271,7 +263,7 @@ def remove_logging_handler(name='all'):
     name : str
         * name of logging handler to remove. if name == 'all' then all logging handlers are removed
     """
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().items()):
         for handler in v.handlers:
             if name == 'all':
                 spew("Removing logging handler: {0}/{0.name} due to 'all'".format(handler))
@@ -302,7 +294,7 @@ def setup_console_logging(gmt_tz=True):
     ch.setLevel(logging.DEBUG)
     ch.setFormatter(logging.Formatter(pytan.constants.INFO_FORMAT))
 
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().items()):
         spew("setup_console_logging(): add handler: {0}/{0.name} to logger {1}".format(ch, k))
         v.addHandler(ch)
 
@@ -316,7 +308,7 @@ def change_console_format(debug=False):
         * False : set logging format for console handler to :data:`pytan.constants.INFO_FORMAT`
         * True :  set logging format for console handler to :data:`pytan.constants.DEBUG_FORMAT`
     """
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().items()):
         for handler in v.handlers:
             if handler.name == 'console':
                 if debug:
@@ -341,7 +333,7 @@ def set_log_levels(loglevel=0):
 
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
         if loglevel >= logmap[0]:
-            for lname, llevel in logmap[1].iteritems():
+            for lname, llevel in logmap[1].items():
                 spew('set_log_levels(): setting %s to %s' % (lname, llevel))
                 logging.getLogger(lname).setLevel(getattr(logging, llevel))
 
@@ -349,19 +341,19 @@ def set_log_levels(loglevel=0):
 def print_log_levels():
     """Prints info about each loglevel from :data:`pytan.constants.LOG_LEVEL_MAPS`"""
     for logmap in pytan.constants.LOG_LEVEL_MAPS:
-        print "Logging level: {} - Description: {}".format(logmap[0], logmap[2])
+        print("Logging level: {} - Description: {}".format(logmap[0], logmap[2]))
         if logmap[0] == 0:
-            for k, v in sorted(get_all_pytan_loggers().iteritems()):
-                print "\tLogger {!r} will only show WARNING and above".format(k)
+            for k, v in sorted(get_all_pytan_loggers().items()):
+                print("\tLogger {!r} will only show WARNING and above".format(k))
             continue
-        for lname, llevel in logmap[1].iteritems():
-            print "\tLogger {!r} will show {} and above".format(lname, llevel)
+        for lname, llevel in logmap[1].items():
+            print("\tLogger {!r} will show {} and above".format(lname, llevel))
 
 
 def set_all_loglevels(level='DEBUG'):
     """Sets all loggers that the logging system knows about to a given logger level"""
 
-    for k, v in sorted(get_all_pytan_loggers().iteritems()):
+    for k, v in sorted(get_all_pytan_loggers().items()):
         spew("set_all_loglevels(): setting pytan logger '{}' to {}".format(k, level))
         v.setLevel(getattr(logging, level))
         v.propagate = False
@@ -372,7 +364,7 @@ def get_all_pytan_loggers():
 
     Creates loggers for any pytan loggers that do not exist yet
     """
-    pytan_log_strings = [x[1].keys() for x in pytan.constants.LOG_LEVEL_MAPS if x[1].keys()]
+    pytan_log_strings = [list(x[1].keys()) for x in pytan.constants.LOG_LEVEL_MAPS if list(x[1].keys())]
     pytan_log_strings = sorted(list(set(list(itertools.chain(*pytan_log_strings)))))
 
     pytan_loggers = {x: logging.getLogger(x) for x in pytan_log_strings}
@@ -382,7 +374,7 @@ def get_all_pytan_loggers():
 def get_all_loggers():
     """Gets all loggers currently known to pythons logging system`"""
     logger_dict = logging.Logger.manager.loggerDict
-    all_loggers = {k: v for k, v in logger_dict.iteritems() if isinstance(v, logging.Logger)}
+    all_loggers = {k: v for k, v in logger_dict.items() if isinstance(v, logging.Logger)}
     all_loggers['root'] = logging.getLogger()
     return all_loggers
 
@@ -1432,7 +1424,7 @@ def build_param_objlist(obj, user_params, delim='', derive_def=False, empty_ok=F
         manuallog.debug(dbg(p_key, obj_name, param_obj))
 
     # ADD SUPPORT FOR PARAMS THAT ARE NOT IN OBJECT
-    for k, v in user_params.iteritems():
+    for k, v in user_params.items():
         if k in processed:
             continue
         processed.append(k)
@@ -1620,13 +1612,13 @@ def apply_options_obj(options, obj, dest):
     if not options:
         return obj
 
-    for k, v in options.iteritems():
+    for k, v in options.items():
         for om in pytan.constants.OPTION_MAPS:
 
             if om['destination'] != dest:
                 continue
 
-            om_attrs = om.get('attrs', {}).keys()
+            om_attrs = list(om.get('attrs', {}).keys())
             om_attr = om.get('attr', '')
 
             if om_attr:
@@ -1731,7 +1723,7 @@ def chk_def_key(def_dict, key, keytypes, keysubtypes=None, req=False):
         return
 
     if is_dict(val):
-        subtypes = [type(x) for x in val.values()]
+        subtypes = [type(x) for x in list(val.values())]
     else:
         subtypes = [type(x) for x in val]
 
@@ -1780,7 +1772,7 @@ def get_q_obj_map(qtype):
         obj_map = pytan.constants.Q_OBJ_MAP[qtype.lower()]
     except KeyError:
         err = "{} not a valid question type, must be one of {!r}".format
-        raise pytan.exceptions.HandlerError(err(qtype, pytan.constants.Q_OBJ_MAP.keys()))
+        raise pytan.exceptions.HandlerError(err(qtype, list(pytan.constants.Q_OBJ_MAP.keys())))
     return obj_map
 
 
@@ -1801,7 +1793,7 @@ def get_obj_map(objtype):
         obj_map = pytan.constants.GET_OBJ_MAP[objtype.lower()]
     except KeyError:
         err = "{} not a valid object to get, must be one of {!r}".format
-        raise pytan.exceptions.HandlerError(err(objtype, pytan.constants.GET_OBJ_MAP.keys()))
+        raise pytan.exceptions.HandlerError(err(objtype, list(pytan.constants.GET_OBJ_MAP.keys())))
     return obj_map
 
 
@@ -1864,7 +1856,7 @@ def func_timing(f):
         time2 = datetime.datetime.utcnow()
         elapsed = time2 - time1
         m = '{}() TIMING start: {}, end: {}, elapsed: {}'.format
-        timinglog.debug(m(f.func_name, time1, time2, elapsed))
+        timinglog.debug(m(f.__name__, time1, time2, elapsed))
         return ret
     return wrap
 
@@ -2075,7 +2067,7 @@ def plugin_zip(p):
         * the columns and result_rows of the sql_response in Plugin object zipped up into a dictionary
     """
     return [
-        dict(zip(p.sql_response.columns, x)) for x in p.sql_response.result_row
+        dict(list(zip(p.sql_response.columns, x))) for x in p.sql_response.result_row
     ]
 
 
@@ -2136,7 +2128,7 @@ def parse_versioning(server_version):
     try:
         v_parts = server_version.split('.')
         v_ints = [int(x) for x in v_parts]
-        v_dict = dict(zip(v_keys, v_ints))
+        v_dict = dict(list(zip(v_keys, v_ints)))
     except:
         m = (
             "Unable to parse major, minor, revision, and build from server "
@@ -2185,7 +2177,7 @@ def vig_encode(key, string):
     """
     string = str(string)
     encoded_chars = []
-    for i in xrange(len(string)):
+    for i in range(len(string)):
         key_c = key[i % len(key)]
         encoded_c = chr(ord(string[i]) + ord(key_c) % 256)
         encoded_chars.append(encoded_c)
@@ -2224,7 +2216,7 @@ def vig_decode(key, string):
     v_string = base64.urlsafe_b64decode(string)
 
     decoded_chars = []
-    for i in xrange(len(v_string)):
+    for i in range(len(v_string)):
         key_c = key[i % len(key)]
         encoded_c = chr(abs(ord(v_string[i]) - ord(key_c) % 256))
         decoded_chars.append(encoded_c)

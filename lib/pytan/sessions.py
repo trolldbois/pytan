@@ -16,28 +16,12 @@ try:
 except Exception:
     import xml.etree.ElementTree as ET
 
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds if aa not in sys.path]
-
-try:
-    import pytan
-    from pytan.xml_clean import xml_cleaner
-    import requests
-    import taniumpy
-except Exception:
-    raise
+import pytan
+from pytan.xml_clean import xml_cleaner
+import requests
+import taniumpy
 
 requests.packages.urllib3.disable_warnings()
-
-try:
-    import sys
-    reload(sys)  # noqa
-    sys.setdefaultencoding('utf-8')
-except Exception:
-    raise
 
 
 class Session(object):
@@ -800,7 +784,7 @@ class Session(object):
         stats_resolved = [
             self._find_stat_target(target=t, diags=diags) for t in self.STATS_LOOP_TARGETS
         ]
-        stats_text = ", ".join(["{}: {}".format(*i.items()[0]) for i in stats_resolved])
+        stats_text = ", ".join(["{}: {}".format(*list(i.items())[0]) for i in stats_resolved])
         return stats_text
 
     def enable_stats_loop(self, sleep=None):
@@ -1386,7 +1370,7 @@ class Session(object):
         """
         flattened = structure
         if isinstance(structure, dict):
-            for k, v in flattened.iteritems():
+            for k, v in flattened.items():
                 flattened[k] = self._flatten_server_info(structure=v)
         elif isinstance(structure, (tuple, list)):
             if all([isinstance(x, dict) for x in structure]):
@@ -1427,7 +1411,7 @@ class Session(object):
             * result : value resolved from :func:`pytan.sessions.Session._resolve_stat_target` for `target` index1 (search_path)
         """
         try:
-            label, search_path = target.items()[0]
+            label, search_path = list(target.items())[0]
         except Exception as e:
             label = "Parse Failure"
             result = "Unable to parse stat target: {}, exception: {}".format(target, e)
@@ -1491,7 +1475,7 @@ class Session(object):
         """
         options_obj = taniumpy.Options()
 
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             if hasattr(options_obj, k):
                 if log_options:
                     m = "Setting Options attribute {!r} to value {!r}".format

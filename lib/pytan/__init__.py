@@ -27,20 +27,6 @@ Copyright for PyTan
 import sys
 import os
 
-# disable python from creating .pyc files everywhere
-sys.dont_write_bytecode = True
-
-my_file = os.path.abspath(__file__)
-my_dir = os.path.dirname(my_file)
-parent_dir = os.path.dirname(my_dir)
-path_adds = [parent_dir]
-[sys.path.insert(0, aa) for aa in path_adds]
-
-try:
-    import libs_external  # noqa
-except:
-    pass
-
 import taniumpy  # noqa
 
 import pytan  # noqa
