@@ -335,5 +335,5 @@ class ResultSet(object):
         rows = get_rows(val, headers, **kwargs)
 
         writer = csv.writer(fd)
-        writer.writerow([h['mod_name'] for h in headers])
+        writer.writerow([h['mod_name'].encode() for h in headers])
         writer.writerows(rows)

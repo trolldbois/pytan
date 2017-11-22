@@ -102,7 +102,7 @@ class BaseType(object):
 
         """
         if len(self._list_properties) == 1:
-            getattr(self, self._list_properties.items()[0][0]).append(n)
+            getattr(self, list(self._list_properties.items())[0][0]).append(n)
         else:
             raise Exception(
                 'Not simply a list type, append not supported'

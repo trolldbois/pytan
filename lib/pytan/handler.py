@@ -2654,7 +2654,7 @@ class Handler(object):
             err = "{!r} has no write_csv() method!".format
             raise pytan.exceptions.HandlerError(err(obj))
 
-        out = io.BytesIO()
+        out = io.StringIO()
 
         clean_keys = ['fd', 'val']
         clean_kwargs = pytan.utils.clean_kwargs(kwargs=kwargs, keys=clean_keys)

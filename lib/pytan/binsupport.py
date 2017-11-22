@@ -3975,7 +3975,7 @@ def get_all_headers(rows_list):
 
 def csvdictwriter(rows_list, **kwargs):
     """returns the rows_list (list of dicts) as a CSV string"""
-    csv_io = io.BytesIO()
+    csv_io = io.StringIO()
     headers = kwargs.get('headers', []) or get_all_headers(rows_list)
     writer = csv.DictWriter(
         csv_io,
